@@ -38,7 +38,7 @@
 ## 目录
 
 ```undefined
-//base/user_iam/coauth
+//base/user_iam/pin_auth
 ├── ohos.build			# 组件描述文件
 ├── pinauth.gni			# 构建配置
 ├── frameworks			# 框架代码
