@@ -1,12 +1,7 @@
-# useriam_pinauth
+# 口令认证
 
 - [简介](#简介)
 - [目录](#目录)
-- [编译构建](#编译构建)
-  - [准备](#准备)
-  - [获取源码](#获取源码)
-  - [编译构建](#编译构建)
-
 - [说明](#说明)
   - [接口说明](#接口说明)
   - [使用说明](#使用说明)
@@ -15,7 +10,7 @@
 
 ## 简介
 
-**口令认证（pinauth）**模块支持用户口令的设置，删除和口令认证功能。与用户IAM子系统基础框架配合，也可以支持用户口令修改的功能。
+**口令认证**（pinauth）模块支持用户口令的设置，删除和口令认证功能。与用户IAM子系统基础框架配合，也可以支持用户口令修改的功能。
 
 口令认证作为OpenHarmony最基础的用户身份认证执行器，按照协同认证定义的资源注册接口，将口令认证相关资源信息注册到协同认证框架，并根据协同认证框架的调度，完成口令的设置，删除和口令认证功能。
 
@@ -27,11 +22,11 @@
 
 用户口令是系统内的核心资产，在口令认证的处理过程中，我们对用户输入的口令信息实施了如下安全保护措施：
 
-1. 口令输入界面（当前分为口令设置界面和口令认证界面）由系统级应用提供<sup>注1</sup>，在用户设置过程中涉及的界面均由设置应用提供，在用户锁屏认证过程中的口令输入界面由锁屏应用提供；
-2. 口令数据传输：口令数据原文不跨设备传输，口令输入界面获取用户输入的口令数据原文后，在输入模型管理innerKit内经过单向处理后才传入口令认证SA
+1. 口令输入界面（当前分为口令设置界面和口令认证界面）由系统级应用提供<sup>注1</sup>，在用户设置过程中涉及的界面均由设置应用提供，在用户锁屏认证过程中的口令输入界面由锁屏应用提供。
+2. 口令数据传输：口令数据原文不跨设备传输，口令输入界面获取用户输入的口令数据原文后，在输入模型管理innerAPI内经过单向处理后才传入口令认证SA。
 3. 口令数据安全存储和比对：口令认证HDI中定义了南向厂商适配的接口，南向厂商可以自行在可信执行环境内完成口令数据的安全存储的比对。<sup>注2</sup>
 
-*注1：应用实现口令输入界面，需要通过输入框管理接口，将口令输入界面注册到口令认证SA，输入框管理接口定义较高的访问权限，只允许系统用户调用*
+*注1：应用实现口令输入界面，需要通过输入框管理接口，将口令输入界面注册到口令认证SA，输入框管理接口定义较高的访问权限，只允许系统用户调用。*
 
 *注2：OpenHarmony开源框架内提供了口令认证的纯软件实现，供开发者demo口令认证功能，纯软件实现部分未包含安全存储能力。*
 
@@ -49,29 +44,6 @@
 ├── services			# Service Ability 服务实现
 └── unittest			# 测试代码存入目录
 ```
-
-## 编译构建
-
-
-### 准备
-
-开发者需要在Linux上搭建编译环境：
-
--   [Ubuntu编译环境准备](https://gitee.com/openharmony/docs/blob/master/zh-cn/device-dev/quick-start/quickstart-lite-env-setup-linux.md)
--   Hi3518EV300单板：参考[环境搭建](https://gitee.com/openharmony/docs/blob/master/zh-cn/device-dev/quick-start/quickstart-lite-steps-hi3518-setting.md)
--   Hi3516DV300单板：参考[环境搭建](https://gitee.com/openharmony/docs/blob/master/zh-cn/device-dev/quick-start/quickstart-lite-steps-hi3516-setting.md)
-
-### 获取源码
-
-在Linux服务器上下载并解压一套源代码，源码获取方式参考[源码获取](https://gitee.com/openharmony/docs/blob/master/zh-cn/device-dev/get-code/sourcecode-acquire.md)。
-
-### 编译构建
-
-开发者开发第一个应用程序可参考：
-
--   [helloworld for Hi3518EV300](https://gitee.com/openharmony/docs/blob/master/zh-cn/device-dev/quick-start/quickstart-lite-steps-hi3518-running.md)
-
--   [helloworld for Hi3516DV300](https://gitee.com/openharmony/docs/blob/master/zh-cn/device-dev/quick-start/quickstart-lite-steps-hi3516-running.md)
 
 
 ## 说明
@@ -94,17 +66,17 @@
 
 ### 使用说明
 
-- 需在尽可能安全的环境中实现头文件```hdi\main\pin_entry.h``` 中定义的接口，保证用户口令相关信息的安全保护达到系统内可以提供的最高安全级别（可信执行环境/安全芯片）的保护。
+- 需在尽可能安全的环境中实现头文件```hdi\main\inc\pin_auth.h``` 中定义的接口，保证用户口令相关信息的安全保护达到系统内可以提供的最高安全级别（可信执行环境/安全芯片）的保护。
 
 ## 相关仓
 
-[useriam_coauth](https://gitee.com/openharmony-sig/useriam_coauth)
+[useriam_auth_executor_mgr](https://gitee.com/openharmony-sig/useriam_coauth)
 
-[useriam_useridm](https://gitee.com/openharmony-sig/useriam_useridm)
+[useriam_user_idm](https://gitee.com/openharmony-sig/useriam_useridm)
 
-[useriam_userauth](https://gitee.com/openharmony-sig/useriam_userauth)
+[useriam_user_auth](https://gitee.com/openharmony-sig/useriam_userauth)
 
-**[useriam_pinauth](https://gitee.com/openharmony-sig/useriam_pinauth)**
+**[useriam_pin_auth](https://gitee.com/openharmony-sig/useriam_pinauth)**
 
 [useriam_faceauth](https://gitee.com/openharmony/useriam_faceauth)
 
