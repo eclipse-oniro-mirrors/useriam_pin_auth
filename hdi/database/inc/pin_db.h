@@ -81,8 +81,8 @@ typedef struct {
     uint8_t pinData[CONST_PIN_DATA_LEN];
 } __attribute__((__packed__)) PinEnrollParam;
 
-void InitPinDb();
-void DestroyPinDb();
+void InitPinDb(void);
+void DestroyPinDb(void);
 
 ResultCode AddPin(PinEnrollParam *pinEnrollParam, uint64_t *templateId);
 ResultCode DoGetSalt(uint64_t templateId, uint8_t *salt, uint32_t *saltLen);

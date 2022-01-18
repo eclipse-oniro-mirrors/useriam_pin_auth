@@ -58,7 +58,6 @@ void IInputerStub::OnGetData(int32_t authSubType, std::vector<uint8_t> salt, spt
         PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::OnGetData inputerData == nullptr");
         return;
     }
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "IInputerStub::OnGetData salt is : [%{public}s]" , salt.data());
     std::shared_ptr<IInputerData> sharedInputerData = std::make_shared<InputerDataImpl>(salt, inputerData);
     inputer_->OnGetData(authSubType, sharedInputerData);
 }

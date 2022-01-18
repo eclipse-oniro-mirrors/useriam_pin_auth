@@ -115,7 +115,6 @@ static ResultCode LoadPinDb()
     if (data == NULL) {
         LOG_ERROR("parcel create failed");
         return RESULT_GENERAL_ERROR;
-        
     }
     ret = fileOp->readFile(PIN_INDEX_NAME, data, dataLen);
     if (ret != RESULT_SUCCESS) {
@@ -136,7 +135,7 @@ EXIT:
     return ret;
 }
 
-void InitPinDb()
+void InitPinDb(void)
 {
     ResultCode ret = LoadPinDb();
     if (ret != RESULT_SUCCESS) {
@@ -145,7 +144,7 @@ void InitPinDb()
     LOG_INFO("InitPinDb succ.");
 }
 
-void DestroyPinDb()
+void DestroyPinDb(void)
 {
     if (g_pinDbOp.pinIndex != NULL) {
         Free(g_pinDbOp.pinIndex);
@@ -232,7 +231,7 @@ static ResultCode GenerateFileName(uint64_t templateId, const char *prefix, cons
     return RESULT_SUCCESS;
 }
 
-static ResultCode ReadPinFile(uint8_t *data, uint32_t datalen, uint64_t templateId, const char *suffix)
+static ResultCode ReadPinFile(uint8_t *data, uint32_t dataLen, uint64_t templateId, const char *suffix)
 {
     FileOperator *fileOp = GetFileOperator(DEFAULT_FILE_OPERATOR);
     if (!IsFileOperatorValid(fileOp)) {
@@ -246,7 +245,7 @@ static ResultCode ReadPinFile(uint8_t *data, uint32_t datalen, uint64_t template
         LOG_ERROR("ReadPinFile Generate Pin FileName fail.");
         return RESULT_GENERAL_ERROR;
     }
-    ret = fileOp->readFile(fileName, data, datalen);
+    ret = fileOp->readFile(fileName, data, dataLen);
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("read pin file fail.");
         return ret;
@@ -255,7 +254,7 @@ static ResultCode ReadPinFile(uint8_t *data, uint32_t datalen, uint64_t template
     return RESULT_SUCCESS;
 }
 
-static ResultCode WritePinFile(uint8_t *data, uint32_t datalen, uint64_t templateId, const char *suffix)
+static ResultCode WritePinFile(uint8_t *data, uint32_t dataLen, uint64_t templateId, const char *suffix)
 {
     FileOperator *fileOp = GetFileOperator(DEFAULT_FILE_OPERATOR);
     if (!IsFileOperatorValid(fileOp)) {
@@ -269,8 +268,7 @@ static ResultCode WritePinFile(uint8_t *data, uint32_t datalen, uint64_t templat
         LOG_ERROR("WritePinFile Generate Pin FileName fail.");
         return RESULT_GENERAL_ERROR;
     }
-    LOG_INFO("filename is %{public}s", fileName);
-    ret = fileOp->writeFile(fileName, data, datalen);
+    ret = fileOp->writeFile(fileName, data, dataLen);
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("WritePinFile fail.");
         return ret;
@@ -293,7 +291,6 @@ static ResultCode RemovePinFile(uint64_t templateId, const char *suffix)
         LOG_ERROR("GenerateCryptoFileName fail.");
         return RESULT_UNKNOWN;
     }
-    LOG_INFO("filename is %{public}s", fileName);
     if (fileOp->deleteFile(fileName) != RESULT_SUCCESS) {
         LOG_ERROR("file remove fail.");
         return RESULT_BAD_DEL;
@@ -352,7 +349,6 @@ static uint32_t SearchPinById(uint64_t templateId)
         return MAX_CRYPTO_INFO_SIZE;
     }
     for (uint32_t index = 0; index < g_pinDbOp.pinIndexLen; index++) {
-        LOG_INFO("%{public}llu", g_pinDbOp.pinIndex[index].templateId);
         if (g_pinDbOp.pinIndex[index].templateId == templateId) {
             LOG_INFO("SearchPinById succ.");
             return index;
@@ -948,7 +944,7 @@ static bool FindTemplateIdFromList(uint64_t storeTemplateId, uint64_t *templateI
             return true;
         }
     }
-    LOG_INFO("%{public}llu", storeTemplateId);
+
     return false;
 }
 

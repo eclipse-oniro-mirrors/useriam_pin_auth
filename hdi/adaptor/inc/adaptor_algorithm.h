@@ -29,7 +29,7 @@ typedef struct {
 
 bool IsEd25519KeyPairValid(const KeyPair *keyPair);
 void DestoryKeyPair(KeyPair *keyPair);
-KeyPair *GenerateEd25519KeyPair();
+KeyPair *GenerateEd25519KeyPair(void);
 int32_t Ed25519Sign(const KeyPair *keyPair, const Buffer *data, Buffer **sign);
 int32_t Ed25519Verify(const Buffer *pubKey, const Buffer *data, const Buffer *sign);
 

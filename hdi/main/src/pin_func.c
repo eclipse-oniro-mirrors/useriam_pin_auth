@@ -20,7 +20,6 @@
 
 static KeyPair *g_keyPair = NULL;
 
-
 ResultCode DoEnrollPin(PinEnrollParam *pinEnrollParam, Buffer *retTlv)
 {
     if (pinEnrollParam == NULL || !IsBufferValid(retTlv)) {
@@ -74,7 +73,6 @@ ResultCode DoAuthPin(PinAuthParam *pinAuthParam, Buffer *retTlv)
     uint64_t subType = 0;
     uint64_t freezeTime = 0;
     uint32_t authErrorConut = INIT_AUTH_ERROR_COUNT;
-    LOG_ERROR("pinAuthParam->templateId = %{public}llu", pinAuthParam->templateId);
     ResultCode ret = GetSubTypeAndFreezeTime(&subType, pinAuthParam->templateId, &freezeTime, &authErrorConut);
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("GetSubTypeAndFreezeTime fail.");
@@ -170,7 +168,6 @@ ResultCode DoGetExecutorInfo(PinExecutorInfo *pinExecutorInfo)
 static ResultCode WriteTlvHead(const AuthAttributeType type, const uint32_t length, Buffer *buf)
 {
     int32_t tempType = type;
-    LOG_ERROR("type = %{public}u, length = %{public}u, buf->len = %{public}u", type, length, buf->contentSize);
     if (memcpy_s(buf->buf + buf->contentSize, buf->maxSize - buf->contentSize, &tempType, sizeof(tempType)) != EOK) {
         LOG_ERROR("copy type fail.");
         return RESULT_BAD_COPY;

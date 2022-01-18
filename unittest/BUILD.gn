@@ -13,10 +13,10 @@
 
 import("//build/ohos.gni")
 import("//build/test.gni")
-import("//base/useriam/pinauth/pinauth.gni")
+import("//base/user_iam/pin_auth/pinauth.gni")
 
 
-module_output_path = "pinauthmgr/PinAuth_UT_test"
+module_output_path = "pin_auth/PinAuth_UT_test"
 
 ohos_unittest("PinAuth_UT_test") {
   

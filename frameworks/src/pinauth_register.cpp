@@ -68,7 +68,7 @@ sptr<IRemotePinAuth> PinAuthRegister::GetProxy()
         PINAUTH_HILOGE(MODULE_INNERKIT, "Failed to get system ability manager");
         return nullptr;
     }
-    sptr<IRemoteObject> obj = sam->CheckSystemAbility(PIN_AUTH_SERVICE_SA_ID);
+    sptr<IRemoteObject> obj = sam->CheckSystemAbility(SUBSYS_USERIAM_SYS_ABILITY_PINAUTH);
     if (obj == nullptr) {
         PINAUTH_HILOGE(MODULE_INNERKIT, "Failed to get distributed gallery manager service");
         return nullptr;

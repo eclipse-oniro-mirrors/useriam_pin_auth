@@ -13,8 +13,12 @@
  * limitations under the License.
  */
 
+#ifndef ADAPTOR_TIME_H
+#define ADAPTOR_TIME_H
+
 #include <stdint.h>
 
-uint64_t GetSystemTime();
-uint64_t GetRtcTime();
+uint64_t GetSystemTime(void);
+uint64_t GetRtcTime(void);
 
+#endif

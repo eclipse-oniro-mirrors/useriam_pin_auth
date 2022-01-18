@@ -29,7 +29,7 @@ namespace UserIAM {
 namespace PinAuth {
 
 const int32_t OUT_LENGTH = 64;
-const int32_t SCRYPT_N = 16;
+const int32_t SCRYPT_N = 32768;
 const int32_t SCRYPT_R = 3;
 const int32_t SCRYPT_P = 1;
 

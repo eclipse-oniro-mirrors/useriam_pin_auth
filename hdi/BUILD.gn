@@ -16,20 +16,19 @@ import("//build/ohos.gni")
 import("//build/ohos_var.gni")
 
 ohos_shared_library("pinauth_hdi") {
-    part_name = "pinauthmgr"
-    subsystem_name = "pinauth"
+    part_name = "pin_auth"
+    subsystem_name = "useriam"
 
     sources = [
         "adaptor/src/adaptor_file.c",
         "adaptor/src/adaptor_time.c",
         "adaptor/src/file_operator.c",
         "adaptor/src/adaptor_algorithm.c",
-        "adaptor/src/adaptor_log.c",
         "adaptor/src/adaptor_memory.c",
         "common/src/buffer.c",
         "database/src/pin_db.c",
         "main/src/pin_func.c",
-        "main/src/pin_entry.cpp"
+        "main/src/pin_auth.cpp"
     ]
 
     include_dirs = [

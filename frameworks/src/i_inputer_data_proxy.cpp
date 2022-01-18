@@ -34,8 +34,6 @@ void IInputerDataProxy::OnSetData(int32_t authSubType, std::vector<uint8_t> data
     if (!dataParcel.WriteInt64(authSubType)) {
         PINAUTH_HILOGE(MODULE_FRAMEWORKS, "fail to wirte parcellable for WriteInt64");
     }
-
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "IInputerDataProxy::OnSetData scrypt is : [%{public}s]" , data.data());
     if (!dataParcel.WriteUInt8Vector(data)) {
         PINAUTH_HILOGE(MODULE_FRAMEWORKS, "fail to wirte parcellable for WriteUInt8Vector");
     }
