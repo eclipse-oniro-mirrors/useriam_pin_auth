@@ -15,23 +15,23 @@ import("//base/user_iam/pin_auth/pinauth.gni")
 import("//build/ohos.gni")
 
 config("pinauth_config") {
-  include_dirs = [ 
+  include_dirs = [
     "${pinauth_frameworks_path}/include",
     "${pinauth_innerkits_path}/include",
-    "//utils/system/safwk/native/include",
+    "//foundation/distributedschedule/samgr/interfaces/innerkits/samgr_proxy/include",
   ]
 }
 
 ohos_shared_library("pinauth_frameworks") {
-  sources = [ 
+  sources = [
     "src/i_inputer_data_proxy.cpp",
     "src/i_inputer_stub.cpp",
     "src/inputer_data_impl.cpp",
     "src/pinauth_proxy.cpp",
-    "src/pinauth_register.cpp"
+    "src/pinauth_register.cpp",
   ]
 
-  external_deps = [ 
+  external_deps = [
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
   ]
@@ -40,13 +40,11 @@ ohos_shared_library("pinauth_frameworks") {
     "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
     "//foundation/distributedschedule/safwk/interfaces/innerkits/safwk:system_ability_fwk",
     "//foundation/distributedschedule/samgr/interfaces/innerkits/samgr_proxy:samgr_proxy",
-    "//utils/native/base:utils",
     "//third_party/openssl:libcrypto_static",
+    "//utils/native/base:utils",
   ]
 
-  public_configs = [
-    ":pinauth_config"
-  ]
+  public_configs = [ ":pinauth_config" ]
 
   defines = [
     "PINAUTH_LOG_TAG = \"PinAuth\"",
