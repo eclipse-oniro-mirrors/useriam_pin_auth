@@ -25,7 +25,6 @@
             "hiviewdfx_hilog_native",
             "ipc",
             "safwk",
-            "aafwk_standard",
             "samgr_standard",
             "auth_executor_mgr"
         ],
