@@ -28,7 +28,7 @@ const bool REGISTER_RESULT =
     SystemAbility::MakeAndRegisterAbility(DelayedSingleton<PinAuthService>::GetInstance().get());
 
 PinAuthService::PinAuthService()
-    : SystemAbility(PIN_AUTH_SERVICE_SA_ID, true),
+    : SystemAbility(SUBSYS_USERIAM_SYS_ABILITY_PINAUTH, true),
       serviceRunningState_(ServiceRunningState::STATE_NOT_START)
 {
 }

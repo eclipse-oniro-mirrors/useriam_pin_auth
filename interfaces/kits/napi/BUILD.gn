@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("//base/useriam/pinauth/pinauth.gni")
+import("//base/user_iam/pin_auth/pinauth.gni")
 import("//build/ohos.gni")
 
 config("pin_auth_napi_public_config") {
@@ -42,7 +42,7 @@ ohos_shared_library("pinauth") {
   ]
 
   relative_install_dir = "module"
-  subsystem_name = "pinauth"
-  part_name = "pinauthmgr"
+  subsystem_name = "useriam"
+  part_name = "pin_auth"
 }
 

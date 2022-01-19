@@ -22,31 +22,28 @@
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
-
-struct PinCredentialInfo
-{
+struct PinCredentialInfo {
     uint64_t subType;
     uint8_t remainTimes;
     uint64_t freezingTime;
 };
 
 class PinAuth {
-
 public:
     explicit PinAuth();
     ~PinAuth() = default;
-
     int32_t Init();
     int32_t Close();
-    int32_t EnrollPin(uint64_t scheduleId, uint64_t subType, std::vector<uint8_t> &salt,  std::vector<uint8_t> &pinData,  std::vector<uint8_t> &result );
+    int32_t EnrollPin(uint64_t scheduleId, uint64_t subType, std::vector<uint8_t> &salt,
+        std::vector<uint8_t> &pinData, std::vector<uint8_t> &result);
     int32_t GetSalt(uint64_t templateId, std::vector<uint8_t> &salt);
-    int32_t AuthPin(uint64_t scheduleId, uint64_t templateId, std::vector<uint8_t> &pinData, std::vector<uint8_t> &result);
+    int32_t AuthPin(uint64_t scheduleId, uint64_t templateId, std::vector<uint8_t> &pinData,
+        std::vector<uint8_t> &result);
     int32_t QueryPinInfo(uint64_t templateId, PinCredentialInfo &pinCredentialInfoRet);
     int32_t DeleteTemplate(uint64_t templateId);
     int32_t GetExecutorInfo(std::vector<uint8_t> &pubKey, uint32_t &esl, uint64_t &authAbility);
     int32_t VerifyTemplateData(std::vector<uint64_t> templateIdList);
 };
-
 } // namespace PinAuth
 } // namespace UserIAM
 } // namespace OHOS

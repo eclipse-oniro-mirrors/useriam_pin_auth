@@ -34,7 +34,7 @@
 #include "auth_executor_registry.h"
 
 /* mock */
-#include "pin_entry.h"
+#include "pin_auth.h"
 
 namespace OHOS {
 namespace UserIAM {

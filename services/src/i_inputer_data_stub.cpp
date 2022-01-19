@@ -28,7 +28,6 @@ void IInputerDataStub::HandlerOnSetData(MessageParcel &data, MessageParcel &repl
     uint64_t subType = data.ReadUint64();
     std::vector<uint8_t> param;
     data.ReadUInt8Vector(&param);
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "IInputerDataProxy::HandlerOnSetData scrypt is : [%{public}s]" , param.data());
     OnSetData(subType, param);
 }
 

@@ -23,7 +23,7 @@
 #include "if_system_ability_manager.h"
 #include "i_inputer_data_stub.h"
 #include "pinauth_stub.h"
-#include "pin_entry.h"
+#include "pin_auth.h"
 #include "auth_attributes.h"
 #include "iexecutor_messenger.h"
 

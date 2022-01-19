@@ -18,6 +18,6 @@
 
 #include "adaptor_file.h"
 
-FileOperator *GetDefaultFileOperator();
+FileOperator *GetDefaultFileOperator(void);
 
 #endif

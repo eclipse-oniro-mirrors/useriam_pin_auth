@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (C) 2021 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,7 +31,7 @@
 #define SHA256_DIGEST_SIZE 32
 #define SHA512_DIGEST_SIZE 64
 
-static KeyPair *CreateEd25519KeyPair()
+static KeyPair *CreateEd25519KeyPair(void)
 {
     KeyPair *keyPair = Malloc(sizeof(KeyPair));
     if (keyPair == NULL) {
@@ -112,7 +112,7 @@ KeyPair *GenerateEd25519KeyPair()
         goto ERROR;
     }
     keyPair->pubKey->contentSize = pubKeySize;
-    size_t priKeySize = keyPair->priKey->maxSize;;
+    size_t priKeySize = keyPair->priKey->maxSize;
     if (EVP_PKEY_get_raw_private_key(key, keyPair->priKey->buf, &priKeySize) != OPENSSL_SUCCESS) {
         LOG_ERROR("get pri key fail");
         goto ERROR;
@@ -221,7 +221,8 @@ static int32_t IamHmac(const EVP_MD *alg,
         return RESULT_BAD_PARAM;
     }
     unsigned int hmacSize = hmac->maxSize;
-    uint8_t *hmacData = HMAC(alg, hmacKey->buf, (int)hmacKey->contentSize, data->buf, data->contentSize, hmac->buf, &hmacSize);
+    uint8_t *hmacData = HMAC(alg, hmacKey->buf, (int)hmacKey->contentSize, data->buf, data->contentSize,
+        hmac->buf, &hmacSize);
     if (hmacData == NULL) {
         LOG_ERROR("hmac fail");
         return RESULT_GENERAL_ERROR;
