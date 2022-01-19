@@ -15,17 +15,15 @@ import("//base/user_iam/pin_auth/pinauth.gni")
 import("//build/ohos.gni")
 
 config("pin_auth_napi_public_config") {
-  include_dirs = [
-    "include"
-  ]
+  include_dirs = [ "include" ]
 }
 
 ohos_shared_library("pinauth") {
   sources = [
+    "src/inputer_impl.cpp",
     "src/pin_auth_helper.cpp",
     "src/pin_auth_impl.cpp",
     "src/pin_native_module.cpp",
-    "src/inputer_impl.cpp"
   ]
 
   public_configs = [ ":pin_auth_napi_public_config" ]
@@ -45,4 +43,3 @@ ohos_shared_library("pinauth") {
   subsystem_name = "useriam"
   part_name = "pin_auth"
 }
-

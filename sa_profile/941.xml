@@ -15,7 +15,7 @@
 <info>
     <process>pinauth_service</process>
     <systemability>
-        <name>902</name>
+        <name>941</name>
         <libpath>libpinauth_service.z.so</libpath>
         <run-on-create>false</run-on-create>
         <distributed>false</distributed>
