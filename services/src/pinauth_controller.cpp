@@ -75,14 +75,12 @@ void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data
         return;
     }
 
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData data size is : [%{public}d]" , data.size());
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData data size is : [%{public}zu]", data.size());
     int32_t ret = SUCCESS;
     if (data.size() == 0) {
         PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData data is null");
         ret = FAIL;
     }
-
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData data is : [%{public}s]" , data.data());
 
     auto finalResult = std::make_shared<AuthResPool::AuthAttributes>();
     std::vector<uint8_t> result;
@@ -139,10 +137,8 @@ void PinAuthController::Cancel()
 void NewSalt(std::vector<uint8_t> &saltV) {
     char localDeviceId[DEVICE_UUID_LENGTH] = {0};
     GetDevUdid(localDeviceId, DEVICE_UUID_LENGTH);
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::NewSalt localDeviceId is : [%{public}s]" , localDeviceId);
     unsigned char random[RANDOM_LENGTH] = {0};
     RAND_bytes(random, (int)RANDOM_LENGTH);
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::NewSalt random is : [%{public}s]" , random);
     std::vector<uint8_t> sum;
     for (uint32_t i = 0; i < DEVICE_UUID_LENGTH; i++) {
         sum.push_back(localDeviceId[i]);
@@ -150,8 +146,7 @@ void NewSalt(std::vector<uint8_t> &saltV) {
     for (uint32_t i = 0; i < RANDOM_LENGTH; i++) {
         sum.push_back(random[i]);
     }
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::NewSalt sum is : [%{public}d]", sum.size());
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::NewSalt sum is : [%{public}s]", sum.data());
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::NewSalt sum is : [%{public}zu]", sum.size());
     const EVP_MD *alg = EVP_sha256();
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::NewSalt EVP_sha256 success");
     uint32_t size;
@@ -161,9 +156,7 @@ void NewSalt(std::vector<uint8_t> &saltV) {
     for (uint32_t i = 0; i < size; i++) {
         saltV.push_back(result[i]);
     }
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::NewSalt result size is : [%{public}d]" , size);
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::NewSalt result is : [%{public}s]" , result);
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::NewSalt saltV is : [%{public}s]", saltV.data());
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::NewSalt result size is : [%{public}u]", size);
 }
 
 } // namespace PinAuth
