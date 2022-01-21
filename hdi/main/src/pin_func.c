@@ -83,16 +83,16 @@ ResultCode DoAuthPin(PinAuthParam *pinAuthParam, Buffer *retTlv)
         ret = AuthPinById(&(pinAuthParam->pinData[0]), CONST_PIN_DATA_LEN, pinAuthParam->templateId);
         if (ret != RESULT_SUCCESS) {
             LOG_ERROR("AuthPinById fail.");
-            return ret;
         }
     } else {
+        LOG_ERROR("Pin is freezing.");
         ret = RESULT_PIN_FREEZE;
     }
 
-    ret = GenerateRetTlv(RESULT_SUCCESS, pinAuthParam->scheduleId, subType, pinAuthParam->templateId, retTlv);
-    if (ret != RESULT_SUCCESS) {
+    ResultCode tlvRet = GenerateRetTlv(ret, pinAuthParam->scheduleId, subType, pinAuthParam->templateId, retTlv);
+    if (tlvRet != RESULT_SUCCESS) {
         LOG_ERROR("GenerateRetTlv DoAuthPin fail.");
-        return ret;
+        return tlvRet;
     }
     return ret;
 }
@@ -110,7 +110,6 @@ ResultCode DoQueryPinInfo(uint64_t templateId, PinCredentialInfos *pinCredential
         LOG_ERROR("GetSubTypeAndFreezeTime fail.");
         return ret;
     }
-
     if (pinCredentialInfo->freezeTime > 0) {
         pinCredentialInfo->remainTimes = 0;
     } else {

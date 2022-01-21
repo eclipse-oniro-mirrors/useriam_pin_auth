@@ -92,7 +92,7 @@ void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data
         } else if (command_ == COMMAND_AUTH_PIN) {
             PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_AUTH_PIN");
             ret = pin_->AuthPin(scheduleId_, templateId_, data, result);
-            PINAUTH_HILOGI(MODULE_COMMON, "----------AuthPin finish-----------");
+            PINAUTH_HILOGI(MODULE_COMMON, "----------AuthPin finish %{public}d-----------", ret);
          }
      }
 
