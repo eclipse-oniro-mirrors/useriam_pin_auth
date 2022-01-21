@@ -57,7 +57,6 @@ void PinAuthManager::Execute(uint64_t uid, uint64_t subType, uint64_t scheduleId
         setPinAuthControllerLock(scheduleId, controller);
         std::vector<uint8_t> salt;
         bool sResult = controller->OnStart(salt);
-        PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::Excute salt is : [%{public}s]" , salt.data());
         if (sResult) {
             PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::Excute OnStart SUCCESS CALL OnGetData");
             inputer->OnGetData(subType, salt, controller);
