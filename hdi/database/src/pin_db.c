@@ -854,12 +854,12 @@ static ResultCode UpdateAntiBruteFile(uint64_t templateId, int32_t authResultSuc
         return RESULT_BAD_PARAM;
     }
 
-    if (!authResultSucc) {
+    if (authResultSucc == RESULT_SUCCESS) {
         ResultCode ret = ClearAntiBruteParamsById(templateId);
         if (ret != RESULT_SUCCESS) {
             LOG_ERROR("ClearAntiBruteParamsById fail.");
-            return ret;
         }
+        return ret;
     }
 
     uint64_t nowTime = GetRtcTime() * MS_OF_S;
@@ -875,21 +875,22 @@ static ResultCode UpdateAntiBruteFile(uint64_t templateId, int32_t authResultSuc
     ret = SetAntiBruteInfoById(templateId, errorCount, nowTime);
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("SetAntiBruteInfoById fail.");
-        return ret;
     }
-
     return ret;
 }
 
 static int32_t CompareData(uint8_t *inputData, uint32_t inputDataLen, uint8_t *storeData, uint32_t storeDataLen)
 {
     if (inputDataLen != storeDataLen) {
-        return RESULT_PIN_FAIL;
+        LOG_ERROR("get false len.");
+        return RESULT_BAD_MATCH;
     }
     if (memcmp(inputData, storeData, inputDataLen) == 0) {
+        LOG_INFO("auth pin success.");
         return RESULT_SUCCESS;
     }
-    return RESULT_PIN_FAIL;
+    LOG_ERROR("auth pin fail.");
+    return RESULT_BAD_MATCH;
 }
 
 ResultCode AuthPinById(uint8_t *inputData, uint32_t inputDataLen, uint64_t templateId)
@@ -912,25 +913,28 @@ ResultCode AuthPinById(uint8_t *inputData, uint32_t inputDataLen, uint64_t templ
         return RESULT_GENERAL_ERROR;
     }
 
+    ResultCode compareRet = RESULT_BAD_MATCH;
     ResultCode ret = ReadPinFile(storeData, storeDataLen, templateId, CRYPTO_SUFFIX);
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("Read pin store File fail.");
         goto EXIT;
     }
-
-    ret = CompareData(inputData, inputDataLen, storeData, storeDataLen);
+    compareRet = CompareData(inputData, inputDataLen, storeData, storeDataLen);
+    if (compareRet != RESULT_SUCCESS) {
+        LOG_ERROR("CompareData fail.");
+    }
     /*
      * If the authentication succeeds, set authErrorConut to 0 and set startFreezeTime to the default value.
      * If the authentication fails, the value of authErrorConut is incremented by 1 and the
      * current time(startFreezeTime) is recorded.
      */
-
-    ret = UpdateAntiBruteFile(templateId, ret);
+    ret = UpdateAntiBruteFile(templateId, compareRet);
     if (ret != RESULT_SUCCESS) {
-        LOG_ERROR("AuthPinBuffer fail.");
+        LOG_ERROR("UpdateAntiBruteFile fail.");
         goto EXIT;
     }
-    LOG_INFO("AuthPinById succ.");
+    ret = compareRet;
+    LOG_INFO("AuthPinById end.");
 
 EXIT:
     Free(storeData);
