@@ -14,8 +14,8 @@
  */
 #ifndef FACERECOGNITION_PIN_AUTH_HELPER_H
 #define FACERECOGNITION_PIN_AUTH_HELPER_H
+#include "napi/native_api.h"
 #include "napi/native_common.h"
-#include "napi/native_node_api.h"
 namespace OHOS {
 namespace PinAuth {
 void Init(napi_env env, napi_value exports);

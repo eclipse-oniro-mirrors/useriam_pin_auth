@@ -16,8 +16,8 @@
 #define FACE_RECOGNITION_PIN_AUTH_COMMON_H
 #include "i_inputer.h"
 #include "i_inputer_data.h"
+#include "napi/native_api.h"
 #include "napi/native_common.h"
-#include "napi/native_node_api.h"
 namespace OHOS {
 namespace PinAuth {
 constexpr int PIN_PARAMS_ZERO = 0;

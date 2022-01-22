@@ -19,8 +19,8 @@
 
 #include "i_inputer.h"
 #include "i_inputer_data.h"
+#include "napi/native_api.h"
 #include "napi/native_common.h"
-#include "napi/native_node_api.h"
 #include "pin_auth_common.h"
 
 namespace OHOS {
