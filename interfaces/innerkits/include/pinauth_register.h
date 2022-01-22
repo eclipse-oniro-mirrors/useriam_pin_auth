@@ -28,7 +28,6 @@ namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
 class PinAuthRegister : public DelayedRefSingleton<PinAuthRegister> {
-public:
     DECLARE_DELAYED_REF_SINGLETON(PinAuthRegister);
 
 public:

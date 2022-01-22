@@ -21,8 +21,8 @@
 #include "pinauth_defines.h"
 #include "iservice_registry.h"
 #include "ipc_skeleton.h"
-#include "pinauth_controller.h"
 #include "parameter.h"
+#include "pinauth_controller.h"
 
 namespace OHOS {
 namespace UserIAM {
@@ -93,8 +93,8 @@ void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data
             PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_AUTH_PIN");
             ret = pin_->AuthPin(scheduleId_, templateId_, data, result);
             PINAUTH_HILOGI(MODULE_COMMON, "----------AuthPin finish %{public}d-----------", ret);
-         }
-     }
+        }
+    }
 
     PINAUTH_HILOGI(MODULE_COMMON, "PinAuthController::onSetData finalResult is Unpack");
     finalResult->SetUint8ArrayValue(AUTH_RESULT, result);
@@ -134,7 +134,8 @@ void PinAuthController::Cancel()
     canceled = true;
 }
 
-void NewSalt(std::vector<uint8_t> &saltV) {
+void NewSalt(std::vector<uint8_t> &saltV)
+{
     char localDeviceId[DEVICE_UUID_LENGTH] = {0};
     GetDevUdid(localDeviceId, DEVICE_UUID_LENGTH);
     unsigned char random[RANDOM_LENGTH] = {0};
@@ -146,19 +147,16 @@ void NewSalt(std::vector<uint8_t> &saltV) {
     for (uint32_t i = 0; i < RANDOM_LENGTH; i++) {
         sum.push_back(random[i]);
     }
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::NewSalt sum is : [%{public}zu]", sum.size());
     const EVP_MD *alg = EVP_sha256();
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::NewSalt EVP_sha256 success");
     uint32_t size;
     uint8_t result[SHA256_LENGTH] = {0};
-    // EVP_Digest(sum.data(), DEVICE_UUID_LENGTH + RANDOM_LENGTH, result, &size, alg, NULL);
     EVP_Digest(sum.data(), sum.size(), result, &size, alg, NULL);
     for (uint32_t i = 0; i < size; i++) {
         saltV.push_back(result[i]);
     }
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::NewSalt result size is : [%{public}u]", size);
 }
-
 } // namespace PinAuth
 } // namespace UserIAM
 } // namespace OHOS

@@ -35,7 +35,7 @@ void IInputerProxy::OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sp
     }
 
     if (!data.WriteUInt8Vector(salt)) {
-        PINAUTH_HILOGI(MODULE_SERVICE,"failed to WriteUInt8Vector(salt).");
+        PINAUTH_HILOGI(MODULE_SERVICE, "failed to WriteUInt8Vector(salt).");
         return;
     }
 

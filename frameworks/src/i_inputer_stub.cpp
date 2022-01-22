@@ -32,7 +32,6 @@ IInputerStub::~IInputerStub() {
 
 void IInputerStub::HandlerOnGetData(MessageParcel &data, MessageParcel &reply)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::HandlerOnGetData start enter");
     int32_t authSubType = data.ReadInt32();
     std::vector<uint8_t> salt;
     data.ReadUInt8Vector(&salt);
@@ -48,7 +47,6 @@ void IInputerStub::HandlerOnGetData(MessageParcel &data, MessageParcel &reply)
         return;
     }
     OnGetData(authSubType, salt, inputerData.GetRefPtr());
-    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::HandlerOnGetData end");
 }
 
 void IInputerStub::OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sptr<IRemoteInputerData> inputerData)

@@ -31,10 +31,8 @@ InputerImpl::~InputerImpl()
 }
 void InputerImpl::OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData)
 {
-    HILOG_INFO("InputerImpl, OnGetData new instance");
     napi_status status;
     napi_value inputerDataVarCtor;
-    HILOG_INFO("InputerImpl:authSubType==>%{public}d", authSubType);
     status = napi_new_instance(env_, GetCtorIInputerData(env_,inputerData), 0, nullptr, &inputerDataVarCtor);
     if (status != napi_ok) {
         HILOG_ERROR("napi_new_instance faild");
@@ -63,7 +61,6 @@ void InputerImpl::OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::
     if (status != napi_ok) {
         HILOG_ERROR("napi_call_function faild");
     }
-    HILOG_INFO("InputerImpl, OnGetData end");
 }
 
 napi_value GetCtorIInputerData(napi_env env, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData)
@@ -94,7 +91,6 @@ napi_value OnSetData(napi_env env, napi_callback_info info)
         return nullptr;
     }
     if (argcAsync == PIN_PARAMS_TWO) {
-        HILOG_INFO("InputerImpl, OnSetData param size is checked");
         napi_valuetype valuetype = napi_undefined;
         NAPI_CALL(env, napi_typeof(env, args[PIN_PARAMS_ZERO], &valuetype));
         int32_t authSubType = VALID_AUTH_SUB_TYPE;

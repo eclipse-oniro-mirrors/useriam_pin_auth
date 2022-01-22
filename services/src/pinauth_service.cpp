@@ -76,15 +76,13 @@ bool PinAuthService::RegisterInputer(sptr<IRemoteInputer> inputer)
         PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthService::RegisterInputer inputer == nullptr");
         return false;
     }
-    // return PinAuthManager::GetInstance().RegisterInputer(GetCallingUid(), inputer);
-    return PinAuthManager::GetInstance().RegisterInputer(0, inputer);
+    return PinAuthManager::GetInstance().RegisterInputer(GetCallingUid(), inputer);
 }
 
 void PinAuthService::UnRegisterInputer()
 {
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::UnRegisterInputer enter");
-    // PinAuthManager::GetInstance().UnRegisterInputer(GetCallingUid());
-    PinAuthManager::GetInstance().UnRegisterInputer(0);
+    PinAuthManager::GetInstance().UnRegisterInputer(GetCallingUid());
 }
 
 void PinAuthService::ActuatorInfoQuery()
@@ -216,7 +214,7 @@ int32_t PinAuthService::OnSetProperty(std::shared_ptr<AuthAttributes> properties
         }
     } else {
         PINAUTH_HILOGI(MODULE_SERVICE,
-                     "PinAuthService::OnSetProperty !(command == COMMAND_DELETE_PIN && IsUserIDM(callerUid))");
+                       "PinAuthService::OnSetProperty !(command == COMMAND_DELETE_PIN && IsUserIDM(callerUid))");
         return FAIL;
     }
     return SUCCESS;
@@ -237,8 +235,8 @@ int32_t PinAuthService::OnGetProperty(std::shared_ptr<AuthResPool::AuthAttribute
         PINAUTH_HILOGI(MODULE_SERVICE, "___PinAuthService::OnGetProperty GetUint32Value___");
         return FAIL;
     }
-    PINAUTH_HILOGD(MODULE_SERVICE, 
-                 "___PinAuthService::OnBeginExecute AUTH_PROPERTY_MODE is %{public}d ##########.", command);
+    PINAUTH_HILOGD(MODULE_SERVICE,
+                   "___PinAuthService::OnBeginExecute AUTH_PROPERTY_MODE is %{public}u.", command);
     if (command == COMMAND_CHECK_PIN) {
         /* get templateId */
         uint64_t templateId;

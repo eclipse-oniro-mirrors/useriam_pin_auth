@@ -30,7 +30,6 @@
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
-
 class PinAuthManager : public DelayedRefSingleton<PinAuthManager> {
     DECLARE_DELAYED_REF_SINGLETON(PinAuthManager);
 public:
@@ -53,6 +52,16 @@ private:
     sptr<PinAuthController> getPinAuthControllerLock(uint64_t scheduleId);
     void setPinAuthControllerLock(uint64_t scheduleId, sptr<PinAuthController> controller);
     sptr<IRemoteInputer> getInputerLock(uint64_t uid);
+
+    // Death monitoring class
+    class ResPinauthInputerDeathRecipient : public IRemoteObject::DeathRecipient {
+    public:
+        ResPinauthInputerDeathRecipient(uint64_t uid);
+        ~ResPinauthInputerDeathRecipient() = default;
+        void OnRemoteDied(const wptr<IRemoteObject>& remote) override;
+    private:
+        uint64_t uid_;
+    };
 };
 } // namespace PinAuth
 } // namespace UserIAM
