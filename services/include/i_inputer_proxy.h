@@ -27,7 +27,8 @@ public:
     explicit IInputerProxy(const sptr<IRemoteObject> &impl)
         : IRemoteProxy<IRemoteInputer>(impl) {}
     virtual ~IInputerProxy() override = default;
-    virtual void OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sptr<IRemoteInputerData> inputerData) override;
+    virtual void OnGetData(int32_t authSubType, std::vector<uint8_t> salt,
+                           sptr<IRemoteInputerData> inputerData) override;
 
 private:
     bool SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply);

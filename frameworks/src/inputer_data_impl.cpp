@@ -15,13 +15,14 @@
 #include <openssl/evp.h>
 #include <openssl/kdf.h>
 
-#include "inputer_data_impl.h"
 #include "pinauth_log_wrapper.h"
+#include "inputer_data_impl.h"
 
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
-InputerDataImpl::InputerDataImpl(std::vector<uint8_t> salt, sptr<IRemoteInputerData> remoteInputerData) : salt_(salt), remoteInputerData_(remoteInputerData)
+InputerDataImpl::InputerDataImpl(std::vector<uint8_t> salt, sptr<IRemoteInputerData> remoteInputerData) : salt_(salt),
+    remoteInputerData_(remoteInputerData)
 {
 }
 
@@ -37,7 +38,8 @@ void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
     remoteInputerData_->OnSetData(authSubType, scrypt);
 }
 
-void InputerDataImpl::getScrypt(std::vector<uint8_t> data, std::vector<uint8_t> &scrypt) {
+void InputerDataImpl::getScrypt(std::vector<uint8_t> data, std::vector<uint8_t> &scrypt)
+{
     EVP_PKEY_CTX *pctx;
     unsigned char out[OUT_LENGTH];
 

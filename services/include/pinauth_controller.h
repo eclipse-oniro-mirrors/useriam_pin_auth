@@ -30,7 +30,6 @@
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
-
 const uint32_t DEVICE_UUID_LENGTH = 65;
 const uint32_t SHA256_LENGTH = 256;
 const uint32_t RANDOM_LENGTH = 32;

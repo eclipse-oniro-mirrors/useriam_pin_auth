@@ -103,7 +103,7 @@ void PinAuthRegister::PinAuthDeathRecipient::OnRemoteDied(const wptr<IRemoteObje
         return;
     }
     PinAuthRegister::GetInstance().ResetProxy(remote);
-    PINAUTH_HILOGE(MODULE_INNERKIT, "CoAuthDeathRecipient::Recv death notice.");
+    PINAUTH_HILOGE(MODULE_INNERKIT, "PinAuthDeathRecipient::Recv death notice.");
 }
 } // namespace PinAuth
 } // namespace UserIAM
