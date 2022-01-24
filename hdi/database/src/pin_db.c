@@ -682,7 +682,7 @@ static ResultCode GetAntiBruteCountById(uint64_t templateId, uint32_t *count)
     return ret;
 }
 
-static ResultCode SetAntiBruteInfoById(uint64_t templateId, uint32_t count, uint32_t startFreezeTime)
+static ResultCode SetAntiBruteInfoById(uint64_t templateId, uint32_t count, uint64_t startFreezeTime)
 {
     ResultCode ret = LoadPinDb();
     if (ret != RESULT_SUCCESS) {
@@ -749,7 +749,7 @@ ResultCode GetAntiBruteInfo(uint64_t templateId, uint32_t *authErrorConut, uint6
     return ret;
 }
 
-static uint32_t ExponentialFuncTime(uint32_t authErrorConut)
+static uint64_t ExponentialFuncTime(uint32_t authErrorConut)
 {
     uint32_t ret = DEFAULT_VALUE;
     int32_t exp = (authErrorConut - FIRST_EXPONENTIAL_PARA) / THIRD_EXPONENTIAL_PARA;
@@ -759,7 +759,7 @@ static uint32_t ExponentialFuncTime(uint32_t authErrorConut)
     return FIRST_EXPONENTIAL_PARA * ret;
 }
 
-uint32_t GetWaitTime(uint32_t authErrorConut)
+uint64_t GetWaitTime(uint32_t authErrorConut)
 {
     if (authErrorConut < FIRST_ANTI_BRUTE_COUNT) {
         return 0;
@@ -792,13 +792,13 @@ ResultCode ComputeFreezeTime(uint64_t templateId, uint64_t *freezeTime, uint32_t
         return RESULT_BAD_PARAM;
     }
     uint64_t timeValue = GetRtcTime();
-    uint32_t waitTime = GetWaitTime(count);
+    uint64_t waitTime = GetWaitTime(count);
     if (timeValue > startFreezeTime) {
         uint64_t usedTime = timeValue - startFreezeTime;
         if (usedTime >= waitTime) {
             *freezeTime = 0;
         } else {
-            *freezeTime = (uint32_t)(waitTime - usedTime);
+            *freezeTime = waitTime - usedTime;
         }
     } else {
         /* rtc time is reset, we should update startFreezeTime to timeValue */
@@ -862,7 +862,7 @@ static ResultCode UpdateAntiBruteFile(uint64_t templateId, int32_t authResultSuc
         return ret;
     }
 
-    uint64_t nowTime = GetRtcTime() * MS_OF_S;
+    uint64_t nowTime = GetRtcTime();
     uint32_t errorCount = 0;
     ResultCode ret = GetAntiBruteCountById(templateId, &errorCount);
     if (ret != RESULT_SUCCESS) {
