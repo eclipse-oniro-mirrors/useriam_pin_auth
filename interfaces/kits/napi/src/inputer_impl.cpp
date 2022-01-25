@@ -14,6 +14,7 @@
  */
 
 #include "inputer_impl.h"
+#include <uv.h>
 #include "pin_auth_common.h"
 #include "pin_hilog_wrapper.h"
 #include "securec.h"
@@ -29,38 +30,79 @@ InputerImpl::InputerImpl(napi_env env, napi_ref inputer)
 InputerImpl::~InputerImpl()
 {
 }
-void InputerImpl::OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData)
+
+static void GetPropertyInfoCallback(uv_work_t* work, int status)
 {
-    napi_status status;
-    napi_value inputerDataVarCtor;
-    status = napi_new_instance(env_, GetCtorIInputerData(env_,inputerData), 0, nullptr, &inputerDataVarCtor);
-    if (status != napi_ok) {
-        HILOG_ERROR("napi_new_instance faild");
+    InputerHolder *inputerHolder = reinterpret_cast<InputerHolder *>(work->data);
+    if (inputerHolder == nullptr) {
+        HILOG_ERROR("inputerHolder is null");
+        delete work;
+        return;
     }
-    napi_value undefined = 0;
-    status = napi_get_undefined(env_, &undefined);
-    if (status != napi_ok) {
+    napi_value inputerDataVarCtor;
+    napi_status napiStatus = napi_new_instance(inputerHolder->env,
+        GetCtorIInputerData(inputerHolder->env, inputerHolder->inputerData), 0, nullptr, &inputerDataVarCtor);
+    if (napiStatus != napi_ok) {
+        HILOG_ERROR("napi_new_instance faild");
+        goto EXIT;
+    }
+    napi_value undefined;
+    napiStatus = napi_get_undefined(inputerHolder->env, &undefined);
+    if (napiStatus != napi_ok) {
         HILOG_ERROR("napi_get_undefined faild");
+        goto EXIT;
     }
     napi_value return_val;
     napi_value type;
-    status = napi_create_int32(env_, authSubType, &type);
-    if (status != napi_ok) {
+    napiStatus = napi_create_int32(inputerHolder->env, inputerHolder->authSubType, &type);
+    if (napiStatus != napi_ok) {
         HILOG_ERROR("napi_create_int32 faild");
+        goto EXIT;
     }
-    size_t argc = PIN_PARAMS_TWO;
     napi_value argv [PIN_PARAMS_TWO];
     napi_value callbackRef;
-    status = napi_get_reference_value(env_, inputer_, &callbackRef);
-    if (status != napi_ok) {
+    napiStatus = napi_get_reference_value(inputerHolder->env, inputerHolder->inputer, &callbackRef);
+    if (napiStatus != napi_ok) {
         HILOG_ERROR("napi_get_reference_value faild");
+        goto EXIT;
     }
-    argv [0] = type;
-    argv [1] = inputerDataVarCtor;
-    status = napi_call_function(env_, undefined, callbackRef, argc, &argv[0], &return_val);
-    if (status != napi_ok) {
+    argv [PIN_PARAMS_ZERO] = type;
+    argv [PIN_PARAMS_ONE] = inputerDataVarCtor;
+    napiStatus = napi_call_function(inputerHolder->env, undefined, callbackRef, PIN_PARAMS_TWO, &argv[0], &return_val);
+    if (napiStatus != napi_ok) {
         HILOG_ERROR("napi_call_function faild");
+        goto EXIT;
     }
+EXIT:
+    delete inputerHolder;
+    delete work;
+}
+
+void InputerImpl::OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData)
+{
+    uv_loop_s *loop(nullptr);
+    napi_get_uv_event_loop(env_, &loop);
+    if (loop == nullptr) {
+        HILOG_ERROR("loop is null");
+        return;
+    }
+    uv_work_t *work = new (std::nothrow) uv_work_t;
+    if (work == nullptr) {
+        HILOG_ERROR("work is null");
+        return;
+    }
+    InputerHolder *inputerHolder = new (std::nothrow) InputerHolder();
+    if (inputerHolder == nullptr) {
+        HILOG_ERROR("inputerHolder is null");
+        delete work;
+        return;
+    }
+    inputerHolder->env = env_;
+    inputerHolder->inputer = inputer_;
+    inputerHolder->authSubType = authSubType;
+    inputerHolder->inputerData = inputerData;
+    work->data = reinterpret_cast<void *>(inputerHolder);
+    uv_queue_work(loop, work, [] (uv_work_t *work) { }, GetPropertyInfoCallback);
 }
 
 napi_value GetCtorIInputerData(napi_env env, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData)

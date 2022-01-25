@@ -39,6 +39,13 @@ public:
      napi_ref inputer_;
      void OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData);;
 };
+
+typedef struct InputerHolder {
+    napi_env env;
+    napi_ref inputer;
+    int32_t authSubType;
+    std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData;
+} InputerHolder;
 } // namespace PinAuth
 } // namespace OHOS
 
