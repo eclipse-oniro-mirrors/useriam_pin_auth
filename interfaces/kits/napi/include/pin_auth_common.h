@@ -20,9 +20,9 @@
 #include "napi/native_common.h"
 namespace OHOS {
 namespace PinAuth {
-constexpr int PIN_PARAMS_ZERO = 0;
-constexpr int PIN_PARAMS_ONE = 1;
-constexpr int PIN_PARAMS_TWO = 2;
+constexpr size_t PIN_PARAMS_ZERO = 0;
+constexpr size_t PIN_PARAMS_ONE = 1;
+constexpr size_t PIN_PARAMS_TWO = 2;
 constexpr int OK = 0;
 constexpr int FAIL = 1;
 constexpr int REGISTER_CODE = 1;

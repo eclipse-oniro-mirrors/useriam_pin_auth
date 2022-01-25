@@ -15,7 +15,10 @@ import("//base/user_iam/pin_auth/pinauth.gni")
 import("//build/ohos.gni")
 
 config("pin_auth_napi_public_config") {
-  include_dirs = [ "include" ]
+  include_dirs = [
+    "include",
+    "//third_party/libuv/include",
+  ]
 }
 
 ohos_shared_library("pinauth") {
