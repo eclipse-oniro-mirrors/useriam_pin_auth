@@ -623,7 +623,7 @@ ResultCode AddPin(PinEnrollParam *pinEnrollParam, uint64_t *templateId)
         LOG_ERROR("InitAntiBruteInfo fail.");
         goto EXIT;
     }
-    ret = WritePinFile((uint8_t *)&initAntiBrute, sizeof(AntiBruteInfo), *templateId, ANTI_BRUTE_SUFFIX);
+    ret = WritePinFile((uint8_t *)initAntiBrute, sizeof(AntiBruteInfo), *templateId, ANTI_BRUTE_SUFFIX);
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("WritentiBruteFile fail.");
         goto EXIT;
