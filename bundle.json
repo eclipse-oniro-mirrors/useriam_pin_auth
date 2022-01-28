@@ -18,7 +18,7 @@
       "adapted_system_type": [ "standard" ],
       "syscap": ["SystemCapability.UserIAM.UserAuth.PinAuth"],
       "features": [],
-      "rom": "300KB",
+      "rom": "6200KB",
       "ram": "2500KB",
       "deps": {
         "components": [
