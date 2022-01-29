@@ -793,7 +793,7 @@ ResultCode ComputeFreezeTime(uint64_t templateId, uint64_t *freezeTime, uint32_t
     }
     uint64_t timeValue = GetRtcTime();
     uint64_t waitTime = GetWaitTime(count);
-    if (timeValue > startFreezeTime) {
+    if (timeValue >= startFreezeTime) {
         uint64_t usedTime = timeValue - startFreezeTime;
         if (usedTime >= waitTime) {
             *freezeTime = 0;
