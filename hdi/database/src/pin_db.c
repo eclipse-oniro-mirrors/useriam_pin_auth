@@ -806,6 +806,7 @@ ResultCode ComputeFreezeTime(uint64_t templateId, uint64_t *freezeTime, uint32_t
             LOG_ERROR("SetAntiBruteInfoById fail.");
             return RESULT_BAD_PARAM;
         }
+        *freezeTime = waitTime;
     }
 
     LOG_INFO("ComputeFreezeTime succ.");
