@@ -17,13 +17,13 @@
 #include "pthread.h"
 
 extern "C" {
-    #include "adaptor_memory.h"
-    #include "adaptor_log.h"
-    #include "pin_auth.h"
-    #include "pin_func.h"
-    #include "securec.h"
-    #include <sys/stat.h>
-    #include <unistd.h>
+#include <sys/stat.h>
+#include <unistd.h>
+#include "adaptor_memory.h"
+#include "adaptor_log.h"
+#include "pin_func.h"
+#include "securec.h"
+#include "pin_auth.h"
 }
 
 namespace OHOS {

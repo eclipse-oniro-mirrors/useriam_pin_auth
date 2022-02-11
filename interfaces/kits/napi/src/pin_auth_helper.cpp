@@ -84,7 +84,7 @@ napi_value RegisterInputer(napi_env env, napi_callback_info info)
             return result;
         }
         napi_ref callbackRef;
-        NAPI_CALL(env, napi_create_reference(env, onGetData,1, &callbackRef));
+        NAPI_CALL(env, napi_create_reference(env, onGetData, 1, &callbackRef));
         bool callResult = pinAuthImpl->RegisterInputer(env, callbackRef);
         NAPI_CALL(env, napi_get_boolean(env, callResult, &result));
     }
