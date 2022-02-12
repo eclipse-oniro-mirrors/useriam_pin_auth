@@ -39,9 +39,9 @@ PinAuthController::~PinAuthController()
     pin_ = nullptr;
 }
 
-bool PinAuthController::OnStart(std::vector<uint8_t> &salt) {
-    int32_t ret;
-    ret = attributes_->GetUint32Value(AUTH_SCHEDULE_MODE, command_);
+bool PinAuthController::OnStart(std::vector<uint8_t> &salt)
+{
+    int32_t ret = attributes_->GetUint32Value(AUTH_SCHEDULE_MODE, command_);
     if (ret != SUCCESS) {
         PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::OnStart GetUint32Value AUTH_SCHEDULE_MODE error");
         return false;
