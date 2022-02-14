@@ -44,7 +44,6 @@ void InputerDataImpl::getScrypt(std::vector<uint8_t> data, std::vector<uint8_t> 
     unsigned char out[OUT_LENGTH];
     size_t outlen = sizeof(out);
     pctx = EVP_PKEY_CTX_new_id(EVP_PKEY_SCRYPT, NULL);
-
     if (EVP_PKEY_derive_init(pctx) <= 0) {
         PINAUTH_HILOGE(MODULE_FRAMEWORKS, "PinAuth InputerDataImpl::getScrypt EVP_PKEY_derive_init error");
         return;
