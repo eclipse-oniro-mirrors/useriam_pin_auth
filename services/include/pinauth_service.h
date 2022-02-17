@@ -54,6 +54,7 @@ public:
     virtual void UnRegisterInputer() override;
     void OnStart() override;
     void OnStop() override;
+    void ActuatorInfoQuery();
 
 private:
     /* Return the query result */
@@ -117,7 +118,6 @@ private:
     };
 
     bool IsUserIDM(uint64_t callerUid);
-    void ActuatorInfoQuery();
 
 private:
     ServiceRunningState serviceRunningState_ = ServiceRunningState::STATE_NOT_START;

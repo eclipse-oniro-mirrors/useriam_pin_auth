@@ -25,6 +25,7 @@ ohos_shared_library("pinauth_service") {
   sources = [
     "${pinauth_services_path}/src/i_inputer_data_stub.cpp",
     "${pinauth_services_path}/src/i_inputer_proxy.cpp",
+    "${pinauth_services_path}/src/pinauth_common_event_subscriber.cpp",
     "${pinauth_services_path}/src/pinauth_controller.cpp",
     "${pinauth_services_path}/src/pinauth_manager.cpp",
     "${pinauth_services_path}/src/pinauth_service.cpp",
@@ -45,6 +46,7 @@ ohos_shared_library("pinauth_service") {
 
   external_deps = [
     "ability_base:want",
+    "ces_standard:cesfwk_innerkits",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",

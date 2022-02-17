@@ -15,7 +15,6 @@
 
 #include "pin_auth_impl.h"
 #include "pin_auth_common.h"
-#include "pin_hilog_wrapper.h"
 #include "pinauth_register.h"
 #include "inputer_impl.h"
 
