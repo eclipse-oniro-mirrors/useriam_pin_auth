@@ -165,6 +165,5 @@ extern "C" __attribute__((constructor)) void RegisterModule(void)
     };
     napi_module_register(&module);
 }
-
 } // namespace PinAuth
 } // namespace OHOS

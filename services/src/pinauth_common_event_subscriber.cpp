@@ -14,8 +14,8 @@
  */
 
 #include "pinauth_log_wrapper.h"
-#include "pinauth_common_event_subscriber.h"
 #include "coauth_info_define.h"
+#include "pinauth_common_event_subscriber.h"
 
 namespace OHOS {
 namespace UserIAM {

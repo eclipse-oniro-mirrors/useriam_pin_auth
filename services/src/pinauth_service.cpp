@@ -14,12 +14,12 @@
  */
 #include "common_event_manager.h"
 #include "pinauth_common_event_subscriber.h"
-#include "pinauth_service.h"
 #include "pinauth_log_wrapper.h"
 #include "pinauth_defines.h"
 #include "pinauth_controller.h"
 #include "pinauth_manager.h"
 #include "coauth_info_define.h"
+#include "pinauth_service.h"
 
 namespace OHOS {
 namespace UserIAM {
