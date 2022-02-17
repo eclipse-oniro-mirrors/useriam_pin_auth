@@ -26,7 +26,6 @@ ohos_shared_library("pinauth") {
     "src/inputer_impl.cpp",
     "src/pin_auth_helper.cpp",
     "src/pin_auth_impl.cpp",
-    "src/pin_native_module.cpp",
   ]
 
   public_configs = [ ":pin_auth_napi_public_config" ]

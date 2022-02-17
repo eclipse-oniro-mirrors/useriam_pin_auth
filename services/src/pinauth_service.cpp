@@ -12,7 +12,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
+#include "common_event_manager.h"
+#include "pinauth_common_event_subscriber.h"
 #include "pinauth_service.h"
 #include "pinauth_log_wrapper.h"
 #include "pinauth_defines.h"
@@ -46,6 +47,18 @@ void PinAuthService::OnStart()
     pin_ = std::make_shared<PinAuth>();
     if (!pin_->Init()) {
         PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::InitPinAuth");
+    }
+    EventFwk::MatchingSkills matchingSkills;
+    matchingSkills.AddEvent(REGISTER_NOTIFICATION);
+    EventFwk::CommonEventSubscribeInfo subscriberInfo(matchingSkills);
+    std::shared_ptr<PinAuthCommonEventSubscriber> subscriberPtr =
+        std::make_shared<PinAuthCommonEventSubscriber>(subscriberInfo, this);
+    if (subscriberPtr != nullptr) {
+        bool subscribeResult = EventFwk::CommonEventManager::SubscribeCommonEvent(subscriberPtr);
+        if (!subscribeResult) {
+            PINAUTH_HILOGE(MODULE_SERVICE, "SubscribeCommonEvent failed");
+            return ;
+        }
     }
     ActuatorInfoQuery();
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService: Query executor status");

@@ -29,6 +29,7 @@ ohos_shared_library("pinauth_service") {
     "${pinauth_services_path}/src/pinauth_manager.cpp",
     "${pinauth_services_path}/src/pinauth_service.cpp",
     "${pinauth_services_path}/src/pinauth_stub.cpp",
+    "${pinauth_services_path}/src/pinauth_common_event_subscriber.cpp",
   ]
 
   configs = [ ":pin_auth_services_config" ]
@@ -49,6 +50,7 @@ ohos_shared_library("pinauth_service") {
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
+    "ces_standard:cesfwk_innerkits",
   ]
 
   subsystem_name = "useriam"

@@ -28,7 +28,7 @@ void IInputerProxy::OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sp
     PINAUTH_HILOGI(MODULE_SERVICE, "IInputerProxy::OnGetData enter");
     if (!data.WriteInterfaceToken(IInputerProxy::GetDescriptor())) {
         PINAUTH_HILOGE(MODULE_SERVICE, "WriteInterfaceToken failed!");
-        return ;
+        return;
     }
     if (!data.WriteInt32(authSubType)) {
         PINAUTH_HILOGE(MODULE_SERVICE, "failed to WriteInt32(authSubType).");

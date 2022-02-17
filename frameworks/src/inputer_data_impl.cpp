@@ -42,6 +42,7 @@ void InputerDataImpl::getScrypt(std::vector<uint8_t> data, std::vector<uint8_t> 
 {
     EVP_PKEY_CTX *pctx;
     unsigned char out[OUT_LENGTH];
+
     size_t outlen = sizeof(out);
     pctx = EVP_PKEY_CTX_new_id(EVP_PKEY_SCRYPT, NULL);
     if (EVP_PKEY_derive_init(pctx) <= 0) {

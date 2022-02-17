@@ -33,11 +33,11 @@ napi_value GetCtorIInputerData(napi_env env, std::shared_ptr<OHOS::UserIAM::PinA
 
 class InputerImpl : public OHOS::UserIAM::PinAuth::IInputer {
 public:
-     InputerImpl(napi_env env, napi_ref inputer);
-     virtual ~InputerImpl();
-     napi_env env_;
-     napi_ref inputer_;
-     void OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData);;
+    InputerImpl(napi_env env, napi_ref inputer);
+    virtual ~InputerImpl();
+    napi_env env_;
+    napi_ref inputer_;
+    void OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData);
 };
 
 typedef struct InputerHolder {

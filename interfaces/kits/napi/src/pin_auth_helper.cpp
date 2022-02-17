@@ -16,8 +16,9 @@
 #include "pin_auth_helper.h"
 #include "pin_auth_impl.h"
 #include "pin_auth_common.h"
-#include "pin_hilog_wrapper.h"
+#include "pinauth_log_wrapper.h"
 
+using namespace OHOS::UserIAM::PinAuth;
 namespace OHOS {
 namespace PinAuth {
 struct InputConstructorInfo {
@@ -28,7 +29,7 @@ struct InputConstructorInfo {
 
 napi_value PinAuthServiceConstructor(napi_env env, napi_callback_info info)
 {
-    HILOG_INFO("PinAuthHelper, PinAuthServiceConstructor start");
+    PINAUTH_HILOGI(MODULE_JS_NAPI, "PinAuthHelper, PinAuthServiceConstructor start");
     std::shared_ptr<OHOS::PinAuth::PinAuthImpl> pinAuthPtr = std::make_shared<PinAuthImpl>();
     napi_value thisVar = nullptr;
     size_t argc = PIN_PARAMS_ONE;
@@ -48,7 +49,7 @@ napi_value PinAuthServiceConstructor(napi_env env, napi_callback_info info)
 
 napi_value RegisterInputer(napi_env env, napi_callback_info info)
 {
-    HILOG_INFO("PinAuthHelper, RegisterInputer start");
+    PINAUTH_HILOGI(MODULE_JS_NAPI, "PinAuthHelper, RegisterInputer start");
     napi_value thisVar = nullptr;
     size_t argcAsync = PIN_PARAMS_ONE;
     napi_value args[PIN_PARAMS_ONE] = {nullptr};
@@ -58,7 +59,7 @@ napi_value RegisterInputer(napi_env env, napi_callback_info info)
     PinAuthImpl *pinAuthImpl = nullptr;
     NAPI_CALL(env, napi_unwrap(env, thisVar, (void **)&pinAuthImpl));
     if (pinAuthImpl == nullptr) {
-        HILOG_ERROR("PinAuthHelper, RegisterInputer pinauthimpl error");
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "PinAuthHelper, RegisterInputer pinauthimpl error");
         return result;
     }
     if (argcAsync == PIN_PARAMS_ONE) {
@@ -66,21 +67,21 @@ napi_value RegisterInputer(napi_env env, napi_callback_info info)
         NAPI_CALL(env, napi_typeof(env, args[PIN_PARAMS_ZERO], &valuetype));
         napi_value onGetData = nullptr;
         if (valuetype == napi_object) {
-            HILOG_INFO("PinAuthHelper, RegisterInputer is an object");
+            PINAUTH_HILOGI(MODULE_JS_NAPI, "PinAuthHelper, RegisterInputer is an object");
             NAPI_CALL(env, napi_get_named_property(env, args[PIN_PARAMS_ZERO], "onGetData", &onGetData));
             if (onGetData == nullptr) {
-                HILOG_ERROR("PinAuthHelper, RegisterInputer napi_get_named_property error");
+                PINAUTH_HILOGE(MODULE_JS_NAPI, "PinAuthHelper, RegisterInputer napi_get_named_property error");
                 return result;
             }
         } else if (valuetype == napi_function) {
-            HILOG_INFO("PinAuthHelper, RegisterInputer is a function");
+            PINAUTH_HILOGI(MODULE_JS_NAPI, "PinAuthHelper, RegisterInputer is a function");
             onGetData = args[PIN_PARAMS_ZERO];
             if (onGetData == nullptr) {
-                HILOG_ERROR("PinAuthHelper, RegisterInputer getfunction error");
+                PINAUTH_HILOGE(MODULE_JS_NAPI, "PinAuthHelper, RegisterInputer getfunction error");
                 return result;
             }
         } else {
-            HILOG_ERROR("PinAuthHelper, RegisterInputer param type error");
+            PINAUTH_HILOGE(MODULE_JS_NAPI, "PinAuthHelper, RegisterInputer param type error");
             return result;
         }
         napi_ref callbackRef;
@@ -93,7 +94,7 @@ napi_value RegisterInputer(napi_env env, napi_callback_info info)
 
 napi_value UnregisterInputer(napi_env env, napi_callback_info info)
 {
-    HILOG_INFO("PinAuthHelper, UnregisterInputer start");
+    PINAUTH_HILOGI(MODULE_JS_NAPI, "PinAuthHelper, UnregisterInputer start");
     napi_value thisVar = nullptr;
     napi_value result = nullptr;
     size_t argcAsync = PIN_PARAMS_ONE;
@@ -102,10 +103,10 @@ napi_value UnregisterInputer(napi_env env, napi_callback_info info)
     PinAuthImpl *pinAuthImpl = nullptr;
     NAPI_CALL(env, napi_unwrap(env, thisVar, (void **)&pinAuthImpl));
     if (pinAuthImpl == nullptr) {
-        HILOG_ERROR("PinAuthHelper, UnregisterInputer pinauthimpl error");
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "PinAuthHelper, UnregisterInputer pinauthimpl error");
         return nullptr;
     }
-    HILOG_INFO("PinAuthHelper, UnregisterInputer end");
+    PINAUTH_HILOGI(MODULE_JS_NAPI, "PinAuthHelper, UnregisterInputer end");
     pinAuthImpl->UnregisterInputer(env);
     NAPI_CALL(env, napi_get_null(env, &result));
     return result;
@@ -119,7 +120,11 @@ void Init(napi_env env, napi_value exports)
     };
     status = napi_define_properties(env, exports, sizeof(exportFuncs) / sizeof(*exportFuncs), exportFuncs);
     if (status != napi_ok) {
-        HILOG_ERROR("napi_define_properties faild");
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_define_properties faild");
+    }
+    status = napi_set_named_property(env, exports, "PinAuth", GetCtor(env));
+    if (status != napi_ok) {
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_set_named_property faild");
     }
 }
 
@@ -141,5 +146,25 @@ napi_value GetCtor(napi_env env)
         sizeof(clzDes) / sizeof(napi_property_descriptor), clzDes, &cons));
     return cons;
 }
+
+static napi_value ModuleInit(napi_env env, napi_value exports)
+{
+    OHOS::PinAuth::Init(env, exports);
+    return exports;
+}
+extern "C" __attribute__((constructor)) void RegisterModule(void)
+{
+    napi_module module = {
+        .nm_version = 1, // NAPI v1
+        .nm_flags = 0,                     // normal
+        .nm_filename = nullptr,
+        .nm_register_func = ModuleInit,
+        .nm_modname = "pinAuth",
+        .nm_priv = nullptr,
+        .reserved = {}
+    };
+    napi_module_register(&module);
+}
+
 } // namespace PinAuth
 } // namespace OHOS
