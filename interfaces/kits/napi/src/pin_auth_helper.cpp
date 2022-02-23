@@ -121,8 +121,9 @@ void Init(napi_env env, napi_value exports)
     status = napi_define_properties(env, exports, sizeof(exportFuncs) / sizeof(*exportFuncs), exportFuncs);
     if (status != napi_ok) {
         PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_define_properties faild");
+        return;
     }
-    status = napi_set_named_property(env, exports, "PinAuth", GetCtor(env));
+    status = napi_set_named_property(env, exports, "PINAuth", GetCtor(env));
     if (status != napi_ok) {
         PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_set_named_property faild");
     }
