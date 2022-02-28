@@ -19,8 +19,8 @@
 #include "pinauth_controller.h"
 #include "pinauth_manager.h"
 #include "coauth_info_define.h"
-#include "pinauth_service.h"
 #include "accesstoken_kit.h"
+#include "pinauth_service.h"
 
 namespace OHOS {
 namespace UserIAM {
