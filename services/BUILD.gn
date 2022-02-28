@@ -16,6 +16,7 @@ import("//build/ohos.gni")
 
 config("pin_auth_services_config") {
   include_dirs = [
+    "//base/security/access_token/interfaces/innerkits/accesstoken/include",
     "//base/user_iam/pin_auth/hdi/main/inc",
     "${pinauth_services_path}/include",
   ]
@@ -36,6 +37,7 @@ ohos_shared_library("pinauth_service") {
 
   deps = [
     "${pinauth_frameworks_path}:pinauth_frameworks",
+    "//base/security/access_token/interfaces/innerkits/accesstoken:libaccesstoken_sdk",
     "//base/startup/syspara_lite/interfaces/innerkits/native/syspara:syspara",
     "//base/user_iam/auth_executor_mgr/interfaces/innerkits:coauth_framework",
     "//base/user_iam/pin_auth/hdi:pinauth_hdi",
