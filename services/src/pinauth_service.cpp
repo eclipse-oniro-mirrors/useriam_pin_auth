@@ -59,7 +59,6 @@ void PinAuthService::OnStart()
         bool subscribeResult = EventFwk::CommonEventManager::SubscribeCommonEvent(subscriberPtr);
         if (!subscribeResult) {
             PINAUTH_HILOGE(MODULE_SERVICE, "SubscribeCommonEvent failed");
-            return ;
         }
     }
     ActuatorInfoQuery();
