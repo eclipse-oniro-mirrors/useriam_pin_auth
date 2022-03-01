@@ -27,6 +27,7 @@
 #include "i_inputer_data_stub.h"
 #include "pinauth_stub.h"
 #include "iremote_inputer.h"
+#include "string"
 
 /* coauth */
 #include "executor_callback.h"
@@ -59,6 +60,7 @@ public:
 private:
     /* Return the query result */
     void OnResult(uint32_t resultCode);
+    bool CheckPermission(const std::string &permission);
     class MngIQCallback : public AuthResPool::QueryCallback {
     public:
             MngIQCallback(PinAuthService* service)

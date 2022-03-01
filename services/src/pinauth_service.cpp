@@ -19,6 +19,7 @@
 #include "pinauth_controller.h"
 #include "pinauth_manager.h"
 #include "coauth_info_define.h"
+#include "accesstoken_kit.h"
 #include "pinauth_service.h"
 
 namespace OHOS {
@@ -27,6 +28,7 @@ namespace PinAuth {
 const uint64_t INVALID_EXECUTOR_ID = 0;
 const bool REGISTER_RESULT =
     SystemAbility::MakeAndRegisterAbility(DelayedSingleton<PinAuthService>::GetInstance().get());
+static const std::string ACCESS_PIN_AUTH = "ohos.permission.ACCESS_PIN_AUTH";
 
 PinAuthService::PinAuthService()
     : SystemAbility(SUBSYS_USERIAM_SYS_ABILITY_PINAUTH, true),
@@ -82,9 +84,23 @@ void PinAuthService::OnStop()
     PINAUTH_HILOGI(MODULE_SERVICE, "End");
 }
 
+bool PinAuthService::CheckPermission(const std::string &permission)
+{
+    using namespace Security::AccessToken;
+    uint32_t tokenID = this->GetFirstTokenID();
+    if (tokenID == 0) {
+        tokenID = this->GetCallingTokenID();
+    }
+    return AccessTokenKit::VerifyAccessToken(tokenID, permission) == RET_SUCCESS;
+}
+
 bool PinAuthService::RegisterInputer(sptr<IRemoteInputer> inputer)
 {
     PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthService::RegisterInputer enter");
+    if (!CheckPermission(ACCESS_PIN_AUTH)) {
+        PINAUTH_HILOGE(MODULE_SERVICE, "Permission check failed");
+        return false;
+    }
     if (inputer == nullptr) {
         PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthService::RegisterInputer inputer == nullptr");
         return false;
@@ -95,6 +111,10 @@ bool PinAuthService::RegisterInputer(sptr<IRemoteInputer> inputer)
 void PinAuthService::UnRegisterInputer()
 {
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::UnRegisterInputer enter");
+    if (!CheckPermission(ACCESS_PIN_AUTH)) {
+        PINAUTH_HILOGE(MODULE_SERVICE, "Permission check failed");
+        return;
+    }
     PinAuthManager::GetInstance().UnRegisterInputer(GetCallingUid());
 }
 
