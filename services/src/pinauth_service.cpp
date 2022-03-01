@@ -156,6 +156,17 @@ void PinAuthService::ActuatorInfoQuery()
     AuthResPool::AuthExecutorRegistry::GetInstance().QueryStatus(*executor_, mngIQ_);
 }
 
+void PinAuthService::ReconciliationCallback::OnGetInfo(std::vector<UserIDM::CredentialInfo>& info)
+{
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::DoVerifyTemplateData enter");
+    std::vector<uint64_t> templateIdList;
+    for (uint32_t i = 0; i < info.size(); i++) {
+        templateIdList.push_back(info[i].templateId);
+    }
+    std::shared_ptr<PinAuth> pinHdi = std::make_shared<PinAuth>();
+    pinHdi->VerifyTemplateData(templateIdList);
+}
+
 void PinAuthService::OnResult(uint32_t resultCode)
 {
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnResult enter");
@@ -164,6 +175,11 @@ void PinAuthService::OnResult(uint32_t resultCode)
         PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnResult resultCode == SUCCESS");
         return;
     }
+    using namespace UserIDM;
+    std::shared_ptr<GetInfoCallback> reconciliationCallback =
+        std::make_shared<ReconciliationCallback>();
+    UserIDM::UserIDMClient::GetInstance().GetAuthInfo(UserIDMClient::ALL_INFO_GET_USER_ID, UserIDM::PIN,
+        reconciliationCallback);
     // To do register
     executorID_ = AuthResPool::AuthExecutorRegistry::GetInstance().Register(executor_, mngEx_);
     if (executorID_ == INVALID_EXECUTOR_ID) {
