@@ -21,7 +21,6 @@
 #include "coauth_info_define.h"
 #include "accesstoken_kit.h"
 #include "pinauth_service.h"
-#include "useridm_client.h"
 
 namespace OHOS {
 namespace UserIAM {
@@ -157,14 +156,7 @@ void PinAuthService::ActuatorInfoQuery()
     AuthResPool::AuthExecutorRegistry::GetInstance().QueryStatus(*executor_, mngIQ_);
 }
 
-class ReconciliationCallback : public UserIDM::GetInfoCallback {
-public:
-    virtual ~ReconciliationCallback() = default;
-
-    void OnGetInfo(std::vector<UserIDM::CredentialInfo>& info) override;
-};
-
-void ReconciliationCallback::OnGetInfo(std::vector<UserIDM::CredentialInfo>& info)
+void PinAuthService::ReconciliationCallback::OnGetInfo(std::vector<UserIDM::CredentialInfo>& info)
 {
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::DoVerifyTemplateData enter");
     std::vector<uint64_t> templateIdList;

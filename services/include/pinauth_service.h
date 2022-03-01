@@ -34,6 +34,9 @@
 #include "auth_attributes.h"
 #include "auth_executor_registry.h"
 
+/* useridm */
+#include "useridm_client.h"
+
 /* mock */
 #include "pin_auth.h"
 
@@ -130,6 +133,13 @@ private:
     uint64_t executorID_;
     std::mutex mutex_;
     sptr<IExecutorMessenger> messenger_;
+
+    class ReconciliationCallback : public UserIDM::GetInfoCallback {
+    public:
+        virtual ~ReconciliationCallback() = default;
+
+        void OnGetInfo(std::vector<UserIDM::CredentialInfo>& info) override;
+    };
 };
 } // namespace PinAuth
 } // namespace UserIAM
