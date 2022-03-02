@@ -942,7 +942,7 @@ EXIT:
     return ret;
 }
 
-static bool FindTemplateIdFromList(uint64_t storeTemplateId, uint64_t *templateIdList, uint32_t templateIdListLen)
+static bool FindTemplateIdFromList(uint64_t storeTemplateId, const uint64_t *templateIdList, uint32_t templateIdListLen)
 {
     for (uint32_t i = 0; i < templateIdListLen; ++i) {
         if (templateIdList[i] == storeTemplateId) {
@@ -953,10 +953,10 @@ static bool FindTemplateIdFromList(uint64_t storeTemplateId, uint64_t *templateI
     return false;
 }
 
-ResultCode VerifyTemplateDataPin(uint64_t *templateIdList, uint32_t templateIdListLen)
+ResultCode VerifyTemplateDataPin(const uint64_t *templateIdList, uint32_t templateIdListLen)
 {
-    if (templateIdList == NULL || templateIdListLen == 0) {
-        LOG_ERROR("param is invalid.");
+    if (templateIdListLen != 0 && templateIdList == NULL) {
+        LOG_ERROR("templateIdList should be not null, when templateIdListLen is not zero");
         return RESULT_BAD_PARAM;
     }
     uint32_t i = 0;

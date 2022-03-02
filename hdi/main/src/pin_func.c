@@ -246,10 +246,10 @@ ResultCode GenerateRetTlv(uint32_t result, uint64_t scheduleId, uint64_t subType
     return RESULT_SUCCESS;
 }
 
-ResultCode DoVerifyTemplateData(uint64_t *templateIdList, uint32_t templateIdListLen)
+ResultCode DoVerifyTemplateData(const uint64_t *templateIdList, uint32_t templateIdListLen)
 {
-    if (templateIdList == NULL || templateIdListLen == 0) {
-        LOG_ERROR("param is invalid.");
+    if (templateIdListLen != 0 && templateIdList == NULL) {
+        LOG_ERROR("templateIdList should be not null, when templateIdListLen is not zero");
         return RESULT_BAD_PARAM;
     }
     ResultCode ret = VerifyTemplateDataPin(templateIdList, templateIdListLen);
