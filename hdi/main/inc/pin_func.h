@@ -103,6 +103,6 @@ ResultCode DoDeleteTemplate(uint64_t templateId);
 ResultCode GenerateRetTlv(uint32_t result, uint64_t scheduleId, uint64_t subType, uint64_t templatedId, Buffer *retTlv);
 ResultCode GenerateKeyPair();
 ResultCode DoGetExecutorInfo(PinExecutorInfo *pinExecutorInfo);
-ResultCode DoVerifyTemplateData(uint64_t *templateIdList, uint32_t templateIdListLen);
+ResultCode DoVerifyTemplateData(const uint64_t *templateIdList, uint32_t templateIdListLen);
 
 #endif // PINAUTHTA_FUNC_H
