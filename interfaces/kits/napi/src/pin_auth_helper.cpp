@@ -112,7 +112,7 @@ napi_value UnregisterInputer(napi_env env, napi_callback_info info)
     return result;
 }
 
-void Init(napi_env env, napi_value exports)
+napi_value Init(napi_env env, napi_value exports)
 {
     napi_status status;
     napi_property_descriptor exportFuncs[] = {
@@ -121,12 +121,12 @@ void Init(napi_env env, napi_value exports)
     status = napi_define_properties(env, exports, sizeof(exportFuncs) / sizeof(*exportFuncs), exportFuncs);
     if (status != napi_ok) {
         PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_define_properties faild");
-        return;
     }
     status = napi_set_named_property(env, exports, "PINAuth", GetCtor(env));
     if (status != napi_ok) {
         PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_set_named_property faild");
     }
+    return exports;
 }
 
 napi_value Constructor(napi_env env, napi_callback_info info)
@@ -148,10 +148,43 @@ napi_value GetCtor(napi_env env)
     return cons;
 }
 
+napi_value AuthSubTypeConstructor(napi_env env)
+{
+    napi_value authSubType = nullptr;
+    napi_value pinSix = nullptr;
+    napi_value pinNumber = nullptr;
+    napi_value pinMixed = nullptr;
+    napi_value face2d = nullptr;
+    napi_value face3d = nullptr;
+
+    NAPI_CALL(env, napi_create_object(env, &authSubType));
+    NAPI_CALL(env, napi_create_int32(env, (int32_t)AuthSubType::PIN_SIX, &pinSix));
+    NAPI_CALL(env, napi_create_int32(env, (int32_t)AuthSubType::PIN_NUMBER, &pinNumber));
+    NAPI_CALL(env, napi_create_int32(env, (int32_t)AuthSubType::PIN_MIXED, &pinMixed));
+    NAPI_CALL(env, napi_create_int32(env, (int32_t)AuthSubType::FACE_2D, &face2d));
+    NAPI_CALL(env, napi_create_int32(env, (int32_t)AuthSubType::FACE_3D, &face3d));
+    NAPI_CALL(env, napi_set_named_property(env, authSubType, "PIN_SIX", pinSix));
+    NAPI_CALL(env, napi_set_named_property(env, authSubType, "PIN_NUMBER", pinNumber));
+    NAPI_CALL(env, napi_set_named_property(env, authSubType, "PIN_MIXED", pinMixed));
+    NAPI_CALL(env, napi_set_named_property(env, authSubType, "FACE_2D", face2d));
+    NAPI_CALL(env, napi_set_named_property(env, authSubType, "FACE_3D", face3d));
+    return authSubType;
+}
+
+napi_value EnumExport(napi_env env, napi_value exports)
+{
+    napi_property_descriptor descriptors[] = {
+        DECLARE_NAPI_PROPERTY("AuthSubType", AuthSubTypeConstructor(env)),
+    };
+    napi_define_properties(env, exports, sizeof(descriptors) / sizeof(*descriptors), descriptors);
+    return exports;
+}
+
 static napi_value ModuleInit(napi_env env, napi_value exports)
 {
-    OHOS::PinAuth::Init(env, exports);
-    return exports;
+    napi_value val = Init(env, exports);
+    val = EnumExport(env, val);
+    return val;
 }
 extern "C" __attribute__((constructor)) void RegisterModule(void)
 {

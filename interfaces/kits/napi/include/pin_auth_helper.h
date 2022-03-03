@@ -18,12 +18,14 @@
 #include "napi/native_common.h"
 namespace OHOS {
 namespace PinAuth {
-void Init(napi_env env, napi_value exports);
+napi_value Init(napi_env env, napi_value exports);
 napi_value GetCtor(napi_env env);
 napi_value Constructor(napi_env env, napi_callback_info info);
 napi_value PinAuthServiceConstructor(napi_env env, napi_callback_info info);
 napi_value RegisterInputer(napi_env env, napi_callback_info info);
 napi_value UnregisterInputer(napi_env env, napi_callback_info info);
+napi_value EnumExport(napi_env env, napi_value exports);
+napi_value AuthSubTypeConstructor(napi_env env);
 } // namespace PinAuth
 } // namespace OHOS
 #endif // FACERECOGNITION_PIN_AUTH_HELPER_H
