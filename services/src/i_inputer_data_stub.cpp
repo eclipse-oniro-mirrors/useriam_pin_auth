@@ -13,11 +13,12 @@
  * limitations under the License.
  */
 
+#include "i_inputer_data_stub.h"
+
 #include "iremote_inputer.h"
 #include "iremote_stub.h"
 #include "pinauth_defines.h"
 #include "pinauth_log_wrapper.h"
-#include "i_inputer_data_stub.h"
 
 namespace OHOS {
 namespace UserIAM {
@@ -31,8 +32,8 @@ void IInputerDataStub::HandlerOnSetData(MessageParcel &data, MessageParcel &repl
     OnSetData(subType, param);
 }
 
-int32_t IInputerDataStub::OnRemoteRequest(uint32_t code, MessageParcel &data,
-                                          MessageParcel &reply, MessageOption &option)
+int32_t IInputerDataStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply,
+    MessageOption &option)
 {
     PINAUTH_HILOGD(MODULE_FRAMEWORKS, "IInputerDataStub::OnRemoteRequest enter %d", code);
     std::u16string descripter = IInputerDataStub::GetDescriptor();
@@ -49,6 +50,6 @@ int32_t IInputerDataStub::OnRemoteRequest(uint32_t code, MessageParcel &data,
             return IPCObjectStub::OnRemoteRequest(code, data, reply, option);
     }
 }
-}  // namespace PinAuth
-}  // namespace UserIAM
-}  // namespace OHOS
+} // namespace PinAuth
+} // namespace UserIAM
+} // namespace OHOS

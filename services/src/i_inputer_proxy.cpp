@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 
+#include "i_inputer_proxy.h"
 #include "iremote_inputer.h"
 #include "iremote_proxy.h"
 #include "pinauth_log_wrapper.h"
-#include "i_inputer_proxy.h"
 
 namespace OHOS {
 namespace UserIAM {
@@ -66,6 +66,6 @@ bool IInputerProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParce
     }
     return true;
 }
-}  // namespace PinAuth
-}  // namespace UserIAM
-}  // namespace OHOS
+} // namespace PinAuth
+} // namespace UserIAM
+} // namespace OHOS

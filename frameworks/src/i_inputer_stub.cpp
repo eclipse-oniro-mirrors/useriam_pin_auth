@@ -13,22 +13,21 @@
  * limitations under the License.
  */
 
+#include "i_inputer_stub.h"
+
+#include "inputer_data_impl.h"
 #include "iremote_inputer.h"
 #include "iremote_stub.h"
-#include "inputer_data_impl.h"
 #include "pinauth_defines.h"
 #include "pinauth_log_wrapper.h"
-#include "i_inputer_stub.h"
 
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
-IInputerStub::IInputerStub(std::shared_ptr<IInputer> inputer)
+IInputerStub::IInputerStub(std::shared_ptr<IInputer> inputer) : inputer_(inputer)
 {
-    inputer_ = inputer;
 }
-IInputerStub::~IInputerStub() {
-}
+IInputerStub::~IInputerStub() = default;
 
 void IInputerStub::HandlerOnGetData(MessageParcel &data, MessageParcel &reply)
 {
@@ -66,7 +65,7 @@ int32_t IInputerStub::OnRemoteRequest(uint32_t code, MessageParcel &data, Messag
     std::u16string descripter = IInputerStub::GetDescriptor();
     std::u16string remoteDescripter = data.ReadInterfaceToken();
     PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::OnRemoteRequest descripter:%s, remoteDescripter:%s",
-        (char*)(descripter.c_str()), (char*)(remoteDescripter.c_str()));
+        (char *)(descripter.c_str()), (char *)(remoteDescripter.c_str()));
     if (descripter != remoteDescripter) {
         PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::OnRemoteRequest descripter != remoteDescripter");
         return FAIL;
@@ -82,6 +81,6 @@ int32_t IInputerStub::OnRemoteRequest(uint32_t code, MessageParcel &data, Messag
     }
     return SUCCESS;
 }
-}  // namespace PinAuth
-}  // namespace UserIAM
-}  // namespace OHOS
+} // namespace PinAuth
+} // namespace UserIAM
+} // namespace OHOS

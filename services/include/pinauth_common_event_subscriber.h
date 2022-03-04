@@ -16,6 +16,8 @@
 #ifndef PINAUTH_COMMON_EVENT_SUBSCRIBER_H
 #define PINAUTH_COMMON_EVENT_SUBSCRIBER_H
 
+#include "nocopyable.h"
+
 #include "pinauth_service.h"
 #include "common_event_subscriber.h"
 
@@ -28,9 +30,10 @@ using CommonEventSubscribeInfo = OHOS::EventFwk::CommonEventSubscribeInfo;
 
 class PinAuthCommonEventSubscriber : public CommonEventSubscriber {
 public:
+    DISALLOW_COPY_AND_MOVE(PinAuthCommonEventSubscriber);
     explicit PinAuthCommonEventSubscriber(
         const CommonEventSubscribeInfo &subscribeInfo, PinAuthService* callback);
-    ~PinAuthCommonEventSubscriber() = default;
+    ~PinAuthCommonEventSubscriber() override = default;
 
     void OnReceiveEvent(const CommonEventData &data) override;
 

@@ -16,8 +16,8 @@
 #ifndef PINAUTH_DEFINES_H
 #define PINAUTH_DEFINES_H
 
+#include <cstdint>
 #include <vector>
-#include <stdint.h>
 
 namespace OHOS {
 namespace UserIAM {
@@ -52,10 +52,7 @@ enum AUTH_SCHEDULE_COMMAND {
     COMMAND_CANCEL_AUTH = 3,
 };
 
-enum AUTH_PROPERTY_COMMAND {
-    COMMAND_DELETE_PIN = 0,
-    COMMAND_CHECK_PIN = 1,
-};
+enum AUTH_PROPERTY_COMMAND { COMMAND_DELETE_PIN = 0, COMMAND_CHECK_PIN = 1, COMMAND_INVALID = 0xFF };
 
 enum ResultCode {
 /**

@@ -16,12 +16,14 @@
 #ifndef PINAUTH_IINPUTERDATA_IMPL_H
 #define PINAUTH_IINPUTERDATA_IMPL_H
 
+#include <cstdint>
 #include <memory>
-#include <vector>
-#include <stdint.h>
 #include <mutex>
+#include <vector>
+
 #include "i_inputer_data.h"
 #include "iremote_inputer_data.h"
+#include "nocopyable.h"
 #include "refbase.h"
 
 namespace OHOS {
@@ -34,6 +36,7 @@ const int32_t SCRYPT_P = 1;
 
 class InputerDataImpl : public IInputerData {
 public:
+    DISALLOW_COPY_AND_MOVE(InputerDataImpl);
     explicit InputerDataImpl(std::vector<uint8_t> salt, sptr<IRemoteInputerData> remoteInputerData);
     ~InputerDataImpl() override;
     void OnSetData(int32_t authSubType, std::vector<uint8_t> data) override;

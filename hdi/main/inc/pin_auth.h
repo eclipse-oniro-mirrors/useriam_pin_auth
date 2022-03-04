@@ -16,8 +16,10 @@
 #ifndef PIN_AUTH_H
 #define PIN_AUTH_H
 
+#include <cstdint>
 #include <vector>
-#include <stdint.h>
+
+#include "nocopyable.h"
 
 namespace OHOS {
 namespace UserIAM {
@@ -30,6 +32,7 @@ struct PinCredentialInfo {
 
 class PinAuth {
 public:
+    DISALLOW_COPY_AND_MOVE(PinAuth);
     explicit PinAuth();
     ~PinAuth() = default;
     int32_t Init();
