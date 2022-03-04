@@ -16,9 +16,6 @@
 #ifndef PINAUTH_DEFINES_H
 #define PINAUTH_DEFINES_H
 
-#include <cstdint>
-#include <vector>
-
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
