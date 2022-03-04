@@ -80,7 +80,7 @@ HWTEST_F(UseriamUtTest, UseriamUtTest_002, TestSize.Level1)
 {
     PINAUTH_HILOGE(MODULE_COMMON, "**********UseriamUtTest***002***in**********");
     std::shared_ptr<IInputer> inputer = std::make_shared<InputerUT>();
-    EXPECT_EQ(!0, PinAuthRegister::GetInstance().RegisterInputer(inputer));
+    EXPECT_EQ(0, PinAuthRegister::GetInstance().RegisterInputer(inputer));
     PINAUTH_HILOGE(MODULE_COMMON, "**********UseriamUtTest***002***out**********");
 }
 
