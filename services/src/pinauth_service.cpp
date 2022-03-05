@@ -31,7 +31,7 @@ const bool REGISTER_RESULT =
     SystemAbility::MakeAndRegisterAbility(DelayedSingleton<PinAuthService>::GetInstance().get());
 static const std::string ACCESS_PIN_AUTH = "ohos.permission.ACCESS_PIN_AUTH";
 static const char IAM_EVENT_KEY[] = "bootevent.useriam.fwkready";
-static PinAuthService* pinAuthService = nullptr;
+static PinAuthService *pinAuthService = nullptr;
 
 PinAuthService::PinAuthService()
     : SystemAbility(SUBSYS_USERIAM_SYS_ABILITY_PINAUTH, true),
@@ -48,7 +48,11 @@ PinAuthService::~PinAuthService()
 static void UserIamBootEventCallback(const char *key, const char *value, void *context)
 {
     PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthService::UserIam is ready");
-    if (strncmp(key, IAM_EVENT_KEY, sizeof(IAM_EVENT_KEY)) || strncmp(value, "true", sizeof("true"))) {
+    if (key == nullptr || value == nullptr) {
+        PINAUTH_HILOGE(MODULE_SERVICE, "param is null");
+        return;
+    }
+    if (strcmp(key, IAM_EVENT_KEY) || strcmp(value, "true")) {
         PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthService::event is mismatch");
         return;
     }
