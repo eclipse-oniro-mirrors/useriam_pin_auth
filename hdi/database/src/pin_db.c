@@ -71,7 +71,7 @@ static ResultCode UnpackPinDb(uint8_t *data, uint32_t dataLen)
         LOG_ERROR("pinIndex malloc fail.");
         goto ERROR;
     }
-    if (mallocSize < tempLen) {
+    if (mallocSize != tempLen) {
         LOG_ERROR("pinIndexLen too large.");
         goto ERROR;
     }
@@ -452,6 +452,7 @@ static ResultCode WritePinDb()
     LOG_INFO("WritePinDb succ.");
 
 ERROR:
+    (void)memset_s(data, dataLen, 0, dataLen);
     Free(data);
     return ret;
 }
@@ -460,6 +461,8 @@ static ResultCode DelPinInDb(uint32_t index)
 {
     uint32_t pinIndexLen = g_pinDbOp.pinIndexLen - 1;
     if (pinIndexLen == 0) {
+        (void)memset_s(g_pinDbOp.pinIndex,
+            g_pinDbOp.pinIndexLen * sizeof(PinIndex), 0, g_pinDbOp.pinIndexLen * sizeof(PinIndex));
         Free(g_pinDbOp.pinIndex);
         g_pinDbOp.pinIndex = NULL;
     } else {
@@ -476,6 +479,8 @@ static ResultCode DelPinInDb(uint32_t index)
                 j++;
             }
         }
+        (void)memset_s(g_pinDbOp.pinIndex,
+            g_pinDbOp.pinIndexLen * sizeof(PinIndex), 0, g_pinDbOp.pinIndexLen * sizeof(PinIndex));
         Free(g_pinDbOp.pinIndex);
         g_pinDbOp.pinIndex = pinIndex;
     }
@@ -540,6 +545,7 @@ static ResultCode AddPinInDb(uint64_t templateId, uint64_t subType)
         if (memcpy_s(pinIndex, size,
             g_pinDbOp.pinIndex, g_pinDbOp.pinIndexLen * sizeof(PinIndex)) != EOK) {
             LOG_ERROR("PinIndex copy fail.");
+            (void)memset_s(pinIndex, size, 0, size);
             Free(pinIndex);
             return RESULT_NO_MEMORY;
         }
