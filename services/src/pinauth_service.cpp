@@ -12,15 +12,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+#include "pinauth_service.h"
+
+#include "accesstoken_kit.h"
+#include "coauth_info_define.h"
 #include "common_event_manager.h"
 #include "pinauth_common_event_subscriber.h"
-#include "pinauth_log_wrapper.h"
-#include "pinauth_defines.h"
 #include "pinauth_controller.h"
+#include "pinauth_defines.h"
+#include "pinauth_log_wrapper.h"
 #include "pinauth_manager.h"
-#include "coauth_info_define.h"
-#include "accesstoken_kit.h"
-#include "pinauth_service.h"
 
 namespace OHOS {
 namespace UserIAM {
@@ -155,7 +157,7 @@ void PinAuthService::ActuatorInfoQuery()
     AuthResPool::AuthExecutorRegistry::GetInstance().QueryStatus(*executor_, mngIQ_);
 }
 
-void PinAuthService::ReconciliationCallback::OnGetInfo(std::vector<UserIDM::CredentialInfo>& info)
+void PinAuthService::ReconciliationCallback::OnGetInfo(std::vector<UserIDM::CredentialInfo> &info)
 {
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::DoVerifyTemplateData enter");
     std::vector<uint64_t> templateIdList;
@@ -175,10 +177,8 @@ void PinAuthService::OnResult(uint32_t resultCode)
         return;
     }
     using namespace UserIDM;
-    std::shared_ptr<GetInfoCallback> reconciliationCallback =
-        std::make_shared<ReconciliationCallback>();
-    UserIDM::UserIDMClient::GetInstance().GetAuthInfo(UserIDMClient::ALL_INFO_GET_USER_ID, UserIDM::PIN,
-        reconciliationCallback);
+    auto reconciliationCallback = std::make_shared<ReconciliationCallback>();
+    UserIDMClient::GetInstance().GetAuthInfo(UserIDMClient::ALL_INFO_GET_USER_ID, UserIDM::PIN, reconciliationCallback);
     // To do register
     executorID_ = AuthResPool::AuthExecutorRegistry::GetInstance().Register(executor_, mngEx_);
     if (executorID_ == INVALID_EXECUTOR_ID) {
@@ -187,7 +187,7 @@ void PinAuthService::OnResult(uint32_t resultCode)
 }
 
 int32_t PinAuthService::OnBeginExecute(uint64_t scheduleId, std::vector<uint8_t> &publicKey,
-                                       std::shared_ptr<AuthAttributes> commandAttrs)
+    std::shared_ptr<AuthAttributes> commandAttrs)
 {
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnBeginExecute enter");
 
@@ -229,13 +229,13 @@ int32_t PinAuthService::OnSetProperty(std::shared_ptr<AuthAttributes> properties
         return FAIL;
     }
     /* get command 0:pin delete 1:Query credential information */
-    uint32_t command;
+    uint32_t command = COMMAND_INVALID;
     if (properties->GetUint32Value(AUTH_PROPERTY_MODE, command) != SUCCESS) {
         PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnSetProperty GetUint32Value");
         return FAIL;
     }
 
-    uint64_t callerUid;
+    uint64_t callerUid = 0;
     if (properties->GetUint64Value(AUTH_CALLER_UID, callerUid) != SUCCESS) {
         PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthService::OnSetProperty AUTH_CALLER_UID");
         return FAIL;
@@ -262,14 +262,14 @@ int32_t PinAuthService::OnSetProperty(std::shared_ptr<AuthAttributes> properties
         }
     } else {
         PINAUTH_HILOGI(MODULE_SERVICE,
-                       "PinAuthService::OnSetProperty !(command == COMMAND_DELETE_PIN && IsUserIDM(callerUid))");
+            "PinAuthService::OnSetProperty !(command == COMMAND_DELETE_PIN && IsUserIDM(callerUid))");
         return FAIL;
     }
     return SUCCESS;
 }
 
 int32_t PinAuthService::OnGetProperty(std::shared_ptr<AuthResPool::AuthAttributes> conditions,
-                                      std::shared_ptr<AuthResPool::AuthAttributes> values)
+    std::shared_ptr<AuthResPool::AuthAttributes> values)
 {
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnGetProperty enter");
     if (values == nullptr) {
@@ -278,23 +278,22 @@ int32_t PinAuthService::OnGetProperty(std::shared_ptr<AuthResPool::AuthAttribute
     }
 
     /* set command 0:pin delete 1:Query credential information */
-    uint32_t command;
+    uint32_t command = COMMAND_INVALID;
     if (conditions->GetUint32Value(AUTH_PROPERTY_MODE, command) != SUCCESS) {
         PINAUTH_HILOGI(MODULE_SERVICE, "___PinAuthService::OnGetProperty GetUint32Value___");
         return FAIL;
     }
-    PINAUTH_HILOGD(MODULE_SERVICE,
-                   "___PinAuthService::OnBeginExecute AUTH_PROPERTY_MODE is %{public}u.", command);
+    PINAUTH_HILOGD(MODULE_SERVICE, "___PinAuthService::OnBeginExecute AUTH_PROPERTY_MODE is %{public}u.", command);
     if (command == COMMAND_CHECK_PIN) {
         /* get templateId */
-        uint64_t templateId;
+        uint64_t templateId = 0;
         if (conditions->GetUint64Value(AUTH_TEMPLATE_ID, templateId) != SUCCESS) {
             PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnGetProperty GetUint64Value");
             return FAIL;
         }
 
         /* Query credential information */
-        PinCredentialInfo info;
+        PinCredentialInfo info = {};
         pin_->QueryPinInfo(templateId, info);
         if (values->SetUint64Value(AUTH_SUBTYPE, info.subType) != SUCCESS) {
             PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnGetProperty SetUint64Value");

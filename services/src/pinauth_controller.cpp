@@ -13,16 +13,17 @@
  * limitations under the License.
  */
 
+#include "pinauth_controller.h"
+
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 
-#include "pinauth_log_wrapper.h"
 #include "coauth_info_define.h"
-#include "pinauth_defines.h"
-#include "iservice_registry.h"
 #include "ipc_skeleton.h"
+#include "iservice_registry.h"
 #include "parameter.h"
-#include "pinauth_controller.h"
+#include "pinauth_defines.h"
+#include "pinauth_log_wrapper.h"
 
 namespace OHOS {
 namespace UserIAM {
@@ -104,14 +105,14 @@ void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data
             PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::onSetData call finish failed");
         }
     } else {
-    PINAUTH_HILOGE(MODULE_COMMON, "PinAuthController::onSetData messenger_ is null");
+        PINAUTH_HILOGE(MODULE_COMMON, "PinAuthController::onSetData messenger_ is null");
     }
-    
+
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::OnSetData leave");
 }
 
 void PinAuthController::SaveParam(uint64_t scheduleId, std::shared_ptr<PinAuth> pin,
-                                  std::shared_ptr<AuthResPool::AuthAttributes> attributes)
+    std::shared_ptr<AuthResPool::AuthAttributes> attributes)
 {
     std::lock_guard<std::mutex> guard(mutex_);
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::SaveParam enter");

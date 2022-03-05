@@ -19,11 +19,15 @@
 #include <memory>
 #include <vector>
 
+#include "nocopyable.h"
+
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
 class IInputerData {
 public:
+    DISALLOW_COPY_AND_MOVE(IInputerData);
+    IInputerData() = default;
     virtual ~IInputerData() = default;
     virtual void OnSetData(int32_t authSubType, std::vector<uint8_t> data);
 };

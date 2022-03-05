@@ -16,6 +16,8 @@
 #ifndef IINPUTER_DATA_STUB_H
 #define IINPUTER_DATA_STUB_H
 
+#include "nocopyable.h"
+
 #include "iremote_inputer.h"
 #include "iremote_stub.h"
 
@@ -24,8 +26,9 @@ namespace UserIAM {
 namespace PinAuth {
 class IInputerDataStub : public IRemoteStub<IRemoteInputerData> {
 public:
+    DISALLOW_COPY_AND_MOVE(IInputerDataStub);
     IInputerDataStub() = default;
-    virtual ~IInputerDataStub() = default;
+    ~IInputerDataStub() override = default;
     int32_t OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option) override;
 
 private:

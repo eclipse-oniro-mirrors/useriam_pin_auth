@@ -16,6 +16,8 @@
 #ifndef IINPUTER_DATA_PROXY_H
 #define IINPUTER_DATA_PROXY_H
 
+#include "nocopyable.h"
+
 #include "iremote_inputer.h"
 #include "iremote_proxy.h"
 
@@ -24,15 +26,14 @@ namespace UserIAM {
 namespace PinAuth {
 class IInputerDataProxy : public IRemoteProxy<IRemoteInputerData> {
 public:
+    DISALLOW_COPY_AND_MOVE(IInputerDataProxy);
     explicit IInputerDataProxy(const sptr<IRemoteObject> &impl)
         : IRemoteProxy<IRemoteInputerData>(impl) {}
-    virtual ~IInputerDataProxy() override = default;
-    virtual void OnSetData(int32_t authSubType, std::vector<uint8_t> data) override;
+    ~IInputerDataProxy() override = default;
+    void OnSetData(int32_t authSubType, std::vector<uint8_t> data) override;
 
 private:
     bool SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply);
-
-private:
     static inline BrokerDelegator<IInputerDataProxy> delegator_;
 };
 }  // namespace PinAuth

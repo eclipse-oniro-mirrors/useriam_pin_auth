@@ -13,16 +13,18 @@
  * limitations under the License.
  */
 
-#include "pinauth_log_wrapper.h"
-#include "coauth_info_define.h"
 #include "pinauth_common_event_subscriber.h"
+
+#include "coauth_info_define.h"
+#include "pinauth_log_wrapper.h"
 
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
-PinAuthCommonEventSubscriber::PinAuthCommonEventSubscriber(
-    const CommonEventSubscribeInfo &subscribeInfo, PinAuthService* callback)
-    : CommonEventSubscriber(subscribeInfo), callback_(callback)
+PinAuthCommonEventSubscriber::PinAuthCommonEventSubscriber(const CommonEventSubscribeInfo &subscribeInfo,
+    PinAuthService *callback)
+    : CommonEventSubscriber(subscribeInfo),
+      callback_(callback)
 {
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthCommonEventSubscriber enter");
 }
@@ -40,4 +42,4 @@ void PinAuthCommonEventSubscriber::OnReceiveEvent(const CommonEventData &data)
 }
 } // namespace PinAuth
 } // namespace UserIAM
-}  // namespace OHOS
+} // namespace OHOS

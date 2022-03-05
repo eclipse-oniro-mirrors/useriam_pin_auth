@@ -27,7 +27,7 @@ bool PinAuthManager::RegisterInputer(uint64_t uid, sptr<IRemoteInputer> &inputer
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::RegisterInputer uid%{public}llu is called.", uid);
     if (pinAuthInputerMap_.find(uid) != pinAuthInputerMap_.end()) {
         PINAUTH_HILOGE(MODULE_SERVICE,
-                       "PinAuthManager::RegisterInputer pinAuthController is already register, do not repeat!");
+            "PinAuthManager::RegisterInputer pinAuthController is already register, do not repeat!");
         return false;
     } else {
         pinAuthInputerMap_.emplace(uid, inputer);
@@ -52,7 +52,7 @@ void PinAuthManager::UnRegisterInputer(uint64_t uid)
 }
 
 void PinAuthManager::Execute(uint64_t uid, uint64_t subType, uint64_t scheduleId, std::shared_ptr<PinAuth> pin,
-                             std::shared_ptr<AuthResPool::AuthAttributes> attributes)
+    std::shared_ptr<AuthResPool::AuthAttributes> attributes)
 {
     sptr<IRemoteInputer> inputer = getInputerLock(uid);
     if (inputer != nullptr) {
@@ -134,12 +134,11 @@ sptr<IRemoteInputer> PinAuthManager::getInputerLock(uint64_t uid)
     }
     return nullptr;
 }
-PinAuthManager::ResPinauthInputerDeathRecipient::ResPinauthInputerDeathRecipient(uint64_t uid)
-    : uid_(uid)
+PinAuthManager::ResPinauthInputerDeathRecipient::ResPinauthInputerDeathRecipient(uint64_t uid) : uid_(uid)
 {
 }
 
-void PinAuthManager::ResPinauthInputerDeathRecipient::OnRemoteDied(const wptr<IRemoteObject>& remote)
+void PinAuthManager::ResPinauthInputerDeathRecipient::OnRemoteDied(const wptr<IRemoteObject> &remote)
 {
     PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthManager::OnRemoteDied enter");
     if (remote == nullptr) {

@@ -14,6 +14,7 @@
  */
 
 #include "pinauth_stub.h"
+
 #include "pinauth_defines.h"
 #include "pinauth_log_wrapper.h"
 
