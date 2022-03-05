@@ -17,8 +17,7 @@
 
 #include "accesstoken_kit.h"
 #include "coauth_info_define.h"
-#include "common_event_manager.h"
-#include "pinauth_common_event_subscriber.h"
+#include "parameter.h"
 #include "pinauth_controller.h"
 #include "pinauth_defines.h"
 #include "pinauth_log_wrapper.h"
@@ -31,15 +30,33 @@ const uint64_t INVALID_EXECUTOR_ID = 0;
 const bool REGISTER_RESULT =
     SystemAbility::MakeAndRegisterAbility(DelayedSingleton<PinAuthService>::GetInstance().get());
 static const std::string ACCESS_PIN_AUTH = "ohos.permission.ACCESS_PIN_AUTH";
+static const char IAM_EVENT_KEY[] = "bootevent.useriam.fwkready";
+static PinAuthService* pinAuthService = nullptr;
 
 PinAuthService::PinAuthService()
     : SystemAbility(SUBSYS_USERIAM_SYS_ABILITY_PINAUTH, true),
       serviceRunningState_(ServiceRunningState::STATE_NOT_START)
 {
+    pinAuthService = this;
 }
 
 PinAuthService::~PinAuthService()
 {
+    pinAuthService = nullptr;
+}
+
+static void UserIamBootEventCallback(const char *key, const char *value, void *context)
+{
+    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthService::UserIam is ready");
+    if (strncmp(key, IAM_EVENT_KEY, sizeof(IAM_EVENT_KEY)) || strncmp(value, "true", sizeof("true"))) {
+        PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthService::event is mismatch");
+        return;
+    }
+    if (pinAuthService == nullptr) {
+        PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthService::pinAuthService is null");
+        return;
+    }
+    pinAuthService->ActuatorInfoQuery();
 }
 
 void PinAuthService::OnStart()
@@ -52,18 +69,8 @@ void PinAuthService::OnStart()
     if (!pin_->Init()) {
         PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::InitPinAuth");
     }
-    EventFwk::MatchingSkills matchingSkills;
-    matchingSkills.AddEvent(REGISTER_NOTIFICATION);
-    EventFwk::CommonEventSubscribeInfo subscriberInfo(matchingSkills);
-    std::shared_ptr<PinAuthCommonEventSubscriber> subscriberPtr =
-        std::make_shared<PinAuthCommonEventSubscriber>(subscriberInfo, this);
-    if (subscriberPtr != nullptr) {
-        bool subscribeResult = EventFwk::CommonEventManager::SubscribeCommonEvent(subscriberPtr);
-        if (!subscribeResult) {
-            PINAUTH_HILOGE(MODULE_SERVICE, "SubscribeCommonEvent failed");
-        }
-    }
     ActuatorInfoQuery();
+    WatchParameter(IAM_EVENT_KEY, UserIamBootEventCallback, nullptr);
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService: Query executor status");
     PinAuthManager::GetInstance().MapClear();
     if (!Publish(this)) {
