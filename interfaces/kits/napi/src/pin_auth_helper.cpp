@@ -30,13 +30,17 @@ struct InputConstructorInfo {
 napi_value PinAuthServiceConstructor(napi_env env, napi_callback_info info)
 {
     PINAUTH_HILOGI(MODULE_JS_NAPI, "PinAuthHelper, PinAuthServiceConstructor start");
-    std::shared_ptr<OHOS::PinAuth::PinAuthImpl> pinAuthPtr = std::make_shared<PinAuthImpl>();
+    PinAuthImpl *pinAuthPtr = new (std::nothrow) PinAuthImpl();
+    if (pinAuthPtr == nullptr) {
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "%{public}s, get nullptr", __func__);
+        return nullptr;
+    }
     napi_value thisVar = nullptr;
     size_t argc = PIN_PARAMS_ONE;
     napi_value argv[PIN_PARAMS_ONE] = {nullptr};
     NAPI_CALL(env, napi_get_cb_info(env, info, &argc, argv, &thisVar, nullptr));
     NAPI_CALL(env, napi_wrap(
-        env, thisVar, pinAuthPtr.get(),
+        env, thisVar, pinAuthPtr,
         [](napi_env env, void *data, void *hint) {
             PinAuthImpl *pinAuthImpl = static_cast<PinAuthImpl *>(data);
             if (pinAuthImpl != nullptr) {
