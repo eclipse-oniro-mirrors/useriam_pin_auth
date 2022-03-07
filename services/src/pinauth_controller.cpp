@@ -24,10 +24,9 @@
 
 #include "coauth_info_define.h"
 #include "defines.h"
-#include "pinauth_controller.h"
 #include "pinauth_defines.h"
 #include "pinauth_log_wrapper.h"
-
+#include "pinauth_controller.h"
 
 namespace OHOS {
 namespace UserIAM {
