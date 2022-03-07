@@ -18,15 +18,15 @@
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 
-#include "iservice_registry.h"
 #include "ipc_skeleton.h"
+#include "iservice_registry.h"
 #include "parameter.h"
 
 #include "coauth_info_define.h"
 #include "defines.h"
-#include "pinauth_log_wrapper.h"
 #include "pinauth_controller.h"
 #include "pinauth_defines.h"
+#include "pinauth_log_wrapper.h"
 
 
 namespace OHOS {
