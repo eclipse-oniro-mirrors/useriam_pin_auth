@@ -31,7 +31,6 @@
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
-
 std::map<int32_t, UserIAM::ResultCode> g_convertResult = {
     {RESULT_SUCCESS, UserIAM::SUCCESS},
     {RESULT_GENERAL_ERROR, UserIAM::GENERAL_ERROR},
