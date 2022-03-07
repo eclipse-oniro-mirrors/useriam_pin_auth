@@ -18,6 +18,7 @@ config("pin_auth_services_config") {
   include_dirs = [
     "//base/security/access_token/interfaces/innerkits/accesstoken/include",
     "//base/user_iam/pin_auth/hdi/main/inc",
+    "//base/user_iam/pin_auth/hdi/common/inc",
     "//base/user_iam/user_idm/interfaces/innerkits/include",
     "${pinauth_services_path}/include",
   ]
