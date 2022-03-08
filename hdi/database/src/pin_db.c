@@ -890,14 +890,14 @@ static int32_t CompareData(uint8_t *inputData, uint32_t inputDataLen, uint8_t *s
 {
     if (inputDataLen != storeDataLen) {
         LOG_ERROR("get false len.");
-        return RESULT_BAD_MATCH;
+        return RESULT_COMPARE_FAIL;
     }
     if (memcmp(inputData, storeData, inputDataLen) == 0) {
         LOG_INFO("auth pin success.");
         return RESULT_SUCCESS;
     }
     LOG_ERROR("auth pin fail.");
-    return RESULT_BAD_MATCH;
+    return RESULT_COMPARE_FAIL;
 }
 
 ResultCode AuthPinById(uint8_t *inputData, uint32_t inputDataLen, uint64_t templateId)
@@ -920,7 +920,7 @@ ResultCode AuthPinById(uint8_t *inputData, uint32_t inputDataLen, uint64_t templ
         return RESULT_GENERAL_ERROR;
     }
 
-    ResultCode compareRet = RESULT_BAD_MATCH;
+    ResultCode compareRet = RESULT_COMPARE_FAIL;
     ResultCode ret = ReadPinFile(storeData, storeDataLen, templateId, CRYPTO_SUFFIX);
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("Read pin store File fail.");

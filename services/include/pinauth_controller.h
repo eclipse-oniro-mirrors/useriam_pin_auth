@@ -49,7 +49,6 @@ public:
     void Cancel();
 
 private:
-    void PinResultToCoauthResult(int &resultCode);
     std::shared_ptr<PinAuth> pin_; // CA interface
     uint32_t command_;
     uint64_t templateId_;

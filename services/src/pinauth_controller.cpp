@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-#include <map>
-#include <string>
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 
@@ -23,7 +21,6 @@
 #include "parameter.h"
 
 #include "coauth_info_define.h"
-#include "defines.h"
 #include "pinauth_defines.h"
 #include "pinauth_log_wrapper.h"
 #include "pinauth_controller.h"
@@ -31,15 +28,6 @@
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
-std::map<int32_t, UserIAM::ResultCode> g_convertResult = {
-    {RESULT_SUCCESS, UserIAM::SUCCESS},
-    {RESULT_GENERAL_ERROR, UserIAM::GENERAL_ERROR},
-    {RESULT_BAD_PARAM, UserIAM::INVALID_PARAMETERS},
-    {RESULT_BUSY, UserIAM::BUSY},
-    {RESULT_PIN_FREEZE, UserIAM::LOCKED},
-    {RESULT_PIN_FAIL, UserIAM::FAIL},
-};
-
 PinAuthController::PinAuthController()
 {
     attributes_ = nullptr;
@@ -99,14 +87,12 @@ void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data
     std::vector<uint8_t> result;
     if (ret == SUCCESS) {
         if (command_ == COMMAND_ENROLL_PIN) {
-            PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_ENROLL_PIN");
+            PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_ENROLL_PIN");
             ret = pin_->EnrollPin(scheduleId_, static_cast<uint64_t>(authSubType), salt_, data, result);
-            PinResultToCoauthResult(ret);
             PINAUTH_HILOGI(MODULE_COMMON, "---------EnrollPin finish----------");
         } else if (command_ == COMMAND_AUTH_PIN) {
-            PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_AUTH_PIN");
+            PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_AUTH_PIN");
             ret = pin_->AuthPin(scheduleId_, templateId_, data, result);
-            PinResultToCoauthResult(ret);
             PINAUTH_HILOGI(MODULE_COMMON, "----------AuthPin finish %{public}d-----------", ret);
         }
     }
@@ -147,17 +133,6 @@ void PinAuthController::Cancel()
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::Cancel enter");
     std::lock_guard<std::mutex> guard(mutex_);
     canceled = true;
-}
-
-void PinAuthController::PinResultToCoauthResult(int &resultCode)
-{
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::PinResultTOCoauthResult enter");
-    if (g_convertResult.count(resultCode) == 0) {
-        PINAUTH_HILOGI(MODULE_INNERKIT, "PinResultTOCoauthResult g_convertResult is 0");
-        resultCode = GENERAL_ERROR;
-    } else {
-        resultCode = g_convertResult[resultCode];
-    }
 }
 
 void NewSalt(std::vector<uint8_t> &saltV)
