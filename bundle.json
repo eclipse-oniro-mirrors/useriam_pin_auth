@@ -40,7 +40,7 @@
             "//base/user_iam/pin_auth/services:pinauth_service",
             "//base/user_iam/pin_auth/sa_profile:pinauth_sa_profile.init",
             "//base/user_iam/pin_auth/interfaces/kits/napi:pinauth",
-            "//base/user_iam/pin_auth/hdi:pinauth_hdi"		  
+            "//base/user_iam/pin_auth/hdi:pinauth_hdi"
         ],
         "inner_kits": [
         ],

@@ -12,15 +12,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "common_event_manager.h"
-#include "pinauth_common_event_subscriber.h"
-#include "pinauth_log_wrapper.h"
-#include "pinauth_defines.h"
-#include "pinauth_controller.h"
-#include "pinauth_manager.h"
-#include "coauth_info_define.h"
-#include "accesstoken_kit.h"
+
 #include "pinauth_service.h"
+
+#include "accesstoken_kit.h"
+#include "coauth_info_define.h"
+#include "parameter.h"
+#include "pinauth_controller.h"
+#include "pinauth_defines.h"
+#include "pinauth_log_wrapper.h"
+#include "pinauth_manager.h"
 
 namespace OHOS {
 namespace UserIAM {
@@ -29,15 +30,37 @@ const uint64_t INVALID_EXECUTOR_ID = 0;
 const bool REGISTER_RESULT =
     SystemAbility::MakeAndRegisterAbility(DelayedSingleton<PinAuthService>::GetInstance().get());
 static const std::string ACCESS_PIN_AUTH = "ohos.permission.ACCESS_PIN_AUTH";
+static const char IAM_EVENT_KEY[] = "bootevent.useriam.fwkready";
+static PinAuthService *pinAuthService = nullptr;
 
 PinAuthService::PinAuthService()
     : SystemAbility(SUBSYS_USERIAM_SYS_ABILITY_PINAUTH, true),
       serviceRunningState_(ServiceRunningState::STATE_NOT_START)
 {
+    pinAuthService = this;
 }
 
 PinAuthService::~PinAuthService()
 {
+    pinAuthService = nullptr;
+}
+
+static void UserIamBootEventCallback(const char *key, const char *value, void *context)
+{
+    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthService::UserIam is ready");
+    if (key == nullptr || value == nullptr) {
+        PINAUTH_HILOGE(MODULE_SERVICE, "param is null");
+        return;
+    }
+    if (strcmp(key, IAM_EVENT_KEY) || strcmp(value, "true")) {
+        PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthService::event is mismatch");
+        return;
+    }
+    if (pinAuthService == nullptr) {
+        PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthService::pinAuthService is null");
+        return;
+    }
+    pinAuthService->ActuatorInfoQuery();
 }
 
 void PinAuthService::OnStart()
@@ -50,18 +73,8 @@ void PinAuthService::OnStart()
     if (!pin_->Init()) {
         PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::InitPinAuth");
     }
-    EventFwk::MatchingSkills matchingSkills;
-    matchingSkills.AddEvent(REGISTER_NOTIFICATION);
-    EventFwk::CommonEventSubscribeInfo subscriberInfo(matchingSkills);
-    std::shared_ptr<PinAuthCommonEventSubscriber> subscriberPtr =
-        std::make_shared<PinAuthCommonEventSubscriber>(subscriberInfo, this);
-    if (subscriberPtr != nullptr) {
-        bool subscribeResult = EventFwk::CommonEventManager::SubscribeCommonEvent(subscriberPtr);
-        if (!subscribeResult) {
-            PINAUTH_HILOGE(MODULE_SERVICE, "SubscribeCommonEvent failed");
-        }
-    }
     ActuatorInfoQuery();
+    WatchParameter(IAM_EVENT_KEY, UserIamBootEventCallback, nullptr);
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService: Query executor status");
     PinAuthManager::GetInstance().MapClear();
     if (!Publish(this)) {
@@ -155,7 +168,7 @@ void PinAuthService::ActuatorInfoQuery()
     AuthResPool::AuthExecutorRegistry::GetInstance().QueryStatus(*executor_, mngIQ_);
 }
 
-void PinAuthService::ReconciliationCallback::OnGetInfo(std::vector<UserIDM::CredentialInfo>& info)
+void PinAuthService::ReconciliationCallback::OnGetInfo(std::vector<UserIDM::CredentialInfo> &info)
 {
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::DoVerifyTemplateData enter");
     std::vector<uint64_t> templateIdList;
@@ -175,10 +188,8 @@ void PinAuthService::OnResult(uint32_t resultCode)
         return;
     }
     using namespace UserIDM;
-    std::shared_ptr<GetInfoCallback> reconciliationCallback =
-        std::make_shared<ReconciliationCallback>();
-    UserIDM::UserIDMClient::GetInstance().GetAuthInfo(UserIDMClient::ALL_INFO_GET_USER_ID, UserIDM::PIN,
-        reconciliationCallback);
+    auto reconciliationCallback = std::make_shared<ReconciliationCallback>();
+    UserIDMClient::GetInstance().GetAuthInfo(UserIDMClient::ALL_INFO_GET_USER_ID, UserIDM::PIN, reconciliationCallback);
     // To do register
     executorID_ = AuthResPool::AuthExecutorRegistry::GetInstance().Register(executor_, mngEx_);
     if (executorID_ == INVALID_EXECUTOR_ID) {
@@ -187,7 +198,7 @@ void PinAuthService::OnResult(uint32_t resultCode)
 }
 
 int32_t PinAuthService::OnBeginExecute(uint64_t scheduleId, std::vector<uint8_t> &publicKey,
-                                       std::shared_ptr<AuthAttributes> commandAttrs)
+    std::shared_ptr<AuthAttributes> commandAttrs)
 {
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnBeginExecute enter");
 
@@ -229,13 +240,13 @@ int32_t PinAuthService::OnSetProperty(std::shared_ptr<AuthAttributes> properties
         return FAIL;
     }
     /* get command 0:pin delete 1:Query credential information */
-    uint32_t command;
+    uint32_t command = COMMAND_INVALID;
     if (properties->GetUint32Value(AUTH_PROPERTY_MODE, command) != SUCCESS) {
         PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnSetProperty GetUint32Value");
         return FAIL;
     }
 
-    uint64_t callerUid;
+    uint64_t callerUid = 0;
     if (properties->GetUint64Value(AUTH_CALLER_UID, callerUid) != SUCCESS) {
         PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthService::OnSetProperty AUTH_CALLER_UID");
         return FAIL;
@@ -262,14 +273,14 @@ int32_t PinAuthService::OnSetProperty(std::shared_ptr<AuthAttributes> properties
         }
     } else {
         PINAUTH_HILOGI(MODULE_SERVICE,
-                       "PinAuthService::OnSetProperty !(command == COMMAND_DELETE_PIN && IsUserIDM(callerUid))");
+            "PinAuthService::OnSetProperty !(command == COMMAND_DELETE_PIN && IsUserIDM(callerUid))");
         return FAIL;
     }
     return SUCCESS;
 }
 
 int32_t PinAuthService::OnGetProperty(std::shared_ptr<AuthResPool::AuthAttributes> conditions,
-                                      std::shared_ptr<AuthResPool::AuthAttributes> values)
+    std::shared_ptr<AuthResPool::AuthAttributes> values)
 {
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnGetProperty enter");
     if (values == nullptr) {
@@ -278,23 +289,22 @@ int32_t PinAuthService::OnGetProperty(std::shared_ptr<AuthResPool::AuthAttribute
     }
 
     /* set command 0:pin delete 1:Query credential information */
-    uint32_t command;
+    uint32_t command = COMMAND_INVALID;
     if (conditions->GetUint32Value(AUTH_PROPERTY_MODE, command) != SUCCESS) {
         PINAUTH_HILOGI(MODULE_SERVICE, "___PinAuthService::OnGetProperty GetUint32Value___");
         return FAIL;
     }
-    PINAUTH_HILOGD(MODULE_SERVICE,
-                   "___PinAuthService::OnBeginExecute AUTH_PROPERTY_MODE is %{public}u.", command);
+    PINAUTH_HILOGD(MODULE_SERVICE, "___PinAuthService::OnBeginExecute AUTH_PROPERTY_MODE is %{public}u.", command);
     if (command == COMMAND_CHECK_PIN) {
         /* get templateId */
-        uint64_t templateId;
+        uint64_t templateId = 0;
         if (conditions->GetUint64Value(AUTH_TEMPLATE_ID, templateId) != SUCCESS) {
             PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnGetProperty GetUint64Value");
             return FAIL;
         }
 
         /* Query credential information */
-        PinCredentialInfo info;
+        PinCredentialInfo info = {};
         pin_->QueryPinInfo(templateId, info);
         if (values->SetUint64Value(AUTH_SUBTYPE, info.subType) != SUCCESS) {
             PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnGetProperty SetUint64Value");

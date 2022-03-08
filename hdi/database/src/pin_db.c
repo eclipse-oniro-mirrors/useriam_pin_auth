@@ -71,7 +71,7 @@ static ResultCode UnpackPinDb(uint8_t *data, uint32_t dataLen)
         LOG_ERROR("pinIndex malloc fail.");
         goto ERROR;
     }
-    if (mallocSize < tempLen) {
+    if (mallocSize != tempLen) {
         LOG_ERROR("pinIndexLen too large.");
         goto ERROR;
     }
@@ -452,6 +452,7 @@ static ResultCode WritePinDb()
     LOG_INFO("WritePinDb succ.");
 
 ERROR:
+    (void)memset_s(data, dataLen, 0, dataLen);
     Free(data);
     return ret;
 }
@@ -460,6 +461,8 @@ static ResultCode DelPinInDb(uint32_t index)
 {
     uint32_t pinIndexLen = g_pinDbOp.pinIndexLen - 1;
     if (pinIndexLen == 0) {
+        (void)memset_s(g_pinDbOp.pinIndex,
+            g_pinDbOp.pinIndexLen * sizeof(PinIndex), 0, g_pinDbOp.pinIndexLen * sizeof(PinIndex));
         Free(g_pinDbOp.pinIndex);
         g_pinDbOp.pinIndex = NULL;
     } else {
@@ -476,6 +479,8 @@ static ResultCode DelPinInDb(uint32_t index)
                 j++;
             }
         }
+        (void)memset_s(g_pinDbOp.pinIndex,
+            g_pinDbOp.pinIndexLen * sizeof(PinIndex), 0, g_pinDbOp.pinIndexLen * sizeof(PinIndex));
         Free(g_pinDbOp.pinIndex);
         g_pinDbOp.pinIndex = pinIndex;
     }
@@ -540,6 +545,7 @@ static ResultCode AddPinInDb(uint64_t templateId, uint64_t subType)
         if (memcpy_s(pinIndex, size,
             g_pinDbOp.pinIndex, g_pinDbOp.pinIndexLen * sizeof(PinIndex)) != EOK) {
             LOG_ERROR("PinIndex copy fail.");
+            (void)memset_s(pinIndex, size, 0, size);
             Free(pinIndex);
             return RESULT_NO_MEMORY;
         }
@@ -884,14 +890,14 @@ static int32_t CompareData(uint8_t *inputData, uint32_t inputDataLen, uint8_t *s
 {
     if (inputDataLen != storeDataLen) {
         LOG_ERROR("get false len.");
-        return RESULT_BAD_MATCH;
+        return RESULT_COMPARE_FAIL;
     }
     if (memcmp(inputData, storeData, inputDataLen) == 0) {
         LOG_INFO("auth pin success.");
         return RESULT_SUCCESS;
     }
     LOG_ERROR("auth pin fail.");
-    return RESULT_BAD_MATCH;
+    return RESULT_COMPARE_FAIL;
 }
 
 ResultCode AuthPinById(uint8_t *inputData, uint32_t inputDataLen, uint64_t templateId)
@@ -914,7 +920,7 @@ ResultCode AuthPinById(uint8_t *inputData, uint32_t inputDataLen, uint64_t templ
         return RESULT_GENERAL_ERROR;
     }
 
-    ResultCode compareRet = RESULT_BAD_MATCH;
+    ResultCode compareRet = RESULT_COMPARE_FAIL;
     ResultCode ret = ReadPinFile(storeData, storeDataLen, templateId, CRYPTO_SUFFIX);
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("Read pin store File fail.");
@@ -942,7 +948,7 @@ EXIT:
     return ret;
 }
 
-static bool FindTemplateIdFromList(uint64_t storeTemplateId, uint64_t *templateIdList, uint32_t templateIdListLen)
+static bool FindTemplateIdFromList(uint64_t storeTemplateId, const uint64_t *templateIdList, uint32_t templateIdListLen)
 {
     for (uint32_t i = 0; i < templateIdListLen; ++i) {
         if (templateIdList[i] == storeTemplateId) {
@@ -953,10 +959,10 @@ static bool FindTemplateIdFromList(uint64_t storeTemplateId, uint64_t *templateI
     return false;
 }
 
-ResultCode VerifyTemplateDataPin(uint64_t *templateIdList, uint32_t templateIdListLen)
+ResultCode VerifyTemplateDataPin(const uint64_t *templateIdList, uint32_t templateIdListLen)
 {
-    if (templateIdList == NULL || templateIdListLen == 0) {
-        LOG_ERROR("param is invalid.");
+    if (templateIdListLen != 0 && templateIdList == NULL) {
+        LOG_ERROR("templateIdList should be not null, when templateIdListLen is not zero");
         return RESULT_BAD_PARAM;
     }
     uint32_t i = 0;

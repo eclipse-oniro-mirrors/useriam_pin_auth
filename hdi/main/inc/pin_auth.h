@@ -16,8 +16,10 @@
 #ifndef PIN_AUTH_H
 #define PIN_AUTH_H
 
+#include <cstdint>
 #include <vector>
-#include <stdint.h>
+
+#include "nocopyable.h"
 
 namespace OHOS {
 namespace UserIAM {
@@ -30,6 +32,7 @@ struct PinCredentialInfo {
 
 class PinAuth {
 public:
+    DISALLOW_COPY_AND_MOVE(PinAuth);
     explicit PinAuth();
     ~PinAuth() = default;
     int32_t Init();
@@ -43,6 +46,9 @@ public:
     int32_t DeleteTemplate(uint64_t templateId);
     int32_t GetExecutorInfo(std::vector<uint8_t> &pubKey, uint32_t &esl, uint64_t &authAbility);
     int32_t VerifyTemplateData(std::vector<uint64_t> templateIdList);
+
+private:
+    int32_t PinResultToCoAuthResult(int resultCode);
 };
 } // namespace PinAuth
 } // namespace UserIAM

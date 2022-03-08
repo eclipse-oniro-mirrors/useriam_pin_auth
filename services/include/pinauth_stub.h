@@ -15,6 +15,7 @@
 
 #ifndef PIN_AUTH_STUB_H
 #define PIN_AUTH_STUB_H
+#include "nocopyable.h"
 
 #include "iremote_pinauth.h"
 #include "iremote_stub.h"
@@ -24,9 +25,10 @@ namespace UserIAM {
 namespace PinAuth {
 class PinAuthStub : public IRemoteStub<IRemotePinAuth> {
 public:
+    DISALLOW_COPY_AND_MOVE(PinAuthStub);
     PinAuthStub();
-    virtual ~PinAuthStub();
-    virtual int32_t OnRemoteRequest(
+    ~PinAuthStub() override;
+    int32_t OnRemoteRequest(
         uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option) override;
 
 private:

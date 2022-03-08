@@ -16,12 +16,13 @@
 #include <openssl/evp.h>
 #include <openssl/rand.h>
 
-#include "pinauth_log_wrapper.h"
+#include "ipc_skeleton.h"
+#include "iservice_registry.h"
+#include "parameter.h"
+
 #include "coauth_info_define.h"
 #include "pinauth_defines.h"
-#include "iservice_registry.h"
-#include "ipc_skeleton.h"
-#include "parameter.h"
+#include "pinauth_log_wrapper.h"
 #include "pinauth_controller.h"
 
 namespace OHOS {
@@ -86,11 +87,11 @@ void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data
     std::vector<uint8_t> result;
     if (ret == SUCCESS) {
         if (command_ == COMMAND_ENROLL_PIN) {
-            PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_ENROLL_PIN");
+            PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_ENROLL_PIN");
             ret = pin_->EnrollPin(scheduleId_, static_cast<uint64_t>(authSubType), salt_, data, result);
             PINAUTH_HILOGI(MODULE_COMMON, "---------EnrollPin finish----------");
         } else if (command_ == COMMAND_AUTH_PIN) {
-            PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_AUTH_PIN");
+            PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_AUTH_PIN");
             ret = pin_->AuthPin(scheduleId_, templateId_, data, result);
             PINAUTH_HILOGI(MODULE_COMMON, "----------AuthPin finish %{public}d-----------", ret);
         }
@@ -104,14 +105,14 @@ void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data
             PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::onSetData call finish failed");
         }
     } else {
-    PINAUTH_HILOGE(MODULE_COMMON, "PinAuthController::onSetData messenger_ is null");
+        PINAUTH_HILOGE(MODULE_COMMON, "PinAuthController::onSetData messenger_ is null");
     }
-    
+
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::OnSetData leave");
 }
 
 void PinAuthController::SaveParam(uint64_t scheduleId, std::shared_ptr<PinAuth> pin,
-                                  std::shared_ptr<AuthResPool::AuthAttributes> attributes)
+    std::shared_ptr<AuthResPool::AuthAttributes> attributes)
 {
     std::lock_guard<std::mutex> guard(mutex_);
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::SaveParam enter");
