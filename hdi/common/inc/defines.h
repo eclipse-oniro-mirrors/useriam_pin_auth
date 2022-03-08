@@ -35,7 +35,7 @@ typedef enum ResultCode {
     RESULT_BUSY = 0xF,
     RESULT_PIN_FREEZE = 0x11,
     RESULT_PIN_FAIL = 0X12,
-    RESULT_COMPARE_FAIL = 0x13,
+    RESULT_COMPARE_FAIL = 0x13
 } ResultCode;
 
 typedef enum ResultCodeForCoAuth {
@@ -93,7 +93,7 @@ typedef enum ResultCodeForCoAuth {
      * Indicates that the user has not enrolled the authenticator.
      */
     NOT_ENROLLED = 10
-}ResultCodeForCoAuth;
+} ResultCodeForCoAuth;
 
 typedef enum AuthType {
     DEFAULT_AUTH_TYPE = 0,
