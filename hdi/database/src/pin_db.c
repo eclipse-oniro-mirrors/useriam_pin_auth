@@ -674,7 +674,7 @@ static ResultCode GetAntiBruteCountById(uint64_t templateId, uint32_t *count)
     uint32_t index = SearchPinById(templateId);
     if (index == MAX_CRYPTO_INFO_SIZE) {
         LOG_ERROR("no pin index match.");
-        return RESULT_COMPARE_FAIL;
+        return RESULT_BAD_MATCH;
     }
 
     AntiBruteInfo initAntiBrute = {INIT_AUTH_ERROR_COUNT, INIT_START_FREEZE_TIMES};
@@ -845,7 +845,7 @@ static ResultCode ClearAntiBruteParamsById(uint64_t templateId)
     uint32_t index = SearchPinById(templateId);
     if (index == MAX_CRYPTO_INFO_SIZE) {
         LOG_ERROR(" no pin match.");
-        return RESULT_COMPARE_FAIL;
+        return RESULT_BAD_MATCH;
     }
     ResultCode ret = SetAntiBruteInfoById(templateId, 0, INIT_START_FREEZE_TIMES);
     if (ret != RESULT_SUCCESS) {
@@ -910,7 +910,7 @@ ResultCode AuthPinById(uint8_t *inputData, uint32_t inputDataLen, uint64_t templ
     uint32_t index = SearchPinById(templateId);
     if (index == MAX_CRYPTO_INFO_SIZE) {
         LOG_ERROR("no pin match.");
-        return RESULT_COMPARE_FAIL;
+        return RESULT_BAD_MATCH;
     }
 
     uint32_t storeDataLen = inputDataLen;
