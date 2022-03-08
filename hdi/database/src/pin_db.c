@@ -674,7 +674,7 @@ static ResultCode GetAntiBruteCountById(uint64_t templateId, uint32_t *count)
     uint32_t index = SearchPinById(templateId);
     if (index == MAX_CRYPTO_INFO_SIZE) {
         LOG_ERROR("no pin index match.");
-        return RESULT_BAD_MATCH;
+        return RESULT_COMPARE_FAIL;
     }
 
     AntiBruteInfo initAntiBrute = {INIT_AUTH_ERROR_COUNT, INIT_START_FREEZE_TIMES};
@@ -845,7 +845,7 @@ static ResultCode ClearAntiBruteParamsById(uint64_t templateId)
     uint32_t index = SearchPinById(templateId);
     if (index == MAX_CRYPTO_INFO_SIZE) {
         LOG_ERROR(" no pin match.");
-        return RESULT_BAD_MATCH;
+        return RESULT_COMPARE_FAIL;
     }
     ResultCode ret = SetAntiBruteInfoById(templateId, 0, INIT_START_FREEZE_TIMES);
     if (ret != RESULT_SUCCESS) {
@@ -890,14 +890,14 @@ static int32_t CompareData(uint8_t *inputData, uint32_t inputDataLen, uint8_t *s
 {
     if (inputDataLen != storeDataLen) {
         LOG_ERROR("get false len.");
-        return RESULT_BAD_MATCH;
+        return RESULT_COMPARE_FAIL;
     }
     if (memcmp(inputData, storeData, inputDataLen) == 0) {
         LOG_INFO("auth pin success.");
         return RESULT_SUCCESS;
     }
     LOG_ERROR("auth pin fail.");
-    return RESULT_BAD_MATCH;
+    return RESULT_COMPARE_FAIL;
 }
 
 ResultCode AuthPinById(uint8_t *inputData, uint32_t inputDataLen, uint64_t templateId)
@@ -910,7 +910,7 @@ ResultCode AuthPinById(uint8_t *inputData, uint32_t inputDataLen, uint64_t templ
     uint32_t index = SearchPinById(templateId);
     if (index == MAX_CRYPTO_INFO_SIZE) {
         LOG_ERROR("no pin match.");
-        return RESULT_BAD_MATCH;
+        return RESULT_COMPARE_FAIL;
     }
 
     uint32_t storeDataLen = inputDataLen;
@@ -920,7 +920,7 @@ ResultCode AuthPinById(uint8_t *inputData, uint32_t inputDataLen, uint64_t templ
         return RESULT_GENERAL_ERROR;
     }
 
-    ResultCode compareRet = RESULT_BAD_MATCH;
+    ResultCode compareRet = RESULT_COMPARE_FAIL;
     ResultCode ret = ReadPinFile(storeData, storeDataLen, templateId, CRYPTO_SUFFIX);
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("Read pin store File fail.");

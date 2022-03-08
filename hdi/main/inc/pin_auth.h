@@ -46,6 +46,9 @@ public:
     int32_t DeleteTemplate(uint64_t templateId);
     int32_t GetExecutorInfo(std::vector<uint8_t> &pubKey, uint32_t &esl, uint64_t &authAbility);
     int32_t VerifyTemplateData(std::vector<uint64_t> templateIdList);
+
+private:
+    int32_t PinResultToCoauthResult(int resultCode);
 };
 } // namespace PinAuth
 } // namespace UserIAM

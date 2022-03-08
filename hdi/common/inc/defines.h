@@ -35,7 +35,65 @@ typedef enum ResultCode {
     RESULT_BUSY = 0xF,
     RESULT_PIN_FREEZE = 0x11,
     RESULT_PIN_FAIL = 0X12,
+    RESULT_COMPARE_FAIL = 0x13,
 } ResultCode;
+
+typedef enum ResultCodeForCoAuth {
+    /**
+     * Indicates that authentication is success or ability is supported.
+     */
+    SUCCESS = 0,
+
+    /**
+     * Indicates the authenticator fails to identify user.
+     */
+    FAIL = 1,
+
+    /**
+     * Indicates other errors.
+     */
+    GENERAL_ERROR = 2,
+
+    /**
+     * Indicates that authentication has been canceled.
+     */
+    CANCELED = 3,
+
+    /**
+     * Indicates that authentication has timed out.
+     */
+    TIMEOUT = 4,
+
+    /**
+     * Indicates that this authentication type is not supported.
+     */
+    TYPE_NOT_SUPPORT = 5,
+
+    /**
+     * Indicates that the authentication trust level is not supported.
+     */
+    TRUST_LEVEL_NOT_SUPPORT = 6,
+
+    /**
+     * Indicates that the authentication task is busy. Wait for a few seconds and try again.
+     */
+    BUSY = 7,
+
+    /**
+     * Indicates incorrect parameters.
+     */
+    INVALID_PARAMETERS = 8,
+
+    /**
+     * Indicates that the authenticator is locked.
+     */
+    LOCKED = 9,
+
+    /**
+     * Indicates that the user has not enrolled the authenticator.
+     */
+    NOT_ENROLLED = 10
+}ResultCodeForCoAuth;
 
 typedef enum AuthType {
     DEFAULT_AUTH_TYPE = 0,
