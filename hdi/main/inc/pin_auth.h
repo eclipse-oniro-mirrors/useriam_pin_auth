@@ -48,7 +48,7 @@ public:
     int32_t VerifyTemplateData(std::vector<uint64_t> templateIdList);
 
 private:
-    int32_t PinResultToCoauthResult(int resultCode);
+    int32_t PinResultToCoAuthResult(int resultCode);
 };
 } // namespace PinAuth
 } // namespace UserIAM
