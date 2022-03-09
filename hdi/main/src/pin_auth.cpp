@@ -344,8 +344,6 @@ int32_t PinAuth::VerifyTemplateData(std::vector<uint64_t> templateIdList)
     ResultCode result = DoVerifyTemplateData(&templateIdList[0], templateIdListLen);
     if (result != RESULT_SUCCESS) {
         LOG_ERROR("DoVerifyTemplateData fail!");
-        static_cast<void>(pthread_mutex_unlock(&g_mutex));
-        return result;
     }
     if (pthread_mutex_unlock(&g_mutex) != 0) {
         LOG_ERROR("pthread_mutex_unlock fail!");
