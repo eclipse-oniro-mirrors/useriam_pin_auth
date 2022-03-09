@@ -45,7 +45,7 @@ PinAuth::PinAuth() { }
 int32_t PinAuth::Init()
 {
     if (pthread_mutex_lock(&g_mutex) != 0) {
-        LOG_ERROR("Init() pthread_mutex_lock fail!");
+        LOG_ERROR("pthread_mutex_lock fail!");
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
     }
     LOG_INFO("check pinAuth file and init.");
@@ -56,11 +56,12 @@ int32_t PinAuth::Init()
     LOG_INFO("start InIt pinAuth.");
     InitPinDb();
     if (GenerateKeyPair() != RESULT_SUCCESS) {
-        LOG_ERROR("Init() GenerateKeyPair fail!");
+        LOG_ERROR("GenerateKeyPair fail!");
+        static_cast<void>(pthread_mutex_unlock(&g_mutex));
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
     }
     if (pthread_mutex_unlock(&g_mutex) != 0) {
-        LOG_ERROR("Init() pthread_mutex_unlock fail!");
+        LOG_ERROR("pthread_mutex_unlock fail!");
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
     }
     LOG_INFO("InIt pinAuth succ");
@@ -71,13 +72,13 @@ int32_t PinAuth::Init()
 int32_t PinAuth::Close()
 {
     if (pthread_mutex_lock(&g_mutex) != 0) {
-        LOG_ERROR("Close() pthread_mutex_lock fail!");
+        LOG_ERROR("pthread_mutex_lock fail!");
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
     }
     LOG_INFO("start Close pinAuth");
     DestroyPinDb();
     if (pthread_mutex_unlock(&g_mutex) != 0) {
-        LOG_ERROR("Close() pthread_mutex_unlock fail!");
+        LOG_ERROR("pthread_mutex_unlock fail!");
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
     }
     LOG_INFO("Close pinAuth succ");
@@ -102,7 +103,7 @@ static ResultCode InitPinEnrollParam(PinEnrollParam *pinEnrollParam, uint64_t sc
     pinEnrollParam->scheduleId= scheduleId;
     pinEnrollParam->subType = subType;
     if (memcpy_s(&(pinEnrollParam->salt[0]), CONST_SALT_LEN, &salt[0], CONST_SALT_LEN) != EOK) {
-        LOG_ERROR("mem copy salt to pinEnrollParam fail!");
+        LOG_ERROR("copy salt to pinEnrollParam fail!");
         return RESULT_GENERAL_ERROR;
     }
     if (memcpy_s(&(pinEnrollParam->pinData[0]), CONST_PIN_DATA_LEN, &pinData[0], CONST_PIN_DATA_LEN) != EOK) {
@@ -133,16 +134,19 @@ int32_t PinAuth::EnrollPin(uint64_t scheduleId, uint64_t subType, std::vector<ui
     }
     if (salt.size() != CONST_SALT_LEN || pinData.size() != CONST_PIN_DATA_LEN) {
         LOG_ERROR("get bad params!");
+        static_cast<void>(pthread_mutex_unlock(&g_mutex));
         return PinResultToCoAuthResult(RESULT_BAD_PARAM);
     }
     PinEnrollParam *pinEnrollParam = (PinEnrollParam *)Malloc(sizeof(PinEnrollParam));
     if (pinEnrollParam == NULL) {
         LOG_ERROR("generate pinEnrollParam fail!");
+        static_cast<void>(pthread_mutex_unlock(&g_mutex));
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
     }
     ResultCode result = InitPinEnrollParam(pinEnrollParam, scheduleId, subType, salt, pinData);
     if (result != RESULT_SUCCESS) {
-        LOG_ERROR("InitPinEnrollParamfail!");
+        LOG_ERROR("InitPinEnrollParam fail!");
+        static_cast<void>(pthread_mutex_unlock(&g_mutex));
         Free(pinEnrollParam);
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
     }
@@ -171,22 +175,24 @@ ERROR:
 int32_t PinAuth::GetSalt(uint64_t templateId, std::vector<uint8_t> &salt)
 {
     if (pthread_mutex_lock(&g_mutex) != 0) {
-        LOG_ERROR("GetSalt() pthread_mutex_lock fail!");
+        LOG_ERROR("pthread_mutex_lock fail!");
         return PinResultToCoAuthResult(RESULT_BAD_PARAM);
     }
     salt.resize(CONST_SALT_LEN);
     if (salt.size() != CONST_SALT_LEN) {
-        LOG_ERROR("GetSalt() salt resize fail!");
+        LOG_ERROR("salt resize fail!");
+        static_cast<void>(pthread_mutex_unlock(&g_mutex));
         return PinResultToCoAuthResult(RESULT_UNKNOWN);
     }
     uint32_t satLen = CONST_SALT_LEN;
     ResultCode result = DoGetSalt(templateId, &salt[0], &satLen);
     if (result != RESULT_SUCCESS) {
-        LOG_ERROR("GetSalt() DoGetSalt fail!");
+        LOG_ERROR("DoGetSalt fail!");
+        static_cast<void>(pthread_mutex_unlock(&g_mutex));
         return PinResultToCoAuthResult(result);
     }
     if (pthread_mutex_unlock(&g_mutex) != RESULT_SUCCESS) {
-        LOG_ERROR("GetSalt() pthread_mutex_unlock fail!");
+        LOG_ERROR("pthread_mutex_unlock fail!");
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
     }
 
@@ -202,18 +208,21 @@ int32_t PinAuth::AuthPin(uint64_t scheduleId, uint64_t templateId, std::vector<u
     }
     if (pinData.size() != CONST_PIN_DATA_LEN) {
         LOG_ERROR("bad pidData len!");
+        static_cast<void>(pthread_mutex_unlock(&g_mutex));
         return PinResultToCoAuthResult(RESULT_BAD_PARAM);
     }
 
     PinAuthParam *pinAuthParam = (PinAuthParam *)Malloc(sizeof(PinAuthParam));
     if (pinAuthParam == NULL) {
         LOG_ERROR("malloc pinAuthParam fail!");
+        static_cast<void>(pthread_mutex_unlock(&g_mutex));
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
     }
     pinAuthParam->scheduleId = scheduleId;
     pinAuthParam->templateId = templateId;
     if (memcpy_s(&(pinAuthParam->pinData[0]), CONST_PIN_DATA_LEN, &pinData[0], pinData.size()) != EOK) {
-        LOG_ERROR("Pin mem copy pinData to pinAuthParam fail!");
+        LOG_ERROR("mem copy pinData to pinAuthParam fail!");
+        static_cast<void>(pthread_mutex_unlock(&g_mutex));
         Free(pinAuthParam);
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
     }
@@ -248,6 +257,7 @@ int32_t PinAuth::QueryPinInfo(uint64_t templateId, PinCredentialInfo &pinCredent
     PinCredentialInfos *pinCredentialInfosRet = (PinCredentialInfos *)Malloc(sizeof(PinCredentialInfos));
     if (pinCredentialInfosRet == NULL) {
         LOG_ERROR("malloc pinCredentialInfosRet fail!");
+        static_cast<void>(pthread_mutex_unlock(&g_mutex));
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
     }
     ResultCode result = DoQueryPinInfo(templateId, pinCredentialInfosRet);
@@ -278,6 +288,7 @@ int32_t PinAuth::DeleteTemplate(uint64_t templateId)
     ResultCode result = DoDeleteTemplate(templateId);
     if (result != RESULT_SUCCESS) {
         LOG_ERROR("DoDeleteTemplate fail!");
+        static_cast<void>(pthread_mutex_unlock(&g_mutex));
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
     }
     if (pthread_mutex_unlock(&g_mutex) != 0) {
@@ -297,6 +308,7 @@ int32_t PinAuth::GetExecutorInfo(std::vector<uint8_t> &pubKey, uint32_t &esl, ui
     PinExecutorInfo *pinExecutorInfo = (PinExecutorInfo *)Malloc(sizeof(PinExecutorInfo));
     if (pinExecutorInfo == NULL) {
         LOG_ERROR("malloc pinExecutorInfo fail!");
+        static_cast<void>(pthread_mutex_unlock(&g_mutex));
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
     }
     ResultCode result = DoGetExecutorInfo(pinExecutorInfo);
