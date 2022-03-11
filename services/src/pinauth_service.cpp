@@ -267,8 +267,8 @@ int32_t PinAuthService::OnSetProperty(std::shared_ptr<AuthAttributes> properties
             PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnSetProperty SetUint32Value");
             return FAIL;
         }
-        if (!res) {
-            PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnSetProperty DeleteTemplate");
+        if (res != SUCCESS) {
+            PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnSetProperty DeleteTemplate fail %{public}d", res);
             return FAIL;
         }
     } else {
