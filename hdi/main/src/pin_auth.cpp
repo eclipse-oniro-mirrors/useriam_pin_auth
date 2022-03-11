@@ -165,7 +165,7 @@ int32_t PinAuth::EnrollPin(uint64_t scheduleId, uint64_t subType, std::vector<ui
 ERROR:
     if (pthread_mutex_unlock(&g_mutex) != 0) {
         LOG_ERROR("pthread_mutex_unlock fail!");
-        return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
+        result = RESULT_GENERAL_ERROR;
     }
     DestoryBuffer(retTlv);
     Free(pinEnrollParam);
@@ -241,7 +241,7 @@ int32_t PinAuth::AuthPin(uint64_t scheduleId, uint64_t templateId, std::vector<u
 ERROR:
     if (pthread_mutex_unlock(&g_mutex) != 0) {
         LOG_ERROR("pthread_mutex_unlock fail!");
-        return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
+        result = RESULT_GENERAL_ERROR;
     }
     DestoryBuffer(retTlv);
     Free(pinAuthParam);
