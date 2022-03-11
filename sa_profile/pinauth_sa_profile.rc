@@ -10,8 +10,8 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-service pinauth_service /system/bin/sa_main /system/profile/pinauth_service.xml
+service pinauth /system/bin/sa_main /system/profile/pinauth.xml
     class z_core
     user system
     group system shell
-    seclabel u:r:pinauth_service:s0
+    seclabel u:r:pinauth:s0
