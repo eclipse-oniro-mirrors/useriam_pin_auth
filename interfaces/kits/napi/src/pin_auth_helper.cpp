@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -124,11 +124,11 @@ napi_value Init(napi_env env, napi_value exports)
     };
     status = napi_define_properties(env, exports, sizeof(exportFuncs) / sizeof(*exportFuncs), exportFuncs);
     if (status != napi_ok) {
-        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_define_properties faild");
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_define_properties failed");
     }
     status = napi_set_named_property(env, exports, "PINAuth", GetCtor(env));
     if (status != napi_ok) {
-        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_set_named_property faild");
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_set_named_property failed");
     }
     return exports;
 }

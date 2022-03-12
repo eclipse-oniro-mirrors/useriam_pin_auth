@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -138,7 +138,7 @@ int32_t PinAuth::EnrollPin(uint64_t scheduleId, uint64_t subType, std::vector<ui
         return PinResultToCoAuthResult(RESULT_BAD_PARAM);
     }
     PinEnrollParam *pinEnrollParam = (PinEnrollParam *)Malloc(sizeof(PinEnrollParam));
-    if (pinEnrollParam == NULL) {
+    if (pinEnrollParam == nullptr) {
         LOG_ERROR("generate pinEnrollParam fail!");
         static_cast<void>(pthread_mutex_unlock(&g_mutex));
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
@@ -213,7 +213,7 @@ int32_t PinAuth::AuthPin(uint64_t scheduleId, uint64_t templateId, std::vector<u
     }
 
     PinAuthParam *pinAuthParam = (PinAuthParam *)Malloc(sizeof(PinAuthParam));
-    if (pinAuthParam == NULL) {
+    if (pinAuthParam == nullptr) {
         LOG_ERROR("malloc pinAuthParam fail!");
         static_cast<void>(pthread_mutex_unlock(&g_mutex));
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
@@ -255,7 +255,7 @@ int32_t PinAuth::QueryPinInfo(uint64_t templateId, PinCredentialInfo &pinCredent
         return PinResultToCoAuthResult(RESULT_BAD_PARAM);
     }
     PinCredentialInfos *pinCredentialInfosRet = (PinCredentialInfos *)Malloc(sizeof(PinCredentialInfos));
-    if (pinCredentialInfosRet == NULL) {
+    if (pinCredentialInfosRet == nullptr) {
         LOG_ERROR("malloc pinCredentialInfosRet fail!");
         static_cast<void>(pthread_mutex_unlock(&g_mutex));
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
@@ -306,7 +306,7 @@ int32_t PinAuth::GetExecutorInfo(std::vector<uint8_t> &pubKey, uint32_t &esl, ui
         return PinResultToCoAuthResult(RESULT_BAD_PARAM);
     }
     PinExecutorInfo *pinExecutorInfo = (PinExecutorInfo *)Malloc(sizeof(PinExecutorInfo));
-    if (pinExecutorInfo == NULL) {
+    if (pinExecutorInfo == nullptr) {
         LOG_ERROR("malloc pinExecutorInfo fail!");
         static_cast<void>(pthread_mutex_unlock(&g_mutex));
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
@@ -330,6 +330,7 @@ ERROR:
         LOG_ERROR("pthread_mutex_unlock fail!");
         result = RESULT_GENERAL_ERROR;
     }
+    static_cast<void>(memset_s(&(pinExecutorInfo->pubKey[0]), CONST_PUB_KEY_LEN, 0, CONST_PUB_KEY_LEN));
     Free(pinExecutorInfo);
     return PinResultToCoAuthResult(result);
 }

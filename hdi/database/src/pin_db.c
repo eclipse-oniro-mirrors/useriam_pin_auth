@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -98,7 +98,7 @@ static ResultCode LoadPinDb()
         return RESULT_GENERAL_ERROR;
     }
 
-    // Startup initialization. The file does not exist.
+    /* Startup initialization. The file does not exist. */
     if (!fileOp->isFileExist(PIN_INDEX_NAME)) {
         g_pinDbOp.isLoaded = true;
         return RESULT_SUCCESS;
@@ -606,7 +606,7 @@ ResultCode AddPin(PinEnrollParam *pinEnrollParam, uint64_t *templateId)
         return ret;
     }
 
-    // Generate new templateId, Transferred to tid and returned
+    /* Generate new templateId, Transferred to tid and returned */
     ret = WritePinFile(pinEnrollParam->pinData, CONST_PIN_DATA_LEN, *templateId, CRYPTO_SUFFIX);
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("WriteCryptoFile fail.");

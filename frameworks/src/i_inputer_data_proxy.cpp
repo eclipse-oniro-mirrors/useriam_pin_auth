@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -24,7 +24,7 @@ namespace UserIAM {
 namespace PinAuth {
 void IInputerDataProxy::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
-    PINAUTH_HILOGD(MODULE_FRAMEWORKS, "IInputerDataProxy::OnSetData");
+    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "IInputerDataProxy::OnSetData");
     MessageParcel dataParcel;
     MessageParcel reply;
 
@@ -33,10 +33,10 @@ void IInputerDataProxy::OnSetData(int32_t authSubType, std::vector<uint8_t> data
     }
 
     if (!dataParcel.WriteInt64(authSubType)) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "fail to wirte parcellable for WriteInt64");
+        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "fail to write parcellable for WriteInt64");
     }
     if (!dataParcel.WriteUInt8Vector(data)) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "fail to wirte parcellable for WriteUInt8Vector");
+        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "fail to write parcellable for WriteUInt8Vector");
     }
 
     bool ret = SendRequest(static_cast<uint32_t>(IRemoteInputerData::ON_SET_DATA), dataParcel, reply);
@@ -48,7 +48,7 @@ void IInputerDataProxy::OnSetData(int32_t authSubType, std::vector<uint8_t> data
 
 bool IInputerDataProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply)
 {
-    PINAUTH_HILOGE(MODULE_FRAMEWORKS, "IInputerDataProxy::SendRequest");
+    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "IInputerDataProxy::SendRequest");
     sptr<IRemoteObject> remote = Remote();
     if (remote == nullptr) {
         PINAUTH_HILOGE(MODULE_FRAMEWORKS, "failed to get remote.");
