@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#include <cinttypes>
 #include "pinauth_manager.h"
+#include <cinttypes>
 #include "pinauth_log_wrapper.h"
 
 namespace OHOS {
