@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -32,10 +32,11 @@ void IInputerProxy::OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sp
     }
     if (!data.WriteInt32(authSubType)) {
         PINAUTH_HILOGE(MODULE_SERVICE, "failed to WriteInt32(authSubType).");
+        return;
     }
 
     if (!data.WriteUInt8Vector(salt)) {
-        PINAUTH_HILOGI(MODULE_SERVICE, "failed to WriteUInt8Vector(salt).");
+        PINAUTH_HILOGE(MODULE_SERVICE, "failed to WriteUInt8Vector(salt).");
         return;
     }
 
