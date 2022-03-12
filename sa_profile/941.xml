@@ -13,10 +13,10 @@
      limitations under the License.
 -->
 <info>
-    <process>pinauth_service</process>
+    <process>pinauth</process>
     <systemability>
         <name>941</name>
-        <libpath>libpinauth_service.z.so</libpath>
+        <libpath>libpinauthservice.z.so</libpath>
         <run-on-create>true</run-on-create>
         <distributed>false</distributed>
         <dump-level>1</dump-level>

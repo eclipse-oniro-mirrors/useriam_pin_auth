@@ -24,7 +24,7 @@ config("pin_auth_services_config") {
   ]
 }
 
-ohos_shared_library("pinauth_service") {
+ohos_shared_library("pinauthservice") {
   sources = [
     "${pinauth_services_path}/src/i_inputer_data_stub.cpp",
     "${pinauth_services_path}/src/i_inputer_proxy.cpp",
