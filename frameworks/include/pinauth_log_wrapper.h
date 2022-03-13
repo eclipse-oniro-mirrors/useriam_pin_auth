@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -26,7 +26,7 @@ namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
 #define FILENAME            (__builtin_strrchr(__FILE__, '/') ? __builtin_strrchr(__FILE__, '/') + 1 : __FILE__)
-#define FORMATED(fmt, ...)    "[%{public}s] %{public}s# " fmt, FILENAME, __FUNCTION__, ##__VA_ARGS__
+#define FORMATTED(fmt, ...)    "[%{public}s] %{public}s# " fmt, FILENAME, __FUNCTION__, ##__VA_ARGS__
 
 #ifdef PINAUTH_HILOGF
 #undef PINAUTH_HILOGF
@@ -74,11 +74,11 @@ static constexpr OHOS::HiviewDFX::HiLogLabel PINAUTH_LABEL[PINAUTH_MODULE_BUTT] 
     {LOG_CORE, PINAUTH_JS_NAPI, "PinAuthJSNAPI"},
 };
 
-#define PINAUTH_HILOGF(module, ...) (void)OHOS::HiviewDFX::HiLog::Fatal(PINAUTH_LABEL[module], FORMATED(__VA_ARGS__))
-#define PINAUTH_HILOGE(module, ...) (void)OHOS::HiviewDFX::HiLog::Error(PINAUTH_LABEL[module], FORMATED(__VA_ARGS__))
-#define PINAUTH_HILOGW(module, ...) (void)OHOS::HiviewDFX::HiLog::Warn(PINAUTH_LABEL[module], FORMATED(__VA_ARGS__))
-#define PINAUTH_HILOGI(module, ...) (void)OHOS::HiviewDFX::HiLog::Info(PINAUTH_LABEL[module], FORMATED(__VA_ARGS__))
-#define PINAUTH_HILOGD(module, ...) (void)OHOS::HiviewDFX::HiLog::Debug(PINAUTH_LABEL[module], FORMATED(__VA_ARGS__))
+#define PINAUTH_HILOGF(module, ...) (void)OHOS::HiviewDFX::HiLog::Fatal(PINAUTH_LABEL[module], FORMATTED(__VA_ARGS__))
+#define PINAUTH_HILOGE(module, ...) (void)OHOS::HiviewDFX::HiLog::Error(PINAUTH_LABEL[module], FORMATTED(__VA_ARGS__))
+#define PINAUTH_HILOGW(module, ...) (void)OHOS::HiviewDFX::HiLog::Warn(PINAUTH_LABEL[module], FORMATTED(__VA_ARGS__))
+#define PINAUTH_HILOGI(module, ...) (void)OHOS::HiviewDFX::HiLog::Info(PINAUTH_LABEL[module], FORMATTED(__VA_ARGS__))
+#define PINAUTH_HILOGD(module, ...) (void)OHOS::HiviewDFX::HiLog::Debug(PINAUTH_LABEL[module], FORMATTED(__VA_ARGS__))
 }  // namespace PinAuth
 }  // namespace UserIAM
 }  // namespace OHOS

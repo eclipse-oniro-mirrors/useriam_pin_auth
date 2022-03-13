@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -23,17 +23,17 @@ namespace UserIAM {
 namespace PinAuth {
 PinAuthStub::PinAuthStub()
 {
-    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthStub::PinAuthStub");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::PinAuthStub");
 }
 
 PinAuthStub::~PinAuthStub()
 {
-    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthStub::~PinAuthStub");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::~PinAuthStub");
 }
 
 int32_t PinAuthStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
-    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthStub::OnRemoteRequest");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::OnRemoteRequest");
     std::u16string descripter = PinAuthStub::GetDescriptor();
     std::u16string remoteDescripter = data.ReadInterfaceToken();
     if (descripter != remoteDescripter) {
@@ -53,7 +53,7 @@ int32_t PinAuthStub::OnRemoteRequest(uint32_t code, MessageParcel &data, Message
 
 void PinAuthStub::HandlerRegisterInputer(MessageParcel &data, MessageParcel &reply)
 {
-    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthStub::HandlerRegisterInputer");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::HandlerRegisterInputer");
     sptr<IRemoteObject> remote = data.ReadRemoteObject();
     if (remote == nullptr) {
         return;
@@ -71,7 +71,7 @@ void PinAuthStub::HandlerRegisterInputer(MessageParcel &data, MessageParcel &rep
 
 void PinAuthStub::HandlerUnRegisterInputer(MessageParcel &data, MessageParcel &reply)
 {
-    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthStub::HandlerUnRegisterInputer");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::HandlerUnRegisterInputer");
     UnRegisterInputer();
 }
 } // namespace PinAuth

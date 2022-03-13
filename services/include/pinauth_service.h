@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -131,13 +131,11 @@ private:
         std::shared_ptr<PinAuthService> service_;
     };
 
-    bool IsUserIDM(uint64_t callerUid);
-
     ServiceRunningState serviceRunningState_ = ServiceRunningState::STATE_NOT_START;
-    std::shared_ptr<AuthResPool::AuthExecutor> executor_; // executor info
+    std::shared_ptr<AuthResPool::AuthExecutor> executor_;
     std::shared_ptr<MngIQCallback> mngIQ_;
     std::shared_ptr<MngExCallback> mngEx_;
-    std::shared_ptr<PinAuth> pin_; // CA interface
+    std::shared_ptr<PinAuth> pin_;
     uint64_t executorID_;
     std::mutex mutex_;
     sptr<IExecutorMessenger> messenger_;

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -36,7 +36,7 @@ static napi_status GetInputerInstance(InputerHolder *inputerHolder, napi_value *
 {
     napi_value cons = GetCtorIInputerData(inputerHolder->env, inputerHolder->inputerData);
     if (cons == nullptr) {
-        PINAUTH_HILOGE(MODULE_JS_NAPI, "GetCtorIInputerData faild");
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "GetCtorIInputerData failed");
         return napi_generic_failure;
     }
     return napi_new_instance(inputerHolder->env, cons, 0, nullptr, inputerDataVarCtor);
@@ -53,34 +53,34 @@ static void GetDataWork(uv_work_t* work, int status)
     napi_value inputerDataVarCtor;
     napi_status napiStatus = GetInputerInstance(inputerHolder, &inputerDataVarCtor);
     if (napiStatus != napi_ok) {
-        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_new_instance faild");
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_new_instance failed");
         goto EXIT;
     }
     napi_value undefined;
     napiStatus = napi_get_undefined(inputerHolder->env, &undefined);
     if (napiStatus != napi_ok) {
-        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_get_undefined faild");
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_get_undefined failed");
         goto EXIT;
     }
     napi_value return_val;
     napi_value type;
     napiStatus = napi_create_int32(inputerHolder->env, inputerHolder->authSubType, &type);
     if (napiStatus != napi_ok) {
-        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_create_int32 faild");
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_create_int32 failed");
         goto EXIT;
     }
     napi_value argv [PIN_PARAMS_TWO];
     napi_value callbackRef;
     napiStatus = napi_get_reference_value(inputerHolder->env, inputerHolder->inputer, &callbackRef);
     if (napiStatus != napi_ok) {
-        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_get_reference_value faild");
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_get_reference_value failed");
         goto EXIT;
     }
     argv [PIN_PARAMS_ZERO] = type;
     argv [PIN_PARAMS_ONE] = inputerDataVarCtor;
     napiStatus = napi_call_function(inputerHolder->env, undefined, callbackRef, PIN_PARAMS_TWO, &argv[0], &return_val);
     if (napiStatus != napi_ok) {
-        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_call_function faild");
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_call_function failed");
         goto EXIT;
     }
 EXIT:

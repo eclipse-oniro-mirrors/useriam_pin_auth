@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -29,7 +29,7 @@ PinAuthRegister::~PinAuthRegister() = default;
 
 bool PinAuthRegister::RegisterInputer(std::shared_ptr<IInputer> inputer)
 {
-    PINAUTH_HILOGD(MODULE_INNERKIT, "PinAuthRegister::RegisterInputer");
+    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::RegisterInputer");
     if (inputer == nullptr) {
         PINAUTH_HILOGE(MODULE_INNERKIT, "inputer is nullptr");
         return false;
@@ -48,7 +48,7 @@ bool PinAuthRegister::RegisterInputer(std::shared_ptr<IInputer> inputer)
 
 void PinAuthRegister::UnRegisterInputer()
 {
-    PINAUTH_HILOGE(MODULE_INNERKIT, "PinAuthRegister::UnRegisterInputer enter");
+    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::UnRegisterInputer enter");
     auto proxy = GetProxy();
     if (proxy == nullptr) {
         PINAUTH_HILOGE(MODULE_INNERKIT, "pinAuth failed, remote is nullptr");
@@ -59,7 +59,7 @@ void PinAuthRegister::UnRegisterInputer()
 
 sptr<IRemotePinAuth> PinAuthRegister::GetProxy()
 {
-    PINAUTH_HILOGE(MODULE_INNERKIT, "PinAuthRegister::GetProxy enter");
+    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::GetProxy enter");
     if (proxy_ != nullptr) {
         return proxy_;
     }
@@ -81,7 +81,7 @@ sptr<IRemotePinAuth> PinAuthRegister::GetProxy()
 
     proxy_ = iface_cast<IRemotePinAuth>(obj);
     deathRecipient_ = dr;
-    PINAUTH_HILOGE(MODULE_INNERKIT, "Succeed to connect distributed gallery manager service");
+    PINAUTH_HILOGI(MODULE_INNERKIT, "Succeed to connect distributed gallery manager service");
     return proxy_;
 }
 
@@ -97,13 +97,13 @@ void PinAuthRegister::ResetProxy(const wptr<IRemoteObject>& remote)
 
 void PinAuthRegister::PinAuthDeathRecipient::OnRemoteDied(const wptr<IRemoteObject>& remote)
 {
-    PINAUTH_HILOGE(MODULE_INNERKIT, "PinAuthRegister::OnRemoteDied enter");
+    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::OnRemoteDied enter");
     if (remote == nullptr) {
         PINAUTH_HILOGE(MODULE_INNERKIT, "OnRemoteDied failed, remote is nullptr");
         return;
     }
     PinAuthRegister::GetInstance().ResetProxy(remote);
-    PINAUTH_HILOGE(MODULE_INNERKIT, "PinAuthDeathRecipient::Recv death notice.");
+    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthDeathRecipient::Recv death notice.");
 }
 } // namespace PinAuth
 } // namespace UserIAM

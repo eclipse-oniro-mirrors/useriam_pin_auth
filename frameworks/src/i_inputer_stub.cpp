@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -37,12 +37,12 @@ void IInputerStub::HandlerOnGetData(MessageParcel &data, MessageParcel &reply)
     sptr<IRemoteObject> remote = data.ReadRemoteObject();
     PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::HandlerOnGetData start %{public}d", authSubType);
     if (remote == nullptr) {
-        PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::HandlerOnGetData remote == nullptr");
+        PINAUTH_HILOGE(MODULE_SERVICE, "IInputerStub::HandlerOnGetData remote == nullptr");
         return;
     }
     sptr<IRemoteInputerData> inputerData = iface_cast<IRemoteInputerData>(remote);
     if (inputerData == nullptr) {
-        PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::HandlerOnGetData inputerData == nullptr");
+        PINAUTH_HILOGE(MODULE_SERVICE, "IInputerStub::HandlerOnGetData inputerData == nullptr");
         return;
     }
     OnGetData(authSubType, salt, inputerData.GetRefPtr());
@@ -52,7 +52,7 @@ void IInputerStub::OnGetData(int32_t authSubType, std::vector<uint8_t> salt, spt
 {
     PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::OnGetData enter");
     if (inputerData == nullptr) {
-        PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::OnGetData inputerData == nullptr");
+        PINAUTH_HILOGE(MODULE_SERVICE, "IInputerStub::OnGetData inputerData == nullptr");
         return;
     }
     std::shared_ptr<IInputerData> sharedInputerData = std::make_shared<InputerDataImpl>(salt, inputerData);
@@ -61,13 +61,13 @@ void IInputerStub::OnGetData(int32_t authSubType, std::vector<uint8_t> salt, spt
 
 int32_t IInputerStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::OnRemoteRequest code:%{public}d,%{public}u", code, code);
+    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::OnRemoteRequest code:%{public}u", code);
     std::u16string descripter = IInputerStub::GetDescriptor();
     std::u16string remoteDescripter = data.ReadInterfaceToken();
     PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::OnRemoteRequest descripter:%s, remoteDescripter:%s",
         (char *)(descripter.c_str()), (char *)(remoteDescripter.c_str()));
     if (descripter != remoteDescripter) {
-        PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::OnRemoteRequest descripter != remoteDescripter");
+        PINAUTH_HILOGE(MODULE_SERVICE, "IInputerStub::OnRemoteRequest descripter != remoteDescripter");
         return FAIL;
     }
 
