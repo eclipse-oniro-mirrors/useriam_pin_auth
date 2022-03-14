@@ -25,7 +25,7 @@ ohos_unittest("PinAuth_UT_test") {
   include_dirs = [ "include" ]
 
   deps = [
-    "${pinauth_frameworks_path}:pinauth_frameworks",
+    "${pinauth_frameworks_path}:pinauth_framework",
     "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
     "//utils/native/base:utils",
   ]

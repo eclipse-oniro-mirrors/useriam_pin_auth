@@ -22,7 +22,7 @@ config("pinauth_config") {
   ]
 }
 
-ohos_shared_library("pinauth_frameworks") {
+ohos_shared_library("pinauth_framework") {
   sources = [
     "src/i_inputer_data_proxy.cpp",
     "src/i_inputer_stub.cpp",

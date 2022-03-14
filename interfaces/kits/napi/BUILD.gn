@@ -31,7 +31,7 @@ ohos_shared_library("pinauth") {
   public_configs = [ ":pin_auth_napi_public_config" ]
 
   deps = [
-    "${pinauth_frameworks_path}:pinauth_frameworks",
+    "${pinauth_frameworks_path}:pinauth_framework",
     "//foundation/ace/napi:ace_napi",
     "//utils/native/base:utils",
   ]
