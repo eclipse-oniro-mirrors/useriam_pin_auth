@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-
 #ifndef PINAUTH_INPUTERIMPL_H
 #define PINAUTH_INPUTERIMPL_H
 

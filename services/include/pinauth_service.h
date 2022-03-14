@@ -19,28 +19,19 @@
 #include <list>
 #include <mutex>
 #include <string>
-
-#include "event_handler.h"
 #include "ipc_skeleton.h"
 #include "nocopyable.h"
 #include "singleton.h"
 #include "system_ability.h"
 #include "system_ability_definition.h"
-
 #include "i_inputer_data_stub.h"
 #include "iremote_inputer.h"
 #include "pinauth_controller.h"
 #include "pinauth_stub.h"
-
-/* coauth */
 #include "auth_attributes.h"
 #include "auth_executor_registry.h"
 #include "executor_callback.h"
-
-/* useridm */
 #include "useridm_client.h"
-
-/* mock */
 #include "pin_auth.h"
 
 namespace OHOS {

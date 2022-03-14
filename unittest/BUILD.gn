@@ -26,15 +26,11 @@ ohos_unittest("PinAuth_UT_test") {
 
   deps = [
     "${pinauth_frameworks_path}:pinauth_framework",
-    "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
     "//utils/native/base:utils",
   ]
 
   external_deps = [
-    "ability_base:want",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "safwk:system_ability_fwk",
-    "samgr_standard:samgr_proxy",
   ]
 }

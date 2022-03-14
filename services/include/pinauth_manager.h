@@ -22,7 +22,6 @@
 #include <singleton.h>
 #include <unordered_map>
 #include <vector>
-
 #include "iremote_inputer.h"
 #include "pinauth_controller.h"
 #include "refbase.h"

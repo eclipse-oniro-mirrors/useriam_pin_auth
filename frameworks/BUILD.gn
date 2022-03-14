@@ -18,7 +18,6 @@ config("pinauth_config") {
   include_dirs = [
     "${pinauth_frameworks_path}/include",
     "${pinauth_innerkits_path}/include",
-    "//foundation/distributedschedule/samgr/interfaces/innerkits/samgr_proxy/include",
   ]
 }
 
@@ -37,8 +36,6 @@ ohos_shared_library("pinauth_framework") {
   ]
 
   deps = [
-    "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
-    "//foundation/distributedschedule/safwk/interfaces/innerkits/safwk:system_ability_fwk",
     "//foundation/distributedschedule/samgr/interfaces/innerkits/samgr_proxy:samgr_proxy",
     "//third_party/openssl:libcrypto_static",
     "//utils/native/base:utils",

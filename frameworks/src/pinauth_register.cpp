@@ -13,13 +13,12 @@
  * limitations under the License.
  */
 
+#include "pinauth_register.h"
 #include <if_system_ability_manager.h>
 #include <iservice_registry.h>
 #include <system_ability_definition.h>
 #include "pinauth_log_wrapper.h"
 #include "i_inputer_stub.h"
-#include "refbase.h"
-#include "pinauth_register.h"
 
 namespace OHOS {
 namespace UserIAM {

@@ -13,13 +13,13 @@
  * limitations under the License.
  */
 
+#include "pinauth_test.h"
 #include <gtest/gtest.h>
 #include <string>
 #include "pinauth_log_wrapper.h"
 #include "pinauth_register.h"
 #include "i_inputer.h"
 #include "hilog/log.h"
-#include "pinauth_test.h"
 
 using namespace testing::ext;
 namespace OHOS {

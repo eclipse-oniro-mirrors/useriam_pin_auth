@@ -17,7 +17,6 @@
 #define IINPUTER_DATA_PROXY_H
 
 #include "nocopyable.h"
-
 #include "iremote_inputer.h"
 #include "iremote_proxy.h"
 
