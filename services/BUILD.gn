@@ -37,7 +37,7 @@ ohos_shared_library("pinauthservice") {
   configs = [ ":pin_auth_services_config" ]
 
   deps = [
-    "${pinauth_frameworks_path}:pinauth_frameworks",
+    "${pinauth_frameworks_path}:pinauth_framework",
     "//base/security/access_token/interfaces/innerkits/accesstoken:libaccesstoken_sdk",
     "//base/startup/syspara_lite/interfaces/innerkits/native/syspara:syspara",
     "//base/user_iam/auth_executor_mgr/interfaces/innerkits:coauth_framework",
