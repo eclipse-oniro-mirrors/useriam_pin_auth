@@ -31,6 +31,6 @@ ohos_unittest("PinAuth_UT_test") {
 
   external_deps = [
     "hiviewdfx_hilog_native:libhilog",
-    "ipc:ipc_core"
+    "ipc:ipc_core",
   ]
 }
