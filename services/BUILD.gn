@@ -43,13 +43,11 @@ ohos_shared_library("pinauthservice") {
     "//base/user_iam/auth_executor_mgr/interfaces/innerkits:coauth_framework",
     "//base/user_iam/pin_auth/hdi:pinauth_hdi",
     "//base/user_iam/user_idm/interfaces/innerkits:useridm_framework",
-    "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
     "//third_party/openssl:libcrypto_static",
     "//utils/native/base:utils",
   ]
 
   external_deps = [
-    "ces_standard:cesfwk_innerkits",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",

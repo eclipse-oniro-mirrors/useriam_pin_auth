@@ -14,7 +14,6 @@
  */
 
 #include "i_inputer_data_proxy.h"
-
 #include "iremote_inputer.h"
 #include "iremote_proxy.h"
 #include "pinauth_log_wrapper.h"

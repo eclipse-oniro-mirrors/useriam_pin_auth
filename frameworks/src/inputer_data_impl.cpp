@@ -12,11 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+#include "inputer_data_impl.h"
 #include <openssl/evp.h>
 #include <openssl/kdf.h>
-
 #include "pinauth_log_wrapper.h"
-#include "inputer_data_impl.h"
 
 namespace OHOS {
 namespace UserIAM {

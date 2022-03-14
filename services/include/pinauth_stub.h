@@ -15,8 +15,8 @@
 
 #ifndef PIN_AUTH_STUB_H
 #define PIN_AUTH_STUB_H
-#include "nocopyable.h"
 
+#include "nocopyable.h"
 #include "iremote_pinauth.h"
 #include "iremote_stub.h"
 

@@ -14,7 +14,6 @@
  */
 
 #include "i_inputer_stub.h"
-
 #include "inputer_data_impl.h"
 #include "iremote_inputer.h"
 #include "iremote_stub.h"

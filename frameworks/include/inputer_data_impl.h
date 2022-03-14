@@ -20,7 +20,6 @@
 #include <memory>
 #include <mutex>
 #include <vector>
-
 #include "i_inputer_data.h"
 #include "iremote_inputer_data.h"
 #include "nocopyable.h"

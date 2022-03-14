@@ -14,7 +14,6 @@
  */
 
 #include "i_inputer_data_stub.h"
-
 #include "iremote_inputer.h"
 #include "iremote_stub.h"
 #include "pinauth_defines.h"
