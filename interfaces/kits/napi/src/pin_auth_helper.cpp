@@ -30,7 +30,7 @@ struct InputConstructorInfo {
 napi_value PinAuthServiceConstructor(napi_env env, napi_callback_info info)
 {
     PINAUTH_HILOGI(MODULE_JS_NAPI, "PinAuthHelper, PinAuthServiceConstructor start");
-    PinAuthImpl *pinAuthPtr = new (std::nothrow) PinAuthImpl();
+    PinAuthImpl *pinAuthPtr = new(std::nothrow) PinAuthImpl();
     if (pinAuthPtr == nullptr) {
         PINAUTH_HILOGE(MODULE_JS_NAPI, "%{public}s, get nullptr", __func__);
         return nullptr;

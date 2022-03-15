@@ -48,6 +48,7 @@ static void GetDataWork(uv_work_t* work, int status)
     if (inputerHolder == nullptr) {
         PINAUTH_HILOGE(MODULE_JS_NAPI, "inputerHolder is null");
         delete work;
+        work = nullptr;
         return;
     }
     napi_value inputerDataVarCtor;
@@ -86,6 +87,7 @@ static void GetDataWork(uv_work_t* work, int status)
 EXIT:
     delete inputerHolder;
     delete work;
+    work = nullptr;
 }
 
 void InputerImpl::OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData)
@@ -96,12 +98,12 @@ void InputerImpl::OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::
         PINAUTH_HILOGE(MODULE_JS_NAPI, "loop is null");
         return;
     }
-    uv_work_t *work = new (std::nothrow) uv_work_t;
+    uv_work_t *work = new(std::nothrow) uv_work_t;
     if (work == nullptr) {
         PINAUTH_HILOGE(MODULE_JS_NAPI, "work is null");
         return;
     }
-    InputerHolder *inputerHolder = new (std::nothrow) InputerHolder();
+    InputerHolder *inputerHolder = new(std::nothrow) InputerHolder();
     if (inputerHolder == nullptr) {
         PINAUTH_HILOGE(MODULE_JS_NAPI, "inputerHolder is null");
         delete work;
@@ -121,7 +123,7 @@ napi_value GetCtorIInputerData(napi_env env, std::shared_ptr<OHOS::UserIAM::PinA
         PINAUTH_HILOGI(MODULE_JS_NAPI, "GetCtorIInputerData inputerData nullptr");
         return nullptr;
     }
-    InputerHolder *inputerHolder = new (std::nothrow) InputerHolder();
+    InputerHolder *inputerHolder = new(std::nothrow) InputerHolder();
     if (inputerHolder == nullptr) {
         PINAUTH_HILOGI(MODULE_JS_NAPI, "GetCtorIInputerData inputerHolder nullptr");
         return nullptr;

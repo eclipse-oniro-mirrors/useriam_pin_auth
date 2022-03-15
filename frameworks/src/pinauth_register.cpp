@@ -38,7 +38,7 @@ bool PinAuthRegister::RegisterInputer(std::shared_ptr<IInputer> inputer)
         PINAUTH_HILOGE(MODULE_INNERKIT, "get proxy failed");
         return false;
     }
-    sptr<IRemoteInputer> callback = new IInputerStub(inputer);
+    sptr<IRemoteInputer> callback = new(std::nothrow) IInputerStub(inputer);
     if (callback == nullptr) {
         return false;
     }
@@ -72,7 +72,11 @@ sptr<IRemotePinAuth> PinAuthRegister::GetProxy()
         PINAUTH_HILOGE(MODULE_INNERKIT, "Failed to get distributed gallery manager service");
         return nullptr;
     }
-    sptr<IRemoteObject::DeathRecipient> dr = new PinAuthDeathRecipient();
+    sptr<IRemoteObject::DeathRecipient> dr = new(std::nothrow) PinAuthDeathRecipient();
+    if (dr == nullptr) {
+        PINAUTH_HILOGE(MODULE_INNERKIT, "dr is nullptr");
+        return nullptr;       
+    }
     if ((obj->IsProxyObject()) && (!obj->AddDeathRecipient(dr))) {
         PINAUTH_HILOGE(MODULE_INNERKIT, "Failed to add death recipient");
         return nullptr;
