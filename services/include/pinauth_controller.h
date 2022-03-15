@@ -19,7 +19,6 @@
 #include <cstdint>
 #include <mutex>
 #include <vector>
-
 #include "auth_attributes.h"
 #include "i_inputer_data_stub.h"
 #include "iexecutor_messenger.h"

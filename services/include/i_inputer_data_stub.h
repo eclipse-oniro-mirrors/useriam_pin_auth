@@ -17,7 +17,6 @@
 #define IINPUTER_DATA_STUB_H
 
 #include "nocopyable.h"
-
 #include "iremote_inputer.h"
 #include "iremote_stub.h"
 

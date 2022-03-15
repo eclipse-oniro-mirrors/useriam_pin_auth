@@ -17,7 +17,6 @@
 #define IINPUTER_STUB_H
 
 #include <cstdint>
-
 #include "i_inputer.h"
 #include "iremote_inputer.h"
 #include "iremote_stub.h"

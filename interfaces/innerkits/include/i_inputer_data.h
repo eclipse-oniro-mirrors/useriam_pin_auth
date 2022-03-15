@@ -18,7 +18,6 @@
 
 #include <memory>
 #include <vector>
-
 #include "nocopyable.h"
 
 namespace OHOS {

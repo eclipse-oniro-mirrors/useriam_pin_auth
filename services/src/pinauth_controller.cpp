@@ -13,17 +13,15 @@
  * limitations under the License.
  */
 
+#include "pinauth_controller.h"
 #include <openssl/evp.h>
 #include <openssl/rand.h>
-
 #include "ipc_skeleton.h"
 #include "iservice_registry.h"
 #include "parameter.h"
-
 #include "coauth_info_define.h"
 #include "pinauth_defines.h"
 #include "pinauth_log_wrapper.h"
-#include "pinauth_controller.h"
 
 namespace OHOS {
 namespace UserIAM {

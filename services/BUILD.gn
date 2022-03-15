@@ -37,19 +37,17 @@ ohos_shared_library("pinauthservice") {
   configs = [ ":pin_auth_services_config" ]
 
   deps = [
-    "${pinauth_frameworks_path}:pinauth_frameworks",
+    "${pinauth_frameworks_path}:pinauth_framework",
     "//base/security/access_token/interfaces/innerkits/accesstoken:libaccesstoken_sdk",
     "//base/startup/syspara_lite/interfaces/innerkits/native/syspara:syspara",
     "//base/user_iam/auth_executor_mgr/interfaces/innerkits:coauth_framework",
     "//base/user_iam/pin_auth/hdi:pinauth_hdi",
     "//base/user_iam/user_idm/interfaces/innerkits:useridm_framework",
-    "//foundation/appexecfwk/standard/interfaces/innerkits/libeventhandler:libeventhandler",
     "//third_party/openssl:libcrypto_static",
     "//utils/native/base:utils",
   ]
 
   external_deps = [
-    "ces_standard:cesfwk_innerkits",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
