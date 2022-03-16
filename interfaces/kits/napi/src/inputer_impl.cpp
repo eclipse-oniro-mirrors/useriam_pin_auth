@@ -30,6 +30,7 @@ InputerImpl::InputerImpl(napi_env env, napi_ref inputer)
 
 InputerImpl::~InputerImpl()
 {
+    napi_delete_reference(env_, inputer_);
 }
 
 static napi_status GetInputerInstance(InputerHolder *inputerHolder, napi_value *inputerDataVarCtor)
