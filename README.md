@@ -16,13 +16,13 @@ As the basic user authentication executor of OpenHarmony, pinauth registers reso
 
 User passwords are core assets in the system. The following security measures are taken in password authentication for security purposes:
 
-1. The password input user interface (currently including the password setting and password authentication dialog boxes) is provided by the system-level application (<sup>Note 1</sup>). The dialog boxes involved in user settings are provided by the setting application, and the password input dialog boxes involved in the screen unlock authentication are provided by the lock screen application.
-2. Password data transmission: The raw password data is not transmitted across devices. After a user password is entered in the password input dialog box, the raw password data entered is transmitted to the password authentication SA only after unidirectional processing in the input model management innerAPI.
-3. Secure storage and comparison of password data: The password authentication HDI defines the adaptation interfaces for device vendors. Device vendors can implement secure password comparison and storage in a TEE. <sup>Note 2</sup>
+- The password input user interface (currently including the password setting and password authentication dialog boxes) is provided by the system-level application (<sup>Note 1</sup>). The dialog boxes involved in user settings are provided by the setting application, and the password input dialog boxes involved in the screen unlock authentication are provided by the lock screen application.
+- Password data transmission: The raw password data is not transmitted across devices. After a user password is entered in the password input dialog box, the raw password data entered is transmitted to the password authentication SA only after unidirectional processing in the input model management innerAPI.
+- Secure storage and comparison of password data: The password authentication HDI defines the adaptation interfaces for device vendors. Device vendors can implement secure password comparison and storage in a TEE. <sup>Note 2</sup>
 
-* Note 1: To implement the password input dialog box, the application needs to register the password input dialog box with the password authentication SA through the input dialog box management API. The input box management API requires a high-level access permission and can be invoked only by system users.*
+Note 1: To implement the password input dialog box, the application needs to register the password input dialog box with the password authentication SA through the input dialog box management API. The input box management API requires a high-level access permission and can be invoked only by system users.*
 
-* Note 2: The OpenHarmony framework provides pure software implementation of password authentication for developers to demonstrate the password authentication function. The pure software implementation does not include the secure storage capability.*
+Note 2: The OpenHarmony framework provides pure software implementation of password authentication for developers to demonstrate the password authentication function. The pure software implementation does not include the secure storage capability.*
 
 ## Directory Structure
 
@@ -44,7 +44,7 @@ User passwords are core assets in the system. The following security measures ar
 
 ### Available APIs
 
-**Table 1 ** APIs for managing input dialogs
+**Table 1** APIs for managing input dialogs
 
 | API | Description                            |
 | ------ | -------------------------------- |
