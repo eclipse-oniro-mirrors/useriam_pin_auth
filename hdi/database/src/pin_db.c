@@ -231,6 +231,7 @@ static ResultCode GenerateFileName(uint64_t templateId, const char *prefix, cons
     return RESULT_SUCCESS;
 }
 
+/* This is for example only, Should be implemented is trusted environment. */
 static ResultCode ReadPinFile(uint8_t *data, uint32_t dataLen, uint64_t templateId, const char *suffix)
 {
     FileOperator *fileOp = GetFileOperator(DEFAULT_FILE_OPERATOR);
@@ -254,6 +255,7 @@ static ResultCode ReadPinFile(uint8_t *data, uint32_t dataLen, uint64_t template
     return RESULT_SUCCESS;
 }
 
+/* This is for example only, Should be implemented is trusted environment. */
 static ResultCode WritePinFile(uint8_t *data, uint32_t dataLen, uint64_t templateId, const char *suffix)
 {
     FileOperator *fileOp = GetFileOperator(DEFAULT_FILE_OPERATOR);
@@ -278,6 +280,7 @@ static ResultCode WritePinFile(uint8_t *data, uint32_t dataLen, uint64_t templat
     return RESULT_SUCCESS;
 }
 
+/* This is for example only, Should be implemented is trusted environment. */
 static ResultCode RemovePinFile(uint64_t templateId, const char *suffix)
 {
     FileOperator *fileOp = GetFileOperator(DEFAULT_FILE_OPERATOR);
@@ -360,6 +363,7 @@ static uint32_t SearchPinById(uint64_t templateId)
 
 static ResultCode DelPin(uint32_t index)
 {
+    /* This is for example only, Should be implemented is trusted environment. */
     ResultCode ret = RemoveAllFile(g_pinDbOp.pinIndex[index].templateId);
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("Remove pin file fail.");
@@ -606,7 +610,10 @@ ResultCode AddPin(PinEnrollParam *pinEnrollParam, uint64_t *templateId)
         return ret;
     }
 
-    /* Generate new templateId, Transferred to tid and returned */
+    /*
+     * Generate new templateId, Transferred to tid and returned
+     * This is for example only, Should be implemented is trusted environment.
+     */
     ret = WritePinFile(pinEnrollParam->pinData, CONST_PIN_DATA_LEN, *templateId, CRYPTO_SUFFIX);
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("WriteCryptoFile fail.");
@@ -920,6 +927,7 @@ ResultCode AuthPinById(uint8_t *inputData, uint32_t inputDataLen, uint64_t templ
         return RESULT_GENERAL_ERROR;
     }
 
+    /* This is for example only, Should be implemented is trusted environment. */
     ResultCode compareRet = RESULT_COMPARE_FAIL;
     ResultCode ret = ReadPinFile(storeData, storeDataLen, templateId, CRYPTO_SUFFIX);
     if (ret != RESULT_SUCCESS) {
