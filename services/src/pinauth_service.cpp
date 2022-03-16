@@ -33,9 +33,9 @@ static const std::string ACCESS_PIN_AUTH = "ohos.permission.ACCESS_PIN_AUTH";
 static const char IAM_EVENT_KEY[] = "bootevent.useriam.fwkready";
 static PinAuthService *pinAuthService = nullptr;
 
-PinAuthService::PinAuthService()
-    : SystemAbility(SUBSYS_USERIAM_SYS_ABILITY_PINAUTH, true),
-      serviceRunningState_(ServiceRunningState::STATE_NOT_START)
+PinAuthService::PinAuthService() :
+    SystemAbility(SUBSYS_USERIAM_SYS_ABILITY_PINAUTH, true),
+    serviceRunningState_(ServiceRunningState::STATE_NOT_START)
 {
     pinAuthService = this;
 }
