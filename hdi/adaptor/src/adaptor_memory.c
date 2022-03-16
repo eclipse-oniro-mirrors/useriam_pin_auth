@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Huawei Device Co., Ltd.
+ * Copyright (C) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,10 +16,11 @@
 #include "adaptor_memory.h"
 
 #include <stdlib.h>
+#define MAX_SIZE 1073741824
 
 void *Malloc(const size_t size)
 {
-    if (size == 0) {
+    if (size == 0 || size > MAX_SIZE) {
         return NULL;
     }
     return malloc(size);

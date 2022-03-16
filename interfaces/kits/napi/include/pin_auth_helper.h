@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,18 +12,23 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
 #ifndef FACERECOGNITION_PIN_AUTH_HELPER_H
 #define FACERECOGNITION_PIN_AUTH_HELPER_H
+
 #include "napi/native_api.h"
 #include "napi/native_common.h"
+
 namespace OHOS {
 namespace PinAuth {
-void Init(napi_env env, napi_value exports);
+napi_value Init(napi_env env, napi_value exports);
 napi_value GetCtor(napi_env env);
 napi_value Constructor(napi_env env, napi_callback_info info);
 napi_value PinAuthServiceConstructor(napi_env env, napi_callback_info info);
 napi_value RegisterInputer(napi_env env, napi_callback_info info);
 napi_value UnregisterInputer(napi_env env, napi_callback_info info);
+napi_value EnumExport(napi_env env, napi_value exports);
+napi_value AuthSubTypeConstructor(napi_env env);
 } // namespace PinAuth
 } // namespace OHOS
 #endif // FACERECOGNITION_PIN_AUTH_HELPER_H

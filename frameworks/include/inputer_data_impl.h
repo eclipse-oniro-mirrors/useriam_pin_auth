@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,18 +16,18 @@
 #ifndef PINAUTH_IINPUTERDATA_IMPL_H
 #define PINAUTH_IINPUTERDATA_IMPL_H
 
+#include <cstdint>
 #include <memory>
-#include <vector>
-#include <stdint.h>
 #include <mutex>
+#include <vector>
 #include "i_inputer_data.h"
 #include "iremote_inputer_data.h"
+#include "nocopyable.h"
 #include "refbase.h"
 
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
-
 const int32_t OUT_LENGTH = 64;
 const int32_t SCRYPT_N = 32768;
 const int32_t SCRYPT_R = 3;
@@ -35,6 +35,7 @@ const int32_t SCRYPT_P = 1;
 
 class InputerDataImpl : public IInputerData {
 public:
+    DISALLOW_COPY_AND_MOVE(InputerDataImpl);
     explicit InputerDataImpl(std::vector<uint8_t> salt, sptr<IRemoteInputerData> remoteInputerData);
     ~InputerDataImpl() override;
     void OnSetData(int32_t authSubType, std::vector<uint8_t> data) override;

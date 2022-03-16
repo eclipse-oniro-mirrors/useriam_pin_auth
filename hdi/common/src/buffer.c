@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -43,7 +43,7 @@ bool CheckBufferWithSize(const Buffer *buffer, const uint32_t size)
 Buffer *CreateBuffer(const uint32_t size)
 {
     if ((size == 0) || (size > MAX_BUFFER_SIZE)) {
-        LOG_ERROR("Bad param size:%zu", size);
+        LOG_ERROR("Bad param size:%u", size);
         return NULL;
     }
 

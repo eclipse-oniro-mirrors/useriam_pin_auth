@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,16 +13,15 @@
  * limitations under the License.
  */
 
+#include "pinauth_controller.h"
 #include <openssl/evp.h>
 #include <openssl/rand.h>
-
-#include "pinauth_log_wrapper.h"
+#include "ipc_skeleton.h"
+#include "iservice_registry.h"
+#include "parameter.h"
 #include "coauth_info_define.h"
 #include "pinauth_defines.h"
-#include "iservice_registry.h"
-#include "ipc_skeleton.h"
-#include "parameter.h"
-#include "pinauth_controller.h"
+#include "pinauth_log_wrapper.h"
 
 namespace OHOS {
 namespace UserIAM {
@@ -39,9 +38,9 @@ PinAuthController::~PinAuthController()
     pin_ = nullptr;
 }
 
-bool PinAuthController::OnStart(std::vector<uint8_t> &salt) {
-    int32_t ret;
-    ret = attributes_->GetUint32Value(AUTH_SCHEDULE_MODE, command_);
+bool PinAuthController::OnStart(std::vector<uint8_t> &salt)
+{
+    int32_t ret = attributes_->GetUint32Value(AUTH_SCHEDULE_MODE, command_);
     if (ret != SUCCESS) {
         PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::OnStart GetUint32Value AUTH_SCHEDULE_MODE error");
         return false;
@@ -52,12 +51,12 @@ bool PinAuthController::OnStart(std::vector<uint8_t> &salt) {
     } else if (command_ == COMMAND_AUTH_PIN) {
         ret = attributes_->GetUint64Value(AUTH_TEMPLATE_ID, templateId_);
         if (ret != SUCCESS) {
-            PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::OnStart GetUint64Value AUTH_TEMPLATE_ID error");
+            PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::OnStart GetUint64Value AUTH_TEMPLATE_ID error");
             return false;
         }
         ret = pin_->GetSalt(templateId_, salt);
         if (ret != SUCCESS) {
-            PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::OnStart GetSalt error");
+            PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::OnStart GetSalt error");
             return false;
         }
     }
@@ -68,7 +67,7 @@ bool PinAuthController::OnStart(std::vector<uint8_t> &salt) {
 
 void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::OnSetData enter");
+    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthController::OnSetData enter");
     std::lock_guard<std::mutex> guard(mutex_);
     if (canceled) {
         PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData event has canceled");
@@ -78,7 +77,7 @@ void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData data size is : [%{public}zu]", data.size());
     int32_t ret = SUCCESS;
     if (data.size() == 0) {
-        PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData data is null");
+        PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::onSetData data is null");
         ret = FAIL;
     }
 
@@ -86,11 +85,11 @@ void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data
     std::vector<uint8_t> result;
     if (ret == SUCCESS) {
         if (command_ == COMMAND_ENROLL_PIN) {
-            PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_ENROLL_PIN");
+            PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_ENROLL_PIN");
             ret = pin_->EnrollPin(scheduleId_, static_cast<uint64_t>(authSubType), salt_, data, result);
             PINAUTH_HILOGI(MODULE_COMMON, "---------EnrollPin finish----------");
         } else if (command_ == COMMAND_AUTH_PIN) {
-            PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_AUTH_PIN");
+            PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_AUTH_PIN");
             ret = pin_->AuthPin(scheduleId_, templateId_, data, result);
             PINAUTH_HILOGI(MODULE_COMMON, "----------AuthPin finish %{public}d-----------", ret);
         }
@@ -104,17 +103,17 @@ void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data
             PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::onSetData call finish failed");
         }
     } else {
-    PINAUTH_HILOGE(MODULE_COMMON, "PinAuthController::onSetData messenger_ is null");
+        PINAUTH_HILOGE(MODULE_COMMON, "PinAuthController::onSetData messenger_ is null");
     }
-    
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::OnSetData leave");
+
+    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthController::OnSetData leave");
 }
 
 void PinAuthController::SaveParam(uint64_t scheduleId, std::shared_ptr<PinAuth> pin,
-                                  std::shared_ptr<AuthResPool::AuthAttributes> attributes)
+    std::shared_ptr<AuthResPool::AuthAttributes> attributes)
 {
     std::lock_guard<std::mutex> guard(mutex_);
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::SaveParam enter");
+    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthController::SaveParam enter");
     scheduleId_ = scheduleId;
     pin_ = pin;
     attributes_ = attributes;
@@ -122,14 +121,14 @@ void PinAuthController::SaveParam(uint64_t scheduleId, std::shared_ptr<PinAuth> 
 
 void PinAuthController::SetMessenger(const sptr<AuthResPool::IExecutorMessenger> &messenger)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::SetMessenger enter");
+    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthController::SetMessenger enter");
     std::lock_guard<std::mutex> guard(mutex_);
     messenger_ = messenger;
 }
 
 void PinAuthController::Cancel()
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::Cancel enter");
+    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthController::Cancel enter");
     std::lock_guard<std::mutex> guard(mutex_);
     canceled = true;
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,29 +16,29 @@
 #ifndef PINAUTH_MANAGER_H
 #define PINAUTH_MANAGER_H
 
-#include <singleton.h>
+#include <cstdint>
 #include <iremote_object.h>
-#include <stdint.h>
-#include <unordered_map>
 #include <mutex>
+#include <singleton.h>
+#include <unordered_map>
 #include <vector>
-
+#include "iremote_inputer.h"
 #include "pinauth_controller.h"
 #include "refbase.h"
-#include "iremote_inputer.h"
 
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
 class PinAuthManager : public DelayedRefSingleton<PinAuthManager> {
     DECLARE_DELAYED_REF_SINGLETON(PinAuthManager);
+
 public:
     DISALLOW_COPY_AND_MOVE(PinAuthManager);
     void OnStart();
     bool RegisterInputer(uint64_t uid, sptr<IRemoteInputer> &inputer);
     void UnRegisterInputer(uint64_t uid);
-    void Execute(uint64_t uid, uint64_t subType, uint64_t scheduleId,
-                std::shared_ptr<PinAuth> pin, std::shared_ptr<AuthResPool::AuthAttributes> attributes);
+    void Execute(uint64_t uid, uint64_t subType, uint64_t scheduleId, std::shared_ptr<PinAuth> pin,
+        std::shared_ptr<AuthResPool::AuthAttributes> attributes);
     void SetMessenger(const sptr<AuthResPool::IExecutorMessenger> &messenger);
     void MapClear();
     int32_t Cancel(uint64_t scheduleId, std::shared_ptr<AuthResPool::AuthAttributes> consumerAttr);
@@ -56,9 +56,11 @@ private:
     // Death monitoring class
     class ResPinauthInputerDeathRecipient : public IRemoteObject::DeathRecipient {
     public:
-        ResPinauthInputerDeathRecipient(uint64_t uid);
-        ~ResPinauthInputerDeathRecipient() = default;
-        void OnRemoteDied(const wptr<IRemoteObject>& remote) override;
+        DISALLOW_COPY_AND_MOVE(ResPinauthInputerDeathRecipient);
+        explicit ResPinauthInputerDeathRecipient(uint64_t uid);
+        ~ResPinauthInputerDeathRecipient() override = default;
+        void OnRemoteDied(const wptr<IRemoteObject> &remote) override;
+
     private:
         uint64_t uid_;
     };

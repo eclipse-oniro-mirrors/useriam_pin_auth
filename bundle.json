@@ -22,6 +22,7 @@
       "ram": "2500KB",
       "deps": {
         "components": [
+            "ability_base",
             "hiviewdfx_hilog_native",
             "ipc",
             "safwk",
@@ -35,11 +36,11 @@
       "build": {
         "sub_component": [
             "//base/user_iam/pin_auth/sa_profile:pinauth_sa_profile",
-            "//base/user_iam/pin_auth/frameworks:pinauth_frameworks",
-            "//base/user_iam/pin_auth/services:pinauth_service",
+            "//base/user_iam/pin_auth/frameworks:pinauth_framework",
+            "//base/user_iam/pin_auth/services:pinauthservice",
             "//base/user_iam/pin_auth/sa_profile:pinauth_sa_profile.init",
             "//base/user_iam/pin_auth/interfaces/kits/napi:pinauth",
-            "//base/user_iam/pin_auth/hdi:pinauth_hdi"		  
+            "//base/user_iam/pin_auth/hdi:pinauth_hdi"
         ],
         "inner_kits": [
         ],

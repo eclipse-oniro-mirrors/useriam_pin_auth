@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,11 +12,11 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+#include "inputer_data_impl.h"
 #include <openssl/evp.h>
 #include <openssl/kdf.h>
-
 #include "pinauth_log_wrapper.h"
-#include "inputer_data_impl.h"
 
 namespace OHOS {
 namespace UserIAM {
@@ -45,7 +45,6 @@ void InputerDataImpl::getScrypt(std::vector<uint8_t> data, std::vector<uint8_t> 
 
     size_t outlen = sizeof(out);
     pctx = EVP_PKEY_CTX_new_id(EVP_PKEY_SCRYPT, NULL);
-
     if (EVP_PKEY_derive_init(pctx) <= 0) {
         PINAUTH_HILOGE(MODULE_FRAMEWORKS, "PinAuth InputerDataImpl::getScrypt EVP_PKEY_derive_init error");
         return;

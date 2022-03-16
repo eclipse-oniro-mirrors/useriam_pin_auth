@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,6 +16,7 @@
 #ifndef IINPUTER_DATA_STUB_H
 #define IINPUTER_DATA_STUB_H
 
+#include "nocopyable.h"
 #include "iremote_inputer.h"
 #include "iremote_stub.h"
 
@@ -24,8 +25,9 @@ namespace UserIAM {
 namespace PinAuth {
 class IInputerDataStub : public IRemoteStub<IRemoteInputerData> {
 public:
+    DISALLOW_COPY_AND_MOVE(IInputerDataStub);
     IInputerDataStub() = default;
-    virtual ~IInputerDataStub() = default;
+    ~IInputerDataStub() override = default;
     int32_t OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option) override;
 
 private:

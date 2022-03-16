@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,10 +16,11 @@
 #ifndef IINPUTER_STUB_H
 #define IINPUTER_STUB_H
 
-#include <stdint.h>
+#include <cstdint>
+#include "i_inputer.h"
 #include "iremote_inputer.h"
 #include "iremote_stub.h"
-#include "i_inputer.h"
+#include "nocopyable.h"
 #include "refbase.h"
 
 namespace OHOS {
@@ -27,6 +28,7 @@ namespace UserIAM {
 namespace PinAuth {
 class IInputerStub : public IRemoteStub<IRemoteInputer> {
 public:
+    DISALLOW_COPY_AND_MOVE(IInputerStub);
     explicit IInputerStub(std::shared_ptr<IInputer> inputer);
     ~IInputerStub();
     void OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sptr<IRemoteInputerData> inputerData) override;

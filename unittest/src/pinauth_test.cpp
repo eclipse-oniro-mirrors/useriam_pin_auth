@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2021 Huawei Device Co., Ltd.
+ * Copyright (C) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,13 +13,13 @@
  * limitations under the License.
  */
 
+#include "pinauth_test.h"
 #include <gtest/gtest.h>
 #include <string>
 #include "pinauth_log_wrapper.h"
 #include "pinauth_register.h"
 #include "i_inputer.h"
 #include "hilog/log.h"
-#include "pinauth_test.h"
 
 using namespace testing::ext;
 namespace OHOS {
@@ -68,7 +68,7 @@ HWTEST_F(UseriamUtTest, UseriamUtTest_001, TestSize.Level1)
 {
     PINAUTH_HILOGE(MODULE_COMMON, "**********UseriamUtTest***001***in**********");
     std::shared_ptr<IInputer> inputer = nullptr;
-    EXPECT_EQ(0, PinAuthRegister::GetInstance().RegisterInputer(inputer));
+    EXPECT_EQ(false, PinAuthRegister::GetInstance().RegisterInputer(inputer));
     PINAUTH_HILOGE(MODULE_COMMON, "**********UseriamUtTest***001***out**********");
 }
 
@@ -80,7 +80,7 @@ HWTEST_F(UseriamUtTest, UseriamUtTest_002, TestSize.Level1)
 {
     PINAUTH_HILOGE(MODULE_COMMON, "**********UseriamUtTest***002***in**********");
     std::shared_ptr<IInputer> inputer = std::make_shared<InputerUT>();
-    EXPECT_EQ(!0, PinAuthRegister::GetInstance().RegisterInputer(inputer));
+    EXPECT_EQ(false, PinAuthRegister::GetInstance().RegisterInputer(inputer));
     PINAUTH_HILOGE(MODULE_COMMON, "**********UseriamUtTest***002***out**********");
 }
 

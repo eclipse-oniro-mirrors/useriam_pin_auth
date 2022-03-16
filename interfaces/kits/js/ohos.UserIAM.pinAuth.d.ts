@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,7 +25,7 @@ declare namespace pinAuth
     function constructor() : PINAuth;
     /**
      * registerInputer
-     * 
+     *
      * @param inputer
      * @return boolean register success or fail
      */
@@ -33,8 +33,6 @@ declare namespace pinAuth
 
     /**
      * unregisterInputer
-     * 
-     * 
      */
     function unregisterInputer():void;
 
@@ -44,7 +42,7 @@ declare namespace pinAuth
     interface IInputer{
         onGetData : (callback:IInputData)=>void
     }
-    
+
     /**
      * Password data callback
      */
@@ -53,7 +51,7 @@ declare namespace pinAuth
     }
 
     /**
-     * Credential subtype: 6-digit digital password, user-defined digital password, 
+     * Credential subtype: 6-digit digital password, user-defined digital password,
      * user-defined mixed password, 2D face, 3D face
      */
      enum AuthSubType{

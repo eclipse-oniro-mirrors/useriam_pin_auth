@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,10 +13,10 @@
  * limitations under the License.
  */
 
+#include "i_inputer_proxy.h"
 #include "iremote_inputer.h"
 #include "iremote_proxy.h"
 #include "pinauth_log_wrapper.h"
-#include "i_inputer_proxy.h"
 
 namespace OHOS {
 namespace UserIAM {
@@ -28,14 +28,15 @@ void IInputerProxy::OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sp
     PINAUTH_HILOGI(MODULE_SERVICE, "IInputerProxy::OnGetData enter");
     if (!data.WriteInterfaceToken(IInputerProxy::GetDescriptor())) {
         PINAUTH_HILOGE(MODULE_SERVICE, "WriteInterfaceToken failed!");
-        return ;
+        return;
     }
     if (!data.WriteInt32(authSubType)) {
         PINAUTH_HILOGE(MODULE_SERVICE, "failed to WriteInt32(authSubType).");
+        return;
     }
 
     if (!data.WriteUInt8Vector(salt)) {
-        PINAUTH_HILOGI(MODULE_SERVICE, "failed to WriteUInt8Vector(salt).");
+        PINAUTH_HILOGE(MODULE_SERVICE, "failed to WriteUInt8Vector(salt).");
         return;
     }
 
@@ -66,6 +67,6 @@ bool IInputerProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParce
     }
     return true;
 }
-}  // namespace PinAuth
-}  // namespace UserIAM
-}  // namespace OHOS
+} // namespace PinAuth
+} // namespace UserIAM
+} // namespace OHOS

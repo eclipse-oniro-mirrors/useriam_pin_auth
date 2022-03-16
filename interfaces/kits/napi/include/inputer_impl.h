@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -12,7 +12,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 
 #ifndef PINAUTH_INPUTERIMPL_H
 #define PINAUTH_INPUTERIMPL_H
@@ -33,11 +32,11 @@ napi_value GetCtorIInputerData(napi_env env, std::shared_ptr<OHOS::UserIAM::PinA
 
 class InputerImpl : public OHOS::UserIAM::PinAuth::IInputer {
 public:
-     InputerImpl(napi_env env, napi_ref inputer);
-     virtual ~InputerImpl();
-     napi_env env_;
-     napi_ref inputer_;
-     void OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData);;
+    InputerImpl(napi_env env, napi_ref inputer);
+    virtual ~InputerImpl();
+    napi_env env_;
+    napi_ref inputer_;
+    void OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData);
 };
 
 typedef struct InputerHolder {

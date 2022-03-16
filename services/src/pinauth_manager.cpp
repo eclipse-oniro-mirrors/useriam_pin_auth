@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -14,6 +14,7 @@
  */
 
 #include "pinauth_manager.h"
+#include <cinttypes>
 #include "pinauth_log_wrapper.h"
 
 namespace OHOS {
@@ -24,10 +25,10 @@ PinAuthManager::~PinAuthManager() = default;
 bool PinAuthManager::RegisterInputer(uint64_t uid, sptr<IRemoteInputer> &inputer)
 {
     std::lock_guard<std::mutex> guard(mutex_);
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::RegisterInputer uid%{public}llu is called.", uid);
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::RegisterInputer,uid %{public}" PRIu64 " is called.", uid);
     if (pinAuthInputerMap_.find(uid) != pinAuthInputerMap_.end()) {
         PINAUTH_HILOGE(MODULE_SERVICE,
-                       "PinAuthManager::RegisterInputer pinAuthController is already register, do not repeat!");
+            "PinAuthManager::RegisterInputer pinAuthController is already register, do not repeat!");
         return false;
     } else {
         pinAuthInputerMap_.emplace(uid, inputer);
@@ -35,7 +36,7 @@ bool PinAuthManager::RegisterInputer(uint64_t uid, sptr<IRemoteInputer> &inputer
         if (!inputer->AsObject()->AddDeathRecipient(dr)) {
             COAUTH_HILOGE(MODULE_SERVICE, "Failed to add death recipient ResIExecutorCallbackDeathRecipient");
         }
-        PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthManager::RegisterInputer pinAuthController register start!");
+        PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::RegisterInputer pinAuthController register start!");
         return true;
     }
 }
@@ -43,16 +44,16 @@ bool PinAuthManager::RegisterInputer(uint64_t uid, sptr<IRemoteInputer> &inputer
 void PinAuthManager::UnRegisterInputer(uint64_t uid)
 {
     std::lock_guard<std::mutex> guard(mutex_);
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::UnRegisterInputer uid%{public}llu is called start", uid);
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::UnRegisterInputer,uid %{public}" PRIu64 " is called start.", uid);
     if (pinAuthInputerMap_.find(uid) != pinAuthInputerMap_.end()) {
         pinAuthInputerMap_.erase(uid);
-        PINAUTH_HILOGI(MODULE_SERVICE, "pinAuthControllerMap erase success.");
+        PINAUTH_HILOGE(MODULE_SERVICE, "pinAuthControllerMap erase success.");
     }
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::UnRegisterInputer() is called end.");
 }
 
 void PinAuthManager::Execute(uint64_t uid, uint64_t subType, uint64_t scheduleId, std::shared_ptr<PinAuth> pin,
-                             std::shared_ptr<AuthResPool::AuthAttributes> attributes)
+    std::shared_ptr<AuthResPool::AuthAttributes> attributes)
 {
     sptr<IRemoteInputer> inputer = getInputerLock(uid);
     if (inputer != nullptr) {
@@ -134,14 +135,13 @@ sptr<IRemoteInputer> PinAuthManager::getInputerLock(uint64_t uid)
     }
     return nullptr;
 }
-PinAuthManager::ResPinauthInputerDeathRecipient::ResPinauthInputerDeathRecipient(uint64_t uid)
-    : uid_(uid)
+PinAuthManager::ResPinauthInputerDeathRecipient::ResPinauthInputerDeathRecipient(uint64_t uid) : uid_(uid)
 {
 }
 
-void PinAuthManager::ResPinauthInputerDeathRecipient::OnRemoteDied(const wptr<IRemoteObject>& remote)
+void PinAuthManager::ResPinauthInputerDeathRecipient::OnRemoteDied(const wptr<IRemoteObject> &remote)
 {
-    PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthManager::OnRemoteDied enter");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::OnRemoteDied enter");
     if (remote == nullptr) {
         PINAUTH_HILOGE(MODULE_SERVICE, "OnRemoteDied failed, remote is nullptr");
         return;

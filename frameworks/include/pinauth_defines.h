@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021 Huawei Device Co., Ltd.
+ * Copyright (c) 2022 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -15,9 +15,6 @@
 
 #ifndef PINAUTH_DEFINES_H
 #define PINAUTH_DEFINES_H
-
-#include <vector>
-#include <stdint.h>
 
 namespace OHOS {
 namespace UserIAM {
@@ -52,10 +49,7 @@ enum AUTH_SCHEDULE_COMMAND {
     COMMAND_CANCEL_AUTH = 3,
 };
 
-enum AUTH_PROPERTY_COMMAND {
-    COMMAND_DELETE_PIN = 0,
-    COMMAND_CHECK_PIN = 1,
-};
+enum AUTH_PROPERTY_COMMAND { COMMAND_DELETE_PIN = 0, COMMAND_CHECK_PIN = 1, COMMAND_INVALID = 0xFF };
 
 enum ResultCode {
 /**
