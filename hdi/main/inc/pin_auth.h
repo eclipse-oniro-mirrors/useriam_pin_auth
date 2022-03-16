@@ -30,7 +30,6 @@ struct PinCredentialInfo {
     uint64_t freezingTime;
 };
 
-/* This is for example only, Should be implemented in trusted environment. */
 class PinAuth {
 public:
     DISALLOW_COPY_AND_MOVE(PinAuth);
