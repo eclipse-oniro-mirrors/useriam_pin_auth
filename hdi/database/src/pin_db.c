@@ -370,7 +370,7 @@ static ResultCode DelPin(uint32_t index)
         return ret;
     }
     LOG_INFO("DelPin succ.");
-    /* ignore anti brute file remove result, return success when crypto file remove success */
+    /* ignore anti brute file remove result, return success when crypto file remove success. */
     return RESULT_SUCCESS;
 }
 
@@ -611,7 +611,7 @@ ResultCode AddPin(PinEnrollParam *pinEnrollParam, uint64_t *templateId)
     }
 
     /*
-     * Generate new templateId, Transferred to tid and returned
+     * Generate new templateId, Transferred to tid and returned.
      * This is for example only, Should be implemented in trusted environment.
      */
     ret = WritePinFile(pinEnrollParam->pinData, CONST_PIN_DATA_LEN, *templateId, CRYPTO_SUFFIX);
