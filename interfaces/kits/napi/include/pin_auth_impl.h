@@ -30,7 +30,7 @@ public:
     ~PinAuthImpl();
     napi_value inputer;
     napi_value registerCode;
-    InputerImpl *inputerSharePtrImpl;
+    InputerImpl *inputerSharePtrImpl = nullptr;
     bool RegisterInputer(napi_env env, napi_ref inputer);
     void UnregisterInputer(napi_env env);
     napi_value OnSetData(napi_env env, int32_t authSubType, std::vector<uint32_t> data);
