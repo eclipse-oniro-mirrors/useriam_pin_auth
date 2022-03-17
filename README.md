@@ -20,9 +20,9 @@ PINs are core assets in the system. The following security measures are taken in
 - Password data transmission: The raw PIN data is not transmitted across devices. After a user PIN is entered in the PIN input dialog box, the raw PIN data entered is transmitted to the pinauth Service ability only after unidirectional processing in the input model management innerAPI.
 - Secure storage and comparison of PIN data: The pinauth HDI defines the adaptation interfaces for device vendors. Device vendors can implement secure PIN comparison and storage in a TEE. <sup>Note 2</sup>
 
-*Note 1: To implement the PIN input dialog box, the application needs to register the PIN input dialog box with the pinauth Service ability through the input dialog box management API. The input box management API requires a high-level access permission and can be invoked only by system users.*
+Note 1: To implement the PIN input dialog box, the application needs to register the PIN input dialog box with the pinauth Service ability through the input dialog box management API. The input box management API requires a high-level access permission and can be invoked only by system users.
 
-*Note 2: The OpenHarmony framework provides pure software implementation of PIN authentication for developers to demonstrate the PIN authentication function. The pure software implementation does not include the secure storage capability.*
+Note 2: The OpenHarmony framework provides pure software implementation of PIN authentication for developers to demonstrate the PIN authentication function. The pure software implementation does not include the secure storage capability.
 
 ## Directory Structure
 
