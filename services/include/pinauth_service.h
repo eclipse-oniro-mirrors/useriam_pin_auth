@@ -127,7 +127,7 @@ private:
     std::shared_ptr<MngIQCallback> mngIQ_;
     std::shared_ptr<MngExCallback> mngEx_;
     std::shared_ptr<PinAuth> pin_;
-    uint64_t executorID_;
+    uint64_t executorID_ = 0;
     std::mutex mutex_;
     sptr<IExecutorMessenger> messenger_;
 

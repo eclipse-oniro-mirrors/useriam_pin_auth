@@ -49,9 +49,9 @@ public:
 
 private:
     std::shared_ptr<PinAuth> pin_; // CA interface
-    uint32_t command_;
-    uint64_t templateId_;
-    uint64_t scheduleId_;
+    uint32_t command_ = 0;
+    uint64_t templateId_ = 0;
+    uint64_t scheduleId_ = 0;
     std::vector<uint8_t> salt_;
     std::shared_ptr<AuthResPool::AuthAttributes> attributes_;
     sptr<AuthResPool::IExecutorMessenger> messenger_;
