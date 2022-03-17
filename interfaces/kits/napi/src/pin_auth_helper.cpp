@@ -118,26 +118,11 @@ napi_value UnregisterInputer(napi_env env, napi_callback_info info)
 
 napi_value Init(napi_env env, napi_value exports)
 {
-    napi_status status;
-    napi_property_descriptor exportFuncs[] = {
-        DECLARE_NAPI_FUNCTION("constructor", OHOS::PinAuth::Constructor),
-    };
-    status = napi_define_properties(env, exports, sizeof(exportFuncs) / sizeof(*exportFuncs), exportFuncs);
-    if (status != napi_ok) {
-        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_define_properties failed");
-    }
-    status = napi_set_named_property(env, exports, "PINAuth", GetCtor(env));
+    napi_status status = napi_set_named_property(env, exports, "PINAuth", GetCtor(env));
     if (status != napi_ok) {
         PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_set_named_property failed");
     }
     return exports;
-}
-
-napi_value Constructor(napi_env env, napi_callback_info info)
-{
-    napi_value thisVar = nullptr;
-    NAPI_CALL(env, napi_new_instance(env, GetCtor(env), 0, nullptr, &thisVar));
-    return thisVar;
 }
 
 napi_value GetCtor(napi_env env)
