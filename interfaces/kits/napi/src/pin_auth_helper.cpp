@@ -118,8 +118,7 @@ napi_value UnregisterInputer(napi_env env, napi_callback_info info)
 
 napi_value Init(napi_env env, napi_value exports)
 {
-    napi_status status;
-    status = napi_set_named_property(env, exports, "PINAuth", GetCtor(env));
+    napi_status status = napi_set_named_property(env, exports, "PINAuth", GetCtor(env));
     if (status != napi_ok) {
         PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_set_named_property failed");
     }
