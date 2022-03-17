@@ -42,6 +42,7 @@ static pthread_mutex_t g_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 PinAuth::PinAuth() { }
 
+/* This is for example only, Should be implemented in trusted environment. */
 int32_t PinAuth::Init()
 {
     if (pthread_mutex_lock(&g_mutex) != 0) {
@@ -69,6 +70,7 @@ int32_t PinAuth::Init()
     return RESULT_SUCCESS;
 }
 
+/* This is for example only, Should be implemented in trusted environment. */
 int32_t PinAuth::Close()
 {
     if (pthread_mutex_lock(&g_mutex) != 0) {
@@ -86,6 +88,7 @@ int32_t PinAuth::Close()
     return RESULT_SUCCESS;
 }
 
+/* This is for example only, Should be implemented in trusted environment. */
 int32_t PinAuth::PinResultToCoAuthResult(int resultCode)
 {
     LOG_INFO("PinAuth::PinResultToCoAuthResult enter");
@@ -125,6 +128,7 @@ static ResultCode SetResultTlv(Buffer *retTlv, std::vector<uint8_t> &resultTlv)
     return RESULT_SUCCESS;
 }
 
+/* This is for example only, Should be implemented in trusted environment. */
 int32_t PinAuth::EnrollPin(uint64_t scheduleId, uint64_t subType, std::vector<uint8_t> &salt,
     std::vector<uint8_t> &pinData, std::vector<uint8_t> &resultTlv)
 {
@@ -172,6 +176,7 @@ ERROR:
     return PinResultToCoAuthResult(result);
 }
 
+/* This is for example only, Should be implemented in trusted environment. */
 int32_t PinAuth::GetSalt(uint64_t templateId, std::vector<uint8_t> &salt)
 {
     if (pthread_mutex_lock(&g_mutex) != 0) {
@@ -199,6 +204,7 @@ int32_t PinAuth::GetSalt(uint64_t templateId, std::vector<uint8_t> &salt)
     return RESULT_SUCCESS;
 }
 
+/* This is for example only, Should be implemented in trusted environment. */
 int32_t PinAuth::AuthPin(uint64_t scheduleId, uint64_t templateId, std::vector<uint8_t> &pinData,
     std::vector<uint8_t> &resultTlv)
 {
@@ -248,6 +254,7 @@ ERROR:
     return PinResultToCoAuthResult(result);
 }
 
+/* This is for example only, Should be implemented in trusted environment. */
 int32_t PinAuth::QueryPinInfo(uint64_t templateId, PinCredentialInfo &pinCredentialInfoRet)
 {
     if (pthread_mutex_lock(&g_mutex) != 0) {
@@ -279,6 +286,7 @@ ERROR:
     return PinResultToCoAuthResult(result);
 }
 
+/* This is for example only, Should be implemented in trusted environment. */
 int32_t PinAuth::DeleteTemplate(uint64_t templateId)
 {
     if (pthread_mutex_lock(&g_mutex) != 0) {
@@ -299,6 +307,7 @@ int32_t PinAuth::DeleteTemplate(uint64_t templateId)
     return PinResultToCoAuthResult(result);
 }
 
+/* This is for example only, Should be implemented in trusted environment. */
 int32_t PinAuth::GetExecutorInfo(std::vector<uint8_t> &pubKey, uint32_t &esl, uint64_t &authAbility)
 {
     if (pthread_mutex_lock(&g_mutex) != 0) {
@@ -335,6 +344,7 @@ ERROR:
     return PinResultToCoAuthResult(result);
 }
 
+/* This is for example only, Should be implemented in trusted environment. */
 int32_t PinAuth::VerifyTemplateData(std::vector<uint64_t> templateIdList)
 {
     if (pthread_mutex_lock(&g_mutex) != 0) {

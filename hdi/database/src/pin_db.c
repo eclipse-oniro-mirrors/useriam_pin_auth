@@ -231,6 +231,7 @@ static ResultCode GenerateFileName(uint64_t templateId, const char *prefix, cons
     return RESULT_SUCCESS;
 }
 
+/* This is for example only, Should be implemented in trusted environment. */
 static ResultCode ReadPinFile(uint8_t *data, uint32_t dataLen, uint64_t templateId, const char *suffix)
 {
     FileOperator *fileOp = GetFileOperator(DEFAULT_FILE_OPERATOR);
@@ -254,6 +255,7 @@ static ResultCode ReadPinFile(uint8_t *data, uint32_t dataLen, uint64_t template
     return RESULT_SUCCESS;
 }
 
+/* This is for example only, Should be implemented in trusted environment. */
 static ResultCode WritePinFile(uint8_t *data, uint32_t dataLen, uint64_t templateId, const char *suffix)
 {
     FileOperator *fileOp = GetFileOperator(DEFAULT_FILE_OPERATOR);
@@ -278,6 +280,7 @@ static ResultCode WritePinFile(uint8_t *data, uint32_t dataLen, uint64_t templat
     return RESULT_SUCCESS;
 }
 
+/* This is for example only, Should be implemented in trusted environment. */
 static ResultCode RemovePinFile(uint64_t templateId, const char *suffix)
 {
     FileOperator *fileOp = GetFileOperator(DEFAULT_FILE_OPERATOR);
@@ -360,13 +363,14 @@ static uint32_t SearchPinById(uint64_t templateId)
 
 static ResultCode DelPin(uint32_t index)
 {
+    /* This is for example only, Should be implemented in trusted environment. */
     ResultCode ret = RemoveAllFile(g_pinDbOp.pinIndex[index].templateId);
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("Remove pin file fail.");
         return ret;
     }
     LOG_INFO("DelPin succ.");
-    /* ignore anti brute file remove result, return success when crypto file remove success */
+    /* ignore anti brute file remove result, return success when crypto file remove success. */
     return RESULT_SUCCESS;
 }
 
@@ -596,7 +600,7 @@ static ResultCode InitAntiBruteInfo(AntiBruteInfo *info)
 
 ResultCode AddPin(PinEnrollParam *pinEnrollParam, uint64_t *templateId)
 {
-    if (pinEnrollParam  == NULL || templateId == NULL) {
+    if (pinEnrollParam == NULL || templateId == NULL) {
         LOG_ERROR("get invalid params.");
         return RESULT_BAD_PARAM;
     }
@@ -606,7 +610,10 @@ ResultCode AddPin(PinEnrollParam *pinEnrollParam, uint64_t *templateId)
         return ret;
     }
 
-    /* Generate new templateId, Transferred to tid and returned */
+    /*
+     * Generate new templateId, Transferred to tid and returned.
+     * This is for example only, Should be implemented in trusted environment.
+     */
     ret = WritePinFile(pinEnrollParam->pinData, CONST_PIN_DATA_LEN, *templateId, CRYPTO_SUFFIX);
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("WriteCryptoFile fail.");
@@ -631,7 +638,7 @@ ResultCode AddPin(PinEnrollParam *pinEnrollParam, uint64_t *templateId)
     }
     ret = WritePinFile((uint8_t *)initAntiBrute, sizeof(AntiBruteInfo), *templateId, ANTI_BRUTE_SUFFIX);
     if (ret != RESULT_SUCCESS) {
-        LOG_ERROR("WritentiBruteFile fail.");
+        LOG_ERROR("WriteAntiBruteFile fail.");
         goto EXIT;
     }
     LOG_INFO("AddPin succ.");
@@ -678,7 +685,7 @@ static ResultCode GetAntiBruteCountById(uint64_t templateId, uint32_t *count)
     }
 
     AntiBruteInfo initAntiBrute = {INIT_AUTH_ERROR_COUNT, INIT_START_FREEZE_TIMES};
-    ret = ReadPinFile((uint8_t *)&initAntiBrute, sizeof(initAntiBrute), templateId, ANTI_BRUTE_SUFFIX);
+    ret = ReadPinFile((uint8_t *)&initAntiBrute, sizeof(AntiBruteInfo), templateId, ANTI_BRUTE_SUFFIX);
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("read AntiBrute startFreezeTime fail.");
         return ret;
@@ -703,7 +710,7 @@ static ResultCode SetAntiBruteInfoById(uint64_t templateId, uint32_t count, uint
     }
 
     AntiBruteInfo initAntiBrute = {count, startFreezeTime};
-    ret = WritePinFile((uint8_t *)&initAntiBrute, sizeof(initAntiBrute), templateId, ANTI_BRUTE_SUFFIX);
+    ret = WritePinFile((uint8_t *)&initAntiBrute, sizeof(AntiBruteInfo), templateId, ANTI_BRUTE_SUFFIX);
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("write AntiBruteFileName fail.");
         return ret;
@@ -743,7 +750,7 @@ ResultCode GetAntiBruteInfo(uint64_t templateId, uint32_t *authErrorConut, uint6
     }
 
     AntiBruteInfo initAntiBrute = {INIT_AUTH_ERROR_COUNT, INIT_START_FREEZE_TIMES};
-    ResultCode ret = ReadPinFile((uint8_t *)&initAntiBrute, sizeof(initAntiBrute), templateId, ANTI_BRUTE_SUFFIX);
+    ResultCode ret = ReadPinFile((uint8_t *)&initAntiBrute, sizeof(AntiBruteInfo), templateId, ANTI_BRUTE_SUFFIX);
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("read AntiBrute startFreezeTime fail.");
         return ret;
@@ -827,7 +834,7 @@ static uint32_t ComputeRemainingTimes(uint32_t errorCount)
     if (errorCount >= ATTI_BRUTE_FIRST_STAGE) {
         return REMAINING_TIMES_FREEZE;
     }
-    return ANTI_BRUTE_COUNT_FREQUENCY - (errorCount  - FIRST_ANTI_BRUTE_COUNT) % ANTI_BRUTE_COUNT_FREQUENCY;
+    return ANTI_BRUTE_COUNT_FREQUENCY - (errorCount - FIRST_ANTI_BRUTE_COUNT) % ANTI_BRUTE_COUNT_FREQUENCY;
 }
 
 ResultCode GetRemainTimes(uint64_t templateId, uint32_t *remainingAuthTimes, uint32_t authErrorConut)
@@ -840,7 +847,7 @@ ResultCode GetRemainTimes(uint64_t templateId, uint32_t *remainingAuthTimes, uin
     return RESULT_SUCCESS;
 }
 
-static ResultCode ClearAntiBruteParamsById(uint64_t templateId)
+static ResultCode ClearAntiBruteInfoById(uint64_t templateId)
 {
     uint32_t index = SearchPinById(templateId);
     if (index == MAX_CRYPTO_INFO_SIZE) {
@@ -849,7 +856,7 @@ static ResultCode ClearAntiBruteParamsById(uint64_t templateId)
     }
     ResultCode ret = SetAntiBruteInfoById(templateId, 0, INIT_START_FREEZE_TIMES);
     if (ret != RESULT_SUCCESS) {
-        LOG_ERROR("ClearAntiBruteCountById fail.");
+        LOG_ERROR("SetAntiBruteInfoById fail.");
     }
     return ret;
 }
@@ -862,9 +869,9 @@ static ResultCode UpdateAntiBruteFile(uint64_t templateId, int32_t authResultSuc
     }
 
     if (authResultSucc == RESULT_SUCCESS) {
-        ResultCode ret = ClearAntiBruteParamsById(templateId);
+        ResultCode ret = ClearAntiBruteInfoById(templateId);
         if (ret != RESULT_SUCCESS) {
-            LOG_ERROR("ClearAntiBruteParamsById fail.");
+            LOG_ERROR("ClearAntiBruteInfoById fail.");
         }
         return ret;
     }
@@ -920,6 +927,7 @@ ResultCode AuthPinById(uint8_t *inputData, uint32_t inputDataLen, uint64_t templ
         return RESULT_GENERAL_ERROR;
     }
 
+    /* This is for example only, Should be implemented in trusted environment. */
     ResultCode compareRet = RESULT_COMPARE_FAIL;
     ResultCode ret = ReadPinFile(storeData, storeDataLen, templateId, CRYPTO_SUFFIX);
     if (ret != RESULT_SUCCESS) {
