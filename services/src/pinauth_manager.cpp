@@ -32,7 +32,7 @@ bool PinAuthManager::RegisterInputer(uint64_t uid, sptr<IRemoteInputer> &inputer
         return false;
     } else {
         pinAuthInputerMap_.emplace(uid, inputer);
-        sptr<IRemoteObject::DeathRecipient> dr = new (std::nothrow) ResPinauthInputerDeathRecipient(uid);
+        sptr<IRemoteObject::DeathRecipient> dr = new ResPinauthInputerDeathRecipient(uid);
         if (!inputer->AsObject()->AddDeathRecipient(dr)) {
             COAUTH_HILOGE(MODULE_SERVICE, "Failed to add death recipient ResIExecutorCallbackDeathRecipient");
         }
@@ -57,7 +57,7 @@ void PinAuthManager::Execute(uint64_t uid, uint64_t subType, uint64_t scheduleId
 {
     sptr<IRemoteInputer> inputer = getInputerLock(uid);
     if (inputer != nullptr) {
-        sptr<PinAuthController> controller = new (std::nothrow) PinAuthController();
+        sptr<PinAuthController> controller = new PinAuthController();
         controller->SetMessenger(messenger_);
         controller->SaveParam(scheduleId, pin, attributes);
         setPinAuthControllerLock(scheduleId, controller);
