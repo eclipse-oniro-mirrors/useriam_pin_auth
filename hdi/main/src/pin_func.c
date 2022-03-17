@@ -132,6 +132,7 @@ ResultCode DoDeleteTemplate(uint64_t templateId)
     return RESULT_SUCCESS;
 }
 
+/* This is for example only, Should be implemented in trusted environment. */
 ResultCode GenerateKeyPair()
 {
     DestoryKeyPair(g_keyPair);
@@ -144,6 +145,7 @@ ResultCode GenerateKeyPair()
     return RESULT_SUCCESS;
 }
 
+/* This is for example only, Should be implemented in trusted environment. */
 ResultCode DoGetExecutorInfo(PinExecutorInfo *pinExecutorInfo)
 {
     if (pinExecutorInfo == NULL) {
