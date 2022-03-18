@@ -218,9 +218,11 @@ napi_value InputDataConstructor(napi_env env, napi_callback_info info)
     InputerHolder *inputerHolder = static_cast<InputerHolder *>(data);
     if (thisVar == nullptr) {
         PINAUTH_HILOGI(MODULE_JS_NAPI, "InputDataConstructor thisVar is nullptr");
+        return nullptr;
     }
     if (inputerHolder == nullptr) {
         PINAUTH_HILOGI(MODULE_JS_NAPI, "InputDataConstructor inputerData is nullptr");
+        return nullptr;
     }
     NAPI_CALL(env, napi_wrap(
         env,
