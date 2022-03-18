@@ -48,7 +48,6 @@ static void GetDataWork(uv_work_t* work, int status)
     if (inputerHolder == nullptr) {
         PINAUTH_HILOGE(MODULE_JS_NAPI, "inputerHolder is null");
         delete work;
-        work = nullptr;
         return;
     }
     napi_value inputerDataVarCtor;
@@ -87,7 +86,6 @@ static void GetDataWork(uv_work_t* work, int status)
 EXIT:
     delete inputerHolder;
     delete work;
-    work = nullptr;
 }
 
 void InputerImpl::OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData)
