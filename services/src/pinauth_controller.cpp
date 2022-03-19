@@ -75,7 +75,7 @@ void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data
         return;
     }
 
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData data size is : [%{public}zu]", data.size());
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData data size is : [%{public}u]", data.size());
     int32_t ret = SUCCESS;
     if (data.size() == 0) {
         PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::onSetData data is null");

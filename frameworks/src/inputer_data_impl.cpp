@@ -34,7 +34,7 @@ void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
     PINAUTH_HILOGI(MODULE_FRAMEWORKS, "InputerDataImpl::OnSetData start");
     std::vector<uint8_t> scrypt;
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "InputerDataImpl::OnSetData data size is : %{public}zu", data.size());
+    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "InputerDataImpl::OnSetData data size is : %{public}u", data.size());
     getScrypt(data, scrypt);
     remoteInputerData_->OnSetData(authSubType, scrypt);
 }
