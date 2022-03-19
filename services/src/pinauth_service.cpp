@@ -35,7 +35,7 @@ static PinAuthService *pinAuthService = nullptr;
 
 PinAuthService::PinAuthService()
     : SystemAbility(SUBSYS_USERIAM_SYS_ABILITY_PINAUTH, true),
-      serviceRunningState_(ServiceRunningState::STATE_NOT_START)
+    serviceRunningState_(ServiceRunningState::STATE_NOT_START)
 {
     pinAuthService = this;
 }
