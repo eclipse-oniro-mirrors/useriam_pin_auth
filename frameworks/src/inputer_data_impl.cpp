@@ -32,6 +32,7 @@ InputerDataImpl::~InputerDataImpl()
 
 void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
+    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "InputerDataImpl::OnSetData start");
     std::vector<uint8_t> scrypt;
     PINAUTH_HILOGI(MODULE_FRAMEWORKS, "InputerDataImpl::OnSetData data size is : %{public}zu", data.size());
     getScrypt(data, scrypt);
@@ -40,13 +41,14 @@ void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 
 void InputerDataImpl::getScrypt(std::vector<uint8_t> data, std::vector<uint8_t> &scrypt)
 {
+    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "InputerDataImpl::OnSetData start");
     EVP_PKEY_CTX *pctx;
     unsigned char out[OUT_LENGTH];
 
     size_t outlen = sizeof(out);
     pctx = EVP_PKEY_CTX_new_id(EVP_PKEY_SCRYPT, NULL);
     if (EVP_PKEY_derive_init(pctx) <= 0) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "PinAuth InputerDataImpl::getScrypt EVP_PKEY_derive_init error");
+        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "InputerDataImpl::getScrypt EVP_PKEY_derive_init error");
         return;
     }
     if (EVP_PKEY_CTX_set1_pbe_pass(pctx, data.data(), data.size()) <= 0) {
@@ -55,27 +57,27 @@ void InputerDataImpl::getScrypt(std::vector<uint8_t> data, std::vector<uint8_t> 
         return;
     }
     if (EVP_PKEY_CTX_set1_scrypt_salt(pctx, salt_.data(), salt_.size()) <= 0) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "PinAuth InputerDataImpl::getScrypt EVP_PKEY_CTX_set1_scrypt_salt error");
+        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "InputerDataImpl::getScrypt EVP_PKEY_CTX_set1_scrypt_salt error");
         EVP_PKEY_CTX_free(pctx);
         return;
     }
     if (EVP_PKEY_CTX_set_scrypt_N(pctx, SCRYPT_N) <= 0) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "PinAuth InputerDataImpl::getScrypt EVP_PKEY_CTX_set_scrypt_N error");
+        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "InputerDataImpl::getScrypt EVP_PKEY_CTX_set_scrypt_N error");
         EVP_PKEY_CTX_free(pctx);
         return;
     }
     if (EVP_PKEY_CTX_set_scrypt_r(pctx, SCRYPT_R) <= 0) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "PinAuth InputerDataImpl::getScrypt EVP_PKEY_CTX_set_scrypt_r error");
+        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "InputerDataImpl::getScrypt EVP_PKEY_CTX_set_scrypt_r error");
         EVP_PKEY_CTX_free(pctx);
         return;
     }
     if (EVP_PKEY_CTX_set_scrypt_p(pctx, SCRYPT_P) <= 0) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "PinAuth InputerDataImpl::getScrypt EVP_PKEY_CTX_set_scrypt_p error");
+        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "InputerDataImpl::getScrypt EVP_PKEY_CTX_set_scrypt_p error");
         EVP_PKEY_CTX_free(pctx);
         return;
     }
     if (EVP_PKEY_derive(pctx, out, &outlen) <= 0) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "PinAuth InputerDataImpl::getScrypt EVP_PKEY_derive error");
+        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "InputerDataImpl::getScrypt EVP_PKEY_derive error");
         EVP_PKEY_CTX_free(pctx);
         return;
     }

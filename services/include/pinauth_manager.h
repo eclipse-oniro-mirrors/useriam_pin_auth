@@ -53,7 +53,6 @@ private:
     void setPinAuthControllerLock(uint64_t scheduleId, sptr<PinAuthController> controller);
     sptr<IRemoteInputer> getInputerLock(uint64_t uid);
 
-    // Death monitoring class
     class ResPinauthInputerDeathRecipient : public IRemoteObject::DeathRecipient {
     public:
         DISALLOW_COPY_AND_MOVE(ResPinauthInputerDeathRecipient);

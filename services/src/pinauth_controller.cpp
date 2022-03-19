@@ -40,6 +40,7 @@ PinAuthController::~PinAuthController()
 
 bool PinAuthController::OnStart(std::vector<uint8_t> &salt)
 {
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::OnStart start");
     int32_t ret = attributes_->GetUint32Value(AUTH_SCHEDULE_MODE, command_);
     if (ret != SUCCESS) {
         PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::OnStart GetUint32Value AUTH_SCHEDULE_MODE error");
@@ -47,7 +48,7 @@ bool PinAuthController::OnStart(std::vector<uint8_t> &salt)
     }
     if (command_ == COMMAND_ENROLL_PIN) {
         NewSalt(salt);
-        PINAUTH_HILOGI(MODULE_COMMON, "EnrollPin finish");
+        PINAUTH_HILOGI(MODULE_COMMON, "PinAuthController::OnStart NewSalt finish");
     } else if (command_ == COMMAND_AUTH_PIN) {
         ret = attributes_->GetUint64Value(AUTH_TEMPLATE_ID, templateId_);
         if (ret != SUCCESS) {
@@ -59,15 +60,18 @@ bool PinAuthController::OnStart(std::vector<uint8_t> &salt)
             PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::OnStart GetSalt error");
             return false;
         }
+        PINAUTH_HILOGI(MODULE_COMMON, "PinAuthController::OnStart GetSalt finish");
+    } else {
+        PINAUTH_HILOGE(MODULE_COMMON, "PinAuthController::OnStart command unknown %{public}u", command_);
+        return false;
     }
-    PINAUTH_HILOGI(MODULE_COMMON, "AuthPin finish");
     salt_ = salt;
     return true;
 }
 
 void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
-    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthController::OnSetData enter");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::OnSetData start");
     std::lock_guard<std::mutex> guard(mutex_);
     if (canceled) {
         PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData event has canceled");
@@ -87,11 +91,11 @@ void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data
         if (command_ == COMMAND_ENROLL_PIN) {
             PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_ENROLL_PIN");
             ret = pin_->EnrollPin(scheduleId_, static_cast<uint64_t>(authSubType), salt_, data, result);
-            PINAUTH_HILOGI(MODULE_COMMON, "---------EnrollPin finish----------");
+            PINAUTH_HILOGI(MODULE_COMMON, "EnrollPin finish %{public}d", ret);
         } else if (command_ == COMMAND_AUTH_PIN) {
             PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_AUTH_PIN");
             ret = pin_->AuthPin(scheduleId_, templateId_, data, result);
-            PINAUTH_HILOGI(MODULE_COMMON, "----------AuthPin finish %{public}d-----------", ret);
+            PINAUTH_HILOGI(MODULE_COMMON, "AuthPin finish %{public}d", ret);
         }
     }
 
@@ -106,14 +110,14 @@ void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data
         PINAUTH_HILOGE(MODULE_COMMON, "PinAuthController::onSetData messenger_ is null");
     }
 
-    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthController::OnSetData leave");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::OnSetData end");
 }
 
 void PinAuthController::SaveParam(uint64_t scheduleId, std::shared_ptr<PinAuth> pin,
     std::shared_ptr<AuthResPool::AuthAttributes> attributes)
 {
     std::lock_guard<std::mutex> guard(mutex_);
-    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthController::SaveParam enter");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::SaveParam start");
     scheduleId_ = scheduleId;
     pin_ = pin;
     attributes_ = attributes;
@@ -121,14 +125,14 @@ void PinAuthController::SaveParam(uint64_t scheduleId, std::shared_ptr<PinAuth> 
 
 void PinAuthController::SetMessenger(const sptr<AuthResPool::IExecutorMessenger> &messenger)
 {
-    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthController::SetMessenger enter");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::SetMessenger start");
     std::lock_guard<std::mutex> guard(mutex_);
     messenger_ = messenger;
 }
 
 void PinAuthController::Cancel()
 {
-    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthController::Cancel enter");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::Cancel start");
     std::lock_guard<std::mutex> guard(mutex_);
     canceled = true;
 }

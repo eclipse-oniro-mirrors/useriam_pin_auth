@@ -21,12 +21,12 @@ namespace UserIAM {
 namespace PinAuth {
 PinAuthProxy::PinAuthProxy(const sptr<IRemoteObject> &object) : IRemoteProxy<IRemotePinAuth>(object)
 {
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "PinAuthProxy::PinAuthProxy");
+    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "PinAuthProxy::PinAuthProxy start");
 }
 
 PinAuthProxy::~PinAuthProxy()
 {
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "PinAuthProxy::~PinAuthProxy");
+    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "PinAuthProxy::~PinAuthProxy start");
 }
 
 bool PinAuthProxy::RegisterInputer(sptr<IRemoteInputer> inputer)
@@ -34,13 +34,14 @@ bool PinAuthProxy::RegisterInputer(sptr<IRemoteInputer> inputer)
     MessageParcel data;
     MessageParcel reply;
 
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "PinAuthProxy::RegisterInputer");
+    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "PinAuthProxy::RegisterInputer start");
     if (!data.WriteInterfaceToken(PinAuthProxy::GetDescriptor())) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "write descriptor failed!");
+        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "write descriptor failed");
         return false;
     }
 
     if (!data.WriteRemoteObject(inputer->AsObject())) {
+        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "write inputer failed");
         return false;
     }
 
@@ -60,7 +61,7 @@ void PinAuthProxy::UnRegisterInputer()
     MessageParcel data;
     MessageParcel reply;
 
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "PinAuthProxy::UnRegisterInputer");
+    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "PinAuthProxy::UnRegisterInputer start");
     if (!data.WriteInterfaceToken(PinAuthProxy::GetDescriptor())) {
         PINAUTH_HILOGE(MODULE_FRAMEWORKS, "write descriptor failed!");
         return;
@@ -74,7 +75,7 @@ void PinAuthProxy::UnRegisterInputer()
 
 bool PinAuthProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, bool isSync)
 {
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "PinAuthProxy::SendRequest");
+    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "PinAuthProxy::SendRequest start");
     sptr<IRemoteObject> remote = Remote();
     if (remote == nullptr) {
         PINAUTH_HILOGE(MODULE_FRAMEWORKS, "failed to get remote.");

@@ -25,23 +25,23 @@ void IInputerProxy::OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sp
 {
     MessageParcel data;
     MessageParcel reply;
-    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerProxy::OnGetData enter");
+    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerProxy::OnGetData start");
     if (!data.WriteInterfaceToken(IInputerProxy::GetDescriptor())) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "WriteInterfaceToken failed!");
+        PINAUTH_HILOGE(MODULE_SERVICE, "WriteInterfaceToken failed");
         return;
     }
     if (!data.WriteInt32(authSubType)) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "failed to WriteInt32(authSubType).");
+        PINAUTH_HILOGE(MODULE_SERVICE, "failed to WriteInt32");
         return;
     }
 
     if (!data.WriteUInt8Vector(salt)) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "failed to WriteUInt8Vector(salt).");
+        PINAUTH_HILOGE(MODULE_SERVICE, "failed to WriteUInt8Vector");
         return;
     }
 
     if (!data.WriteRemoteObject(inputerData->AsObject())) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "failed to WriteRemoteObject.");
+        PINAUTH_HILOGE(MODULE_SERVICE, "failed to WriteRemoteObject");
         return;
     }
     bool ret = SendRequest(static_cast<uint32_t>(IRemoteInputer::ON_GET_DATA), data, reply);
@@ -53,10 +53,10 @@ void IInputerProxy::OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sp
 
 bool IInputerProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerProxy::SendRequest enter code:%{public}u", code);
+    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerProxy::SendRequest start code:%{public}u", code);
     sptr<IRemoteObject> remote = Remote();
     if (remote == nullptr) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "failed to get remote.");
+        PINAUTH_HILOGE(MODULE_SERVICE, "failed to get remote");
         return false;
     }
     MessageOption option(MessageOption::TF_ASYNC);
