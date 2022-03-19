@@ -95,7 +95,7 @@ void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data
         }
     }
 
-    PINAUTH_HILOGI(MODULE_COMMON, "PinAuthController::onSetData finalResult is Unpack");
+    PINAUTH_HILOGI(MODULE_COMMON, "PinAuthController::onSetData finalResult is unpack");
     finalResult->SetUint8ArrayValue(AUTH_RESULT, result);
     if (messenger_ != nullptr) {
         int32_t sendRet = messenger_->Finish(scheduleId_, PIN, ret, finalResult);

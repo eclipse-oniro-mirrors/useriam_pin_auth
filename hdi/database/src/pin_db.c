@@ -739,7 +739,7 @@ ResultCode GetSubType(uint64_t templateId, uint64_t *subType)
 ResultCode GetAntiBruteInfo(uint64_t templateId, uint32_t *authErrorConut, uint64_t *startFreezeTime)
 {
     if (authErrorConut == NULL || startFreezeTime == NULL || templateId == INVALID_TEMPLATE_ID) {
-        LOG_ERROR("check DoQueryPin param fail!");
+        LOG_ERROR("check GetAntiBruteInfo param fail!");
         return RESULT_BAD_PARAM;
     }
 
