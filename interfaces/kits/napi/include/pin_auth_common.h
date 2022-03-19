@@ -30,7 +30,6 @@ constexpr int OK = 0;
 constexpr int FAIL = 1;
 constexpr int REGISTER_CODE = 1;
 enum class AuthSubType {
-
     /* Authentication subType six number pin. */
     PIN_SIX = 10000,
 
