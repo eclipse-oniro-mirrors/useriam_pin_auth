@@ -61,8 +61,10 @@ bool PinAuthController::OnStart(std::vector<uint8_t> &salt)
             return false;
         }
         PINAUTH_HILOGI(MODULE_COMMON, "PinAuthController::OnStart GetSalt finish");
+    } else {
+        PINAUTH_HILOGE(MODULE_COMMON, "PinAuthController::OnStart command unknown %{public}u", command_);
+        return false;
     }
-    PINAUTH_HILOGI(MODULE_COMMON, "PinAuthController::OnStart finish");
     salt_ = salt;
     return true;
 }
