@@ -35,6 +35,7 @@ InputerImpl::~InputerImpl()
 
 static napi_status GetInputerInstance(InputerHolder *inputerHolder, napi_value *inputerDataVarCtor)
 {
+    PINAUTH_HILOGI(MODULE_JS_NAPI, "InputerImpl, GetCtorIInputerData start");
     napi_value cons = GetCtorIInputerData(inputerHolder->env, inputerHolder->inputerData);
     if (cons == nullptr) {
         PINAUTH_HILOGE(MODULE_JS_NAPI, "GetCtorIInputerData failed");
@@ -45,6 +46,7 @@ static napi_status GetInputerInstance(InputerHolder *inputerHolder, napi_value *
 
 static void GetDataWork(uv_work_t* work, int status)
 {
+    PINAUTH_HILOGI(MODULE_JS_NAPI, "InputerImpl, GetDataWork start");
     InputerHolder *inputerHolder = reinterpret_cast<InputerHolder *>(work->data);
     if (inputerHolder == nullptr) {
         PINAUTH_HILOGE(MODULE_JS_NAPI, "inputerHolder is null");
@@ -84,6 +86,7 @@ static void GetDataWork(uv_work_t* work, int status)
         PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_call_function failed");
         goto EXIT;
     }
+
 EXIT:
     delete inputerHolder;
     delete work;
@@ -91,6 +94,7 @@ EXIT:
 
 void InputerImpl::OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData)
 {
+    PINAUTH_HILOGI(MODULE_JS_NAPI, "InputerImpl::OnGetData start");
     uv_loop_s *loop(nullptr);
     napi_get_uv_event_loop(env_, &loop);
     if (loop == nullptr) {
@@ -118,6 +122,7 @@ void InputerImpl::OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::
 
 napi_value GetCtorIInputerData(napi_env env, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData)
 {
+    PINAUTH_HILOGI(MODULE_JS_NAPI, "InputerImpl, GetCtorIInputerData start");
     if (inputerData == nullptr) {
         PINAUTH_HILOGI(MODULE_JS_NAPI, "GetCtorIInputerData inputerData nullptr");
         return nullptr;
@@ -140,6 +145,7 @@ napi_value GetCtorIInputerData(napi_env env, std::shared_ptr<OHOS::UserIAM::PinA
 
 static napi_value HandleSetData(napi_env env, napi_value *args, size_t argcAsync, InputerHolder *inputerHolder)
 {
+    PINAUTH_HILOGI(MODULE_JS_NAPI, "InputerImpl, HandleSetData start");
     if (argcAsync != PIN_PARAMS_TWO) {
         PINAUTH_HILOGE(MODULE_JS_NAPI, "InputerImpl, HandleSetData get bad argcAsync");
         return nullptr;
@@ -186,6 +192,7 @@ static napi_value HandleSetData(napi_env env, napi_value *args, size_t argcAsync
 
 napi_value OnSetData(napi_env env, napi_callback_info info)
 {
+    PINAUTH_HILOGI(MODULE_JS_NAPI, "InputerImpl, OnSetData start");
     size_t argcAsync = PIN_PARAMS_TWO;
     napi_value thisVar = nullptr;
     napi_value args[PIN_PARAMS_TWO] = {nullptr};

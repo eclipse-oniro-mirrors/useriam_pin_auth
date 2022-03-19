@@ -30,25 +30,21 @@ constexpr int OK = 0;
 constexpr int FAIL = 1;
 constexpr int REGISTER_CODE = 1;
 enum class AuthSubType {
-    /**
-     * Authentication sub type six number pin.
-     */
+
+    /* Authentication sub type six number pin. */
     PIN_SIX = 10000,
-    /**
-     * Authentication sub type self defined number pin.
-     */
+
+    /* Authentication sub type self defined number pin. */
     PIN_NUMBER = 10001,
-    /**
-     * Authentication sub type 2D face.
-     */
+
+    /* Authentication sub type 2D face. */
     PIN_MIXED = 10002,
-    /**
-     * Authentication sub type 2D face.
-     */
+
+    /* Authentication sub type 2D face. */
+
     FACE_2D = 20000,
-    /**
-     * Authentication sub type 3D face.
-     */
+
+    /* Authentication sub type 3D face. */
     FACE_3D = 20001
 };
 } // namespace PinAuth

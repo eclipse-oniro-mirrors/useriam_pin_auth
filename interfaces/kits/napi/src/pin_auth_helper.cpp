@@ -118,15 +118,17 @@ napi_value UnregisterInputer(napi_env env, napi_callback_info info)
 
 napi_value Init(napi_env env, napi_value exports)
 {
+    PINAUTH_HILOGI(MODULE_JS_NAPI, "PinAuthHelper, Init start");
     napi_status status = napi_set_named_property(env, exports, "PINAuth", GetCtor(env));
     if (status != napi_ok) {
-        PINAUTH_HILOGE(MODULE_JS_NAPI, "napi_set_named_property failed");
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "PinAuthHelper, napi_set_named_property failed");
     }
     return exports;
 }
 
 napi_value GetCtor(napi_env env)
 {
+    PINAUTH_HILOGI(MODULE_JS_NAPI, "PinAuthHelper, GetCtor start");
     napi_value cons = nullptr;
     napi_property_descriptor clzDes[] = {
         DECLARE_NAPI_FUNCTION("registerInputer", OHOS::PinAuth::RegisterInputer),
@@ -139,6 +141,7 @@ napi_value GetCtor(napi_env env)
 
 napi_value AuthSubTypeConstructor(napi_env env)
 {
+    PINAUTH_HILOGI(MODULE_JS_NAPI, "PinAuthHelper, AuthSubTypeConstructor start");
     napi_value authSubType = nullptr;
     napi_value pinSix = nullptr;
     napi_value pinNumber = nullptr;
@@ -162,6 +165,7 @@ napi_value AuthSubTypeConstructor(napi_env env)
 
 napi_value EnumExport(napi_env env, napi_value exports)
 {
+    PINAUTH_HILOGI(MODULE_JS_NAPI, "PinAuthHelper, EnumExport start");
     napi_property_descriptor descriptors[] = {
         DECLARE_NAPI_PROPERTY("AuthSubType", AuthSubTypeConstructor(env)),
     };
@@ -171,6 +175,7 @@ napi_value EnumExport(napi_env env, napi_value exports)
 
 static napi_value ModuleInit(napi_env env, napi_value exports)
 {
+    PINAUTH_HILOGI(MODULE_JS_NAPI, "PinAuthHelper, ModuleInit start");
     napi_value val = Init(env, exports);
     val = EnumExport(env, val);
     return val;
@@ -178,8 +183,8 @@ static napi_value ModuleInit(napi_env env, napi_value exports)
 extern "C" __attribute__((constructor)) void RegisterModule(void)
 {
     napi_module module = {
-        .nm_version = 1, // NAPI v1
-        .nm_flags = 0,                     // normal
+        .nm_version = 1,
+        .nm_flags = 0,
         .nm_filename = nullptr,
         .nm_register_func = ModuleInit,
         .nm_modname = "pinAuth",

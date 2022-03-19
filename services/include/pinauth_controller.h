@@ -48,7 +48,7 @@ public:
     void Cancel();
 
 private:
-    std::shared_ptr<PinAuth> pin_; // CA interface
+    std::shared_ptr<PinAuth> pin_;
     uint32_t command_ = 0;
     uint64_t templateId_ = 0;
     uint64_t scheduleId_ = 0;

@@ -25,7 +25,7 @@ void IInputerProxy::OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sp
 {
     MessageParcel data;
     MessageParcel reply;
-    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerProxy::OnGetData enter");
+    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerProxy::OnGetData start");
     if (!data.WriteInterfaceToken(IInputerProxy::GetDescriptor())) {
         PINAUTH_HILOGE(MODULE_SERVICE, "WriteInterfaceToken failed!");
         return;
@@ -53,7 +53,7 @@ void IInputerProxy::OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sp
 
 bool IInputerProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerProxy::SendRequest enter code:%{public}u", code);
+    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerProxy::SendRequest start code:%{public}u", code);
     sptr<IRemoteObject> remote = Remote();
     if (remote == nullptr) {
         PINAUTH_HILOGE(MODULE_SERVICE, "failed to get remote.");

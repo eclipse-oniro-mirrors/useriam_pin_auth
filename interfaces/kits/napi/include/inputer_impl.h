@@ -48,5 +48,4 @@ typedef struct InputerHolder {
 } // namespace PinAuth
 } // namespace OHOS
 
-
 #endif // PINAUTH_INPUTERIMPL_H

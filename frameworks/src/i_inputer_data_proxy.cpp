@@ -23,7 +23,7 @@ namespace UserIAM {
 namespace PinAuth {
 void IInputerDataProxy::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "IInputerDataProxy::OnSetData");
+    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "IInputerDataProxy::OnSetData start");
     MessageParcel dataParcel;
     MessageParcel reply;
 
@@ -47,7 +47,7 @@ void IInputerDataProxy::OnSetData(int32_t authSubType, std::vector<uint8_t> data
 
 bool IInputerDataProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply)
 {
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "IInputerDataProxy::SendRequest");
+    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "IInputerDataProxy::SendRequest start");
     sptr<IRemoteObject> remote = Remote();
     if (remote == nullptr) {
         PINAUTH_HILOGE(MODULE_FRAMEWORKS, "failed to get remote.");
