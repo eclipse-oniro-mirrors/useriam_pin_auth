@@ -30,8 +30,8 @@ IInputerStub::~IInputerStub() = default;
 
 void IInputerStub::HandlerOnGetData(MessageParcel &data, MessageParcel &reply)
 {
-     PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::HandlerOnGetData start");
     int32_t authSubType = data.ReadInt32();
+    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::HandlerOnGetData start %{public}d", authSubType);
     std::vector<uint8_t> salt;
     data.ReadUInt8Vector(&salt);
     sptr<IRemoteObject> remote = data.ReadRemoteObject();
@@ -60,7 +60,7 @@ void IInputerStub::OnGetData(int32_t authSubType, std::vector<uint8_t> salt, spt
 
 int32_t IInputerStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::OnRemoteRequest start");
+    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::OnRemoteRequest start code:%{public}u", code);
     std::u16string descripter = IInputerStub::GetDescriptor();
     std::u16string remoteDescripter = data.ReadInterfaceToken();
     PINAUTH_HILOGI(MODULE_SERVICE, "IInputerStub::OnRemoteRequest descripter:%s, remoteDescripter:%s",

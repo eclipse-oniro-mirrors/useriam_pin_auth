@@ -75,7 +75,7 @@ void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data
         return;
     }
 
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData data size is : [%{public}u]", data.size());
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData data size is : [%{public}zu]", data.size());
     int32_t ret = SUCCESS;
     if (data.size() == 0) {
         PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::onSetData data is null");
@@ -114,7 +114,7 @@ void PinAuthController::SaveParam(uint64_t scheduleId, std::shared_ptr<PinAuth> 
     std::shared_ptr<AuthResPool::AuthAttributes> attributes)
 {
     std::lock_guard<std::mutex> guard(mutex_);
-    PINAUTH_HILOGD(MODULE_SERVICE, "PinAuthController::SaveParam start");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::SaveParam start");
     scheduleId_ = scheduleId;
     pin_ = pin;
     attributes_ = attributes;

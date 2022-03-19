@@ -83,7 +83,7 @@ void PinAuthService::OnStart()
     }
 
     serviceRunningState_ = ServiceRunningState::STATE_RUNNING;
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnStart(), End");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnStart, End");
 }
 
 void PinAuthService::OnStop()
@@ -93,7 +93,7 @@ void PinAuthService::OnStop()
         PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::ClosePinAuth");
     }
     serviceRunningState_ = ServiceRunningState::STATE_NOT_START;
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnStop(), End");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnStop, End");
 }
 
 bool PinAuthService::CheckPermission(const std::string &permission)
