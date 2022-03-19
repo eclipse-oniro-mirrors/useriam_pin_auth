@@ -25,10 +25,10 @@ PinAuthManager::~PinAuthManager() = default;
 bool PinAuthManager::RegisterInputer(uint64_t uid, sptr<IRemoteInputer> &inputer)
 {
     std::lock_guard<std::mutex> guard(mutex_);
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::RegisterInputer start, uid %{public}" PRIu64 " is called.", uid);
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::RegisterInputer start uid %{public}" PRIu64 " is called", uid);
     if (pinAuthInputerMap_.find(uid) != pinAuthInputerMap_.end()) {
         PINAUTH_HILOGE(MODULE_SERVICE,
-            "PinAuthManager::RegisterInputer pinAuthController is already register, do not repeat!");
+            "PinAuthManager::RegisterInputer pinAuthController is already register, do not repeat");
         return false;
     } else {
         pinAuthInputerMap_.emplace(uid, inputer);
@@ -36,7 +36,7 @@ bool PinAuthManager::RegisterInputer(uint64_t uid, sptr<IRemoteInputer> &inputer
         if (!inputer->AsObject()->AddDeathRecipient(dr)) {
             COAUTH_HILOGE(MODULE_SERVICE, "Failed to add death recipient ResIExecutorCallbackDeathRecipient");
         }
-        PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::RegisterInputer pinAuthController register start!");
+        PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::RegisterInputer pinAuthController register start");
         return true;
     }
 }
@@ -44,18 +44,18 @@ bool PinAuthManager::RegisterInputer(uint64_t uid, sptr<IRemoteInputer> &inputer
 void PinAuthManager::UnRegisterInputer(uint64_t uid)
 {
     std::lock_guard<std::mutex> guard(mutex_);
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::UnRegisterInputer start, uid %{public}" PRIu64 " is called.", uid);
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::UnRegisterInputer start uid %{public}" PRIu64 " is called", uid);
     if (pinAuthInputerMap_.find(uid) != pinAuthInputerMap_.end()) {
         pinAuthInputerMap_.erase(uid);
-        PINAUTH_HILOGE(MODULE_SERVICE, "pinAuthControllerMap erase success.");
+        PINAUTH_HILOGE(MODULE_SERVICE, "pinAuthControllerMap erase success");
     }
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::UnRegisterInputer() is called end.");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::UnRegisterInputer() is called end");
 }
 
 void PinAuthManager::Execute(uint64_t uid, uint64_t subType, uint64_t scheduleId, std::shared_ptr<PinAuth> pin,
     std::shared_ptr<AuthResPool::AuthAttributes> attributes)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::Execute start.");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::Execute start");
     sptr<IRemoteInputer> inputer = getInputerLock(uid);
     if (inputer != nullptr) {
         sptr<PinAuthController> controller = new PinAuthController();
@@ -69,7 +69,7 @@ void PinAuthManager::Execute(uint64_t uid, uint64_t subType, uint64_t scheduleId
             return;
         }
     } else {
-        PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::Execute inputer is nullptr!");
+        PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::Execute inputer is nullptr");
     }
     auto finalResult = std::make_shared<AuthResPool::AuthAttributes>();
     std::vector<uint8_t> result;
@@ -87,7 +87,7 @@ int32_t PinAuthManager::Cancel(uint64_t scheduleId, std::shared_ptr<AuthResPool:
         pinAuthConMap_.erase(scheduleId);
         return SUCCESS;
     } else {
-        PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::Cancel pinAuthController is nullptr!");
+        PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::Cancel pinAuthController is nullptr");
     }
     return FAIL;
 }
@@ -114,7 +114,7 @@ sptr<PinAuthController> PinAuthManager::getPinAuthControllerLock(uint64_t schedu
         PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::getPinAuthController has pinAuthController");
         return pinAuthController->second;
     } else {
-        PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::getPinAuthController pinAuthController is not found!");
+        PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::getPinAuthController pinAuthController is not found");
     }
     return nullptr;
 }
@@ -135,7 +135,7 @@ sptr<IRemoteInputer> PinAuthManager::getInputerLock(uint64_t uid)
         PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::getInputer has pinAuthInputer");
         return pinAuthInputer->second;
     } else {
-        PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::getInputer pinAuthInputer is not found!");
+        PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::getInputer pinAuthInputer is not found");
     }
     return nullptr;
 }
@@ -147,7 +147,7 @@ void PinAuthManager::ResPinauthInputerDeathRecipient::OnRemoteDied(const wptr<IR
 {
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::OnRemoteDied start");
     if (remote == nullptr) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthManager::OnRemoteDied, remote is nullptr");
+        PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthManager::OnRemoteDied remote is nullptr");
         return;
     }
     PinAuthManager::GetInstance().UnRegisterInputer(uid_);

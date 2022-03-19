@@ -60,8 +60,9 @@ bool PinAuthController::OnStart(std::vector<uint8_t> &salt)
             PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthController::OnStart GetSalt error");
             return false;
         }
+        PINAUTH_HILOGI(MODULE_COMMON, "PinAuthController::OnStart GetSalt finish");
     }
-    PINAUTH_HILOGI(MODULE_COMMON, "PinAuthController::OnStart AuthPin finish");
+    PINAUTH_HILOGI(MODULE_COMMON, "PinAuthController::OnStart finish");
     salt_ = salt;
     return true;
 }
@@ -88,11 +89,11 @@ void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data
         if (command_ == COMMAND_ENROLL_PIN) {
             PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_ENROLL_PIN");
             ret = pin_->EnrollPin(scheduleId_, static_cast<uint64_t>(authSubType), salt_, data, result);
-            PINAUTH_HILOGI(MODULE_COMMON, "---------EnrollPin finish %{public}d----------", ret);
+            PINAUTH_HILOGI(MODULE_COMMON, "EnrollPin finish %{public}d", ret);
         } else if (command_ == COMMAND_AUTH_PIN) {
             PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::onSetData command == COMMAND_AUTH_PIN");
             ret = pin_->AuthPin(scheduleId_, templateId_, data, result);
-            PINAUTH_HILOGI(MODULE_COMMON, "----------AuthPin finish %{public}d-----------", ret);
+            PINAUTH_HILOGI(MODULE_COMMON, "AuthPin finish %{public}d", ret);
         }
     }
 
@@ -107,7 +108,7 @@ void PinAuthController::OnSetData(int32_t authSubType, std::vector<uint8_t> data
         PINAUTH_HILOGE(MODULE_COMMON, "PinAuthController::onSetData messenger_ is null");
     }
 
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::OnSetData leave");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::OnSetData end");
 }
 
 void PinAuthController::SaveParam(uint64_t scheduleId, std::shared_ptr<PinAuth> pin,

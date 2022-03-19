@@ -36,12 +36,12 @@ bool PinAuthProxy::RegisterInputer(sptr<IRemoteInputer> inputer)
 
     PINAUTH_HILOGI(MODULE_FRAMEWORKS, "PinAuthProxy::RegisterInputer start");
     if (!data.WriteInterfaceToken(PinAuthProxy::GetDescriptor())) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "write descriptor failed!");
+        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "write descriptor failed");
         return false;
     }
 
     if (!data.WriteRemoteObject(inputer->AsObject())) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "write inputer failed!");
+        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "write inputer failed");
         return false;
     }
 

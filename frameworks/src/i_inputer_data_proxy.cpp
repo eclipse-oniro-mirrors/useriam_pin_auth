@@ -28,7 +28,7 @@ void IInputerDataProxy::OnSetData(int32_t authSubType, std::vector<uint8_t> data
     MessageParcel reply;
 
     if (!dataParcel.WriteInterfaceToken(IInputerDataProxy::GetDescriptor())) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "write descriptor failed!");
+        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "write descriptor failed");
     }
 
     if (!dataParcel.WriteInt64(authSubType)) {
@@ -50,7 +50,7 @@ bool IInputerDataProxy::SendRequest(uint32_t code, MessageParcel &data, MessageP
     PINAUTH_HILOGI(MODULE_FRAMEWORKS, "IInputerDataProxy::SendRequest start");
     sptr<IRemoteObject> remote = Remote();
     if (remote == nullptr) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "failed to get remote.");
+        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "failed to get remote");
         return false;
     }
     MessageOption option(MessageOption::TF_SYNC);

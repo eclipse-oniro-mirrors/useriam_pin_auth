@@ -53,11 +53,11 @@ static void UserIamBootEventCallback(const char *key, const char *value, void *c
         return;
     }
     if (strcmp(key, IAM_EVENT_KEY) || strcmp(value, "true")) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthService::UserIamBootEventCallback, event is mismatch");
+        PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthService::UserIamBootEventCallback event is mismatch");
         return;
     }
     if (pinAuthService == nullptr) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthService::UserIamBootEventCallback, pinAuthService is null");
+        PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthService::UserIamBootEventCallback pinAuthService is null");
         return;
     }
     pinAuthService->ActuatorInfoQuery();
@@ -78,27 +78,27 @@ void PinAuthService::OnStart()
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService: Query executor status");
     PinAuthManager::GetInstance().MapClear();
     if (!Publish(this)) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "failed to publish the service.");
+        PINAUTH_HILOGE(MODULE_SERVICE, "failed to publish the service");
         return;
     }
 
     serviceRunningState_ = ServiceRunningState::STATE_RUNNING;
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnStart, End");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnStart end");
 }
 
 void PinAuthService::OnStop()
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnStop, Start");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnStop start");
     if (!pin_->Close()) {
         PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthController::ClosePinAuth");
     }
     serviceRunningState_ = ServiceRunningState::STATE_NOT_START;
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnStop, End");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnStop end");
 }
 
 bool PinAuthService::CheckPermission(const std::string &permission)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::CheckPermission, Start");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::CheckPermission start");
     using namespace Security::AccessToken;
     uint32_t tokenID = this->GetFirstTokenID();
     if (tokenID == 0) {
@@ -216,7 +216,7 @@ int32_t PinAuthService::OnBeginExecute(uint64_t scheduleId, std::vector<uint8_t>
         return FAIL;
     }
     PinAuthManager::GetInstance().Execute(callerUid, subType, scheduleId, pin_, commandAttrs);
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnBeginExecute uid %{public}llu is called.", callerUid);
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnBeginExecute uid %{public}llu is called", callerUid);
     return SUCCESS;
 }
 
@@ -285,7 +285,7 @@ int32_t PinAuthService::OnGetProperty(std::shared_ptr<AuthResPool::AuthAttribute
         PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthService::OnGetProperty GetUint32Value error");
         return FAIL;
     }
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnBeginExecute AUTH_PROPERTY_MODE is %{public}u.", command);
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnBeginExecute AUTH_PROPERTY_MODE is %{public}u", command);
     if (command == COMMAND_CHECK_PIN) {
         uint64_t templateId = 0;
         if (conditions->GetUint64Value(AUTH_TEMPLATE_ID, templateId) != SUCCESS) {
