@@ -28,7 +28,7 @@ PinAuthRegister::~PinAuthRegister() = default;
 
 bool PinAuthRegister::RegisterInputer(std::shared_ptr<IInputer> inputer)
 {
-    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::RegisterInputer");
+    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::RegisterInputer start");
     if (inputer == nullptr) {
         PINAUTH_HILOGE(MODULE_INNERKIT, "inputer is nullptr");
         return false;
@@ -47,7 +47,7 @@ bool PinAuthRegister::RegisterInputer(std::shared_ptr<IInputer> inputer)
 
 void PinAuthRegister::UnRegisterInputer()
 {
-    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::UnRegisterInputer enter");
+    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::UnRegisterInputer start");
     auto proxy = GetProxy();
     if (proxy == nullptr) {
         PINAUTH_HILOGE(MODULE_INNERKIT, "pinAuth failed, remote is nullptr");
@@ -58,7 +58,7 @@ void PinAuthRegister::UnRegisterInputer()
 
 sptr<IRemotePinAuth> PinAuthRegister::GetProxy()
 {
-    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::GetProxy enter");
+    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::GetProxy start");
     if (proxy_ != nullptr) {
         return proxy_;
     }
@@ -86,6 +86,7 @@ sptr<IRemotePinAuth> PinAuthRegister::GetProxy()
 
 void PinAuthRegister::ResetProxy(const wptr<IRemoteObject>& remote)
 {
+    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::ResetProxy start");
     std::lock_guard<std::mutex> lock(mutex_);
     auto serviceRemote = proxy_->AsObject();
     if ((serviceRemote != nullptr) && (serviceRemote == remote.promote())) {
@@ -96,13 +97,13 @@ void PinAuthRegister::ResetProxy(const wptr<IRemoteObject>& remote)
 
 void PinAuthRegister::PinAuthDeathRecipient::OnRemoteDied(const wptr<IRemoteObject>& remote)
 {
-    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::OnRemoteDied enter");
+    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::OnRemoteDied start");
     if (remote == nullptr) {
         PINAUTH_HILOGE(MODULE_INNERKIT, "OnRemoteDied failed, remote is nullptr");
         return;
     }
     PinAuthRegister::GetInstance().ResetProxy(remote);
-    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthDeathRecipient::Recv death notice.");
+    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthDeathRecipient::Recv death notice");
 }
 } // namespace PinAuth
 } // namespace UserIAM

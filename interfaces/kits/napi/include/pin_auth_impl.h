@@ -28,8 +28,8 @@ class PinAuthImpl {
 public:
     PinAuthImpl();
     ~PinAuthImpl();
-    napi_value inputer;
-    napi_value registerCode;
+    napi_value inputer = nullptr;
+    napi_value registerCode = nullptr;
     InputerImpl *inputerSharePtrImpl = nullptr;
     bool RegisterInputer(napi_env env, napi_ref inputer);
     void UnregisterInputer(napi_env env);

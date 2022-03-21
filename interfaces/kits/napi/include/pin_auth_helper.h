@@ -23,7 +23,6 @@ namespace OHOS {
 namespace PinAuth {
 napi_value Init(napi_env env, napi_value exports);
 napi_value GetCtor(napi_env env);
-napi_value Constructor(napi_env env, napi_callback_info info);
 napi_value PinAuthServiceConstructor(napi_env env, napi_callback_info info);
 napi_value RegisterInputer(napi_env env, napi_callback_info info);
 napi_value UnregisterInputer(napi_env env, napi_callback_info info);

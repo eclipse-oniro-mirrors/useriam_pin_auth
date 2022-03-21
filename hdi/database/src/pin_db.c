@@ -88,7 +88,6 @@ ERROR:
 
 static ResultCode LoadPinDb()
 {
-    LOG_INFO("start LoadPinDb");
     if (g_pinDbOp.isLoaded) {
         return RESULT_SUCCESS;
     }
@@ -98,7 +97,6 @@ static ResultCode LoadPinDb()
         return RESULT_GENERAL_ERROR;
     }
 
-    /* Startup initialization. The file does not exist. */
     if (!fileOp->isFileExist(PIN_INDEX_NAME)) {
         g_pinDbOp.isLoaded = true;
         return RESULT_SUCCESS;
@@ -199,7 +197,6 @@ static bool Uint2Str(uint64_t number, char *out, uint32_t length)
 static ResultCode GenerateFileName(uint64_t templateId, const char *prefix, const char *suffix,
     char *fileName, uint32_t fileNameLen)
 {
-    LOG_INFO("start GenerateFileName :");
     if (memset_s(fileName, fileNameLen, 0, fileNameLen) != EOK) {
         return RESULT_PIN_FAIL;
     }
@@ -369,8 +366,8 @@ static ResultCode DelPin(uint32_t index)
         LOG_ERROR("Remove pin file fail.");
         return ret;
     }
+
     LOG_INFO("DelPin succ.");
-    /* ignore anti brute file remove result, return success when crypto file remove success. */
     return RESULT_SUCCESS;
 }
 
@@ -739,7 +736,7 @@ ResultCode GetSubType(uint64_t templateId, uint64_t *subType)
 ResultCode GetAntiBruteInfo(uint64_t templateId, uint32_t *authErrorConut, uint64_t *startFreezeTime)
 {
     if (authErrorConut == NULL || startFreezeTime == NULL || templateId == INVALID_TEMPLATE_ID) {
-        LOG_ERROR("check DoQueryPin param fail!");
+        LOG_ERROR("check GetAntiBruteInfo param fail!");
         return RESULT_BAD_PARAM;
     }
 

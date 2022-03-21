@@ -13,8 +13,6 @@
  * limitations under the License.
  */
 
-import{AsyncCallback} from './basic';
-
 declare namespace pinAuth
 {
     /**

@@ -22,17 +22,17 @@ namespace UserIAM {
 namespace PinAuth {
 PinAuthStub::PinAuthStub()
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::PinAuthStub");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::PinAuthStub start");
 }
 
 PinAuthStub::~PinAuthStub()
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::~PinAuthStub");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::~PinAuthStub start");
 }
 
 int32_t PinAuthStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::OnRemoteRequest");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::OnRemoteRequest start");
     std::u16string descripter = PinAuthStub::GetDescriptor();
     std::u16string remoteDescripter = data.ReadInterfaceToken();
     if (descripter != remoteDescripter) {
@@ -52,7 +52,7 @@ int32_t PinAuthStub::OnRemoteRequest(uint32_t code, MessageParcel &data, Message
 
 void PinAuthStub::HandlerRegisterInputer(MessageParcel &data, MessageParcel &reply)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::HandlerRegisterInputer");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::HandlerRegisterInputer start");
     sptr<IRemoteObject> remote = data.ReadRemoteObject();
     if (remote == nullptr) {
         return;
@@ -63,14 +63,14 @@ void PinAuthStub::HandlerRegisterInputer(MessageParcel &data, MessageParcel &rep
     }
     bool ret = RegisterInputer(inputer);
     if (!reply.WriteBool(ret)) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "failed to WriteBool(ret)");
+        PINAUTH_HILOGE(MODULE_SERVICE, "failed to WriteBool");
         return;
     }
 }
 
 void PinAuthStub::HandlerUnRegisterInputer(MessageParcel &data, MessageParcel &reply)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::HandlerUnRegisterInputer");
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::HandlerUnRegisterInputer start");
     UnRegisterInputer();
 }
 } // namespace PinAuth

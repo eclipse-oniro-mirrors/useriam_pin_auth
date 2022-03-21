@@ -43,12 +43,12 @@ public:
     bool OnStart(std::vector<uint8_t> &salt);
     void OnSetData(int32_t authSubType, std::vector<uint8_t> data) override;
     void SaveParam(uint64_t scheduleId, std::shared_ptr<PinAuth> pin,
-                   std::shared_ptr<AuthResPool::AuthAttributes> attributes);
+        std::shared_ptr<AuthResPool::AuthAttributes> attributes);
     void SetMessenger(const sptr<AuthResPool::IExecutorMessenger> &messenger);
     void Cancel();
 
 private:
-    std::shared_ptr<PinAuth> pin_; // CA interface
+    std::shared_ptr<PinAuth> pin_;
     uint32_t command_ = 0;
     uint64_t templateId_ = 0;
     uint64_t scheduleId_ = 0;

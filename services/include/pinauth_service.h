@@ -56,7 +56,6 @@ public:
     void ActuatorInfoQuery();
 
 private:
-    /* Return the query result */
     void OnResult(uint32_t resultCode);
     bool CheckPermission(const std::string &permission);
     class MngIQCallback : public AuthResPool::QueryCallback {
