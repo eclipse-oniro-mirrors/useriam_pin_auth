@@ -180,7 +180,7 @@ static napi_value HandleSetData(napi_env env, napi_value *args, size_t argcAsync
         return nullptr;
     }
     if (offset != 0) {
-        PINAUTH_HILOGE(MODULE_JS_NAPI, " offset is %{public}d", offset);
+        PINAUTH_HILOGE(MODULE_JS_NAPI, " offset is %{public}zu", offset);
         return nullptr;
     }
     std::vector<uint8_t> result(data, data + length);
