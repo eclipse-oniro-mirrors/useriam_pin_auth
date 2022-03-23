@@ -22,6 +22,20 @@
 using namespace OHOS::UserIAM::PinAuth;
 namespace OHOS {
 namespace PinAuth {
+static void DeleteData(uv_work_t* work, int status)
+{
+    PINAUTH_HILOGI(MODULE_JS_NAPI, "InputerImpl, DeleteData start");
+    InputerHolder *inputerHolder = reinterpret_cast<InputerHolder *>(work->data);
+    if (inputerHolder == nullptr) {
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "inputerHolder is null");
+        delete work;
+        return;
+    }
+    napi_delete_reference(inputerHolder->env, inputerHolder->inputer);
+    delete inputerHolder;
+    delete work;
+}
+
 InputerImpl::InputerImpl(napi_env env, napi_ref inputer)
 {
     env_ = env;
@@ -30,7 +44,27 @@ InputerImpl::InputerImpl(napi_env env, napi_ref inputer)
 
 InputerImpl::~InputerImpl()
 {
-    napi_delete_reference(env_, inputer_);
+    uv_loop_s *loop(nullptr);
+    napi_get_uv_event_loop(env_, &loop);
+    if (loop == nullptr) {
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "loop is null");
+        return;
+    }
+    uv_work_t *work = new (std::nothrow) uv_work_t;
+    if (work == nullptr) {
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "work is null");
+        return;
+    }
+    InputerHolder *inputerHolder = new (std::nothrow) InputerHolder();
+    if (inputerHolder == nullptr) {
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "inputerHolder is null");
+        delete work;
+        return;
+    }
+    inputerHolder->env = env_;
+    inputerHolder->inputer = inputer_;
+    work->data = reinterpret_cast<void *>(inputerHolder);
+    uv_queue_work(loop, work, [] (uv_work_t *work) {}, DeleteData);
 }
 
 static napi_status GetInputerInstance(InputerHolder *inputerHolder, napi_value *inputerDataVarCtor)
@@ -120,7 +154,7 @@ void InputerImpl::OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::
     uv_queue_work(loop, work, [] (uv_work_t *work) {}, GetDataWork);
 }
 
-napi_value GetCtorIInputerData(napi_env env, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData)
+napi_value GetCtorIInputerData(napi_env env, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> &inputerData)
 {
     PINAUTH_HILOGI(MODULE_JS_NAPI, "InputerImpl, GetCtorIInputerData start");
     if (inputerData == nullptr) {
