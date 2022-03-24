@@ -38,7 +38,7 @@ public:
 class InputerUT : public IInputer {
 public:
     void OnGetData(int32_t authSubType, std::shared_ptr<IInputerData> inputerData)override {}
-    virtual ~InputerUT()=default;
+    virtual ~InputerUT() = default;
 };
 
 void UseriamUtTest::SetUpTestCase(void)

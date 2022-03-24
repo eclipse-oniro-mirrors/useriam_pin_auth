@@ -25,9 +25,9 @@ namespace PinAuth {
 class PinAuthProxy : public IRemoteProxy<IRemotePinAuth> {
 public:
     explicit PinAuthProxy(const sptr<IRemoteObject> &object);
-    virtual ~PinAuthProxy() override;
-    virtual bool RegisterInputer(sptr<IRemoteInputer> inputer) override;
-    virtual void UnRegisterInputer() override;
+    ~PinAuthProxy() override;
+    bool RegisterInputer(sptr<IRemoteInputer> inputer) override;
+    void UnRegisterInputer() override;
 
 private:
     bool SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, bool isSync);

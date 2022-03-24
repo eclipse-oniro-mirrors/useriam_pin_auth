@@ -70,6 +70,8 @@ void PinAuthStub::HandlerRegisterInputer(MessageParcel &data, MessageParcel &rep
 
 void PinAuthStub::HandlerUnRegisterInputer(MessageParcel &data, MessageParcel &reply)
 {
+    (void)data;
+    (void)reply;
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::HandlerUnRegisterInputer start");
     UnRegisterInputer();
 }

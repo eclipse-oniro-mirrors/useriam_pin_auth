@@ -31,8 +31,7 @@ PinAuthImpl::~PinAuthImpl()
 bool PinAuthImpl::RegisterInputer(napi_env env, napi_ref inputer)
 {
     std::shared_ptr<OHOS::UserIAM::PinAuth::IInputer> inputerSharePtr = std::make_shared<InputerImpl>(env, inputer);
-    bool resultCode = UserIAM::PinAuth::PinAuthRegister::GetInstance().RegisterInputer(inputerSharePtr);
-    return resultCode;
+    return UserIAM::PinAuth::PinAuthRegister::GetInstance().RegisterInputer(inputerSharePtr);
 }
 
 
