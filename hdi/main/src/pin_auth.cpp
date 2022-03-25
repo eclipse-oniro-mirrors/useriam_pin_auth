@@ -52,7 +52,7 @@ int32_t PinAuth::Init()
     LOG_INFO("check pinAuth file and init.");
     static const int FOLDER_NOT_EXIST = -1;
     if (DEFAULT_FILE_HEAD && access(DEFAULT_FILE_HEAD, 0) == FOLDER_NOT_EXIST) {
-        if (mkdir(DEFAULT_FILE_HEAD, S_IRWXU) != 0) {
+        if (mkdir(DEFAULT_FILE_HEAD, (S_IRUSR | S_IWUSR)) != 0) {
             LOG_ERROR("mkdir fail!");
             static_cast<void>(pthread_mutex_unlock(&g_mutex));
             return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
