@@ -129,6 +129,7 @@ static ResultCode LoadPinDb()
     LOG_INFO("LoadPinDb succ.");
 
 EXIT:
+    (void)memset_s(data, dataLen, 0, dataLen);
     Free(data);
     return ret;
 }
