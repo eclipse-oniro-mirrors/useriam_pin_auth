@@ -242,7 +242,7 @@ napi_value OnSetData(napi_env env, napi_callback_info info)
         return nullptr;
     }
     if (inputerHolder->inputerData == nullptr) {
-        PINAUTH_HILOGE(MODULE_JS_NAPI, "InputerImpl, OnSetData get null inputor");
+        PINAUTH_HILOGE(MODULE_JS_NAPI, "InputerImpl, OnSetData get null inputer");
         return nullptr;
     }
     return HandleSetData(env, args, argcAsync, inputerHolder);
