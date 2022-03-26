@@ -34,7 +34,18 @@ public:
     DISALLOW_COPY_AND_MOVE(PinAuthRegister);
 
 public:
+
+    /*
+     * register inputer that used to obtain pin data.
+     *
+     * param inputer used to obtain pin data.
+     * return is it successful.
+     */
     bool RegisterInputer(std::shared_ptr<IInputer> inputer);
+
+    /*
+     * unregister inputer that used to obtain pin data.
+     */
     void UnRegisterInputer();
 
 private:

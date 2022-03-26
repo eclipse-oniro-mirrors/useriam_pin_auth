@@ -10,9 +10,9 @@
 
 ## 简介
 
-**口令认证**（pinauth）模块支持用户口令的设置，删除和口令认证功能。与用户IAM子系统基础框架配合，也可以支持用户口令修改的功能。
+**口令认证**（pinauth）模块支持用户口令的设置，删除和认证功能。与用户IAM子系统基础框架配合，也可以支持用户口令修改的功能。
 
-口令认证作为OpenHarmony最基础的用户身份认证执行器，按照协同认证定义的资源注册接口，将口令认证相关资源信息注册到协同认证框架，并根据协同认证框架的调度，完成口令的设置，删除和口令认证功能。
+口令认证作为OpenHarmony最基础的用户身份认证执行器，按照协同认证定义的资源注册接口，将口令认证相关资源信息注册到协同认证框架，并根据协同认证框架的调度，完成口令的设置，删除和认证功能。
 
 **图1** 口令认证架构图
 
@@ -61,8 +61,8 @@
 
 | 接口名 | 描述                       |
 | ------ | -------------------------------- |
-| onGetData : (callback:IInputData)=>void | inputer回调函数，口令认证SA调用此接口获取口令数据 |
-| onSetData:(pinSubType:AuthSubType, data:Uint8Array)=>void | inputeDate回调函数，口令输入界面通过此接口传输口令数据到口令认证SA |
+| onGetData: (callback:IInputData)=>void | inputer回调函数，口令认证SA调用此接口获取口令数据 |
+| onSetData: (pinSubType:AuthSubType, data:Uint8Array)=>void | inputerDate回调函数，口令输入界面通过此接口传输口令数据到口令认证SA |
 
 ### 使用说明
 

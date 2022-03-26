@@ -18,7 +18,7 @@ declare namespace pinAuth
     /**
      * constructor.
      *
-     * @return Constructor to get the userauth class instance
+     * @return Constructor to get the pin auth class instance
      */
     function constructor() : PINAuth;
     /**
@@ -62,7 +62,7 @@ declare namespace pinAuth
          */
         PIN_NUMBER = 10001,
         /**
-         * Authentication sub type 2D face.
+         * Authentication sub type mixed pin.
          */
         PIN_MIXED = 10002,
         /**

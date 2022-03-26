@@ -26,6 +26,13 @@ namespace PinAuth {
 class IRemoteInputerData : public IRemoteBroker {
 public:
     DECLARE_INTERFACE_DESCRIPTOR(u"ohos.PinAuth.IRemoteInputerData");
+
+    /*
+     * the inputer is used to set the data.
+     *
+     * param authSubType auth subType.
+     * param data pin data.
+     */
     virtual void OnSetData(int32_t authSubType, std::vector<uint8_t> data) = 0;
 
     enum {

@@ -26,6 +26,14 @@ namespace PinAuth {
 class IRemoteInputer : public IRemoteBroker {
 public:
     DECLARE_INTERFACE_DESCRIPTOR(u"ohos.PinAuth.IRemoteInputer");
+
+    /*
+     * request inputer to get data.
+     *
+     * param authSubType auth subType.
+     * param salt desensitization for pin data.
+     * param inputerData callback for getting data.
+     */
     virtual void OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sptr<IRemoteInputerData> inputerData) = 0;
 
     enum {
