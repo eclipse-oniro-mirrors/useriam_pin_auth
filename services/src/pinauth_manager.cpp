@@ -30,15 +30,18 @@ bool PinAuthManager::RegisterInputer(uint64_t uid, sptr<IRemoteInputer> &inputer
         PINAUTH_HILOGE(MODULE_SERVICE,
             "PinAuthManager::RegisterInputer pinAuthController is already register, do not repeat");
         return false;
+    }
+    pinAuthInputerMap_.emplace(uid, inputer);
+    sptr<IRemoteObject::DeathRecipient> dr = new (std::nothrow) ResPinauthInputerDeathRecipient(uid);
+    if (dr == nullptr || inputer->AsObject() == nullptr) {
+        COAUTH_HILOGE(MODULE_SERVICE, "dr or inputer->AsObject() is nullptr");
     } else {
-        pinAuthInputerMap_.emplace(uid, inputer);
-        sptr<IRemoteObject::DeathRecipient> dr = new ResPinauthInputerDeathRecipient(uid);
         if (!inputer->AsObject()->AddDeathRecipient(dr)) {
             COAUTH_HILOGE(MODULE_SERVICE, "Failed to add death recipient ResIExecutorCallbackDeathRecipient");
         }
-        PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::RegisterInputer pinAuthController register start");
-        return true;
     }
+    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::RegisterInputer pinAuthController register start");
+    return true;
 }
 
 void PinAuthManager::UnRegisterInputer(uint64_t uid)
