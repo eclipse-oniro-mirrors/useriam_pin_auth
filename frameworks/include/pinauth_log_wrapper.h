@@ -16,9 +16,6 @@
 #ifndef PINAUTH_LOG_WRAPPER_H
 #define PINAUTH_LOG_WRAPPER_H
 
-#define CONFIG_HILOG
-#ifdef CONFIG_HILOG
-
 #include <string>
 #include "hilog/log.h"
 
@@ -79,18 +76,10 @@ static constexpr OHOS::HiviewDFX::HiLogLabel PINAUTH_LABEL[PINAUTH_MODULE_BUTT] 
 #define PINAUTH_HILOGW(module, ...) (void)OHOS::HiviewDFX::HiLog::Warn(PINAUTH_LABEL[module], FORMATTED(__VA_ARGS__))
 #define PINAUTH_HILOGI(module, ...) (void)OHOS::HiviewDFX::HiLog::Info(PINAUTH_LABEL[module], FORMATTED(__VA_ARGS__))
 #define PINAUTH_HILOGD(module, ...) (void)OHOS::HiviewDFX::HiLog::Debug(PINAUTH_LABEL[module], FORMATTED(__VA_ARGS__))
+
+constexpr uint64_t MASK = 0x0000FFFF;
 }  // namespace PinAuth
 }  // namespace UserIAM
 }  // namespace OHOS
-
-#else
-
-#define PINAUTH_HILOGF(...)
-#define PINAUTH_HILOGE(...)
-#define PINAUTH_HILOGW(...)
-#define PINAUTH_HILOGI(...)
-#define PINAUTH_HILOGD(...)
-
-#endif // CONFIG_HILOG
 
 #endif  // PINAUTH_LOG_WRAPPER_H

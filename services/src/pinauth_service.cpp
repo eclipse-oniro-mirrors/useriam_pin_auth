@@ -15,6 +15,8 @@
 
 #include "pinauth_service.h"
 
+#include <cinttypes>
+
 #include "accesstoken_kit.h"
 #include "coauth_info_define.h"
 #include "parameter.h"
@@ -216,7 +218,8 @@ int32_t PinAuthService::OnBeginExecute(uint64_t scheduleId, std::vector<uint8_t>
         return FAIL;
     }
     PinAuthManager::GetInstance().Execute(callerUid, subType, scheduleId, pin_, commandAttrs);
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::OnBeginExecute uid %{public}llu is called", callerUid);
+    PINAUTH_HILOGI(MODULE_SERVICE,
+        "PinAuthService::OnBeginExecute uid 0xXXXX%{public}04" PRIx64 " is called", MASK & callerUid);
     return SUCCESS;
 }
 

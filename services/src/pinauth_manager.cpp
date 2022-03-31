@@ -25,7 +25,8 @@ PinAuthManager::~PinAuthManager() = default;
 bool PinAuthManager::RegisterInputer(uint64_t uid, sptr<IRemoteInputer> &inputer)
 {
     std::lock_guard<std::mutex> guard(mutex_);
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::RegisterInputer start uid %{public}" PRIu64 " is called", uid);
+    PINAUTH_HILOGI(MODULE_SERVICE,
+        "PinAuthManager::RegisterInputer start uid 0xXXXX%{public}04" PRIx64 " is called", MASK & uid);
     if (pinAuthInputerMap_.find(uid) != pinAuthInputerMap_.end()) {
         PINAUTH_HILOGE(MODULE_SERVICE,
             "PinAuthManager::RegisterInputer pinAuthController is already register, do not repeat");
@@ -47,7 +48,8 @@ bool PinAuthManager::RegisterInputer(uint64_t uid, sptr<IRemoteInputer> &inputer
 void PinAuthManager::UnRegisterInputer(uint64_t uid)
 {
     std::lock_guard<std::mutex> guard(mutex_);
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::UnRegisterInputer start uid %{public}" PRIu64 " is called", uid);
+    PINAUTH_HILOGI(MODULE_SERVICE,
+        "PinAuthManager::UnRegisterInputer start uid 0xXXXX%{public}04" PRIx64 " is called", MASK & uid);
     if (pinAuthInputerMap_.find(uid) != pinAuthInputerMap_.end()) {
         pinAuthInputerMap_.erase(uid);
         PINAUTH_HILOGE(MODULE_SERVICE, "pinAuthControllerMap erase success");
