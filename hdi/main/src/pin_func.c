@@ -198,7 +198,7 @@ static ResultCode WriteTlv(const AuthAttributeType type, const uint32_t length, 
 
 static Buffer *GetDataTlvContent(uint32_t result, uint64_t scheduleId, uint64_t subType, uint64_t templatedId)
 {
-    Buffer *ret = CreateBuffer(MAX_TLV_LEN);
+    Buffer *ret = CreateBufferBySize(MAX_TLV_LEN);
     if (!IsBufferValid(ret)) {
         LOG_ERROR("no memory.");
         return NULL;

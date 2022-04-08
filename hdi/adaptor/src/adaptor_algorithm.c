@@ -38,13 +38,13 @@ static KeyPair *CreateEd25519KeyPair(void)
         LOG_ERROR("no memory for key pair");
         return NULL;
     }
-    keyPair->pubKey = CreateBuffer(ED25519_FIX_PUBKEY_BUFFER_SIZE);
+    keyPair->pubKey = CreateBufferBySize(ED25519_FIX_PUBKEY_BUFFER_SIZE);
     if (keyPair->pubKey == NULL) {
         LOG_ERROR("no memory for pub key");
         Free(keyPair);
         return NULL;
     }
-    keyPair->priKey = CreateBuffer(ED25519_FIX_PRIKEY_BUFFER_SIZE);
+    keyPair->priKey = CreateBufferBySize(ED25519_FIX_PRIKEY_BUFFER_SIZE);
     if (keyPair->priKey == NULL) {
         LOG_ERROR("no memory for pri key");
         DestoryBuffer(keyPair->pubKey);
@@ -156,7 +156,7 @@ int32_t Ed25519Sign(const KeyPair *keyPair, const Buffer *data, Buffer **sign)
         LOG_ERROR("init sign fail");
         goto EXIT;
     }
-    *sign = CreateBuffer(ED25519_FIX_SIGN_BUFFER_SIZE);
+    *sign = CreateBufferBySize(ED25519_FIX_SIGN_BUFFER_SIZE);
     if (!IsBufferValid(*sign)) {
         LOG_ERROR("create buffer fail");
         goto EXIT;
@@ -238,7 +238,7 @@ int32_t HmacSha256(const Buffer *hmacKey, const Buffer *data, Buffer **hmac)
         LOG_ERROR("no algo");
         return RESULT_GENERAL_ERROR;
     }
-    *hmac = CreateBuffer(SHA256_DIGEST_SIZE);
+    *hmac = CreateBufferBySize(SHA256_DIGEST_SIZE);
     if (*hmac == NULL) {
         LOG_ERROR("create buffer fail");
         return RESULT_NO_MEMORY;
@@ -259,7 +259,7 @@ int32_t HmacSha512(const Buffer *hmacKey, const Buffer *data, Buffer **hmac)
         LOG_ERROR("no algo");
         return RESULT_GENERAL_ERROR;
     }
-    *hmac = CreateBuffer(SHA512_DIGEST_SIZE);
+    *hmac = CreateBufferBySize(SHA512_DIGEST_SIZE);
     if (*hmac == NULL) {
         LOG_ERROR("create buffer fail");
         return RESULT_NO_MEMORY;

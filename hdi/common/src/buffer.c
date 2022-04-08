@@ -40,7 +40,7 @@ bool CheckBufferWithSize(const Buffer *buffer, const uint32_t size)
     return true;
 }
 
-Buffer *CreateBuffer(const uint32_t size)
+Buffer *CreateBufferBySize(const uint32_t size)
 {
     if ((size == 0) || (size > MAX_BUFFER_SIZE)) {
         LOG_ERROR("Bad param size:%u", size);
@@ -141,7 +141,7 @@ Buffer *CopyBuffer(const Buffer *buffer)
         return NULL;
     }
 
-    Buffer *copyBuffer = CreateBuffer(buffer->maxSize);
+    Buffer *copyBuffer = CreateBufferBySize(buffer->maxSize);
     if (copyBuffer == NULL) {
         LOG_ERROR("Invalid buffer");
         return NULL;
