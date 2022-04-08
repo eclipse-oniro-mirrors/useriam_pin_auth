@@ -158,7 +158,7 @@ int32_t PinAuth::EnrollPin(uint64_t scheduleId, uint64_t subType, std::vector<ui
         delete pinEnrollParam;
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
     }
-    Buffer *retTlv = CreateBuffer(RESULT_TLV_LEN);
+    Buffer *retTlv = CreateBufferBySize(RESULT_TLV_LEN);
     result = DoEnrollPin(pinEnrollParam, retTlv);
     if (result != RESULT_SUCCESS) {
         LOG_ERROR("DoEnrollPin fail!");
@@ -236,7 +236,7 @@ int32_t PinAuth::AuthPin(uint64_t scheduleId, uint64_t templateId, std::vector<u
         delete pinAuthParam;
         return PinResultToCoAuthResult(RESULT_GENERAL_ERROR);
     }
-    Buffer *retTlv = CreateBuffer(RESULT_TLV_LEN);
+    Buffer *retTlv = CreateBufferBySize(RESULT_TLV_LEN);
     ResultCode result = DoAuthPin(pinAuthParam, retTlv);
     if (result != RESULT_SUCCESS) {
         LOG_ERROR("DoAuthPin fail!");
