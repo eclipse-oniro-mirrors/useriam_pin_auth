@@ -103,7 +103,7 @@ static ResultCode LoadPinDb()
     }
 
     uint32_t dataLen = 0;
-    ResultCode ret = fileOp->getFileLen(PIN_INDEX_NAME, &dataLen);
+    ResultCode ret = (ResultCode)(fileOp->getFileLen(PIN_INDEX_NAME, &dataLen));
     if (ret != RESULT_SUCCESS) {
         LOG_ERROR("get filelen failed");
         return RESULT_BAD_READ;
@@ -763,8 +763,8 @@ ResultCode GetAntiBruteInfo(uint64_t templateId, uint32_t *authErrorConut, uint6
 static uint64_t ExponentialFuncTime(uint32_t authErrorConut)
 {
     uint32_t ret = DEFAULT_VALUE;
-    int32_t exp = (authErrorConut - FIRST_EXPONENTIAL_PARA) / THIRD_EXPONENTIAL_PARA;
-    for (int index = 0; index < exp; ++index) {
+    uint32_t exp = (authErrorConut - FIRST_EXPONENTIAL_PARA) / THIRD_EXPONENTIAL_PARA;
+    for (uint32_t index = 0; index < exp; ++index) {
         ret *= SECOND_EXPONENTIAL_PARA;
     }
     return FIRST_EXPONENTIAL_PARA * ret;
