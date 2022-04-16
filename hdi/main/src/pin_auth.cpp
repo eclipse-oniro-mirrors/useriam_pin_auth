@@ -346,7 +346,7 @@ int32_t PinAuth::VerifyTemplateData(std::vector<uint64_t> templateIdList)
         LOG_ERROR("pthread_mutex_lock fail!");
         return PinResultToCoAuthResult(RESULT_BAD_PARAM);
     }
-    int32_t templateIdListLen = templateIdList.size();
+    uint32_t templateIdListLen = templateIdList.size();
     ResultCode result = DoVerifyTemplateData(&templateIdList[0], templateIdListLen);
     if (result != RESULT_SUCCESS) {
         LOG_ERROR("DoVerifyTemplateData fail!");
