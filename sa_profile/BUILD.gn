@@ -24,7 +24,7 @@ ohos_prebuilt_etc("pinauth_sa_profile.init") {
   if (use_musl) {
     source = "pinauth_sa_profile.cfg"
   } else {
-    source = "pinauth_sys.cfg"
+    source = "pinauth_bionic.cfg"
   }
   relative_install_dir = "init"
   subsystem_name = "useriam"
