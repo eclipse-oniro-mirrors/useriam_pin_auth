@@ -26,5 +26,3 @@ pinauth_kits_path = "${pinauth_interfaces_path}/kits"
 pinauth_innerkits_path = "${pinauth_interfaces_path}/innerkits"
 
 aafwk_path = "//foundation/aafwk/standard"
-
-appexecfwk_path = "//foundation/appexecfwk/standard"
