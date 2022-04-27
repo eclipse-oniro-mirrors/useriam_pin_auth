@@ -32,7 +32,7 @@ ohos_shared_library("pinauth") {
 
   deps = [
     "${pinauth_frameworks_path}:pinauth_framework",
-    "//foundation/ace/napi:ace_napi",
+    "//foundation/arkui/napi:ace_napi",
     "//utils/native/base:utils",
   ]
   cflags_cc = [ "-DHILOG_ENABLE" ]
