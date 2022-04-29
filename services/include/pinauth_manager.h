@@ -23,7 +23,7 @@
 #include <unordered_map>
 #include <vector>
 #include "iremote_inputer.h"
-#include "pinauth_controller.h"
+#include "i_inputter_data_impl.h"
 #include "refbase.h"
 
 namespace OHOS {
@@ -34,25 +34,13 @@ class PinAuthManager : public DelayedRefSingleton<PinAuthManager> {
 
 public:
     DISALLOW_COPY_AND_MOVE(PinAuthManager);
-    void OnStart();
     bool RegisterInputer(uint64_t uid, sptr<IRemoteInputer> &inputer);
     void UnRegisterInputer(uint64_t uid);
-    void Execute(uint64_t uid, uint64_t subType, uint64_t scheduleId, std::shared_ptr<PinAuth> pin,
-        std::shared_ptr<AuthResPool::AuthAttributes> attributes);
-    void SetMessenger(const sptr<AuthResPool::IExecutorMessenger> &messenger);
-    void MapClear();
-    int32_t Cancel(uint64_t scheduleId, std::shared_ptr<AuthResPool::AuthAttributes> consumerAttr);
+    sptr<IRemoteInputer> getInputerLock(uint64_t uid);
 
 private:
     std::unordered_map<uint64_t, sptr<IRemoteInputer>> pinAuthInputerMap_;
-    std::unordered_map<uint64_t, sptr<PinAuthController>> pinAuthConMap_;
-    sptr<AuthResPool::IExecutorMessenger> messenger_;
     std::mutex mutex_;
-
-    sptr<PinAuthController> getPinAuthControllerLock(uint64_t scheduleId);
-    void setPinAuthControllerLock(uint64_t scheduleId, sptr<PinAuthController> controller);
-    sptr<IRemoteInputer> getInputerLock(uint64_t uid);
-
     class ResPinauthInputerDeathRecipient : public IRemoteObject::DeathRecipient {
     public:
         DISALLOW_COPY_AND_MOVE(ResPinauthInputerDeathRecipient);

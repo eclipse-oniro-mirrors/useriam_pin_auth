@@ -17,11 +17,12 @@ import("//build/ohos.gni")
 config("pin_auth_services_config") {
   include_dirs = [
     "//base/security/access_token/interfaces/innerkits/accesstoken/include",
-    "//base/user_iam/pin_auth/hdi/main/inc",
-    "//base/user_iam/pin_auth/hdi/common/inc",
     "//base/user_iam/user_idm/interfaces/inner_api/user_idm",
     "//base/user_iam/user_idm/frameworks/user_idm/inc",
     "${pinauth_services_path}/include",
+    "../common/include",
+    "//base/user_iam/user_auth/interfaces/inner_api/include/userauth/",
+    "//base/user_iam/auth_executor_mgr/interfaces/innerkits/include/",
   ]
 }
 
@@ -29,10 +30,14 @@ ohos_shared_library("pinauthservice") {
   sources = [
     "${pinauth_services_path}/src/i_inputer_data_stub.cpp",
     "${pinauth_services_path}/src/i_inputer_proxy.cpp",
-    "${pinauth_services_path}/src/pinauth_controller.cpp",
+    "${pinauth_services_path}/src/i_inputter_data_impl.cpp",
     "${pinauth_services_path}/src/pinauth_manager.cpp",
     "${pinauth_services_path}/src/pinauth_service.cpp",
     "${pinauth_services_path}/src/pinauth_stub.cpp",
+    "${pinauth_services_path}/src/pinauth_driver_hdi.cpp",
+    "${pinauth_services_path}/src/pinauth_executor_callback_hdi.cpp",
+    "${pinauth_services_path}/src/pinauth_executor_hdi.cpp",
+    "${pinauth_services_path}/src/pinauth_hdi_factory.cpp",
   ]
 
   configs = [ ":pin_auth_services_config" ]
@@ -41,15 +46,18 @@ ohos_shared_library("pinauthservice") {
     "${pinauth_frameworks_path}:pinauth_framework",
     "//base/security/access_token/interfaces/innerkits/accesstoken:libaccesstoken_sdk",
     "//base/startup/syspara_lite/interfaces/innerkits/native/syspara:syspara",
-    "//base/user_iam/pin_auth/hdi:pinauth_hdi",
     "//base/user_iam/user_auth/frameworks/co_auth:coauth_framework",
     "//base/user_iam/user_auth/frameworks/user_idm:useridm_framework",
     "//third_party/openssl:libcrypto_static",
     "//utils/native/base:utils",
+    "//base/user_iam/user_auth/driver_manager:userauth_driver_manager",
+    "//drivers/interface/pinauth/v1_0:libpinauth_proxy_1.0",
+    "//drivers/interface/pinauth/v1_0:libpinauth_stub_1.0",
   ]
 
   external_deps = [
     "hiviewdfx_hilog_native:libhilog",
+    "device_driver_framework:libhdf_utils",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
