@@ -23,7 +23,7 @@
 #include <unordered_map>
 #include <vector>
 #include "iremote_inputer.h"
-#include "i_inputter_data_impl.h"
+#include "i_inputer_data_impl.h"
 #include "refbase.h"
 
 namespace OHOS {

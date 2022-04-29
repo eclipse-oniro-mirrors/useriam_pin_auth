@@ -82,7 +82,6 @@ void PinAuthManager::ResPinauthInputerDeathRecipient::OnRemoteDied(const wptr<IR
     }
     PinAuthManager::GetInstance().UnRegisterInputer(uid_);
 }
-
 } // namespace PinAuth
 } // namespace UserIAM
 } // namespace OHOS

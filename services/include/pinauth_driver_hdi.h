@@ -21,18 +21,18 @@
 #include "iremote_broker.h"
 #include "iauth_executor_hdi.h"
 #include "v1_0/pin_auth_interface_proxy.h"
+#include "nocopyable.h"
 
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
-    namespace PinHDI = OHOS::HDI::Pinauth::V1_0;
-    class PinAuthDriverHDI : public UserAuth::IAuthDriverHDI {
-    public:
-        PinAuthDriverHDI() = default;
-        virtual ~PinAuthDriverHDI() = default;
-        void GetExecutorList(std::vector<std::shared_ptr<UserAuth::IAuthExecutorHDI>>& executorList);
-    };
-
+namespace PinHdi = OHOS::HDI::PinAuth::V1_0;
+class PinAuthDriverHdi : public UserAuth::IAuthDriverHdi, public NoCopyable {
+public:
+    PinAuthDriverHdi() = default;
+    virtual ~PinAuthDriverHdi() = default;
+    void GetExecutorList(std::vector<std::shared_ptr<UserAuth::IAuthExecutorHdi>> &executorList);
+};
 } // PinAuth
 } // UserIAM
 } // OHOS

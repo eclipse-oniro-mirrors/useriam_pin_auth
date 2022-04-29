@@ -17,10 +17,8 @@
 #define PIN_AUTH_SERVICE_H
 
 #include <mutex>
-#include "nocopyable.h"
 #include <map>
-#include "driver_manager.h"
-#include "pinauth_hdi_factory.h"
+#include "nocopyable.h"
 #include "parameter.h"
 #include "system_ability.h"
 #include "system_ability_definition.h"
@@ -29,13 +27,13 @@
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
-
-class PinAuthService : public SystemAbility, public PinAuthStub {
+class PinAuthService : public SystemAbility, public PinAuthStub, public NoCopyable {
 public:
     DECLEAR_SYSTEM_ABILITY(PinAuthService);
-    DISALLOW_COPY_AND_MOVE(PinAuthService);
     PinAuthService();
     static std::shared_ptr<PinAuthService> GetInstance();
+
+    // SystemAbility
     void OnStart() override;
     void OnStop() override;
     void RegisterResourcePool();
@@ -44,12 +42,13 @@ public:
     bool CheckPermission(const std::string &permission);
 
 private:
+    PinAuthService(PinAuthService &) = delete;
+    PinAuthService &operator=(PinAuthService &) = delete;
+    PinAuthService(PinAuthService &&) = delete;
+    PinAuthService &operator=(PinAuthService &&) = delete;
     void StartDriverManager();
-    void ConfigDriverManager();
-    void StopDriverManager();
     static std::mutex mutex_;
     static std::shared_ptr<PinAuthService> instance_;
-
 };
 } // namespace PinAuth
 } // namespace UserIAM

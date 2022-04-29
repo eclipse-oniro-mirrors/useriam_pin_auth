@@ -15,17 +15,26 @@
 
 #include "pinauth_service.h"
 #include <cinttypes>
+#include <map>
 #include "accesstoken_kit.h"
 #include "parameter.h"
-#include "i_inputter_data_impl.h"
-#include "pinauth_log_wrapper.h"
+#include "i_inputer_data_impl.h"
+#include "iam_check.h"
+#include "iam_logger.h"
+#include "iam_para2str.h"
+#include "iam_ptr.h"
+#include "idriver_manager.h"
+#include "pinauth_defines.h"
+#include "pinauth_driver_hdi.h"
 #include "pinauth_manager.h"
+
+
+#define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
 
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
 static const std::string ACCESS_PIN_AUTH = "ohos.permission.ACCESS_PIN_AUTH";
-static const char IAM_EVENT_KEY[] = "bootevent.useriam.fwkready";
 const bool REGISTER_RESULT =
     SystemAbility::MakeAndRegisterAbility(PinAuthService::GetInstance().get());
 std::mutex PinAuthService::mutex_;
@@ -36,9 +45,12 @@ PinAuthService::PinAuthService() : SystemAbility(SUBSYS_USERIAM_SYS_ABILITY_PINA
 std::shared_ptr<PinAuthService> PinAuthService::GetInstance()
 {
     if (instance_ == nullptr) {
-        std::lock_guard<std::mutex> lock_l(mutex_);
+        std::lock_guard<std::mutex> gurard(mutex_);
         if (instance_ == nullptr) {
-            instance_ = std::make_shared<PinAuthService>();
+            instance_ = Common::MakeShared<PinAuthService>();
+            if (instance_ == nullptr) {
+                IAM_LOGE("make share failed");
+            }
         }
     }
     return instance_;
@@ -46,65 +58,39 @@ std::shared_ptr<PinAuthService> PinAuthService::GetInstance()
 
 void PinAuthService::OnStart()
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "start");
-    auto eventCallback = [](const char *key, const char *value, void *context) {
-    PINAUTH_HILOGI(MODULE_SERVICE, "receive useriam.fwkready event");
-     if (key == nullptr || value == nullptr) {
-         PINAUTH_HILOGE(MODULE_SERVICE, "param is null");
-        return;
-    }
-    if (strcmp(key, IAM_EVENT_KEY) != 0) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "event key mismatch");
-        return;
-    }
-    if (strcmp(value, "true")) {
-        PINAUTH_HILOGI(MODULE_SERVICE, "event value is not true");
-        return;
-    }
-    PinAuthService::GetInstance()->RegisterResourcePool();
-    };
-    WatchParameter(IAM_EVENT_KEY, eventCallback, nullptr);
-    ConfigDriverManager();
+    IAM_LOGI("start");
     StartDriverManager();
-    PINAUTH_HILOGI(MODULE_SERVICE, "success");
+    if (!Publish(this)) {
+        IAM_LOGE("Failed to publish the service");
+        return;
+    }
+    IAM_LOGI("success");
 }
 
 void PinAuthService::OnStop()
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "start");
-    StopDriverManager();
-}
-
-void PinAuthService::RegisterResourcePool()
-{
-    PINAUTH_HILOGI(MODULE_SERVICE, "start");
-    OHOS::UserIAM::UserAuth::DriverManager::GetInstance()->RegisterResourcePool();
-}
-
-void PinAuthService::ConfigDriverManager()
-{
-    PINAUTH_HILOGI(MODULE_SERVICE, "start");
-    std::map<std::string, UserAuth::ServiceConfig> serviceName2Config = {
-        { "pin_auth_interface_service", { 1, std::make_shared<PinAuthHDIFactory>() }},
-    };
-    OHOS::UserIAM::UserAuth::DriverManager::GetInstance()->Config(serviceName2Config);
+    IAM_LOGE("service is persistent, OnStop is not implemented");
 }
 
 void PinAuthService::StartDriverManager()
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "start");
-    OHOS::UserIAM::UserAuth::DriverManager::GetInstance()->Start();
-}
-
-void PinAuthService::StopDriverManager()
-{
-    PINAUTH_HILOGI(MODULE_SERVICE, "start");
-    OHOS::UserIAM::UserAuth::DriverManager::GetInstance()->Stop();
+    IAM_LOGI("start");
+    auto pinAuthDefaultHdi = Common::MakeShared<PinAuthDriverHdi>();
+    IF_FALSE_LOGE_AND_RETURN(pinAuthDefaultHdi != nullptr);
+    const uint16_t pinAuthDefaultHdiId = 1;
+    // serviceName and HdiConfig.id must be globally unique
+    const std::map<std::string, UserAuth::HdiConfig> hdiName2Config  = {
+        {"pin_auth_interface_service", {pinAuthDefaultHdiId, pinAuthDefaultHdi}},
+    };
+    int ret = UserIAM::UserAuth::IDriverManager::Start(hdiName2Config);
+    if (ret != PIN_AUTH_SUCCESS) {
+        IAM_LOGE("start driver manager failed");
+    }
 }
 
 bool PinAuthService::CheckPermission(const std::string &permission)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::CheckPermission start");
+    IAM_LOGI("start");
     using namespace Security::AccessToken;
     uint32_t tokenID = this->GetFirstTokenID();
     if (tokenID == 0) {
@@ -115,13 +101,13 @@ bool PinAuthService::CheckPermission(const std::string &permission)
 
 bool PinAuthService::RegisterInputer(sptr<IRemoteInputer> inputer)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::RegisterInputer start");
+    IAM_LOGI("start");
     if (!CheckPermission(ACCESS_PIN_AUTH)) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "Permission check failed");
+        IAM_LOGE("Permission check failed");
         return false;
     }
     if (inputer == nullptr) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "PinAuthService::RegisterInputer inputer == nullptr");
+        IAM_LOGE("inputer is nullptr");
         return false;
     }
     return PinAuthManager::GetInstance().RegisterInputer(GetCallingUid(), inputer);
@@ -129,14 +115,13 @@ bool PinAuthService::RegisterInputer(sptr<IRemoteInputer> inputer)
 
 void PinAuthService::UnRegisterInputer()
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthService::UnRegisterInputer start");
+    IAM_LOGI("start");
     if (!CheckPermission(ACCESS_PIN_AUTH)) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "Permission check failed");
+        IAM_LOGE("Permission check failed");
         return;
     }
     PinAuthManager::GetInstance().UnRegisterInputer(GetCallingUid());
 }
-
 } // namespace PinAuth
 } // namespace UserIAM
 } // namespace OHOS

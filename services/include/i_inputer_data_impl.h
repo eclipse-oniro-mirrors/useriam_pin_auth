@@ -21,7 +21,7 @@
 #include <vector>
 #include "i_inputer_data_stub.h"
 #include "nocopyable.h"
-#include <v1_0/executor_proxy.h>
+#include "pinauth_executor_hdi.h"
 
 namespace OHOS {
 namespace UserIAM {
@@ -29,14 +29,14 @@ namespace PinAuth {
 class IInputerDataImpl : public IInputerDataStub {
 public:
     DISALLOW_COPY_AND_MOVE(IInputerDataImpl);
-    IInputerDataImpl(uint64_t scheduleId) : scheduleId_(scheduleId) {}
+    IInputerDataImpl(uint64_t scheduleId, std::shared_ptr<PinAuthExecutorHdi> hdi);
     ~IInputerDataImpl() override;
     void OnSetData(int32_t authSubType, std::vector<uint8_t> data) override;
 
 private:
     std::mutex mutex_;
-    uint64_t scheduleId_ = 0;
-    std::shared_ptr<HDI::Pinauth::V1_0::IExecutor> hDI;
+    uint64_t scheduleId_;
+    std::shared_ptr<PinAuthExecutorHdi> hdi_;
 };
 } // namespace PinAuth
 } // namespace UserIAM
