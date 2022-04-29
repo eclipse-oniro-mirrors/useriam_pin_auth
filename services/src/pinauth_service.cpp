@@ -18,7 +18,7 @@
 #include <cinttypes>
 
 #include "accesstoken_kit.h"
-#include "coauth_info_define.h"
+#include "co_auth_info_define.h"
 #include "parameter.h"
 #include "pinauth_controller.h"
 #include "pinauth_defines.h"

@@ -19,7 +19,7 @@
 #include "ipc_skeleton.h"
 #include "iservice_registry.h"
 #include "parameter.h"
-#include "coauth_info_define.h"
+#include "co_auth_info_define.h"
 #include "pinauth_defines.h"
 #include "pinauth_log_wrapper.h"
 
