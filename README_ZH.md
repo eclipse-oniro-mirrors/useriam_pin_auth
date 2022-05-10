@@ -35,7 +35,6 @@
 ```undefined
 //base/user_iam/pin_auth
 ├── frameworks			# 框架代码
-├── hdi					# 南向厂商适配接口定义
 ├── interfaces			# 对外接口存放目录
 │   └── innerkits		# 对内部子系统暴露的头文件，供系统服务使用
 ├── sa_profile			# Service Ability 配置文件
@@ -66,17 +65,16 @@
 
 ### 使用说明
 
-- 需在尽可能安全的环境中实现头文件```hdi\main\inc\pin_auth.h``` 中定义的接口，保证用户口令相关信息的安全保护达到系统内可以提供的最高安全级别（可信执行环境/安全芯片）的保护。
+- 需在尽可能安全的环境中实现头文件```driver\interface\pin_auth\IExecutor.idl``` 中定义的接口，保证用户口令相关信息的安全保护达到系统内可以提供的最高安全级别（可信执行环境/安全芯片）的保护。
 
 ## 相关仓
 
-[useriam_auth_executor_mgr](https://gitee.com/openharmony/useriam_auth_executor_mgr)
-
-[useriam_user_idm](https://gitee.com/openharmony/useriam_user_idm)
-
 [useriam_user_auth](https://gitee.com/openharmony/useriam_user_auth)
-
-**[useriam_pin_auth](https://gitee.com/openharmony/useriam_pin_auth)**
 
 [useriam_faceauth](https://gitee.com/openharmony/useriam_faceauth)
 
+**[useriam_pin_auth](https://gitee.com/openharmony/useriam_pin_auth)**
+
+[drivers_peripheral](https://gitee.com/openharmony/drivers_peripheral)
+
+[drivers_interface](https://gitee.com/openharmony/drivers_interface)
