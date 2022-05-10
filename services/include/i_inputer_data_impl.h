@@ -19,44 +19,24 @@
 #include <cstdint>
 #include <mutex>
 #include <vector>
-#include "auth_attributes.h"
 #include "i_inputer_data_stub.h"
-#include "iexecutor_messenger.h"
-#include "if_system_ability_manager.h"
 #include "nocopyable.h"
-#include "pin_auth.h"
-#include "pinauth_stub.h"
+#include "pinauth_executor_hdi.h"
 
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
-const uint32_t DEVICE_UUID_LENGTH = 65;
-const uint32_t SHA256_LENGTH = 256;
-const uint32_t RANDOM_LENGTH = 32;
-void NewSalt(std::vector<uint8_t> &saltV);
-
-class PinAuthController : public IInputerDataStub {
+class IInputerDataImpl : public IInputerDataStub {
 public:
-    DISALLOW_COPY_AND_MOVE(PinAuthController);
-    PinAuthController();
-    ~PinAuthController() override;
-    bool OnStart(std::vector<uint8_t> &salt);
+    DISALLOW_COPY_AND_MOVE(IInputerDataImpl);
+    IInputerDataImpl(uint64_t scheduleId, std::shared_ptr<PinAuthExecutorHdi> hdi);
+    ~IInputerDataImpl() override;
     void OnSetData(int32_t authSubType, std::vector<uint8_t> data) override;
-    void SaveParam(uint64_t scheduleId, std::shared_ptr<PinAuth> pin,
-        std::shared_ptr<AuthResPool::AuthAttributes> attributes);
-    void SetMessenger(const sptr<AuthResPool::IExecutorMessenger> &messenger);
-    void Cancel();
 
 private:
-    std::shared_ptr<PinAuth> pin_;
-    uint32_t command_ = 0;
-    uint64_t templateId_ = 0;
-    uint64_t scheduleId_ = 0;
-    std::vector<uint8_t> salt_;
-    std::shared_ptr<AuthResPool::AuthAttributes> attributes_;
-    sptr<AuthResPool::IExecutorMessenger> messenger_;
     std::mutex mutex_;
-    bool canceled = false;
+    uint64_t scheduleId_;
+    std::shared_ptr<PinAuthExecutorHdi> hdi_;
 };
 } // namespace PinAuth
 } // namespace UserIAM
