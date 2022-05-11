@@ -104,8 +104,13 @@ UserIAM::ResultCode PinAuthExecutorHdi::Enroll(uint64_t scheduleId, uint64_t cal
         IAM_LOGE("executorProxy is null");
         return UserIAM::ResultCode::GENERAL_ERROR;
     }
-    int32_t status = executorProxy_->Enroll(scheduleId, extraInfo,
-        sptr<PinHdi::IExecutorCallback>(new PinAuthExecutorCallbackHdi(callbackObj, shared_from_this(), callerUid)));
+    auto callback = sptr<PinHdi::IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
+        shared_from_this(), callerUid));
+    if (callback == nullptr) {
+        IAM_LOGE("callback is null");
+        return UserIAM::ResultCode::GENERAL_ERROR;
+    }
+    int32_t status = executorProxy_->Enroll(scheduleId, extraInfo, callback);
     UserIAM::ResultCode result = ConvertResultCode(status);
     if (result != UserIAM::ResultCode::SUCCESS) {
         IAM_LOGE("Enroll fail ret=%{public}d", result);
@@ -122,8 +127,17 @@ UserIAM::ResultCode PinAuthExecutorHdi::Authenticate(uint64_t scheduleId, uint64
         IAM_LOGE("executorProxy is null");
         return UserIAM::ResultCode::GENERAL_ERROR;
     }
-    int32_t status = executorProxy_->Authenticate(scheduleId, templateIdList[0], extraInfo,
-        sptr<PinHdi::IExecutorCallback>(new PinAuthExecutorCallbackHdi(callbackObj, shared_from_this(), callerUid)));
+    auto callback = sptr<PinHdi::IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
+        shared_from_this(), callerUid));
+    if (callback == nullptr) {
+        IAM_LOGE("callback is null");
+        return UserIAM::ResultCode::GENERAL_ERROR;
+    }
+    if (templateIdList.size() == 0) {
+        IAM_LOGE("Error param");
+        return UserIAM::ResultCode::GENERAL_ERROR;
+    }
+    int32_t status = executorProxy_->Authenticate(scheduleId, templateIdList[0], extraInfo, callback);
     UserIAM::ResultCode result = ConvertResultCode(status);
     if (result != UserIAM::ResultCode::SUCCESS) {
         IAM_LOGE("Authenticate fail ret=%{public}d", result);
@@ -186,7 +200,7 @@ UserIAM::ResultCode PinAuthExecutorHdi::SendCommand(UserAuth::AuthPropertyMode c
 UserIAM::ResultCode PinAuthExecutorHdi::MoveHdiExecutorInfo(PinHdi::ExecutorInfo &in, UserIAM::ExecutorInfo &out)
 {
     out.executorId = static_cast<int32_t>(in.sensorId);
-    out.executorType = in.executorType;
+    out.executorType = static_cast<int32_t>(in.executorType);
     int32_t ret = ConvertExecutorRole(in.executorRole, out.role);
     if (ret != UserIAM::ResultCode::SUCCESS) {
         IAM_LOGE("executorProxy is null");
