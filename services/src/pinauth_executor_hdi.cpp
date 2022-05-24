@@ -77,7 +77,12 @@ UserIAM::ResultCode PinAuthExecutorHdi::OnRegisterFinish(const std::vector<uint6
         IAM_LOGE("executorProxy is null");
         return UserIAM::ResultCode::GENERAL_ERROR;
     }
-    IAM_LOGI("This process is not currently supported");
+    int32_t status = executorProxy_->OnRegisterFinish(templateIdList, frameworkPublicKey, extraInfo);
+    UserIAM::ResultCode result = ConvertResultCode(status);
+    if (result != UserIAM::ResultCode::SUCCESS) {
+        IAM_LOGE("OnRegisterFinish fail result %{public}d", status);
+        return result;
+    }
     return UserIAM::ResultCode::SUCCESS;
 }
 
