@@ -19,7 +19,6 @@
 #include <mutex>
 #include <map>
 #include "nocopyable.h"
-#include "parameter.h"
 #include "system_ability.h"
 #include "system_ability_definition.h"
 #include "pinauth_stub.h"
@@ -36,7 +35,6 @@ public:
     // SystemAbility
     void OnStart() override;
     void OnStop() override;
-    void RegisterResourcePool();
     bool RegisterInputer(sptr<IRemoteInputer> inputer) override;
     void UnRegisterInputer() override;
     bool CheckPermission(const std::string &permission);
