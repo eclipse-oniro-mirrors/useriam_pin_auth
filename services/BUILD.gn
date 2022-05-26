@@ -56,7 +56,7 @@ ohos_shared_library("pinauthservice") {
     "device_driver_framework:libhdf_utils",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "pinauth_device_driver_interface:libpinauth_proxy_1.0",
+    "pin_auth_device_driver_interface:libpin_auth_proxy_1.0",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
     "startup_l2:syspara_watchagent",
