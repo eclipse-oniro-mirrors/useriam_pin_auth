@@ -44,7 +44,8 @@
         "inner_kits": [
         ],
         "test": [
-            "//base/user_iam/pin_auth/unittest:PinAuth_UT_test"
+            "//base/user_iam/pin_auth/unittest:PinAuth_UT_test",
+            "//base/user_iam/pin_auth/test/fuzztest:fuzztest"
         ]
       }
     }
