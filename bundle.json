@@ -27,7 +27,7 @@
             "ipc",
             "safwk",
             "samgr_standard",
-            "user_auth"
+            "user_auth_framework"
         ],
         "third_party": [
             "openssl"
