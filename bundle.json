@@ -8,7 +8,7 @@
     "license": "Apache License 2.0",
     "publishAs": "code-segment",
     "segment": {
-      "destPath" : "base/user_iam/pin_auth"
+      "destPath" : "base/useriam/pin_auth"
     },
     "dirs": {},
     "scripts": {},
@@ -27,7 +27,7 @@
             "ipc",
             "safwk",
             "samgr_standard",
-            "user_auth"
+            "user_auth_framework"
         ],
         "third_party": [
             "openssl"
@@ -35,17 +35,17 @@
       },
       "build": {
         "sub_component": [
-            "//base/user_iam/pin_auth/sa_profile:pinauth_sa_profile",
-            "//base/user_iam/pin_auth/frameworks:pinauth_framework",
-            "//base/user_iam/pin_auth/services:pinauthservice",
-            "//base/user_iam/pin_auth/sa_profile:pinauth_sa_profile.init",
-            "//base/user_iam/pin_auth/interfaces/kits/napi:pinauth"
+            "//base/useriam/pin_auth/sa_profile:pinauth_sa_profile",
+            "//base/useriam/pin_auth/frameworks:pinauth_framework",
+            "//base/useriam/pin_auth/services:pinauthservice",
+            "//base/useriam/pin_auth/sa_profile:pinauth_sa_profile.init",
+            "//base/useriam/pin_auth/interfaces/kits/napi:pinauth"
         ],
         "inner_kits": [
         ],
         "test": [
-            "//base/user_iam/pin_auth/unittest:PinAuth_UT_test",
-            "//base/user_iam/pin_auth/test/fuzztest:fuzztest"
+            "//base/useriam/pin_auth/unittest:PinAuth_UT_test",
+            "//base/useriam/pin_auth/test/fuzztest:fuzztest"
         ]
       }
     }

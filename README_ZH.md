@@ -33,7 +33,7 @@
 ## 目录
 
 ```undefined
-//base/user_iam/pin_auth
+//base/useriam/pin_auth
 ├── frameworks			# 框架代码
 ├── interfaces			# 对外接口存放目录
 │   └── innerkits		# 对内部子系统暴露的头文件，供系统服务使用

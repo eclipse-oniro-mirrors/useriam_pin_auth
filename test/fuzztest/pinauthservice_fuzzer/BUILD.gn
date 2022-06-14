@@ -17,7 +17,7 @@ import("//build/test.gni")
 ohos_fuzztest("PinAuthServiceFuzzTest") {
   module_out_path = "useriam/pin_auth"
   fuzz_config_file =
-      "//base/user_iam/pin_auth/test/fuzztest/pinauthservice_fuzzer"
+      "//base/useriam/pin_auth/test/fuzztest/pinauthservice_fuzzer"
   cflags = [
     "-g",
     "-O0",
@@ -25,17 +25,17 @@ ohos_fuzztest("PinAuthServiceFuzzTest") {
     "-fno-omit-frame-pointer",
   ]
   include_dirs = [
-    "//base/user_iam/pin_auth/services/include",
-    "//base/user_iam/user_auth/common/logs",
-    "//base/user_iam/user_auth/common/utils",
+    "//base/useriam/pin_auth/services/include",
+    "//base/useriam/user_auth_framework/common/logs",
+    "//base/useriam/user_auth_framework/common/utils",
   ]
 
   sources = [ "pin_auth_service_fuzzer.cpp" ]
 
   deps = [
-    "//base/user_iam/pin_auth/frameworks:pinauth_framework",
-    "//base/user_iam/pin_auth/services:pinauthservice",
-    "//base/user_iam/user_auth/common:iam_test",
+    "//base/useriam/pin_auth/frameworks:pinauth_framework",
+    "//base/useriam/pin_auth/services:pinauthservice",
+    "//base/useriam/user_auth_framework/common:iam_test",
   ]
 
   external_deps = [
