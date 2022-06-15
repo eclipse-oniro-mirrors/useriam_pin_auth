@@ -27,7 +27,7 @@ Note 2: The OpenHarmony framework provides pure software implementation of PIN a
 ## Directory Structure
 
 ```undefined
-//base/user_iam/pin_auth
+//base/useriam/pin_auth
 ├── frameworks			# Framework code
 ├── hdi					# APIs defined by device vendors for adaptation
 ├── interfaces			# Directory for storing external interfaces

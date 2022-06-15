@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-import("//base/user_iam/pin_auth/pinauth.gni")
+import("//base/useriam/pin_auth/pinauth.gni")
 import("//build/ohos.gni")
 
 config("pinauth_config") {

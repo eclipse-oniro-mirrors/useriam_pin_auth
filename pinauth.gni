@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-pinauth_root_path = "//base/user_iam/pin_auth"
+pinauth_root_path = "//base/useriam/pin_auth"
 
 useriam_sa_path = "${pinauth_root_path}/sa_profile"
 
