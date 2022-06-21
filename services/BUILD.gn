@@ -53,10 +53,10 @@ ohos_shared_library("pinauthservice") {
   ]
 
   external_deps = [
+    "drivers_interface_pin_auth:libpin_auth_proxy_1.0",
     "hdf_core:libhdf_utils",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
-    "pin_auth_device_driver_interface:libpin_auth_proxy_1.0",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
     "startup_l2:syspara_watchagent",
