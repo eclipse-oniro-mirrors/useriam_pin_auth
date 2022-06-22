@@ -60,16 +60,16 @@ Note 2: The OpenHarmony framework provides pure software implementation of PIN a
 
 ### Usage Guidelines
 
-- The APIs defined in the header file ```hdi\main\inc\pin_auth.h``` must be implemented in a secure environment. The PIN related information must be protected with the highest security level (TEE or security chip).
+- The APIs defined in the header file ```driver\interface\pin_auth\IExecutor.idl``` must be implemented in a secure environment. The PIN related information must be protected with the highest security level (TEE or security chip).
 
 ## Repositories Involved
 
-[useriam_auth_executor_mgr](https://gitee.com/openharmony-sig/useriam_coauth)
+[useriam_user_auth_framework](https://gitee.com/openharmony/useriam_user_auth_framework)
 
-[useriam_user_idm](https://gitee.com/openharmony-sig/useriam_useridm)
+[useriam_face_auth](https://gitee.com/openharmony/useriam_face_auth)
 
-[useriam_user_auth](https://gitee.com/openharmony-sig/useriam_userauth)
+**[useriam_pin_auth](https://gitee.com/openharmony/useriam_pin_auth)**
 
-**[useriam_pin_auth](https://gitee.com/openharmony-sig/useriam_pinauth)**
+[drivers_peripheral](https://gitee.com/openharmony/drivers_peripheral)
 
-[useriam_faceauth](https://gitee.com/openharmony/useriam_faceauth)
+[drivers_interface](https://gitee.com/openharmony/drivers_interface)
