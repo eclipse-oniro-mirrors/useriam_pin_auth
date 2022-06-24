@@ -44,7 +44,6 @@ ohos_shared_library("pinauthservice") {
   deps = [
     "${pinauth_frameworks_path}:pinauth_framework",
     "//base/security/access_token/interfaces/innerkits/accesstoken:libaccesstoken_sdk",
-    "//base/startup/syspara_lite/interfaces/innerkits/native/syspara:syspara",
     "//base/useriam/user_auth_framework/common/executors:userauth_executors",
     "//base/useriam/user_auth_framework/frameworks/co_auth:coauth_framework",
     "//base/useriam/user_auth_framework/frameworks/user_idm:useridm_framework",
@@ -56,10 +55,11 @@ ohos_shared_library("pinauthservice") {
     "drivers_interface_pin_auth:libpin_auth_proxy_1.0",
     "hdf_core:libhdf_utils",
     "hiviewdfx_hilog_native:libhilog",
+    "init:libbeget_proxy",
+    "init:libbegetutil",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
-    "startup_l2:syspara_watchagent",
   ]
   remove_configs = [ "//build/config/compiler:no_exceptions" ]
 
