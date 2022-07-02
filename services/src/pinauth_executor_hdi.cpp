@@ -16,7 +16,10 @@
 #include "pinauth_executor_hdi.h"
 #include "hdf_base.h"
 #include "iam_logger.h"
+#include "iam_defines.h"
+#include "hisysevent.h"
 #include "pinauth_executor_callback_hdi.h"
+#include "hisysevent.h"
 
 #define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
 
@@ -82,6 +85,16 @@ UserIAM::ResultCode PinAuthExecutorHdi::OnRegisterFinish(const std::vector<uint6
     if (result != UserIAM::ResultCode::SUCCESS) {
         IAM_LOGE("OnRegisterFinish fail result %{public}d", status);
         return result;
+    }
+
+    int32_t executorType;
+    result = GetExecutorType(executorType);
+    if (result == UserIAM::ResultCode::SUCCESS) {
+        OHOS::HiviewDFX::HiSysEvent::Write("USERIAM_PIN", "USERIAM_TEMPLATE_CHANGE",
+            OHOS::HiviewDFX::HiSysEvent::EventType::SECURITY, "EXECUTOR_TYPE", executorType,
+            "CHANGE_TYPE", UserIam::UserAuth::TRACE_DELETE_CREDENTIAL, "TRIGGER_REASON", "Reconciliation");
+    } else {
+        IAM_LOGE("GetExecutorType fail result %{public}d", result);
     }
     return UserIAM::ResultCode::SUCCESS;
 }
@@ -306,6 +319,31 @@ UserIAM::ResultCode PinAuthExecutorHdi::ConvertResultCode(const int32_t in)
     }
     IAM_LOGE("covert hdi result code %{public}d to framework result code %{public}d", in, out);
     return out;
+}
+
+UserIAM::ResultCode PinAuthExecutorHdi::GetExecutorType(int32_t &type)
+{
+    if (executorProxy_ == nullptr) {
+        IAM_LOGE("executorProxy is null");
+        return UserIAM::ResultCode::GENERAL_ERROR;
+    }
+
+    PinHdi::ExecutorInfo localInfo = {};
+    int32_t status = executorProxy_->GetExecutorInfo(localInfo);
+    UserIAM::ResultCode result = ConvertResultCode(status);
+    if (result != UserIAM::ResultCode::SUCCESS) {
+        IAM_LOGE("GetExecutorInfo fail ret=%{public}d", result);
+        return result;
+    }
+
+    UserIAM::ExecutorInfo info = {};
+    int32_t ret = MoveHdiExecutorInfo(localInfo, info);
+    if (ret != UserIAM::ResultCode::SUCCESS) {
+        IAM_LOGE("MoveHdiExecutorInfo fail ret=%{public}d", ret);
+        return UserIAM::ResultCode::GENERAL_ERROR;
+    }
+    type = static_cast<int32_t>(info.executorType);
+    return UserIAM::ResultCode::SUCCESS;
 }
 } // PinAuth
 } // UserIAM
