@@ -61,7 +61,6 @@ private:
     UserIAM::ResultCode ConvertExecutorSecureLevel(
         const PinHdi::ExecutorSecureLevel in, UserIAM::ExecutorSecureLevel &out);
     UserIAM::ResultCode ConvertResultCode(const int32_t in);
-    UserIAM::ResultCode GetExecutorType(int32_t &type);
     sptr<PinHdi::IExecutor> executorProxy_;
 };
 } // PinAuth
