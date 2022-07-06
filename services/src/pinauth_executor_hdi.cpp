@@ -25,6 +25,7 @@
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
+using namespace OHOS::UserIam::UserAuth;
 PinAuthExecutorHdi::PinAuthExecutorHdi(sptr<HDI::PinAuth::V1_0::IExecutor> executorProxy)
     : executorProxy_(executorProxy) {};
 
