@@ -19,6 +19,7 @@
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
+using namespace OHOS::UserIam::UserAuth;
 IInputerDataImpl::IInputerDataImpl(uint64_t scheduleId, std::shared_ptr<PinAuthExecutorHdi> hdi)
     : scheduleId_(scheduleId), hdi_(hdi) {}
 IInputerDataImpl::~IInputerDataImpl() {}
