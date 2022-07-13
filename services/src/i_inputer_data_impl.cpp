@@ -14,7 +14,11 @@
  */
 
 #include "i_inputer_data_impl.h"
+
+#include "co_auth_defines.h"
+
 #include "pinauth_log_wrapper.h"
+#include "pinauth_executor_hdi.h"
 
 namespace OHOS {
 namespace UserIAM {

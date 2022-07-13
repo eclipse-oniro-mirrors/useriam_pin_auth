@@ -16,6 +16,7 @@
 #ifndef PIN_AUTH_DRIVER_HDI
 #define PIN_AUTH_DRIVER_HDI
 
+
 #include <vector>
 #include <iauth_driver_hdi.h>
 #include "iremote_broker.h"

@@ -15,10 +15,21 @@
 
 #include "pin_auth_helper.h"
 
+#include <cstddef>
+#include <cstdint>
+#include <memory>
+#include <new>
+
+#include "js_native_api.h"
+#include "napi/native_common.h"
+#include "node_api.h"
+#include "node_api_types.h"
+
 #include "iam_logger.h"
 
-#include "pin_auth_impl.h"
+#include "i_inputer_data.h"
 #include "pin_auth_common.h"
+#include "pin_auth_impl.h"
 
 #define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_NAPI
 

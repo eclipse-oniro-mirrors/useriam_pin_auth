@@ -14,9 +14,15 @@
  */
 
 #include "i_inputer_stub.h"
-#include "inputer_data_impl.h"
+
+#include "ipc_object_stub.h"
+#include "iremote_broker.h"
+#include "message_parcel.h"
+
 #include "iremote_inputer.h"
-#include "iremote_stub.h"
+#include "iremote_inputer_data.h"
+#include "i_inputer.h"
+#include "inputer_data_impl.h"
 #include "pinauth_defines.h"
 #include "pinauth_log_wrapper.h"
 

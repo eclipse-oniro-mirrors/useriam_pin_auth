@@ -14,8 +14,15 @@
  */
 
 #include "i_inputer_proxy.h"
+
+#include "ipc_types.h"
+
+#include "message_option.h"
+#include "message_parcel.h"
+#include "iremote_object.h"
+
 #include "iremote_inputer.h"
-#include "iremote_proxy.h"
+#include "iremote_inputer_data.h"
 #include "pinauth_log_wrapper.h"
 
 namespace OHOS {
