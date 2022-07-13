@@ -110,7 +110,12 @@ bool PinAuthService::RegisterInputer(sptr<IRemoteInputer> inputer)
         IAM_LOGE("inputer is nullptr");
         return false;
     }
-    return PinAuthManager::GetInstance().RegisterInputer(GetCallingUid(), inputer);
+    using namespace Security::AccessToken;
+    uint32_t tokenID = this->GetFirstTokenID();
+    if (tokenID == 0) {
+        tokenID = this->GetCallingTokenID();
+    }
+    return PinAuthManager::GetInstance().RegisterInputer(tokenID, inputer);
 }
 
 void PinAuthService::UnRegisterInputer()
@@ -120,7 +125,12 @@ void PinAuthService::UnRegisterInputer()
         IAM_LOGE("Permission check failed");
         return;
     }
-    PinAuthManager::GetInstance().UnRegisterInputer(GetCallingUid());
+    using namespace Security::AccessToken;
+    uint32_t tokenID = this->GetFirstTokenID();
+    if (tokenID == 0) {
+        tokenID = this->GetCallingTokenID();
+    }
+    PinAuthManager::GetInstance().UnRegisterInputer(tokenID);
 }
 } // namespace PinAuth
 } // namespace UserIAM
