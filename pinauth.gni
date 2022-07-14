@@ -23,6 +23,6 @@ pinauth_interfaces_path = "${pinauth_root_path}/interfaces"
 
 pinauth_kits_path = "${pinauth_interfaces_path}/kits"
 
-pinauth_innerkits_path = "${pinauth_interfaces_path}/innerkits"
+pinauth_innerapi_path = "${pinauth_interfaces_path}/inner_api"
 
 ability_runtime_path = "//foundation/ability/ability_runtime"

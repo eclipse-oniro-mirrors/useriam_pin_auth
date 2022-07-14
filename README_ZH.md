@@ -36,7 +36,7 @@
 //base/useriam/pin_auth
 ├── frameworks			# 框架代码
 ├── interfaces			# 对外接口存放目录
-│   └── innerkits		# 对内部子系统暴露的头文件，供系统服务使用
+│   └── inner_api		# 对内部子系统暴露的头文件，供系统服务使用
 ├── sa_profile			# Service Ability 配置文件
 ├── services			# Service Ability 服务实现
 ├── unittest			# 测试代码存入目录

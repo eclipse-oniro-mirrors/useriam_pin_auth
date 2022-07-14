@@ -17,7 +17,7 @@ import("//build/ohos.gni")
 config("pinauth_config") {
   include_dirs = [
     "${pinauth_frameworks_path}/include",
-    "${pinauth_innerkits_path}/include",
+    "${pinauth_innerapi_path}/include",
   ]
 }
 

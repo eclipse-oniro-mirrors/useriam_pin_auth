@@ -31,7 +31,7 @@ Note 2: The OpenHarmony framework provides pure software implementation of PIN a
 ├── frameworks			# Framework code
 ├── hdi					# APIs defined by device vendors for adaptation
 ├── interfaces			# Directory for storing external interfaces
-│   └── innerkits		# Header files exposed to the internal subsystems
+│   └── inner_api		# Header files exposed to the internal subsystems
 ├── sa_profile			# Profile of the Service ability
 ├── services			# Implementation of the Service ability
 ├── unittest			# Directory for storing test code
