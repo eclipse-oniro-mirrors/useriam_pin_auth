@@ -35,32 +35,32 @@ public:
     explicit PinAuthExecutorHdi(sptr<HDI::PinAuth::V1_0::IExecutor> executorProxy);
     virtual ~PinAuthExecutorHdi() = default;
 
-    UserIAM::ResultCode GetExecutorInfo(UserIAM::ExecutorInfo &info);
-    UserIAM::ResultCode GetTemplateInfo(uint64_t templateId, UserAuth::TemplateInfo &info);
-    UserIAM::ResultCode OnRegisterFinish(const std::vector<uint64_t> &templateIdList,
+    UserIam::UserAuth::ResultCode GetExecutorInfo(UserIam::UserAuth::ExecutorInfo &info);
+    UserIam::UserAuth::ResultCode GetTemplateInfo(uint64_t templateId, UserAuth::TemplateInfo &info);
+    UserIam::UserAuth::ResultCode OnRegisterFinish(const std::vector<uint64_t> &templateIdList,
         const std::vector<uint8_t> &frameworkPublicKey, const std::vector<uint8_t> &extraInfo);
-    UserIAM::ResultCode Enroll(uint64_t scheduleId, uint32_t tokenId, const std::vector<uint8_t> &extraInfo,
+    UserIam::UserAuth::ResultCode Enroll(uint64_t scheduleId, uint32_t tokenId, const std::vector<uint8_t> &extraInfo,
         const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj);
-    UserIAM::ResultCode Authenticate(uint64_t scheduleId, uint32_t tokenId,
+    UserIam::UserAuth::ResultCode Authenticate(uint64_t scheduleId, uint32_t tokenId,
         const std::vector<uint64_t> &templateIdList, const std::vector<uint8_t> &extraInfo,
         const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj);
-    UserIAM::ResultCode OnSetData(uint64_t scheduleId, uint64_t authSubType, const std::vector<uint8_t>& data);
-    UserIAM::ResultCode Identify(uint64_t scheduleId, uint32_t tokenId, const std::vector<uint8_t> &extraInfo,
+    UserIam::UserAuth::ResultCode OnSetData(uint64_t scheduleId, uint64_t authSubType, const std::vector<uint8_t>& data);
+    UserIam::UserAuth::ResultCode Identify(uint64_t scheduleId, uint32_t tokenId, const std::vector<uint8_t> &extraInfo,
         const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj);
-    UserIAM::ResultCode Delete(const std::vector<uint64_t> &templateIdList);
-    UserIAM::ResultCode Cancel(uint64_t scheduleId);
-    UserIAM::ResultCode SendCommand(UserAuth::AuthPropertyMode commandId, const std::vector<uint8_t> &extraInfo,
+    UserIam::UserAuth::ResultCode Delete(const std::vector<uint64_t> &templateIdList);
+    UserIam::UserAuth::ResultCode Cancel(uint64_t scheduleId);
+    UserIam::UserAuth::ResultCode SendCommand(UserIam::UserAuth::PropertyMode commandId, const std::vector<uint8_t> &extraInfo,
         const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj);
 
 private:
-    UserIAM::ResultCode MoveHdiExecutorInfo(PinHdi::ExecutorInfo &in, UserIAM::ExecutorInfo &out);
-    UserIAM::ResultCode MoveHdiTemplateInfo(PinHdi::TemplateInfo &in, UserAuth::TemplateInfo &out);
-    UserIAM::ResultCode ConvertCommandId(const UserAuth::AuthPropertyMode in, PinHdi::CommandId &out);
-    UserIAM::ResultCode ConvertAuthType(const PinHdi::AuthType in, UserIAM::AuthType &out);
-    UserIAM::ResultCode ConvertExecutorRole(const PinHdi::ExecutorRole in, UserIAM::ExecutorRole &out);
-    UserIAM::ResultCode ConvertExecutorSecureLevel(
-        const PinHdi::ExecutorSecureLevel in, UserIAM::ExecutorSecureLevel &out);
-    UserIAM::ResultCode ConvertResultCode(const int32_t in);
+    UserIam::UserAuth::ResultCode MoveHdiExecutorInfo(PinHdi::ExecutorInfo &in, UserIam::UserAuth::ExecutorInfo &out);
+    UserIam::UserAuth::ResultCode MoveHdiTemplateInfo(PinHdi::TemplateInfo &in, UserAuth::TemplateInfo &out);
+    UserIam::UserAuth::ResultCode ConvertCommandId(const UserIam::UserAuth::PropertyMode in, PinHdi::CommandId &out);
+    UserIam::UserAuth::ResultCode ConvertAuthType(const PinHdi::AuthType in, UserIam::UserAuth::AuthType &out);
+    UserIam::UserAuth::ResultCode ConvertExecutorRole(const PinHdi::ExecutorRole in, UserIam::UserAuth::ExecutorRole &out);
+    UserIam::UserAuth::ResultCode ConvertExecutorSecureLevel(
+        const PinHdi::ExecutorSecureLevel in, UserIam::UserAuth::ExecutorSecureLevel &out);
+    UserIam::UserAuth::ResultCode ConvertResultCode(const int32_t in);
     sptr<PinHdi::IExecutor> executorProxy_;
 };
 } // PinAuth

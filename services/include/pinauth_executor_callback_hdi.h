@@ -21,7 +21,6 @@
 #include "v1_0/executor_callback_stub.h"
 #include "i_inputer_proxy.h"
 #include "iexecute_callback.h"
-#include "iexecutor_messenger.h"
 #include "pinauth_manager.h"
 #include "pinauth_executor_hdi.h"
 #include "nocopyable.h"
@@ -41,7 +40,7 @@ public:
 private:
     std::shared_ptr<UserAuth::IExecuteCallback> frameworkCallback_;
     std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi_;
-    UserIAM::ResultCode ConvertResultCode(const int32_t in);
+    UserIam::UserAuth::ResultCode ConvertResultCode(const int32_t in);
     uint32_t tokenId_;
 };
 } // PinAuth
