@@ -28,8 +28,8 @@ namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserAuth::IExecuteCallback>
-    frameworkCallback, std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi, uint64_t callerUid)
-    : frameworkCallback_(frameworkCallback), pinAuthExecutorHdi_(pinAuthExecutorHdi), callerUid_(callerUid) {}
+    frameworkCallback, std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi, uint32_t tokenId)
+    : frameworkCallback_(frameworkCallback), pinAuthExecutorHdi_(pinAuthExecutorHdi), tokenId_(tokenId) {}
 
 int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uint8_t>& extraInfo)
 {
@@ -42,8 +42,8 @@ int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uin
 int32_t PinAuthExecutorCallbackHdi::OnGetData(uint64_t scheduleId, const std::vector<uint8_t>& salt,
     uint64_t authSubType)
 {
-    IAM_LOGI("Start callerUid_ is  0xXXXX%{public}04" PRIx64 " ", callerUid_);
-    sptr<IRemoteInputer> inputer = PinAuthManager::GetInstance().getInputerLock(callerUid_);
+    IAM_LOGI("Start tokenId_ is %{public}u", tokenId_);
+    sptr<IRemoteInputer> inputer = PinAuthManager::GetInstance().getInputerLock(tokenId_);
     if (inputer == nullptr) {
         IAM_LOGE("inputer is nullptr");
         return HDF_FAILURE;

@@ -109,7 +109,7 @@ UserIAM::ResultCode PinAuthExecutorHdi::OnSetData(uint64_t scheduleId, uint64_t 
     return UserIAM::ResultCode::SUCCESS;
 }
 
-UserIAM::ResultCode PinAuthExecutorHdi::Enroll(uint64_t scheduleId, uint64_t callerUid,
+UserIAM::ResultCode PinAuthExecutorHdi::Enroll(uint64_t scheduleId, uint32_t tokenId,
     const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj)
 {
     if (executorProxy_ == nullptr) {
@@ -117,7 +117,7 @@ UserIAM::ResultCode PinAuthExecutorHdi::Enroll(uint64_t scheduleId, uint64_t cal
         return UserIAM::ResultCode::GENERAL_ERROR;
     }
     auto callback = sptr<PinHdi::IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
-        shared_from_this(), callerUid));
+        shared_from_this(), tokenId));
     if (callback == nullptr) {
         IAM_LOGE("callback is null");
         return UserIAM::ResultCode::GENERAL_ERROR;
@@ -131,7 +131,7 @@ UserIAM::ResultCode PinAuthExecutorHdi::Enroll(uint64_t scheduleId, uint64_t cal
     return UserIAM::ResultCode::SUCCESS;
 }
 
-UserIAM::ResultCode PinAuthExecutorHdi::Authenticate(uint64_t scheduleId, uint64_t callerUid,
+UserIAM::ResultCode PinAuthExecutorHdi::Authenticate(uint64_t scheduleId, uint32_t tokenId,
     const std::vector<uint64_t> &templateIdList, const std::vector<uint8_t> &extraInfo,
     const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj)
 {
@@ -140,7 +140,7 @@ UserIAM::ResultCode PinAuthExecutorHdi::Authenticate(uint64_t scheduleId, uint64
         return UserIAM::ResultCode::GENERAL_ERROR;
     }
     auto callback = sptr<PinHdi::IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
-        shared_from_this(), callerUid));
+        shared_from_this(), tokenId));
     if (callback == nullptr) {
         IAM_LOGE("callback is null");
         return UserIAM::ResultCode::GENERAL_ERROR;
@@ -158,12 +158,12 @@ UserIAM::ResultCode PinAuthExecutorHdi::Authenticate(uint64_t scheduleId, uint64
     return UserIAM::ResultCode::SUCCESS;
 }
 
-UserIAM::ResultCode PinAuthExecutorHdi::Identify(uint64_t scheduleId, uint64_t callerUid,
+UserIAM::ResultCode PinAuthExecutorHdi::Identify(uint64_t scheduleId, uint32_t tokenId,
     const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj)
 {
     IAM_LOGI("Adaptor frame interface, temporarily useless");
     static_cast<void>(scheduleId);
-    static_cast<void>(callerUid);
+    static_cast<void>(tokenId);
     static_cast<void>(extraInfo);
     static_cast<void>(callbackObj);
     return UserIAM::ResultCode::SUCCESS;

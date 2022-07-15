@@ -14,7 +14,6 @@
  */
 
 #include "pinauth_manager.h"
-#include <cinttypes>
 #include "pinauth_log_wrapper.h"
 
 namespace OHOS {
@@ -22,18 +21,18 @@ namespace UserIAM {
 namespace PinAuth {
 PinAuthManager::PinAuthManager() = default;
 PinAuthManager::~PinAuthManager() = default;
-bool PinAuthManager::RegisterInputer(uint64_t uid, sptr<IRemoteInputer> &inputer)
+bool PinAuthManager::RegisterInputer(uint32_t tokenId, sptr<IRemoteInputer> &inputer)
 {
     std::lock_guard<std::mutex> guard(mutex_);
     PINAUTH_HILOGI(MODULE_SERVICE,
-        "PinAuthManager::RegisterInputer start uid 0xXXXX%{public}04" PRIx64 " is called", MASK & uid);
-    if (pinAuthInputerMap_.find(uid) != pinAuthInputerMap_.end()) {
+        "PinAuthManager::RegisterInputer start first tokenId %{public}u is called", tokenId);
+    if (pinAuthInputerMap_.find(tokenId) != pinAuthInputerMap_.end()) {
         PINAUTH_HILOGE(MODULE_SERVICE,
             "PinAuthManager::RegisterInputer pinAuthController is already register, do not repeat");
         return false;
     }
-    pinAuthInputerMap_.emplace(uid, inputer);
-    sptr<IRemoteObject::DeathRecipient> dr = new (std::nothrow) ResPinauthInputerDeathRecipient(uid);
+    pinAuthInputerMap_.emplace(tokenId, inputer);
+    sptr<IRemoteObject::DeathRecipient> dr = new (std::nothrow) ResPinauthInputerDeathRecipient(tokenId);
     if (dr == nullptr || inputer->AsObject() == nullptr) {
         PINAUTH_HILOGE(MODULE_SERVICE, "dr or inputer->AsObject() is nullptr");
     } else {
@@ -45,13 +44,13 @@ bool PinAuthManager::RegisterInputer(uint64_t uid, sptr<IRemoteInputer> &inputer
     return true;
 }
 
-void PinAuthManager::UnRegisterInputer(uint64_t uid)
+void PinAuthManager::UnRegisterInputer(uint32_t tokenId)
 {
     std::lock_guard<std::mutex> guard(mutex_);
     PINAUTH_HILOGI(MODULE_SERVICE,
-        "PinAuthManager::UnRegisterInputer start uid 0xXXXX%{public}04" PRIx64 " is called", MASK & uid);
-    if (pinAuthInputerMap_.find(uid) != pinAuthInputerMap_.end()) {
-        pinAuthInputerMap_.erase(uid);
+        "PinAuthManager::UnRegisterInputer start tokenId %{public}u is called", tokenId);
+    if (pinAuthInputerMap_.find(tokenId) != pinAuthInputerMap_.end()) {
+        pinAuthInputerMap_.erase(tokenId);
         PINAUTH_HILOGE(MODULE_SERVICE, "pinAuthInputerMap_ erase success");
     }
     PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthManager::UnRegisterInputer() is called end");
