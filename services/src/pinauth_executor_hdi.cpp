@@ -25,7 +25,9 @@
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
+using namespace OHOS::UserIam::UserAuth;
 using IamResultCode = OHOS::UserIam::UserAuth::ResultCode;
+using IamExecutorRole = UserIam::UserAuth::ExecutorRole;
 PinAuthExecutorHdi::PinAuthExecutorHdi(sptr<HDI::PinAuth::V1_0::IExecutor> executorProxy)
     : executorProxy_(executorProxy) {};
 
@@ -262,12 +264,12 @@ IamResultCode PinAuthExecutorHdi::ConvertAuthType(const PinHdi::AuthType in, Use
     return IamResultCode::SUCCESS;
 }
 
-IamResultCode PinAuthExecutorHdi::ConvertExecutorRole(const PinHdi::ExecutorRole in, UserIam::UserAuth::ExecutorRole &out)
+IamResultCode PinAuthExecutorHdi::ConvertExecutorRole(const PinHdi::ExecutorRole in, IamExecutorRole &out)
 {
-    static const std::map<PinHdi::ExecutorRole, UserIam::UserAuth::ExecutorRole> data = {
-        { PinHdi::ExecutorRole::COLLECTOR, UserIam::UserAuth::ExecutorRole::COLLECTOR },
-        { PinHdi::ExecutorRole::VERIFIER, UserIam::UserAuth::ExecutorRole::VERIFIER },
-        { PinHdi::ExecutorRole::ALL_IN_ONE, UserIam::UserAuth::ExecutorRole::ALL_IN_ONE},
+    static const std::map<PinHdi::ExecutorRole, IamExecutorRole> data = {
+        { PinHdi::ExecutorRole::COLLECTOR, IamExecutorRole::COLLECTOR },
+        { PinHdi::ExecutorRole::VERIFIER, IamExecutorRole::VERIFIER },
+        { PinHdi::ExecutorRole::ALL_IN_ONE, IamExecutorRole::ALL_IN_ONE},
     };
     if (data.count(in) == 0) {
         IAM_LOGE("executorRole %{public}d is invalid", in);

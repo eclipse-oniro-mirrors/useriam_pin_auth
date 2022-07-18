@@ -50,7 +50,8 @@ public:
         const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj);
     UserIam::UserAuth::ResultCode Delete(const std::vector<uint64_t> &templateIdList);
     UserIam::UserAuth::ResultCode Cancel(uint64_t scheduleId);
-    UserIam::UserAuth::ResultCode SendCommand(UserIam::UserAuth::PropertyMode commandId, const std::vector<uint8_t> &extraInfo,
+    UserIam::UserAuth::ResultCode SendCommand(UserIam::UserAuth::PropertyMode commandId,
+        const std::vector<uint8_t> &extraInfo,
         const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj);
 
 private:
