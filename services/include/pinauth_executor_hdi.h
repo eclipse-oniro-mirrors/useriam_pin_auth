@@ -44,9 +44,10 @@ public:
     UserIam::UserAuth::ResultCode Authenticate(uint64_t scheduleId, uint32_t tokenId,
         const std::vector<uint64_t> &templateIdList, const std::vector<uint8_t> &extraInfo,
         const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj);
-    UserIam::UserAuth::ResultCode OnSetData(uint64_t scheduleId, uint64_t authSubType, const std::vector<uint8_t>& data);
-    UserIam::UserAuth::ResultCode Identify(uint64_t scheduleId, uint32_t tokenId, const std::vector<uint8_t> &extraInfo,
-        const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj);
+    UserIam::UserAuth::ResultCode OnSetData(uint64_t scheduleId, uint64_t authSubType,
+        const std::vector<uint8_t>& data);
+    UserIam::UserAuth::ResultCode Identify(uint64_t scheduleId, uint32_t tokenId,
+        const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj);
     UserIam::UserAuth::ResultCode Delete(const std::vector<uint64_t> &templateIdList);
     UserIam::UserAuth::ResultCode Cancel(uint64_t scheduleId);
     UserIam::UserAuth::ResultCode SendCommand(UserIam::UserAuth::PropertyMode commandId, const std::vector<uint8_t> &extraInfo,
@@ -57,7 +58,8 @@ private:
     UserIam::UserAuth::ResultCode MoveHdiTemplateInfo(PinHdi::TemplateInfo &in, UserAuth::TemplateInfo &out);
     UserIam::UserAuth::ResultCode ConvertCommandId(const UserIam::UserAuth::PropertyMode in, PinHdi::CommandId &out);
     UserIam::UserAuth::ResultCode ConvertAuthType(const PinHdi::AuthType in, UserIam::UserAuth::AuthType &out);
-    UserIam::UserAuth::ResultCode ConvertExecutorRole(const PinHdi::ExecutorRole in, UserIam::UserAuth::ExecutorRole &out);
+    UserIam::UserAuth::ResultCode ConvertExecutorRole(const PinHdi::ExecutorRole in,
+        UserIam::UserAuth::ExecutorRole &out);
     UserIam::UserAuth::ResultCode ConvertExecutorSecureLevel(
         const PinHdi::ExecutorSecureLevel in, UserIam::UserAuth::ExecutorSecureLevel &out);
     UserIam::UserAuth::ResultCode ConvertResultCode(const int32_t in);
