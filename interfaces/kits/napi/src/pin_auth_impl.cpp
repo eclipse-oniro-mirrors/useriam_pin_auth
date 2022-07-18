@@ -14,9 +14,9 @@
  */
 
 #include "pin_auth_impl.h"
-#include "pin_auth_common.h"
-#include "pinauth_register.h"
+
 #include "inputer_impl.h"
+#include "pinauth_register.h"
 
 namespace OHOS {
 namespace PinAuth {

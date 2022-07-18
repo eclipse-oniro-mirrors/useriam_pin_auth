@@ -14,8 +14,15 @@
  */
 
 #include "inputer_data_impl.h"
+
+#include <cstddef>
+#include <cstdint>
 #include <openssl/evp.h>
+#include <openssl/ossl_typ.h>
 #include <openssl/kdf.h>
+#include <vector>
+
+#include "iremote_inputer_data.h"
 #include "pinauth_log_wrapper.h"
 
 namespace OHOS {

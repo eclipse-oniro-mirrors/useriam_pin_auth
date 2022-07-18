@@ -14,6 +14,13 @@
  */
 
 #include "pinauth_stub.h"
+
+#include "ipc_object_stub.h"
+#include "iremote_broker.h"
+#include "message_parcel.h"
+
+#include "iremote_inputer.h"
+#include "iremote_pinauth.h"
 #include "pinauth_defines.h"
 #include "pinauth_log_wrapper.h"
 
