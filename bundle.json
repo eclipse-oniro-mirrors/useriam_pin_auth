@@ -48,7 +48,7 @@
         ],
         "test": [
             "//base/useriam/pin_auth/unittest:PinAuth_UT_test",
-            "//base/useriam/pin_auth/test/fuzztest:fuzztest"
+            "//base/useriam/pin_auth/test/fuzztest:PinAuth_fuzz_test"
         ]
       }
     }

@@ -34,7 +34,7 @@ PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserAuth:
 int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uint8_t>& extraInfo)
 {
     IAM_LOGI("OnResult %{public}d", code);
-    UserIAM::ResultCode retCode = ConvertResultCode(code);
+    UserIam::UserAuth::ResultCode retCode = ConvertResultCode(code);
     frameworkCallback_->OnResult(retCode, extraInfo);
     return HDF_SUCCESS;
 }
@@ -56,31 +56,31 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(uint64_t scheduleId, const std::ve
     return HDF_SUCCESS;
 }
 
-UserIAM::ResultCode PinAuthExecutorCallbackHdi::ConvertResultCode(const int32_t in)
+UserIam::UserAuth::ResultCode PinAuthExecutorCallbackHdi::ConvertResultCode(const int32_t in)
 {
     ResultCode hdiIn = static_cast<ResultCode>(in);
     if (hdiIn > ResultCode::VENDOR_RESULT_CODE_BEGIN) {
         IAM_LOGI("vendor hdi result code %{public}d, no covert", hdiIn);
-        return static_cast<UserIAM::ResultCode>(in);
+        return static_cast<UserIam::UserAuth::ResultCode>(in);
     }
 
-    static const std::map<ResultCode, UserIAM::ResultCode> data = {
-        {ResultCode::SUCCESS, UserIAM::ResultCode::SUCCESS},
-        {ResultCode::FAIL, UserIAM::ResultCode::FAIL},
-        {ResultCode::GENERAL_ERROR, UserIAM::ResultCode::GENERAL_ERROR},
-        {ResultCode::CANCELED, UserIAM::ResultCode::CANCELED},
-        {ResultCode::TIMEOUT, UserIAM::ResultCode::TIMEOUT},
-        {ResultCode::BUSY, UserIAM::ResultCode::BUSY},
-        {ResultCode::INVALID_PARAMETERS, UserIAM::ResultCode::INVALID_PARAMETERS},
-        {ResultCode::LOCKED, UserIAM::ResultCode::LOCKED},
-        {ResultCode::NOT_ENROLLED, UserIAM::ResultCode::NOT_ENROLLED},
-        // should be UserIAM::ResultCode::OPERATION_NOT_SUPPORT
-        {ResultCode::OPERATION_NOT_SUPPORT, UserIAM::ResultCode::GENERAL_ERROR},
+    static const std::map<ResultCode, UserIam::UserAuth::ResultCode> data = {
+        {ResultCode::SUCCESS, UserIam::UserAuth::ResultCode::SUCCESS},
+        {ResultCode::FAIL, UserIam::UserAuth::ResultCode::FAIL},
+        {ResultCode::GENERAL_ERROR, UserIam::UserAuth::ResultCode::GENERAL_ERROR},
+        {ResultCode::CANCELED, UserIam::UserAuth::ResultCode::CANCELED},
+        {ResultCode::TIMEOUT, UserIam::UserAuth::ResultCode::TIMEOUT},
+        {ResultCode::BUSY, UserIam::UserAuth::ResultCode::BUSY},
+        {ResultCode::INVALID_PARAMETERS, UserIam::UserAuth::ResultCode::INVALID_PARAMETERS},
+        {ResultCode::LOCKED, UserIam::UserAuth::ResultCode::LOCKED},
+        {ResultCode::NOT_ENROLLED, UserIam::UserAuth::ResultCode::NOT_ENROLLED},
+        // should be UserIam::UserAuth::ResultCode::OPERATION_NOT_SUPPORT
+        {ResultCode::OPERATION_NOT_SUPPORT, UserIam::UserAuth::ResultCode::GENERAL_ERROR},
     };
 
-    UserIAM::ResultCode out;
+    UserIam::UserAuth::ResultCode out;
     if (data.count(hdiIn) == 0) {
-        out = UserIAM::ResultCode::GENERAL_ERROR;
+        out = UserIam::UserAuth::ResultCode::GENERAL_ERROR;
         IAM_LOGE("convert hdi undefined result code %{public}d to framework result code %{public}d", in, out);
         return out;
     }
