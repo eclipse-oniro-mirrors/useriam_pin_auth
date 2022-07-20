@@ -16,12 +16,10 @@ import("//build/ohos.gni")
 
 config("pin_auth_services_config") {
   include_dirs = [
-    "//base/security/access_token/interfaces/innerkits/accesstoken/include",
-    "//base/useriam/user_idm/interfaces/inner_api/user_idm",
-    "//base/useriam/user_idm/frameworks/user_idm/inc",
-    "${pinauth_services_path}/include",
+    "include",
     "//base/useriam/user_auth_framework/common/logs",
     "//base/useriam/user_auth_framework/common/utils",
+    "//base/security/access_token/interfaces/innerkits/accesstoken/include",
   ]
 }
 
