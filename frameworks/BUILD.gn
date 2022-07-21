@@ -16,18 +16,20 @@ import("//build/ohos.gni")
 
 config("pinauth_config") {
   include_dirs = [
-    "${pinauth_frameworks_path}/include",
+    "${pinauth_frameworks_path}/log",
+    "${pinauth_frameworks_path}/client/inc",
+    "${pinauth_frameworks_path}/ipc/inc",
     "${pinauth_innerapi_path}/include",
   ]
 }
 
 ohos_shared_library("pinauth_framework") {
   sources = [
-    "src/i_inputer_data_proxy.cpp",
-    "src/i_inputer_stub.cpp",
-    "src/inputer_data_impl.cpp",
-    "src/pinauth_proxy.cpp",
-    "src/pinauth_register.cpp",
+    "client/src/inputer_data_impl.cpp",
+    "client/src/pinauth_register.cpp",
+    "ipc/src/i_inputer_data_proxy.cpp",
+    "ipc/src/i_inputer_stub.cpp",
+    "ipc/src/pinauth_proxy.cpp",
   ]
 
   external_deps = [

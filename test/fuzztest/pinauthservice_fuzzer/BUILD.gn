@@ -25,7 +25,8 @@ ohos_fuzztest("PinAuthServiceFuzzTest") {
     "-fno-omit-frame-pointer",
   ]
   include_dirs = [
-    "//base/useriam/pin_auth/services/include",
+    "//base/useriam/pin_auth/services/sa/inc",
+    "//base/useriam/pin_auth/services/modules/inputters/inc",
     "//base/useriam/user_auth_framework/common/logs",
     "//base/useriam/user_auth_framework/common/utils",
   ]
