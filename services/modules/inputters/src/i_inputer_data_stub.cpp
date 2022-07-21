@@ -18,16 +18,18 @@
 #include "ipc_object_stub.h"
 #include "message_parcel.h"
 
+#include "iam_logger.h"
 #include "iremote_inputer_data.h"
 #include "pinauth_defines.h"
-#include "pinauth_log_wrapper.h"
+
+#define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
 
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
 void IInputerDataStub::HandlerOnSetData(MessageParcel &data, MessageParcel &reply)
 {
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "IInputerDataStub::HandlerOnSetData start");
+    IAM_LOGI("start");
     uint64_t subType = data.ReadUint64();
     std::vector<uint8_t> param;
     data.ReadUInt8Vector(&param);
@@ -37,11 +39,11 @@ void IInputerDataStub::HandlerOnSetData(MessageParcel &data, MessageParcel &repl
 int32_t IInputerDataStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply,
     MessageOption &option)
 {
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "IInputerDataStub::OnRemoteRequest start %{public}u", code);
+    IAM_LOGI("start, code = %{public}u", code);
     std::u16string descripter = IInputerDataStub::GetDescriptor();
     std::u16string remoteDescripter = data.ReadInterfaceToken();
     if (descripter != remoteDescripter) {
-        PINAUTH_HILOGD(MODULE_FRAMEWORKS, "IInputerDataStub::OnRemoteRequest descripter is not remoteDescripter");
+        IAM_LOGE("descripter is not remoteDescripter");
         return FAIL;
     }
     switch (code) {

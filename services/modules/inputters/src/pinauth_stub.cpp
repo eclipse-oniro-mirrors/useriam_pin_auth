@@ -19,27 +19,29 @@
 #include "iremote_broker.h"
 #include "message_parcel.h"
 
+#include "iam_logger.h"
 #include "iremote_inputer.h"
 #include "iremote_pinauth.h"
 #include "pinauth_defines.h"
-#include "pinauth_log_wrapper.h"
+
+#define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
 
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
 PinAuthStub::PinAuthStub()
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::PinAuthStub start");
+    IAM_LOGI("start");
 }
 
 PinAuthStub::~PinAuthStub()
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::~PinAuthStub start");
+    IAM_LOGI("start");
 }
 
 int32_t PinAuthStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::OnRemoteRequest start");
+    IAM_LOGI("start");
     std::u16string descripter = PinAuthStub::GetDescriptor();
     std::u16string remoteDescripter = data.ReadInterfaceToken();
     if (descripter != remoteDescripter) {
@@ -59,7 +61,7 @@ int32_t PinAuthStub::OnRemoteRequest(uint32_t code, MessageParcel &data, Message
 
 void PinAuthStub::HandlerRegisterInputer(MessageParcel &data, MessageParcel &reply)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::HandlerRegisterInputer start");
+    IAM_LOGI("start");
     sptr<IRemoteObject> remote = data.ReadRemoteObject();
     if (remote == nullptr) {
         return;
@@ -70,7 +72,7 @@ void PinAuthStub::HandlerRegisterInputer(MessageParcel &data, MessageParcel &rep
     }
     bool ret = RegisterInputer(inputer);
     if (!reply.WriteBool(ret)) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "failed to WriteBool");
+        IAM_LOGE("write inputer fail");
         return;
     }
 }
@@ -79,7 +81,7 @@ void PinAuthStub::HandlerUnRegisterInputer(MessageParcel &data, MessageParcel &r
 {
     (void)data;
     (void)reply;
-    PINAUTH_HILOGI(MODULE_SERVICE, "PinAuthStub::HandlerUnRegisterInputer start");
+    IAM_LOGI("start");
     UnRegisterInputer();
 }
 } // namespace PinAuth

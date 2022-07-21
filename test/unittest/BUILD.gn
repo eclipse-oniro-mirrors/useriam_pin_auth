@@ -22,7 +22,10 @@ ohos_unittest("PinAuth_UT_test") {
 
   sources = [ "src/pinauth_test.cpp" ]
 
-  include_dirs = [ "include" ]
+  include_dirs = [
+    "include",
+    "//base/useriam/user_auth_framework/common/logs",
+  ]
 
   deps = [
     "${pinauth_frameworks_path}:pinauth_framework",

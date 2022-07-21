@@ -20,21 +20,23 @@
 #include "message_option.h"
 #include "message_parcel.h"
 
+#include "iam_logger.h"
 #include "iremote_inputer.h"
 #include "iremote_pinauth.h"
-#include "pinauth_log_wrapper.h"
+
+#define LOG_LABEL OHOS::UserIAM::Common::LABEL_PIN_AUTH_SDK
 
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
 PinAuthProxy::PinAuthProxy(const sptr<IRemoteObject> &object) : IRemoteProxy<IRemotePinAuth>(object)
 {
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "PinAuthProxy::PinAuthProxy start");
+    IAM_LOGI("start");
 }
 
 PinAuthProxy::~PinAuthProxy()
 {
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "PinAuthProxy::~PinAuthProxy start");
+    IAM_LOGI(" start");
 }
 
 bool PinAuthProxy::RegisterInputer(sptr<IRemoteInputer> inputer)
@@ -42,24 +44,24 @@ bool PinAuthProxy::RegisterInputer(sptr<IRemoteInputer> inputer)
     MessageParcel data;
     MessageParcel reply;
 
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "PinAuthProxy::RegisterInputer start");
+    IAM_LOGI("start");
     if (!data.WriteInterfaceToken(PinAuthProxy::GetDescriptor())) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "write descriptor failed");
+        IAM_LOGE("write descriptor fail");
         return false;
     }
 
     if (!data.WriteRemoteObject(inputer->AsObject())) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "write inputer failed");
+        IAM_LOGE("write inputer fail");
         return false;
     }
 
     bool ret = SendRequest(static_cast<int32_t>(IRemotePinAuth::REGISTER_INPUTER), data, reply, true);
     bool result = false;
     if (!ret) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "SendRequest is failed, error code: %d", ret);
+        IAM_LOGE("send request fail, error code = %d", ret);
     } else {
         result = reply.ReadBool();
-        PINAUTH_HILOGI(MODULE_FRAMEWORKS, "SendRequest is OK");
+        IAM_LOGI("send request success");
     }
     return result;
 }
@@ -69,30 +71,30 @@ void PinAuthProxy::UnRegisterInputer()
     MessageParcel data;
     MessageParcel reply;
 
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "PinAuthProxy::UnRegisterInputer start");
+    IAM_LOGI("start");
     if (!data.WriteInterfaceToken(PinAuthProxy::GetDescriptor())) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "write descriptor failed!");
+        IAM_LOGE("write descriptor fail");
         return;
     }
 
     bool ret = SendRequest(static_cast<int32_t>(IRemotePinAuth::UNREGISTER_INPUTER), data, reply, false);
     if (!ret) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "UnRegisterInputer SendRequest failed!");
+        IAM_LOGE("send request fail");
     }
 }
 
 bool PinAuthProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, bool isSync)
 {
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "PinAuthProxy::SendRequest start");
+    IAM_LOGI("start");
     sptr<IRemoteObject> remote = Remote();
     if (remote == nullptr) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "failed to get remote.");
+        IAM_LOGE("remote is nullptr");
         return false;
     }
     MessageOption option(isSync ? MessageOption::TF_SYNC : MessageOption::TF_ASYNC);
     int32_t result = remote->SendRequest(code, data, reply, option);
     if (result != OHOS::NO_ERROR) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "failed to SendRequest.result = %{public}d", result);
+        IAM_LOGE("send request fail, result = %{public}d", result);
         return false;
     }
     return true;

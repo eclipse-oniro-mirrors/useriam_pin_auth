@@ -23,10 +23,12 @@
 #include "iremote_broker.h"
 #include "iremote_object.h"
 
-#include "pinauth_log_wrapper.h"
 #include "i_inputer_stub.h"
 #include "iremote_inputer.h"
 #include "iremote_pinauth.h"
+#include "iam_logger.h"
+
+#define LOG_LABEL OHOS::UserIAM::Common::LABEL_PIN_AUTH_SDK
 
 namespace OHOS {
 namespace UserIAM {
@@ -36,14 +38,14 @@ PinAuthRegister::~PinAuthRegister() = default;
 
 bool PinAuthRegister::RegisterInputer(std::shared_ptr<IInputer> inputer)
 {
-    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::RegisterInputer start");
+    IAM_LOGI("start");
     if (inputer == nullptr) {
-        PINAUTH_HILOGE(MODULE_INNERKIT, "inputer is nullptr");
+        IAM_LOGE("inputer is nullptr");
         return false;
     }
     auto proxy = GetProxy();
     if (proxy == nullptr) {
-        PINAUTH_HILOGE(MODULE_INNERKIT, "get proxy failed");
+        IAM_LOGE("get proxy failed");
         return false;
     }
     sptr<IRemoteInputer> callback = new IInputerStub(inputer);
@@ -55,10 +57,10 @@ bool PinAuthRegister::RegisterInputer(std::shared_ptr<IInputer> inputer)
 
 void PinAuthRegister::UnRegisterInputer()
 {
-    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::UnRegisterInputer start");
+    IAM_LOGI("start");
     auto proxy = GetProxy();
     if (proxy == nullptr) {
-        PINAUTH_HILOGE(MODULE_INNERKIT, "pinAuth failed, remote is nullptr");
+        IAM_LOGE("proxy is nullptr");
         return;
     }
     proxy->UnRegisterInputer();
@@ -66,35 +68,35 @@ void PinAuthRegister::UnRegisterInputer()
 
 sptr<IRemotePinAuth> PinAuthRegister::GetProxy()
 {
-    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::GetProxy start");
+    IAM_LOGI("start");
     if (proxy_ != nullptr) {
         return proxy_;
     }
     sptr<ISystemAbilityManager> sam = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
     if (sam == nullptr) {
-        PINAUTH_HILOGE(MODULE_INNERKIT, "Failed to get system ability manager");
+        IAM_LOGE("get system ability manager fail");
         return nullptr;
     }
     sptr<IRemoteObject> obj = sam->CheckSystemAbility(SUBSYS_USERIAM_SYS_ABILITY_PINAUTH);
     if (obj == nullptr) {
-        PINAUTH_HILOGE(MODULE_INNERKIT, "Failed to get distributed gallery manager service");
+        IAM_LOGE("get distributed gallery manager service fail");
         return nullptr;
     }
     sptr<IRemoteObject::DeathRecipient> dr = new PinAuthDeathRecipient();
     if ((obj->IsProxyObject()) && (!obj->AddDeathRecipient(dr))) {
-        PINAUTH_HILOGE(MODULE_INNERKIT, "Failed to add death recipient");
+        IAM_LOGE("add death recipient fail");
         return nullptr;
     }
 
     proxy_ = iface_cast<IRemotePinAuth>(obj);
     deathRecipient_ = dr;
-    PINAUTH_HILOGI(MODULE_INNERKIT, "Succeed to connect distributed gallery manager service");
+    IAM_LOGI("succeed to connect distributed gallery manager service");
     return proxy_;
 }
 
 void PinAuthRegister::ResetProxy(const wptr<IRemoteObject>& remote)
 {
-    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::ResetProxy start");
+    IAM_LOGI("start");
     std::lock_guard<std::mutex> lock(mutex_);
     auto serviceRemote = proxy_->AsObject();
     if ((serviceRemote != nullptr) && (serviceRemote == remote.promote())) {
@@ -105,13 +107,13 @@ void PinAuthRegister::ResetProxy(const wptr<IRemoteObject>& remote)
 
 void PinAuthRegister::PinAuthDeathRecipient::OnRemoteDied(const wptr<IRemoteObject>& remote)
 {
-    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthRegister::OnRemoteDied start");
+    IAM_LOGI("start");
     if (remote == nullptr) {
-        PINAUTH_HILOGE(MODULE_INNERKIT, "OnRemoteDied failed, remote is nullptr");
+        IAM_LOGE("remote is nullptr");
         return;
     }
     PinAuthRegister::GetInstance().ResetProxy(remote);
-    PINAUTH_HILOGI(MODULE_INNERKIT, "PinAuthDeathRecipient::Recv death notice");
+    IAM_LOGI("recv death notice");
 }
 } // namespace PinAuth
 } // namespace UserIAM
