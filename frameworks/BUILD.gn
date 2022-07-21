@@ -20,6 +20,7 @@ config("pinauth_config") {
     "${pinauth_frameworks_path}/client/inc",
     "${pinauth_frameworks_path}/ipc/inc",
     "${pinauth_innerapi_path}/include",
+    "//base/useriam/user_auth_framework/common/logs",
   ]
 }
 

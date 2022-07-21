@@ -20,47 +20,49 @@
 #include "message_option.h"
 #include "message_parcel.h"
 
-#include "pinauth_log_wrapper.h"
+#include "iam_logger.h"
+
+#define LOG_LABEL OHOS::UserIAM::Common::LABEL_PIN_AUTH_SDK
 
 namespace OHOS {
 namespace UserIAM {
 namespace PinAuth {
 void IInputerDataProxy::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "IInputerDataProxy::OnSetData start");
+    IAM_LOGI("start");
     MessageParcel dataParcel;
     MessageParcel reply;
 
     if (!dataParcel.WriteInterfaceToken(IInputerDataProxy::GetDescriptor())) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "write descriptor failed");
+        IAM_LOGE("write descriptor fail");
     }
 
     if (!dataParcel.WriteInt64(authSubType)) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "fail to write parcellable for WriteInt64");
+        IAM_LOGE(" write authSubType fail");
     }
     if (!dataParcel.WriteUInt8Vector(data)) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "fail to write parcellable for WriteUInt8Vector");
+        IAM_LOGE("write data fail");
     }
 
     bool ret = SendRequest(static_cast<uint32_t>(IRemoteInputerData::ON_SET_DATA), dataParcel, reply);
     if (ret) {
         int32_t result = reply.ReadInt32();
-        PINAUTH_HILOGI(MODULE_FRAMEWORKS, "result = %{public}d", result);
+        IAM_LOGI("result = %{public}d", result);
     }
 }
 
 bool IInputerDataProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply)
 {
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "IInputerDataProxy::SendRequest start");
+    IAM_LOGI("start");
     sptr<IRemoteObject> remote = Remote();
     if (remote == nullptr) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "failed to get remote");
+        IAM_LOGE("get remote fail");
         return false;
     }
     MessageOption option(MessageOption::TF_SYNC);
     int32_t result = remote->SendRequest(code, data, reply, option);
     if (result != OHOS::NO_ERROR) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "failed to SendRequest.result = %{public}d", result);
+        IAM_LOGE("send request fail, result = %{public}d", result);
         return false;
     }
     return true;

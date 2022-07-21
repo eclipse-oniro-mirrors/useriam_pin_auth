@@ -15,8 +15,10 @@
 
 #include "i_inputer_data_impl.h"
 
-#include "pinauth_log_wrapper.h"
+#include "iam_logger.h"
 #include "pinauth_executor_hdi.h"
+
+#define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
 
 namespace OHOS {
 namespace UserIAM {
@@ -28,14 +30,14 @@ IInputerDataImpl::~IInputerDataImpl() {}
 
 void IInputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "start");
+    IAM_LOGI("start");
     std::lock_guard<std::mutex> guard(mutex_);
     if (hdi_->OnSetData(scheduleId_, authSubType, data) != SUCCESS) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "IInputerDataImpl::onSetData event has canceled");
+        IAM_LOGE("event has canceled");
         return;
     }
 
-    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerDataImpl::OnSetData end");
+    IAM_LOGI("end");
 }
 } // namespace PinAuth
 } // namespace UserIAM

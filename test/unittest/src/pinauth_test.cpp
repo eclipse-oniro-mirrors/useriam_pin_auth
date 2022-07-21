@@ -16,10 +16,12 @@
 #include "pinauth_test.h"
 #include <gtest/gtest.h>
 #include <string>
-#include "pinauth_log_wrapper.h"
+#include "iam_logger.h"
 #include "pinauth_register.h"
 #include "i_inputer.h"
 #include "hilog/log.h"
+
+#define LOG_LABEL OHOS::UserIAM::Common::LABEL_PIN_AUTH_SDK
 
 using namespace testing::ext;
 namespace OHOS {
@@ -66,10 +68,10 @@ void UseriamUtTest::TearDown()
  */
 HWTEST_F(UseriamUtTest, UseriamUtTest_001, TestSize.Level1)
 {
-    PINAUTH_HILOGE(MODULE_COMMON, "**********UseriamUtTest***001***in**********");
+    IAM_LOGI("**********UseriamUtTest***001***in**********");
     std::shared_ptr<IInputer> inputer = nullptr;
     EXPECT_EQ(false, PinAuthRegister::GetInstance().RegisterInputer(inputer));
-    PINAUTH_HILOGE(MODULE_COMMON, "**********UseriamUtTest***001***out**********");
+    IAM_LOGI("**********UseriamUtTest***001***out**********");
 }
 
 /**
@@ -78,10 +80,10 @@ HWTEST_F(UseriamUtTest, UseriamUtTest_001, TestSize.Level1)
  */
 HWTEST_F(UseriamUtTest, UseriamUtTest_002, TestSize.Level1)
 {
-    PINAUTH_HILOGE(MODULE_COMMON, "**********UseriamUtTest***002***in**********");
+    IAM_LOGI("**********UseriamUtTest***002***in**********");
     std::shared_ptr<IInputer> inputer = std::make_shared<InputerUT>();
     EXPECT_EQ(false, PinAuthRegister::GetInstance().RegisterInputer(inputer));
-    PINAUTH_HILOGE(MODULE_COMMON, "**********UseriamUtTest***002***out**********");
+    IAM_LOGI("**********UseriamUtTest***002***out**********");
 }
 
 /**
@@ -90,9 +92,9 @@ HWTEST_F(UseriamUtTest, UseriamUtTest_002, TestSize.Level1)
  */
 HWTEST_F(UseriamUtTest, UseriamUtTest_003, TestSize.Level1)
 {
-    PINAUTH_HILOGE(MODULE_COMMON, "**********UseriamUtTest***003***in**********");
+    IAM_LOGI("**********UseriamUtTest***003***in**********");
     PinAuthRegister::GetInstance().UnRegisterInputer();
-    PINAUTH_HILOGE(MODULE_COMMON, "**********UseriamUtTest***003***out**********");
+    IAM_LOGI("**********UseriamUtTest***003***out**********");
 }
 } // namespace PinAuth
 } // namespace UserIAM

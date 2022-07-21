@@ -23,7 +23,9 @@
 #include <vector>
 
 #include "iremote_inputer_data.h"
-#include "pinauth_log_wrapper.h"
+#include "iam_logger.h"
+
+#define LOG_LABEL OHOS::UserIAM::Common::LABEL_PIN_AUTH_SDK
 
 namespace OHOS {
 namespace UserIAM {
@@ -39,52 +41,52 @@ InputerDataImpl::~InputerDataImpl()
 
 void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "InputerDataImpl::OnSetData start");
+    IAM_LOGI("start");
     std::vector<uint8_t> scrypt;
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "InputerDataImpl::OnSetData data size is : %{public}zu", data.size());
+    IAM_LOGI("data size is : %{public}zu", data.size());
     getScrypt(data, scrypt);
     remoteInputerData_->OnSetData(authSubType, scrypt);
 }
 
 void InputerDataImpl::getScrypt(std::vector<uint8_t> data, std::vector<uint8_t> &scrypt)
 {
-    PINAUTH_HILOGI(MODULE_FRAMEWORKS, "InputerDataImpl::OnSetData start");
+    IAM_LOGI("start");
     EVP_PKEY_CTX *pctx;
     unsigned char out[OUT_LENGTH];
 
     size_t outlen = sizeof(out);
     pctx = EVP_PKEY_CTX_new_id(EVP_PKEY_SCRYPT, NULL);
     if (EVP_PKEY_derive_init(pctx) <= 0) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "InputerDataImpl::getScrypt EVP_PKEY_derive_init error");
+        IAM_LOGE("EVP_PKEY_derive_init error");
         return;
     }
     if (EVP_PKEY_CTX_set1_pbe_pass(pctx, data.data(), data.size()) <= 0) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "InputerDataImpl::getScrypt EVP_PKEY_CTX_set1_pbe_pass error");
+        IAM_LOGE("EVP_PKEY_CTX_set1_pbe_pass error");
         EVP_PKEY_CTX_free(pctx);
         return;
     }
     if (EVP_PKEY_CTX_set1_scrypt_salt(pctx, salt_.data(), salt_.size()) <= 0) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "InputerDataImpl::getScrypt EVP_PKEY_CTX_set1_scrypt_salt error");
+        IAM_LOGE("EVP_PKEY_CTX_set1_scrypt_salt error");
         EVP_PKEY_CTX_free(pctx);
         return;
     }
     if (EVP_PKEY_CTX_set_scrypt_N(pctx, SCRYPT_N) <= 0) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "InputerDataImpl::getScrypt EVP_PKEY_CTX_set_scrypt_N error");
+        IAM_LOGE("EVP_PKEY_CTX_set_scrypt_N error");
         EVP_PKEY_CTX_free(pctx);
         return;
     }
     if (EVP_PKEY_CTX_set_scrypt_r(pctx, SCRYPT_R) <= 0) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "InputerDataImpl::getScrypt EVP_PKEY_CTX_set_scrypt_r error");
+        IAM_LOGE("EVP_PKEY_CTX_set_scrypt_r error");
         EVP_PKEY_CTX_free(pctx);
         return;
     }
     if (EVP_PKEY_CTX_set_scrypt_p(pctx, SCRYPT_P) <= 0) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "InputerDataImpl::getScrypt EVP_PKEY_CTX_set_scrypt_p error");
+        IAM_LOGE("EVP_PKEY_CTX_set_scrypt_p error");
         EVP_PKEY_CTX_free(pctx);
         return;
     }
     if (EVP_PKEY_derive(pctx, out, &outlen) <= 0) {
-        PINAUTH_HILOGE(MODULE_FRAMEWORKS, "InputerDataImpl::getScrypt EVP_PKEY_derive error");
+        IAM_LOGE("EVP_PKEY_derive error");
         EVP_PKEY_CTX_free(pctx);
         return;
     }

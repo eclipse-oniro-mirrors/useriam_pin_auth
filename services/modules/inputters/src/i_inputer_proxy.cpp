@@ -21,9 +21,11 @@
 #include "message_parcel.h"
 #include "iremote_object.h"
 
+#include "iam_logger.h"
 #include "iremote_inputer.h"
 #include "iremote_inputer_data.h"
-#include "pinauth_log_wrapper.h"
+
+#define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
 
 namespace OHOS {
 namespace UserIAM {
@@ -32,44 +34,44 @@ void IInputerProxy::OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sp
 {
     MessageParcel data;
     MessageParcel reply;
-    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerProxy::OnGetData start");
+    IAM_LOGI("start");
     if (!data.WriteInterfaceToken(IInputerProxy::GetDescriptor())) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "WriteInterfaceToken failed");
+        IAM_LOGE("write descriptor fail");
         return;
     }
     if (!data.WriteInt32(authSubType)) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "failed to WriteInt32");
+        IAM_LOGE("write authSubType fail");
         return;
     }
 
     if (!data.WriteUInt8Vector(salt)) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "failed to WriteUInt8Vector");
+        IAM_LOGE("write salt fail");
         return;
     }
 
     if (!data.WriteRemoteObject(inputerData->AsObject())) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "failed to WriteRemoteObject");
+        IAM_LOGE("write inputerData fail");
         return;
     }
     bool ret = SendRequest(static_cast<uint32_t>(IRemoteInputer::ON_GET_DATA), data, reply);
     if (ret) {
         int32_t result = reply.ReadInt32();
-        PINAUTH_HILOGI(MODULE_SERVICE, "result = %{public}d", result);
+        IAM_LOGI("result = %{public}d", result);
     }
 }
 
 bool IInputerProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply)
 {
-    PINAUTH_HILOGI(MODULE_SERVICE, "IInputerProxy::SendRequest start code:%{public}u", code);
+    IAM_LOGI("start, code = %{public}u", code);
     sptr<IRemoteObject> remote = Remote();
     if (remote == nullptr) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "failed to get remote");
+        IAM_LOGE("remote is nullptr");
         return false;
     }
     MessageOption option(MessageOption::TF_ASYNC);
     int32_t result = remote->SendRequest(code, data, reply, option);
     if (result != OHOS::NO_ERROR) {
-        PINAUTH_HILOGE(MODULE_SERVICE, "failed to SendRequest.result = %{public}d", result);
+        IAM_LOGE("send request fail, result = %{public}d", result);
         return false;
     }
     return true;
