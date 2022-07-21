@@ -16,7 +16,11 @@ import("//build/ohos.gni")
 
 config("pin_auth_services_config") {
   include_dirs = [
-    "include",
+    "${pinauth_services_path}/sa/inc",
+    "${pinauth_services_path}/modules/driver/inc",
+    "${pinauth_services_path}/modules/executors/inc",
+    "${pinauth_services_path}/modules/inputters/inc",
+    "${pinauth_services_path}/modules/utils",
     "//base/useriam/user_auth_framework/common/logs",
     "//base/useriam/user_auth_framework/common/utils",
     "//base/security/access_token/interfaces/innerkits/accesstoken/include",
@@ -25,15 +29,15 @@ config("pin_auth_services_config") {
 
 ohos_shared_library("pinauthservice") {
   sources = [
-    "${pinauth_services_path}/src/i_inputer_data_impl.cpp",
-    "${pinauth_services_path}/src/i_inputer_data_stub.cpp",
-    "${pinauth_services_path}/src/i_inputer_proxy.cpp",
-    "${pinauth_services_path}/src/pinauth_driver_hdi.cpp",
-    "${pinauth_services_path}/src/pinauth_executor_callback_hdi.cpp",
-    "${pinauth_services_path}/src/pinauth_executor_hdi.cpp",
-    "${pinauth_services_path}/src/pinauth_manager.cpp",
-    "${pinauth_services_path}/src/pinauth_service.cpp",
-    "${pinauth_services_path}/src/pinauth_stub.cpp",
+    "${pinauth_services_path}/modules/driver/src/pinauth_driver_hdi.cpp",
+    "${pinauth_services_path}/modules/executors/src/pinauth_executor_callback_hdi.cpp",
+    "${pinauth_services_path}/modules/executors/src/pinauth_executor_hdi.cpp",
+    "${pinauth_services_path}/modules/inputters/src/i_inputer_data_impl.cpp",
+    "${pinauth_services_path}/modules/inputters/src/i_inputer_data_stub.cpp",
+    "${pinauth_services_path}/modules/inputters/src/i_inputer_proxy.cpp",
+    "${pinauth_services_path}/modules/inputters/src/pinauth_manager.cpp",
+    "${pinauth_services_path}/modules/inputters/src/pinauth_stub.cpp",
+    "${pinauth_services_path}/sa/src/pinauth_service.cpp",
   ]
 
   configs = [ ":pin_auth_services_config" ]
