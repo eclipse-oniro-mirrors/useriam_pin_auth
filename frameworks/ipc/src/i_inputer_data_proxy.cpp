@@ -25,7 +25,7 @@
 #define LOG_LABEL OHOS::UserIAM::Common::LABEL_PIN_AUTH_SDK
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 void IInputerDataProxy::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
@@ -68,5 +68,5 @@ bool IInputerDataProxy::SendRequest(uint32_t code, MessageParcel &data, MessageP
     return true;
 }
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS

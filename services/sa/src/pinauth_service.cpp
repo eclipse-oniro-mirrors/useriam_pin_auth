@@ -32,7 +32,7 @@
 #define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 static const std::string ACCESS_PIN_AUTH = "ohos.permission.ACCESS_PIN_AUTH";
 const bool REGISTER_RESULT =
@@ -47,7 +47,7 @@ std::shared_ptr<PinAuthService> PinAuthService::GetInstance()
     if (instance_ == nullptr) {
         std::lock_guard<std::mutex> gurard(mutex_);
         if (instance_ == nullptr) {
-            instance_ = Common::MakeShared<PinAuthService>();
+            instance_ = UserIAM::Common::MakeShared<PinAuthService>();
             if (instance_ == nullptr) {
                 IAM_LOGE("make share failed");
             }
@@ -75,11 +75,11 @@ void PinAuthService::OnStop()
 void PinAuthService::StartDriverManager()
 {
     IAM_LOGI("start");
-    auto pinAuthDefaultHdi = Common::MakeShared<PinAuthDriverHdi>();
+    auto pinAuthDefaultHdi = UserIAM::Common::MakeShared<PinAuthDriverHdi>();
     IF_FALSE_LOGE_AND_RETURN(pinAuthDefaultHdi != nullptr);
     const uint16_t pinAuthDefaultHdiId = 1;
     // serviceName and HdiConfig.id must be globally unique
-    const std::map<std::string, UserAuth::HdiConfig> hdiName2Config  = {
+    const std::map<std::string, UserIAM::UserAuth::HdiConfig> hdiName2Config  = {
         {"pin_auth_interface_service", {pinAuthDefaultHdiId, pinAuthDefaultHdi}},
     };
     int ret = UserIAM::UserAuth::IDriverManager::Start(hdiName2Config);
@@ -133,5 +133,5 @@ void PinAuthService::UnRegisterInputer()
     PinAuthManager::GetInstance().UnRegisterInputer(tokenID);
 }
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS

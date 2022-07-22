@@ -33,7 +33,7 @@
 
 #define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_NAPI
 
-using namespace OHOS::UserIAM::PinAuth;
+using namespace OHOS::UserIam::PinAuth;
 namespace OHOS {
 namespace PinAuth {
 struct InputConstructorInfo {

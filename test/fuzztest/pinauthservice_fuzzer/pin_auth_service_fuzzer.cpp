@@ -34,7 +34,7 @@ using namespace std;
 using namespace OHOS::UserIAM::Common;
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 namespace {
 class DummyRemoteInputer : public IRemoteInputer {
@@ -106,12 +106,12 @@ void PinAuthServiceFuzzTest(const uint8_t *data, size_t size)
 }
 } // namespace
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS
 
 /* Fuzzer entry point */
 extern "C" int32_t LLVMFuzzerTestOneInput(const uint8_t *data, size_t size)
 {
-    OHOS::UserIAM::PinAuth::PinAuthServiceFuzzTest(data, size);
+    OHOS::UserIam::PinAuth::PinAuthServiceFuzzTest(data, size);
     return 0;
 }

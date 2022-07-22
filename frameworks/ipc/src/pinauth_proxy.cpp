@@ -27,7 +27,7 @@
 #define LOG_LABEL OHOS::UserIAM::Common::LABEL_PIN_AUTH_SDK
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 PinAuthProxy::PinAuthProxy(const sptr<IRemoteObject> &object) : IRemoteProxy<IRemotePinAuth>(object)
 {
@@ -100,5 +100,5 @@ bool PinAuthProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParcel
     return true;
 }
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS

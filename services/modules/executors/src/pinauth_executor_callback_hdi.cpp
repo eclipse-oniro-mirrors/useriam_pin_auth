@@ -25,9 +25,9 @@
 #define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
-PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserAuth::IExecuteCallback>
+PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserIAM::UserAuth::IExecuteCallback>
     frameworkCallback, std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi, uint32_t tokenId)
     : frameworkCallback_(frameworkCallback), pinAuthExecutorHdi_(pinAuthExecutorHdi), tokenId_(tokenId) {}
 
@@ -89,5 +89,5 @@ UserIam::UserAuth::ResultCode PinAuthExecutorCallbackHdi::ConvertResultCode(cons
     return out;
 }
 } // PinAuth
-} // UserIAM
+} // UserIam
 } // OHOS

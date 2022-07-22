@@ -24,7 +24,7 @@
 
 #define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_NAPI
 
-using namespace OHOS::UserIAM::PinAuth;
+using namespace OHOS::UserIam::PinAuth;
 namespace OHOS {
 namespace PinAuth {
 static void DeleteData(uv_work_t* work, int status)
@@ -131,7 +131,7 @@ EXIT:
     delete work;
 }
 
-void InputerImpl::OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData)
+void InputerImpl::OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIam::PinAuth::IInputerData> inputerData)
 {
     IAM_LOGI("start");
     uv_loop_s *loop(nullptr);
@@ -159,7 +159,7 @@ void InputerImpl::OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::
     uv_queue_work(loop, work, [] (uv_work_t *work) {}, GetDataWork);
 }
 
-napi_value GetCtorIInputerData(napi_env env, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> &inputerData)
+napi_value GetCtorIInputerData(napi_env env, std::shared_ptr<OHOS::UserIam::PinAuth::IInputerData> &inputerData)
 {
     IAM_LOGI("start");
     if (inputerData == nullptr) {

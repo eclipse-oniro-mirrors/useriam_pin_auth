@@ -17,7 +17,7 @@
 #define PINAUTH_DEFINES_H
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 enum AuthSubType {
 /**
@@ -98,6 +98,6 @@ enum ResultCode {
     NOT_ENROLLED = 10
 };
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS
 #endif

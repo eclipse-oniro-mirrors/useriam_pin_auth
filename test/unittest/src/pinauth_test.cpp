@@ -25,7 +25,7 @@
 
 using namespace testing::ext;
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 class UseriamUtTest : public testing::Test {
 public:
@@ -97,5 +97,5 @@ HWTEST_F(UseriamUtTest, UseriamUtTest_003, TestSize.Level1)
     IAM_LOGI("**********UseriamUtTest***003***out**********");
 }
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS

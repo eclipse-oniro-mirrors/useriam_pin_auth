@@ -24,7 +24,7 @@
 #include "pinauth_executor_hdi.h"
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 class IInputerDataImpl : public IInputerDataStub {
 public:
@@ -39,7 +39,7 @@ private:
     std::shared_ptr<PinAuthExecutorHdi> hdi_;
 };
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS
 
 #endif // PINAUTH_CONTROLLER_H

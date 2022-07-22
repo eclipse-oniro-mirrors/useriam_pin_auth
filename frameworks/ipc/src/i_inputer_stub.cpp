@@ -29,7 +29,7 @@
 #define LOG_LABEL OHOS::UserIAM::Common::LABEL_PIN_AUTH_SDK
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 IInputerStub::IInputerStub(std::shared_ptr<IInputer> inputer) : inputer_(inputer)
 {
@@ -88,5 +88,5 @@ int32_t IInputerStub::OnRemoteRequest(uint32_t code, MessageParcel &data, Messag
     return SUCCESS;
 }
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS

@@ -26,25 +26,25 @@
 #include "nocopyable.h"
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 namespace PinHdi = OHOS::HDI::PinAuth::V1_0;
 class PinAuthExecutorCallbackHdi : public PinHdi::IExecutorCallback, public NoCopyable {
 public:
-    explicit PinAuthExecutorCallbackHdi(std::shared_ptr<UserAuth::IExecuteCallback> frameworkCallback,
+    explicit PinAuthExecutorCallbackHdi(std::shared_ptr<UserIAM::UserAuth::IExecuteCallback> frameworkCallback,
         std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi, uint32_t tokenId);
     virtual ~PinAuthExecutorCallbackHdi() = default;
     int32_t OnResult(int32_t code, const std::vector<uint8_t> &extraInfo) override;
     int32_t OnGetData(uint64_t scheduleId, const std::vector<uint8_t> &salt, uint64_t authSubType) override;
 
 private:
-    std::shared_ptr<UserAuth::IExecuteCallback> frameworkCallback_;
+    std::shared_ptr<UserIAM::UserAuth::IExecuteCallback> frameworkCallback_;
     std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi_;
     UserIam::UserAuth::ResultCode ConvertResultCode(const int32_t in);
     uint32_t tokenId_;
 };
 } // PinAuth
-} // UserIAM
+} // UserIam
 } // OHOS
 
 #endif // PIN_AUTH_EXECUTOR_CALLBACK_HDI

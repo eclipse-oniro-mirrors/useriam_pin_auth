@@ -24,7 +24,7 @@
 #include "pinauth_stub.h"
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 class PinAuthService : public SystemAbility, public PinAuthStub, public NoCopyable {
 public:
@@ -49,7 +49,7 @@ private:
     static std::shared_ptr<PinAuthService> instance_;
 };
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS
 
 #endif // PIN_AUTH_SERVICE_H

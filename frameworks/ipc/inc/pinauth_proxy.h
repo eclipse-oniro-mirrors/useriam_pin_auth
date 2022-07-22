@@ -20,7 +20,7 @@
 #include "iremote_proxy.h"
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 class PinAuthProxy : public IRemoteProxy<IRemotePinAuth> {
 public:
@@ -36,7 +36,7 @@ private:
     static inline BrokerDelegator<PinAuthProxy> delegator_;
 };
 }  // namespace PinAuth
-}  // namespace UserIAM
+}  // namespace UserIam
 }  // namespace OHOS
 
 #endif  // PINAUTH_INNERKITS_INCLUDE_PIN_AUTH_PROXY_H

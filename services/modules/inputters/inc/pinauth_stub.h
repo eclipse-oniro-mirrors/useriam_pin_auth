@@ -21,7 +21,7 @@
 #include "iremote_stub.h"
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 class PinAuthStub : public IRemoteStub<IRemotePinAuth> {
 public:
@@ -36,7 +36,7 @@ private:
     void HandlerUnRegisterInputer(MessageParcel &data, MessageParcel &reply);
 };
 }  // namespace PinAuth
-}  // namespace UserIAM
+}  // namespace UserIam
 }  // namespace OHOS
 
 #endif  // PIN_AUTH_STUB_H

@@ -28,22 +28,22 @@ const int VALID_AUTH_SUB_TYPE = -1;
 
 napi_value OnSetData(napi_env env, napi_callback_info info);
 napi_value InputDataConstructor(napi_env env, napi_callback_info info);
-napi_value GetCtorIInputerData(napi_env env, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> &inputerData);
+napi_value GetCtorIInputerData(napi_env env, std::shared_ptr<OHOS::UserIam::PinAuth::IInputerData> &inputerData);
 
-class InputerImpl : public OHOS::UserIAM::PinAuth::IInputer {
+class InputerImpl : public OHOS::UserIam::PinAuth::IInputer {
 public:
     InputerImpl(napi_env env, napi_ref inputer);
     virtual ~InputerImpl();
     napi_env env_;
     napi_ref inputer_;
-    void OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData);
+    void OnGetData(int32_t authSubType, std::shared_ptr<OHOS::UserIam::PinAuth::IInputerData> inputerData);
 };
 
 typedef struct InputerHolder {
     napi_env env;
     napi_ref inputer;
     int32_t authSubType;
-    std::shared_ptr<OHOS::UserIAM::PinAuth::IInputerData> inputerData;
+    std::shared_ptr<OHOS::UserIam::PinAuth::IInputerData> inputerData;
 } InputerHolder;
 } // namespace PinAuth
 } // namespace OHOS

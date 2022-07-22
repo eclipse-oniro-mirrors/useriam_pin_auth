@@ -21,7 +21,7 @@
 #include "iremote_proxy.h"
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 class IInputerDataProxy : public IRemoteProxy<IRemoteInputerData> {
 public:
@@ -36,7 +36,7 @@ private:
     static inline BrokerDelegator<IInputerDataProxy> delegator_;
 };
 }  // namespace PinAuth
-}  // namespace UserIAM
+}  // namespace UserIam
 }  // namespace OHOS
 
 #endif  // IINPUTER_DATA_PROXY_H
