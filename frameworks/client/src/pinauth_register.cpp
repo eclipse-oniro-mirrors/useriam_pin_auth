@@ -31,7 +31,7 @@
 #define LOG_LABEL OHOS::UserIAM::Common::LABEL_PIN_AUTH_SDK
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 PinAuthRegister::PinAuthRegister() = default;
 PinAuthRegister::~PinAuthRegister() = default;
@@ -116,5 +116,5 @@ void PinAuthRegister::PinAuthDeathRecipient::OnRemoteDied(const wptr<IRemoteObje
     IAM_LOGI("recv death notice");
 }
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS

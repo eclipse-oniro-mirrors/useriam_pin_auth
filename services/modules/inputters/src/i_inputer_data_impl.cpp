@@ -21,7 +21,7 @@
 #define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 using namespace OHOS::UserIam::UserAuth;
 IInputerDataImpl::IInputerDataImpl(uint64_t scheduleId, std::shared_ptr<PinAuthExecutorHdi> hdi)
@@ -40,5 +40,5 @@ void IInputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
     IAM_LOGI("end");
 }
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS

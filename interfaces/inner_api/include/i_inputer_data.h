@@ -21,7 +21,7 @@
 #include "nocopyable.h"
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 class IInputerData {
 public:
@@ -31,7 +31,7 @@ public:
     virtual void OnSetData(int32_t authSubType, std::vector<uint8_t> data);
 };
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS
 
 #endif // PINAUTH_IINPUTERDATA_H

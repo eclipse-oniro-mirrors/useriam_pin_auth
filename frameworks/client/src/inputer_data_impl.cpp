@@ -28,7 +28,7 @@
 #define LOG_LABEL OHOS::UserIAM::Common::LABEL_PIN_AUTH_SDK
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 InputerDataImpl::InputerDataImpl(std::vector<uint8_t> salt, sptr<IRemoteInputerData> remoteInputerData) : salt_(salt),
     remoteInputerData_(remoteInputerData)
@@ -98,5 +98,5 @@ void InputerDataImpl::getScrypt(std::vector<uint8_t> data, std::vector<uint8_t> 
     EVP_PKEY_CTX_free(pctx);
 }
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS

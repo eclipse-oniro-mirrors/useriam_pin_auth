@@ -19,14 +19,14 @@
 #include "i_inputer_data.h"
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 class IInputer {
 public:
     virtual void OnGetData(int32_t authSubType, std::shared_ptr<IInputerData> inputerData);
 };
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS
 
 #endif // PINAUTH_IINPUTER_H

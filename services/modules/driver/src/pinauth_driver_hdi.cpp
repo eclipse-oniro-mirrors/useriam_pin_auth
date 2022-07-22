@@ -29,9 +29,9 @@
 #define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
-void PinAuthDriverHdi::GetExecutorList(std::vector<std::shared_ptr<UserAuth::IAuthExecutorHdi>> &executorList)
+void PinAuthDriverHdi::GetExecutorList(std::vector<std::shared_ptr<UserIAM::UserAuth::IAuthExecutorHdi>> &executorList)
 {
     IAM_LOGI("start");
     auto pinInterface = HDI::PinAuth::V1_0::IPinAuthInterface::Get();
@@ -43,7 +43,7 @@ void PinAuthDriverHdi::GetExecutorList(std::vector<std::shared_ptr<UserAuth::IAu
     std::vector<sptr<HDI::PinAuth::V1_0::IExecutor>> iExecutorList;
     pinInterface->GetExecutorList(iExecutorList);
     for (const auto &iExecutor : iExecutorList) {
-        auto executor = Common::MakeShared<PinAuthExecutorHdi>(iExecutor);
+        auto executor = UserIAM::Common::MakeShared<PinAuthExecutorHdi>(iExecutor);
         if (executor == nullptr) {
             IAM_LOGE("make share failed");
             continue;
@@ -52,5 +52,5 @@ void PinAuthDriverHdi::GetExecutorList(std::vector<std::shared_ptr<UserAuth::IAu
     }
 }
 } // PinAuth
-} // UserIAM
+} // UserIam
 } // OHOS

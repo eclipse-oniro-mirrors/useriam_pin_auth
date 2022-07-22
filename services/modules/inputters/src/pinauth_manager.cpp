@@ -19,7 +19,7 @@
 #define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 PinAuthManager::PinAuthManager() = default;
 PinAuthManager::~PinAuthManager() = default;
@@ -81,5 +81,5 @@ void PinAuthManager::ResPinauthInputerDeathRecipient::OnRemoteDied(const wptr<IR
     PinAuthManager::GetInstance().UnRegisterInputer(uid_);
 }
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS

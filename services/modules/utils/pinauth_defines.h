@@ -17,7 +17,7 @@
 #define PIN_AUTH_DEFINES_H
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 enum PinAuthRet {
     PIN_AUTH_SUCCESS = 0,
@@ -88,6 +88,6 @@ enum ResultCode {
     VENDOR_RESULT_CODE_BEGIN = 10000
 };
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS
 #endif // PIN_AUTH_DEFINES_H

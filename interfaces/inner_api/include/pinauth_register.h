@@ -25,7 +25,7 @@
 #include "iremote_pinauth.h"
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 class PinAuthRegister : public DelayedRefSingleton<PinAuthRegister> {
     DECLARE_DELAYED_REF_SINGLETON(PinAuthRegister);
@@ -65,7 +65,7 @@ private:
     sptr<IRemoteObject::DeathRecipient> deathRecipient_ {nullptr};
 };
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS
 
 #endif // PINAUTH_REGISTER_H

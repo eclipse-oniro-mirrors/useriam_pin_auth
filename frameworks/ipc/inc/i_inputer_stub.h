@@ -24,7 +24,7 @@
 #include "refbase.h"
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 class IInputerStub : public IRemoteStub<IRemoteInputer> {
 public:
@@ -39,7 +39,7 @@ private:
     void HandlerOnGetData(MessageParcel &data, MessageParcel &reply);
 };
 }  // namespace PinAuth
-}  // namespace UserIAM
+}  // namespace UserIam
 }  // namespace OHOS
 
 #endif  // IINPUTER_STUB_H

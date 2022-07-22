@@ -26,7 +26,7 @@
 #include "refbase.h"
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 const int32_t OUT_LENGTH = 64;
 const int32_t SCRYPT_N = 32768;
@@ -47,7 +47,7 @@ private:
     void getScrypt(std::vector<uint8_t> data, std::vector<uint8_t> &scrypt);
 };
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS
 
 #endif // PINAUTH_IINPUTERDATA_H

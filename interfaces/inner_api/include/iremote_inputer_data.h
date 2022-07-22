@@ -21,7 +21,7 @@
 #include "iremote_object.h"
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 class IRemoteInputerData : public IRemoteBroker {
 public:
@@ -40,7 +40,7 @@ public:
     };
 };
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS
 
 #endif  // IREMOTE_INPUTER_DATA_H

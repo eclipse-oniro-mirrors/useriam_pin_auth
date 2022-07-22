@@ -27,7 +27,7 @@
 #define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 PinAuthStub::PinAuthStub()
 {
@@ -85,5 +85,5 @@ void PinAuthStub::HandlerUnRegisterInputer(MessageParcel &data, MessageParcel &r
     UnRegisterInputer();
 }
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS

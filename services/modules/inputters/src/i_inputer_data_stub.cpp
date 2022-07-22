@@ -25,7 +25,7 @@
 #define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 void IInputerDataStub::HandlerOnSetData(MessageParcel &data, MessageParcel &reply)
 {
@@ -55,5 +55,5 @@ int32_t IInputerDataStub::OnRemoteRequest(uint32_t code, MessageParcel &data, Me
     }
 }
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS

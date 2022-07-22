@@ -30,14 +30,14 @@ PinAuthImpl::~PinAuthImpl()
 
 bool PinAuthImpl::RegisterInputer(napi_env env, napi_ref inputer)
 {
-    std::shared_ptr<OHOS::UserIAM::PinAuth::IInputer> inputerSharePtr = std::make_shared<InputerImpl>(env, inputer);
-    return UserIAM::PinAuth::PinAuthRegister::GetInstance().RegisterInputer(inputerSharePtr);
+    std::shared_ptr<OHOS::UserIam::PinAuth::IInputer> inputerSharePtr = std::make_shared<InputerImpl>(env, inputer);
+    return UserIam::PinAuth::PinAuthRegister::GetInstance().RegisterInputer(inputerSharePtr);
 }
 
 
 void PinAuthImpl::UnregisterInputer(napi_env env)
 {
-    UserIAM::PinAuth::PinAuthRegister::GetInstance().UnRegisterInputer();
+    UserIam::PinAuth::PinAuthRegister::GetInstance().UnRegisterInputer();
 }
 } // namespace PinAuth
 } // namespace OHOS

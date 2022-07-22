@@ -27,7 +27,7 @@
 #include "refbase.h"
 
 namespace OHOS {
-namespace UserIAM {
+namespace UserIam {
 namespace PinAuth {
 class PinAuthManager : public DelayedRefSingleton<PinAuthManager> {
     DECLARE_DELAYED_REF_SINGLETON(PinAuthManager);
@@ -53,7 +53,7 @@ private:
     };
 };
 } // namespace PinAuth
-} // namespace UserIAM
+} // namespace UserIam
 } // namespace OHOS
 
 #endif // PINAUTH_MANAGER_H
