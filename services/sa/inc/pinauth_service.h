@@ -26,7 +26,7 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class PinAuthService : public SystemAbility, public PinAuthStub, public NoCopyable {
+class PinAuthService : public SystemAbility, public PinAuthStub {
 public:
     DECLEAR_SYSTEM_ABILITY(PinAuthService);
     PinAuthService();

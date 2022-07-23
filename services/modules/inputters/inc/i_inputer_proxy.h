@@ -23,9 +23,8 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class IInputerProxy : public IRemoteProxy<IRemoteInputer> {
+class IInputerProxy : public IRemoteProxy<IRemoteInputer>, public NoCopyable {
 public:
-    DISALLOW_COPY_AND_MOVE(IInputerProxy);
     explicit IInputerProxy(const sptr<IRemoteObject> &impl)
         : IRemoteProxy<IRemoteInputer>(impl) {}
     ~IInputerProxy() override = default;

@@ -31,10 +31,6 @@ class PinAuthRegister : public DelayedRefSingleton<PinAuthRegister> {
     DECLARE_DELAYED_REF_SINGLETON(PinAuthRegister);
 
 public:
-    DISALLOW_COPY_AND_MOVE(PinAuthRegister);
-
-public:
-
     /*
      * register inputer that used to obtain pin data.
      *
@@ -49,14 +45,11 @@ public:
     void UnRegisterInputer();
 
 private:
-    class PinAuthDeathRecipient : public IRemoteObject::DeathRecipient {
+    class PinAuthDeathRecipient : public IRemoteObject::DeathRecipient, public NoCopyable {
     public:
         PinAuthDeathRecipient() = default;
         ~PinAuthDeathRecipient() = default;
         void OnRemoteDied(const wptr<IRemoteObject>& remote) override;
-
-    private:
-        DISALLOW_COPY_AND_MOVE(PinAuthDeathRecipient);
     };
     void ResetProxy(const wptr<IRemoteObject>& remote);
     std::mutex mutex_;
