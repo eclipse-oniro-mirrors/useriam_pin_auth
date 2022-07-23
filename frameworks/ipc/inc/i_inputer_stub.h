@@ -26,9 +26,8 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class IInputerStub : public IRemoteStub<IRemoteInputer> {
+class IInputerStub : public IRemoteStub<IRemoteInputer>, public NoCopyable {
 public:
-    DISALLOW_COPY_AND_MOVE(IInputerStub);
     explicit IInputerStub(std::shared_ptr<IInputer> inputer);
     ~IInputerStub();
     void OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sptr<IRemoteInputerData> inputerData) override;

@@ -23,9 +23,8 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class IInputerDataStub : public IRemoteStub<IRemoteInputerData> {
+class IInputerDataStub : public IRemoteStub<IRemoteInputerData>, public NoCopyable {
 public:
-    DISALLOW_COPY_AND_MOVE(IInputerDataStub);
     IInputerDataStub() = default;
     ~IInputerDataStub() override = default;
     int32_t OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option) override;

@@ -23,9 +23,8 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class IInputerData {
+class IInputerData : public NoCopyable {
 public:
-    DISALLOW_COPY_AND_MOVE(IInputerData);
     IInputerData() = default;
     virtual ~IInputerData() = default;
     virtual void OnSetData(int32_t authSubType, std::vector<uint8_t> data);
