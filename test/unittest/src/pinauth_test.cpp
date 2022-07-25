@@ -19,9 +19,8 @@
 #include "iam_logger.h"
 #include "pinauth_register.h"
 #include "i_inputer.h"
-#include "hilog/log.h"
 
-#define LOG_LABEL OHOS::UserIAM::Common::LABEL_PIN_AUTH_SDK
+#define LOG_LABEL OHOS::UserIam::Common::LABEL_PIN_AUTH_SDK
 
 using namespace testing::ext;
 namespace OHOS {

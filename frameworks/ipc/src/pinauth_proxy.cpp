@@ -24,7 +24,7 @@
 #include "iremote_inputer.h"
 #include "iremote_pinauth.h"
 
-#define LOG_LABEL OHOS::UserIAM::Common::LABEL_PIN_AUTH_SDK
+#define LOG_LABEL OHOS::UserIam::Common::LABEL_PIN_AUTH_SDK
 
 namespace OHOS {
 namespace UserIam {
