@@ -20,7 +20,6 @@ config("pin_auth_services_config") {
     "${pinauth_services_path}/modules/driver/inc",
     "${pinauth_services_path}/modules/executors/inc",
     "${pinauth_services_path}/modules/inputters/inc",
-    "${pinauth_services_path}/modules/utils",
     "//base/useriam/user_auth_framework/common/logs",
     "//base/useriam/user_auth_framework/common/utils",
     "//base/security/access_token/interfaces/innerkits/accesstoken/include",

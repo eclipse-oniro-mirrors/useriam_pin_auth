@@ -16,11 +16,11 @@ import("//build/ohos.gni")
 
 config("pinauth_config") {
   include_dirs = [
-    "${pinauth_frameworks_path}/log",
     "${pinauth_frameworks_path}/client/inc",
     "${pinauth_frameworks_path}/ipc/inc",
     "${pinauth_innerapi_path}/include",
     "//base/useriam/user_auth_framework/common/logs",
+    "//base/useriam/user_auth_framework/interfaces/inner_api",
   ]
 }
 

@@ -19,8 +19,8 @@
 #include "message_parcel.h"
 
 #include "iam_logger.h"
+#include "iam_common_defines.h"
 #include "iremote_inputer_data.h"
-#include "pinauth_defines.h"
 
 #define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
 
@@ -44,12 +44,12 @@ int32_t IInputerDataStub::OnRemoteRequest(uint32_t code, MessageParcel &data, Me
     std::u16string remoteDescripter = data.ReadInterfaceToken();
     if (descripter != remoteDescripter) {
         IAM_LOGE("descripter is not remoteDescripter");
-        return FAIL;
+        return UserAuth::FAIL;
     }
     switch (code) {
         case static_cast<int32_t>(IRemoteInputerData::ON_SET_DATA):
             HandlerOnSetData(data, reply);
-            return SUCCESS;
+            return UserAuth::SUCCESS;
         default:
             return IPCObjectStub::OnRemoteRequest(code, data, reply, option);
     }

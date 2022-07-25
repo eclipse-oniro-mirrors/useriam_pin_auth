@@ -20,9 +20,9 @@
 #include "message_parcel.h"
 
 #include "iam_logger.h"
+#include "iam_common_defines.h"
 #include "iremote_inputer.h"
 #include "iremote_pinauth.h"
-#include "pinauth_defines.h"
 
 #define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
 
@@ -45,15 +45,15 @@ int32_t PinAuthStub::OnRemoteRequest(uint32_t code, MessageParcel &data, Message
     std::u16string descripter = PinAuthStub::GetDescriptor();
     std::u16string remoteDescripter = data.ReadInterfaceToken();
     if (descripter != remoteDescripter) {
-        return FAIL;
+        return UserAuth::FAIL;
     }
     switch (code) {
         case static_cast<int32_t>(IRemotePinAuth::REGISTER_INPUTER):
             HandlerRegisterInputer(data, reply);
-            return SUCCESS;
+            return UserAuth::SUCCESS;
         case static_cast<int32_t>(IRemotePinAuth::UNREGISTER_INPUTER):
             HandlerUnRegisterInputer(data, reply);
-            return SUCCESS;
+            return UserAuth::SUCCESS;
         default:
             return IPCObjectStub::OnRemoteRequest(code, data, reply, option);
     }
