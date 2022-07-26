@@ -79,10 +79,10 @@ void PinAuthService::StartDriverManager()
     IF_FALSE_LOGE_AND_RETURN(pinAuthDefaultHdi != nullptr);
     const uint16_t pinAuthDefaultHdiId = 1;
     // serviceName and HdiConfig.id must be globally unique
-    const std::map<std::string, UserIAM::UserAuth::HdiConfig> hdiName2Config  = {
+    const std::map<std::string, UserIam::UserAuth::HdiConfig> hdiName2Config  = {
         {"pin_auth_interface_service", {pinAuthDefaultHdiId, pinAuthDefaultHdi}},
     };
-    int ret = UserIAM::UserAuth::IDriverManager::Start(hdiName2Config);
+    int ret = UserIam::UserAuth::IDriverManager::Start(hdiName2Config);
     if (ret != PIN_AUTH_SUCCESS) {
         IAM_LOGE("start driver manager failed");
     }

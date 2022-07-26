@@ -28,11 +28,11 @@ namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
 namespace PinHdi = OHOS::HDI::PinAuth::V1_0;
-class PinAuthDriverHdi : public UserIAM::UserAuth::IAuthDriverHdi, public NoCopyable {
+class PinAuthDriverHdi : public UserIam::UserAuth::IAuthDriverHdi, public NoCopyable {
 public:
     PinAuthDriverHdi() = default;
     virtual ~PinAuthDriverHdi() = default;
-    void GetExecutorList(std::vector<std::shared_ptr<UserIAM::UserAuth::IAuthExecutorHdi>> &executorList);
+    void GetExecutorList(std::vector<std::shared_ptr<UserIam::UserAuth::IAuthExecutorHdi>> &executorList);
 };
 } // PinAuth
 } // UserIam

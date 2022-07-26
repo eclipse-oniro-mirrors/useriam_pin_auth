@@ -27,7 +27,7 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserIAM::UserAuth::IExecuteCallback>
+PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserIam::UserAuth::IExecuteCallback>
     frameworkCallback, std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi, uint32_t tokenId)
     : frameworkCallback_(frameworkCallback), pinAuthExecutorHdi_(pinAuthExecutorHdi), tokenId_(tokenId) {}
 
