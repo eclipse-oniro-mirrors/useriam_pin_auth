@@ -20,11 +20,11 @@
 #include "message_parcel.h"
 
 #include "iam_logger.h"
+#include "iam_common_defines.h"
 #include "iremote_inputer.h"
 #include "iremote_inputer_data.h"
 #include "i_inputer.h"
 #include "inputer_data_impl.h"
-#include "pinauth_defines.h"
 
 #define LOG_LABEL OHOS::UserIAM::Common::LABEL_PIN_AUTH_SDK
 
@@ -74,18 +74,18 @@ int32_t IInputerStub::OnRemoteRequest(uint32_t code, MessageParcel &data, Messag
     IAM_LOGI("descripter:%s, remoteDescripter:%s", (char *)(descripter.c_str()), (char *)(remoteDescripter.c_str()));
     if (descripter != remoteDescripter) {
         IAM_LOGE("descripter is not remoteDescripter");
-        return FAIL;
+        return UserAuth::FAIL;
     }
 
     switch (code) {
         case static_cast<int32_t>(IRemoteInputer::ON_GET_DATA):
             HandlerOnGetData(data, reply);
-            return SUCCESS;
+            return UserAuth::SUCCESS;
         default:
             IAM_LOGI("default");
             return IPCObjectStub::OnRemoteRequest(code, data, reply, option);
     }
-    return SUCCESS;
+    return UserAuth::SUCCESS;
 }
 } // namespace PinAuth
 } // namespace UserIam

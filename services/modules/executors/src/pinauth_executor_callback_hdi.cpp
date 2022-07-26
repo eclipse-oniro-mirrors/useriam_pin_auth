@@ -18,8 +18,8 @@
 #include <v1_0/executor_proxy.h>
 #include <hdf_base.h>
 #include "iam_logger.h"
+#include "iam_common_defines.h"
 #include "i_inputer_data_impl.h"
-#include "pinauth_defines.h"
 #include "v1_0/pin_auth_types.h"
 
 #define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
@@ -58,24 +58,24 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(uint64_t scheduleId, const std::ve
 
 UserIam::UserAuth::ResultCode PinAuthExecutorCallbackHdi::ConvertResultCode(const int32_t in)
 {
-    ResultCode hdiIn = static_cast<ResultCode>(in);
-    if (hdiIn > ResultCode::VENDOR_RESULT_CODE_BEGIN) {
+    UserIam::UserAuth::ResultCode hdiIn = static_cast<UserIam::UserAuth::ResultCode>(in);
+    if (hdiIn > UserIam::UserAuth::ResultCode::VENDOR_ERROR_CODE_BEGIN) {
         IAM_LOGI("vendor hdi result code %{public}d, no covert", hdiIn);
         return static_cast<UserIam::UserAuth::ResultCode>(in);
     }
 
-    static const std::map<ResultCode, UserIam::UserAuth::ResultCode> data = {
-        {ResultCode::SUCCESS, UserIam::UserAuth::ResultCode::SUCCESS},
-        {ResultCode::FAIL, UserIam::UserAuth::ResultCode::FAIL},
-        {ResultCode::GENERAL_ERROR, UserIam::UserAuth::ResultCode::GENERAL_ERROR},
-        {ResultCode::CANCELED, UserIam::UserAuth::ResultCode::CANCELED},
-        {ResultCode::TIMEOUT, UserIam::UserAuth::ResultCode::TIMEOUT},
-        {ResultCode::BUSY, UserIam::UserAuth::ResultCode::BUSY},
-        {ResultCode::INVALID_PARAMETERS, UserIam::UserAuth::ResultCode::INVALID_PARAMETERS},
-        {ResultCode::LOCKED, UserIam::UserAuth::ResultCode::LOCKED},
-        {ResultCode::NOT_ENROLLED, UserIam::UserAuth::ResultCode::NOT_ENROLLED},
+    static const std::map<UserIam::UserAuth::ResultCode, UserIam::UserAuth::ResultCode> data = {
+        {UserIam::UserAuth::ResultCode::SUCCESS, UserIam::UserAuth::ResultCode::SUCCESS},
+        {UserIam::UserAuth::ResultCode::FAIL, UserIam::UserAuth::ResultCode::FAIL},
+        {UserIam::UserAuth::ResultCode::GENERAL_ERROR, UserIam::UserAuth::ResultCode::GENERAL_ERROR},
+        {UserIam::UserAuth::ResultCode::CANCELED, UserIam::UserAuth::ResultCode::CANCELED},
+        {UserIam::UserAuth::ResultCode::TIMEOUT, UserIam::UserAuth::ResultCode::TIMEOUT},
+        {UserIam::UserAuth::ResultCode::BUSY, UserIam::UserAuth::ResultCode::BUSY},
+        {UserIam::UserAuth::ResultCode::INVALID_PARAMETERS, UserIam::UserAuth::ResultCode::INVALID_PARAMETERS},
+        {UserIam::UserAuth::ResultCode::LOCKED, UserIam::UserAuth::ResultCode::LOCKED},
+        {UserIam::UserAuth::ResultCode::NOT_ENROLLED, UserIam::UserAuth::ResultCode::NOT_ENROLLED},
         // should be UserIam::UserAuth::ResultCode::OPERATION_NOT_SUPPORT
-        {ResultCode::OPERATION_NOT_SUPPORT, UserIam::UserAuth::ResultCode::GENERAL_ERROR},
+        {UserIam::UserAuth::ResultCode::GENERAL_ERROR, UserIam::UserAuth::ResultCode::GENERAL_ERROR},
     };
 
     UserIam::UserAuth::ResultCode out;

@@ -20,11 +20,11 @@
 #include "parameter.h"
 #include "i_inputer_data_impl.h"
 #include "iam_check.h"
+#include "iam_common_defines.h"
 #include "iam_logger.h"
 #include "iam_para2str.h"
 #include "iam_ptr.h"
 #include "idriver_manager.h"
-#include "pinauth_defines.h"
 #include "pinauth_driver_hdi.h"
 #include "pinauth_manager.h"
 
@@ -83,7 +83,7 @@ void PinAuthService::StartDriverManager()
         {"pin_auth_interface_service", {pinAuthDefaultHdiId, pinAuthDefaultHdi}},
     };
     int ret = UserIam::UserAuth::IDriverManager::Start(hdiName2Config);
-    if (ret != PIN_AUTH_SUCCESS) {
+    if (ret != UserAuth::SUCCESS) {
         IAM_LOGE("start driver manager failed");
     }
 }
