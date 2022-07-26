@@ -69,11 +69,8 @@ void IInputerStub::OnGetData(int32_t authSubType, std::vector<uint8_t> salt, spt
 int32_t IInputerStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
     IAM_LOGI("start code = %{public}u", code);
-    std::u16string descripter = IInputerStub::GetDescriptor();
-    std::u16string remoteDescripter = data.ReadInterfaceToken();
-    IAM_LOGI("descripter:%s, remoteDescripter:%s", (char *)(descripter.c_str()), (char *)(remoteDescripter.c_str()));
-    if (descripter != remoteDescripter) {
-        IAM_LOGE("descripter is not remoteDescripter");
+    if (IInputerStub::GetDescriptor() != data.ReadInterfaceToken()) {
+        IAM_LOGE("descriptor is not equal");
         return UserAuth::FAIL;
     }
 

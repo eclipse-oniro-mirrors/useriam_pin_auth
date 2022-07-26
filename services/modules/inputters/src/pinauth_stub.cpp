@@ -42,9 +42,8 @@ PinAuthStub::~PinAuthStub()
 int32_t PinAuthStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
     IAM_LOGI("start");
-    std::u16string descripter = PinAuthStub::GetDescriptor();
-    std::u16string remoteDescripter = data.ReadInterfaceToken();
-    if (descripter != remoteDescripter) {
+    if (PinAuthStub::GetDescriptor() != data.ReadInterfaceToken()) {
+        IAM_LOGE("descriptor is not equal");
         return UserAuth::FAIL;
     }
     switch (code) {
