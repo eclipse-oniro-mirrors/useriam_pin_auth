@@ -31,7 +31,7 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-void PinAuthDriverHdi::GetExecutorList(std::vector<std::shared_ptr<UserIAM::UserAuth::IAuthExecutorHdi>> &executorList)
+void PinAuthDriverHdi::GetExecutorList(std::vector<std::shared_ptr<UserIam::UserAuth::IAuthExecutorHdi>> &executorList)
 {
     IAM_LOGI("start");
     auto pinInterface = HDI::PinAuth::V1_0::IPinAuthInterface::Get();

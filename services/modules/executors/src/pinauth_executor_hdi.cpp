@@ -53,7 +53,7 @@ IamResultCode PinAuthExecutorHdi::GetExecutorInfo(UserIam::UserAuth::ExecutorInf
     return IamResultCode::SUCCESS;
 }
 
-IamResultCode PinAuthExecutorHdi::GetTemplateInfo(uint64_t templateId, UserIAM::UserAuth::TemplateInfo &info)
+IamResultCode PinAuthExecutorHdi::GetTemplateInfo(uint64_t templateId, UserIam::UserAuth::TemplateInfo &info)
 {
     if (executorProxy_ == nullptr) {
         IAM_LOGE("executorProxy is null");
@@ -112,7 +112,7 @@ IamResultCode PinAuthExecutorHdi::OnSetData(uint64_t scheduleId, uint64_t authSu
 }
 
 IamResultCode PinAuthExecutorHdi::Enroll(uint64_t scheduleId, uint32_t tokenId,
-    const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserIAM::UserAuth::IExecuteCallback> &callbackObj)
+    const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserIam::UserAuth::IExecuteCallback> &callbackObj)
 {
     if (executorProxy_ == nullptr) {
         IAM_LOGE("executorProxy is null");
@@ -135,7 +135,7 @@ IamResultCode PinAuthExecutorHdi::Enroll(uint64_t scheduleId, uint32_t tokenId,
 
 IamResultCode PinAuthExecutorHdi::Authenticate(uint64_t scheduleId, uint32_t tokenId,
     const std::vector<uint64_t> &templateIdList, const std::vector<uint8_t> &extraInfo,
-    const std::shared_ptr<UserIAM::UserAuth::IExecuteCallback> &callbackObj)
+    const std::shared_ptr<UserIam::UserAuth::IExecuteCallback> &callbackObj)
 {
     if (executorProxy_ == nullptr) {
         IAM_LOGE("executorProxy is null");
@@ -161,7 +161,7 @@ IamResultCode PinAuthExecutorHdi::Authenticate(uint64_t scheduleId, uint32_t tok
 }
 
 IamResultCode PinAuthExecutorHdi::Identify(uint64_t scheduleId, uint32_t tokenId,
-    const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserIAM::UserAuth::IExecuteCallback> &callbackObj)
+    const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserIam::UserAuth::IExecuteCallback> &callbackObj)
 {
     IAM_LOGI("Adaptor frame interface, temporarily useless");
     static_cast<void>(scheduleId);
@@ -202,7 +202,7 @@ IamResultCode PinAuthExecutorHdi::Cancel(uint64_t scheduleId)
 }
 
 IamResultCode PinAuthExecutorHdi::SendCommand(UserIam::UserAuth::PropertyMode commandId,
-    const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserIAM::UserAuth::IExecuteCallback> &callbackObj)
+    const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserIam::UserAuth::IExecuteCallback> &callbackObj)
 {
     IAM_LOGI("Adaptor frame interface, temporarily useless");
     static_cast<void>(commandId);
@@ -234,7 +234,7 @@ IamResultCode PinAuthExecutorHdi::MoveHdiExecutorInfo(PinHdi::ExecutorInfo &in, 
     return IamResultCode::SUCCESS;
 }
 
-IamResultCode PinAuthExecutorHdi::MoveHdiTemplateInfo(PinHdi::TemplateInfo &in, UserIAM::UserAuth::TemplateInfo &out)
+IamResultCode PinAuthExecutorHdi::MoveHdiTemplateInfo(PinHdi::TemplateInfo &in, UserIam::UserAuth::TemplateInfo &out)
 {
     out.executorType = in.executorType;
     out.freezingTime = in.freezingTime;
