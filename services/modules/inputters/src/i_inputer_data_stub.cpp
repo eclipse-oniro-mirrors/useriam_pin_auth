@@ -40,10 +40,8 @@ int32_t IInputerDataStub::OnRemoteRequest(uint32_t code, MessageParcel &data, Me
     MessageOption &option)
 {
     IAM_LOGI("start, code = %{public}u", code);
-    std::u16string descripter = IInputerDataStub::GetDescriptor();
-    std::u16string remoteDescripter = data.ReadInterfaceToken();
-    if (descripter != remoteDescripter) {
-        IAM_LOGE("descripter is not remoteDescripter");
+    if (IInputerDataStub::GetDescriptor() != data.ReadInterfaceToken()) {
+        IAM_LOGE("descriptor is not equal");
         return UserAuth::FAIL;
     }
     switch (code) {

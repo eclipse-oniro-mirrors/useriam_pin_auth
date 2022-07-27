@@ -35,19 +35,19 @@ class PinAuthManager : public DelayedRefSingleton<PinAuthManager> {
 public:
     bool RegisterInputer(uint32_t tokenId, sptr<IRemoteInputer> &inputer);
     void UnRegisterInputer(uint32_t tokenId);
-    sptr<IRemoteInputer> getInputerLock(uint64_t uid);
+    sptr<IRemoteInputer> getInputerLock(uint32_t tokenId);
 
 private:
     std::unordered_map<uint32_t, sptr<IRemoteInputer>> pinAuthInputerMap_;
     std::mutex mutex_;
     class ResPinauthInputerDeathRecipient : public IRemoteObject::DeathRecipient, public NoCopyable {
     public:
-        explicit ResPinauthInputerDeathRecipient(uint64_t uid);
+        explicit ResPinauthInputerDeathRecipient(uint32_t tokenId);
         ~ResPinauthInputerDeathRecipient() override = default;
         void OnRemoteDied(const wptr<IRemoteObject> &remote) override;
 
     private:
-        uint64_t uid_;
+        uint32_t tokenId_;
     };
 };
 } // namespace PinAuth

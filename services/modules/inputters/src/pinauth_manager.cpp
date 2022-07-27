@@ -55,21 +55,22 @@ void PinAuthManager::UnRegisterInputer(uint32_t tokenId)
     IAM_LOGI("end");
 }
 
-sptr<IRemoteInputer> PinAuthManager::getInputerLock(uint64_t uid)
+sptr<IRemoteInputer> PinAuthManager::getInputerLock(uint32_t tokenId)
 {
     std::lock_guard<std::mutex> guard(mutex_);
     IAM_LOGI("start");
-    auto pinAuthInputer = pinAuthInputerMap_.find(uid);
+    auto pinAuthInputer = pinAuthInputerMap_.find(tokenId);
     if (pinAuthInputer != pinAuthInputerMap_.end()) {
         IAM_LOGI("find pinAuthInputer");
         return pinAuthInputer->second;
     } else {
-        IAM_LOGI("pinAuthInputer is not found");
+        IAM_LOGE("pinAuthInputer is not found");
     }
     return nullptr;
 }
 
-PinAuthManager::ResPinauthInputerDeathRecipient::ResPinauthInputerDeathRecipient(uint64_t uid) : uid_(uid) { }
+PinAuthManager::ResPinauthInputerDeathRecipient::ResPinauthInputerDeathRecipient(uint32_t tokenId)
+    : tokenId_(tokenId) {}
 
 void PinAuthManager::ResPinauthInputerDeathRecipient::OnRemoteDied(const wptr<IRemoteObject> &remote)
 {
@@ -78,7 +79,7 @@ void PinAuthManager::ResPinauthInputerDeathRecipient::OnRemoteDied(const wptr<IR
         IAM_LOGE("remote is nullptr");
         return;
     }
-    PinAuthManager::GetInstance().UnRegisterInputer(uid_);
+    PinAuthManager::GetInstance().UnRegisterInputer(tokenId_);
 }
 } // namespace PinAuth
 } // namespace UserIam
