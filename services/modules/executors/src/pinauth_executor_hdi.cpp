@@ -20,7 +20,7 @@
 #include "hisysevent.h"
 #include "pinauth_executor_callback_hdi.h"
 
-#define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
+#define LOG_LABEL UserIam::Common::LABEL_PIN_AUTH_SA
 
 namespace OHOS {
 namespace UserIam {

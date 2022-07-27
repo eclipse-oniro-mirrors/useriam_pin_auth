@@ -26,7 +26,7 @@
 #include "v1_0/iexecutor.h"
 #include "v1_0/ipin_auth_interface.h"
 
-#define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
+#define LOG_LABEL UserIam::Common::LABEL_PIN_AUTH_SA
 
 namespace OHOS {
 namespace UserIam {

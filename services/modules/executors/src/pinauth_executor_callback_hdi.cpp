@@ -22,7 +22,7 @@
 #include "i_inputer_data_impl.h"
 #include "v1_0/pin_auth_types.h"
 
-#define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
+#define LOG_LABEL UserIam::Common::LABEL_PIN_AUTH_SA
 
 namespace OHOS {
 namespace UserIam {

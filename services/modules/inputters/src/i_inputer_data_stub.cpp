@@ -22,7 +22,7 @@
 #include "iam_common_defines.h"
 #include "iremote_inputer_data.h"
 
-#define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_SA
+#define LOG_LABEL UserIam::Common::LABEL_PIN_AUTH_SA
 
 namespace OHOS {
 namespace UserIam {

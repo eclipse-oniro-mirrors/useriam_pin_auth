@@ -26,7 +26,7 @@
 #include "i_inputer.h"
 #include "inputer_data_impl.h"
 
-#define LOG_LABEL OHOS::UserIAM::Common::LABEL_PIN_AUTH_SDK
+#define LOG_LABEL OHOS::UserIam::Common::LABEL_PIN_AUTH_SDK
 
 namespace OHOS {
 namespace UserIam {

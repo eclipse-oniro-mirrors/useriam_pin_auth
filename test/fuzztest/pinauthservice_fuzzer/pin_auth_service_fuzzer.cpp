@@ -26,7 +26,7 @@
 
 #include "pinauth_service.h"
 
-#define LOG_LABEL UserIAM::Common::LABEL_FACE_AUTH_SA
+#define LOG_LABEL UserIam::Common::LABEL_FACE_AUTH_SA
 
 #undef private
 

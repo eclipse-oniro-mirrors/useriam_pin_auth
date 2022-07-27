@@ -31,7 +31,7 @@
 #include "pin_auth_common.h"
 #include "pin_auth_impl.h"
 
-#define LOG_LABEL UserIAM::Common::LABEL_PIN_AUTH_NAPI
+#define LOG_LABEL UserIam::Common::LABEL_PIN_AUTH_NAPI
 
 using namespace OHOS::UserIam::PinAuth;
 namespace OHOS {
