@@ -25,12 +25,18 @@
       "ram": "2500KB",
       "deps": {
         "components": [
-            "ability_base",
             "hiviewdfx_hilog_native",
             "ipc",
             "safwk",
             "samgr_standard",
-            "user_auth_framework"
+            "hdf_core",
+            "access_token",
+            "hisysevent_native",
+            "common",
+            "napi",
+            "init",
+            "user_auth_framework",
+            "drivers_interface_pin_auth"
         ],
         "third_party": [
             "openssl"
