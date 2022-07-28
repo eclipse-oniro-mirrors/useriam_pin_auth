@@ -24,6 +24,7 @@
 #include "iremote_inputer.h"
 #include "iremote_inputer_data.h"
 #include "i_inputer.h"
+#include "inputer_impl.h"
 #include "inputer_data_impl.h"
 
 #define LOG_LABEL OHOS::UserIam::Common::LABEL_PIN_AUTH_SDK
@@ -31,9 +32,7 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-IInputerStub::IInputerStub(std::shared_ptr<IInputer> inputer) : inputer_(inputer)
-{
-}
+IInputerStub::IInputerStub() = default;
 IInputerStub::~IInputerStub() = default;
 
 void IInputerStub::HandlerOnGetData(MessageParcel &data, MessageParcel &reply)
@@ -53,17 +52,6 @@ void IInputerStub::HandlerOnGetData(MessageParcel &data, MessageParcel &reply)
         return;
     }
     OnGetData(authSubType, salt, inputerData.GetRefPtr());
-}
-
-void IInputerStub::OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sptr<IRemoteInputerData> inputerData)
-{
-    IAM_LOGI("start");
-    if (inputerData == nullptr) {
-        IAM_LOGE("inputerData is nullptr");
-        return;
-    }
-    std::shared_ptr<IInputerData> sharedInputerData = std::make_shared<InputerDataImpl>(salt, inputerData);
-    inputer_->OnGetData(authSubType, sharedInputerData);
 }
 
 int32_t IInputerStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)

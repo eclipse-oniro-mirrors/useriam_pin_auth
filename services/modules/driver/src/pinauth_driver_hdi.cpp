@@ -43,7 +43,7 @@ void PinAuthDriverHdi::GetExecutorList(std::vector<std::shared_ptr<UserIam::User
     std::vector<sptr<HDI::PinAuth::V1_0::IExecutor>> iExecutorList;
     pinInterface->GetExecutorList(iExecutorList);
     for (const auto &iExecutor : iExecutorList) {
-        auto executor = UserIAM::Common::MakeShared<PinAuthExecutorHdi>(iExecutor);
+        auto executor = Common::MakeShared<PinAuthExecutorHdi>(iExecutor);
         if (executor == nullptr) {
             IAM_LOGE("make share failed");
             continue;

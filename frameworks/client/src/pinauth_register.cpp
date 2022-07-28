@@ -23,7 +23,7 @@
 #include "iremote_broker.h"
 #include "iremote_object.h"
 
-#include "i_inputer_stub.h"
+#include "inputer_impl.h"
 #include "iremote_inputer.h"
 #include "iremote_pinauth.h"
 #include "iam_logger.h"
@@ -48,7 +48,7 @@ bool PinAuthRegister::RegisterInputer(std::shared_ptr<IInputer> inputer)
         IAM_LOGE("get proxy failed");
         return false;
     }
-    sptr<IRemoteInputer> callback = new IInputerStub(inputer);
+    sptr<IRemoteInputer> callback = new (std::nothrow) InputerImpl(inputer);
     if (callback == nullptr) {
         return false;
     }
