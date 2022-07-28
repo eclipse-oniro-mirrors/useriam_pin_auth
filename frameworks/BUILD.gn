@@ -33,6 +33,7 @@ ohos_shared_library("pinauth_framework") {
   ]
 
   external_deps = [
+    "c_utils:utils",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
   ]
@@ -40,7 +41,6 @@ ohos_shared_library("pinauth_framework") {
   deps = [
     "//foundation/distributedschedule/samgr/interfaces/innerkits/samgr_proxy:samgr_proxy",
     "//third_party/openssl:libcrypto_static",
-    "//utils/native/base:utils",
   ]
 
   public_configs = [ ":pinauth_config" ]

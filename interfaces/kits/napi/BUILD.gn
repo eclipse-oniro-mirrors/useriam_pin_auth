@@ -33,10 +33,10 @@ ohos_shared_library("pinauth") {
   deps = [
     "//base/useriam/pin_auth/frameworks:pinauth_framework",
     "//foundation/arkui/napi:ace_napi",
-    "//utils/native/base:utils",
   ]
   cflags_cc = [ "-DHILOG_ENABLE" ]
   external_deps = [
+    "c_utils:utils",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
   ]

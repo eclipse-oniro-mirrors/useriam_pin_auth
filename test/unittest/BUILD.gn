@@ -26,12 +26,10 @@ ohos_unittest("PinAuth_UT_test") {
     "//base/useriam/user_auth_framework/common/logs",
   ]
 
-  deps = [
-    "//base/useriam/pin_auth/frameworks:pinauth_framework",
-    "//utils/native/base:utils",
-  ]
+  deps = [ "//base/useriam/pin_auth/frameworks:pinauth_framework" ]
 
   external_deps = [
+    "c_utils:utils",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
   ]
