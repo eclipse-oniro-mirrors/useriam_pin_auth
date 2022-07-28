@@ -47,7 +47,7 @@ std::shared_ptr<PinAuthService> PinAuthService::GetInstance()
     if (instance_ == nullptr) {
         std::lock_guard<std::mutex> gurard(mutex_);
         if (instance_ == nullptr) {
-            instance_ = UserIam::Common::MakeShared<PinAuthService>();
+            instance_ = Common::MakeShared<PinAuthService>();
             if (instance_ == nullptr) {
                 IAM_LOGE("make share failed");
             }
@@ -75,7 +75,7 @@ void PinAuthService::OnStop()
 void PinAuthService::StartDriverManager()
 {
     IAM_LOGI("start");
-    auto pinAuthDefaultHdi = UserIam::Common::MakeShared<PinAuthDriverHdi>();
+    auto pinAuthDefaultHdi = Common::MakeShared<PinAuthDriverHdi>();
     IF_FALSE_LOGE_AND_RETURN(pinAuthDefaultHdi != nullptr);
     const uint16_t pinAuthDefaultHdiId = 1;
     // serviceName and HdiConfig.id must be globally unique
