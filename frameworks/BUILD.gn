@@ -17,6 +17,7 @@ config("pinauth_config") {
   include_dirs = [
     "//base/useriam/pin_auth/frameworks/client/inc",
     "//base/useriam/pin_auth/frameworks/ipc/inc",
+    "//base/useriam/pin_auth/frameworks/scrypt/inc",
     "//base/useriam/pin_auth/interfaces/inner_api/include",
     "//base/useriam/user_auth_framework/common/logs",
     "//base/useriam/user_auth_framework/common/utils",
@@ -33,8 +34,9 @@ ohos_shared_library("pinauth_framework") {
     "ipc/src/i_inputer_data_stub.cpp",
     "ipc/src/i_inputer_proxy.cpp",
     "ipc/src/i_inputer_stub.cpp",
-    "ipc/src/pinauth_proxy.cpp",
-    "ipc/src/pinauth_stub.cpp",
+    "ipc/src/pin_auth_proxy.cpp",
+    "ipc/src/pin_auth_stub.cpp",
+    "scrypt/src/scrypt.cpp",
   ]
 
   external_deps = [
