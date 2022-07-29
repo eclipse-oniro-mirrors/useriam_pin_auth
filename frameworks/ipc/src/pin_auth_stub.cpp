@@ -13,11 +13,7 @@
  * limitations under the License.
  */
 
-#include "pinauth_stub.h"
-
-#include "ipc_object_stub.h"
-#include "iremote_broker.h"
-#include "message_parcel.h"
+#include "pin_auth_stub.h"
 
 #include "iam_logger.h"
 #include "iam_common_defines.h"
@@ -29,54 +25,45 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-PinAuthStub::PinAuthStub()
-{
-    IAM_LOGI("start");
-}
-
-PinAuthStub::~PinAuthStub()
-{
-    IAM_LOGI("start");
-}
-
 int32_t PinAuthStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
-    IAM_LOGI("start");
+    IAM_LOGD("cmd = %{public}u, flags = %{public}d", code, option.GetFlags());
     if (PinAuthStub::GetDescriptor() != data.ReadInterfaceToken()) {
-        IAM_LOGE("descriptor is not equal");
+        IAM_LOGE("descriptor is not matched");
         return UserAuth::FAIL;
     }
     switch (code) {
-        case static_cast<int32_t>(IRemotePinAuth::REGISTER_INPUTER):
-            HandlerRegisterInputer(data, reply);
+        case IRemotePinAuth::REGISTER_INPUTER:
+            RegisterInputerStub(data, reply);
             return UserAuth::SUCCESS;
-        case static_cast<int32_t>(IRemotePinAuth::UNREGISTER_INPUTER):
-            HandlerUnRegisterInputer(data, reply);
+        case IRemotePinAuth::UNREGISTER_INPUTER:
+            UnRegisterInputerStub(data, reply);
             return UserAuth::SUCCESS;
         default:
             return IPCObjectStub::OnRemoteRequest(code, data, reply, option);
     }
 }
 
-void PinAuthStub::HandlerRegisterInputer(MessageParcel &data, MessageParcel &reply)
+void PinAuthStub::RegisterInputerStub(MessageParcel &data, MessageParcel &reply)
 {
     IAM_LOGI("start");
-    sptr<IRemoteObject> remote = data.ReadRemoteObject();
-    if (remote == nullptr) {
+    sptr<IRemoteObject> obj = data.ReadRemoteObject();
+    if (obj == nullptr) {
+        IAM_LOGE("failed to read remote object");
         return;
     }
-    sptr<IRemoteInputer> inputer = iface_cast<IRemoteInputer>(remote);
+    sptr<IRemoteInputer> inputer = iface_cast<IRemoteInputer>(obj);
     if (inputer == nullptr) {
+        IAM_LOGE("inputer is nullptr");
         return;
     }
     bool ret = RegisterInputer(inputer);
     if (!reply.WriteBool(ret)) {
-        IAM_LOGE("write inputer fail");
-        return;
+        IAM_LOGE("failed to write result");
     }
 }
 
-void PinAuthStub::HandlerUnRegisterInputer(MessageParcel &data, MessageParcel &reply)
+void PinAuthStub::UnRegisterInputerStub(MessageParcel &data, MessageParcel &reply)
 {
     (void)data;
     (void)reply;

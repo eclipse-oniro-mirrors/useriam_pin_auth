@@ -33,8 +33,8 @@ ohos_shared_library("pinauth_framework") {
     "ipc/src/i_inputer_data_stub.cpp",
     "ipc/src/i_inputer_proxy.cpp",
     "ipc/src/i_inputer_stub.cpp",
-    "ipc/src/pinauth_proxy.cpp",
-    "ipc/src/pinauth_stub.cpp",
+    "ipc/src/pin_auth_proxy.cpp",
+    "ipc/src/pin_auth_stub.cpp",
   ]
 
   external_deps = [

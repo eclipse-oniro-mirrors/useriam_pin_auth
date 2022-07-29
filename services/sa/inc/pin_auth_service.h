@@ -18,10 +18,11 @@
 
 #include <mutex>
 #include <map>
+
 #include "nocopyable.h"
 #include "system_ability.h"
 #include "system_ability_definition.h"
-#include "pinauth_stub.h"
+#include "pin_auth_stub.h"
 
 namespace OHOS {
 namespace UserIam {
@@ -40,13 +41,10 @@ public:
     bool CheckPermission(const std::string &permission);
 
 private:
-    PinAuthService(PinAuthService &) = delete;
-    PinAuthService &operator=(PinAuthService &) = delete;
-    PinAuthService(PinAuthService &&) = delete;
-    PinAuthService &operator=(PinAuthService &&) = delete;
-    void StartDriverManager();
     static std::mutex mutex_;
     static std::shared_ptr<PinAuthService> instance_;
+    inline uint32_t GetTokenId();
+    void StartDriverManager();
 };
 } // namespace PinAuth
 } // namespace UserIam

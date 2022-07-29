@@ -24,7 +24,7 @@
 #include "iam_fuzz_test.h"
 #include "iam_logger.h"
 
-#include "pinauth_service.h"
+#include "pin_auth_service.h"
 
 #define LOG_LABEL UserIam::Common::LABEL_FACE_AUTH_SA
 

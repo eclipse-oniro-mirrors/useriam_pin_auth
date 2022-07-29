@@ -13,29 +13,29 @@
  * limitations under the License.
  */
 
-#ifndef PIN_AUTH_STUB_H
-#define PIN_AUTH_STUB_H
+#ifndef PIN_AUTH_PROXY_H
+#define PIN_AUTH_PROXY_H
 
-#include "nocopyable.h"
 #include "iremote_pinauth.h"
-#include "iremote_stub.h"
+#include "iremote_proxy.h"
+#include "message_parcel.h"
+#include "nocopyable.h"
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class PinAuthStub : public IRemoteStub<IRemotePinAuth>, public NoCopyable {
+class PinAuthProxy : public IRemoteProxy<IRemotePinAuth>, public NoCopyable {
 public:
-    PinAuthStub();
-    ~PinAuthStub() override;
-    int32_t OnRemoteRequest(
-        uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option) override;
+    explicit PinAuthProxy(const sptr<IRemoteObject> &object);
+    ~PinAuthProxy() override = default;
+    bool RegisterInputer(sptr<IRemoteInputer> inputer) override;
+    void UnRegisterInputer() override;
 
 private:
-    void HandlerRegisterInputer(MessageParcel &data, MessageParcel &reply);
-    void HandlerUnRegisterInputer(MessageParcel &data, MessageParcel &reply);
+    static inline BrokerDelegator<PinAuthProxy> delegator_;
+    bool SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply);
 };
-}  // namespace PinAuth
-}  // namespace UserIam
-}  // namespace OHOS
-
-#endif  // PIN_AUTH_STUB_H
+} // namespace PinAuth
+} // namespace UserIam
+} // namespace OHOS
+#endif // PIN_AUTH_PROXY_H
