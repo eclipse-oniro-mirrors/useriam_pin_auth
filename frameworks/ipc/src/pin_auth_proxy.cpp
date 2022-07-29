@@ -13,12 +13,9 @@
  * limitations under the License.
  */
 
-#include "pinauth_proxy.h"
+#include "pin_auth_proxy.h"
 
 #include "ipc_types.h"
-#include "iremote_object.h"
-#include "message_option.h"
-#include "message_parcel.h"
 
 #include "iam_logger.h"
 #include "iremote_inputer.h"
@@ -34,67 +31,59 @@ PinAuthProxy::PinAuthProxy(const sptr<IRemoteObject> &object) : IRemoteProxy<IRe
     IAM_LOGI("start");
 }
 
-PinAuthProxy::~PinAuthProxy()
-{
-    IAM_LOGI(" start");
-}
-
 bool PinAuthProxy::RegisterInputer(sptr<IRemoteInputer> inputer)
 {
+    IAM_LOGI("start");
     MessageParcel data;
     MessageParcel reply;
 
-    IAM_LOGI("start");
     if (!data.WriteInterfaceToken(PinAuthProxy::GetDescriptor())) {
-        IAM_LOGE("write descriptor fail");
+        IAM_LOGE("failed to write descriptor");
         return false;
     }
 
     if (!data.WriteRemoteObject(inputer->AsObject())) {
-        IAM_LOGE("write inputer fail");
+        IAM_LOGE("failed to write inputer");
         return false;
     }
 
-    bool ret = SendRequest(static_cast<int32_t>(IRemotePinAuth::REGISTER_INPUTER), data, reply, true);
-    bool result = false;
+    bool ret = SendRequest(static_cast<uint32_t>(IRemotePinAuth::REGISTER_INPUTER), data, reply);
     if (!ret) {
-        IAM_LOGE("send request fail, error code = %d", ret);
-    } else {
-        result = reply.ReadBool();
-        IAM_LOGI("send request success");
+        return false;
+    }
+    bool result = false;
+    if (!reply.ReadBool(result)) {
+        IAM_LOGE("failed to read result");
     }
     return result;
 }
 
 void PinAuthProxy::UnRegisterInputer()
 {
+    IAM_LOGI("start");
     MessageParcel data;
     MessageParcel reply;
 
-    IAM_LOGI("start");
     if (!data.WriteInterfaceToken(PinAuthProxy::GetDescriptor())) {
-        IAM_LOGE("write descriptor fail");
+        IAM_LOGE("failed to write descriptor");
         return;
     }
 
-    bool ret = SendRequest(static_cast<int32_t>(IRemotePinAuth::UNREGISTER_INPUTER), data, reply, false);
-    if (!ret) {
-        IAM_LOGE("send request fail");
-    }
+    SendRequest(static_cast<uint32_t>(IRemotePinAuth::UNREGISTER_INPUTER), data, reply);
 }
 
-bool PinAuthProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, bool isSync)
+bool PinAuthProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply)
 {
-    IAM_LOGI("start");
+    IAM_LOGI("code = %{public}u", code);
     sptr<IRemoteObject> remote = Remote();
     if (remote == nullptr) {
-        IAM_LOGE("remote is nullptr");
+        IAM_LOGE("failed to get remote");
         return false;
     }
-    MessageOption option(isSync ? MessageOption::TF_SYNC : MessageOption::TF_ASYNC);
+    MessageOption option(MessageOption::TF_SYNC);
     int32_t result = remote->SendRequest(code, data, reply, option);
     if (result != OHOS::NO_ERROR) {
-        IAM_LOGE("send request fail, result = %{public}d", result);
+        IAM_LOGE("failed to send request, result = %{public}d", result);
         return false;
     }
     return true;
