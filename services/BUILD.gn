@@ -32,7 +32,7 @@ ohos_shared_library("pinauthservice") {
     "//base/useriam/pin_auth/services/modules/executors/src/pinauth_executor_hdi.cpp",
     "//base/useriam/pin_auth/services/modules/inputters/src/i_inputer_data_impl.cpp",
     "//base/useriam/pin_auth/services/modules/inputters/src/pinauth_manager.cpp",
-    "//base/useriam/pin_auth/services/sa/src/pinauth_service.cpp",
+    "//base/useriam/pin_auth/services/sa/src/pin_auth_service.cpp",
   ]
 
   configs = [ ":pin_auth_services_config" ]

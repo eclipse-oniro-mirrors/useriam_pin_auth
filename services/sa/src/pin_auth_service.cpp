@@ -13,9 +13,10 @@
  * limitations under the License.
  */
 
-#include "pinauth_service.h"
+#include "pin_auth_service.h"
+
 #include <cinttypes>
-#include <map>
+
 #include "accesstoken_kit.h"
 #include "parameter.h"
 #include "i_inputer_data_impl.h"
@@ -34,13 +35,16 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-static const std::string ACCESS_PIN_AUTH = "ohos.permission.ACCESS_PIN_AUTH";
-const bool REGISTER_RESULT =
-    SystemAbility::MakeAndRegisterAbility(PinAuthService::GetInstance().get());
+namespace {
+    const std::string ACCESS_PIN_AUTH = "ohos.permission.ACCESS_PIN_AUTH";
+    const bool REGISTER_RESULT = SystemAbility::MakeAndRegisterAbility(PinAuthService::GetInstance().get());
+} // namespace
 std::mutex PinAuthService::mutex_;
 std::shared_ptr<PinAuthService> PinAuthService::instance_ = nullptr;
 
-PinAuthService::PinAuthService() : SystemAbility(SUBSYS_USERIAM_SYS_ABILITY_PINAUTH, true) {}
+PinAuthService::PinAuthService() : SystemAbility(SUBSYS_USERIAM_SYS_ABILITY_PINAUTH, true)
+{
+}
 
 std::shared_ptr<PinAuthService> PinAuthService::GetInstance()
 {
@@ -61,15 +65,23 @@ void PinAuthService::OnStart()
     IAM_LOGI("start");
     StartDriverManager();
     if (!Publish(this)) {
-        IAM_LOGE("Failed to publish the service");
+        IAM_LOGE("failed to publish pin auth service");
         return;
     }
-    IAM_LOGI("success");
 }
 
 void PinAuthService::OnStop()
 {
     IAM_LOGE("service is persistent, OnStop is not implemented");
+}
+
+inline uint32_t PinAuthService::GetTokenId()
+{
+    uint32_t tokenId = this->GetFirstTokenID();
+    if (tokenId == 0) {
+        tokenId = this->GetCallingTokenID();
+    }
+    return tokenId;
 }
 
 void PinAuthService::StartDriverManager()
@@ -92,45 +104,34 @@ bool PinAuthService::CheckPermission(const std::string &permission)
 {
     IAM_LOGI("start");
     using namespace Security::AccessToken;
-    uint32_t tokenID = this->GetFirstTokenID();
-    if (tokenID == 0) {
-        tokenID = this->GetCallingTokenID();
-    }
-    return AccessTokenKit::VerifyAccessToken(tokenID, permission) == RET_SUCCESS;
+    uint32_t tokenId = GetTokenId();
+    return AccessTokenKit::VerifyAccessToken(tokenId, permission) == RET_SUCCESS;
 }
 
 bool PinAuthService::RegisterInputer(sptr<IRemoteInputer> inputer)
 {
     IAM_LOGI("start");
     if (!CheckPermission(ACCESS_PIN_AUTH)) {
-        IAM_LOGE("Permission check failed");
+        IAM_LOGE("failed to check permission");
         return false;
     }
     if (inputer == nullptr) {
         IAM_LOGE("inputer is nullptr");
         return false;
     }
-    using namespace Security::AccessToken;
-    uint32_t tokenID = this->GetFirstTokenID();
-    if (tokenID == 0) {
-        tokenID = this->GetCallingTokenID();
-    }
-    return PinAuthManager::GetInstance().RegisterInputer(tokenID, inputer);
+    uint32_t tokenId = GetTokenId();
+    return PinAuthManager::GetInstance().RegisterInputer(tokenId, inputer);
 }
 
 void PinAuthService::UnRegisterInputer()
 {
     IAM_LOGI("start");
     if (!CheckPermission(ACCESS_PIN_AUTH)) {
-        IAM_LOGE("Permission check failed");
+        IAM_LOGE("failed to check permission");
         return;
     }
-    using namespace Security::AccessToken;
-    uint32_t tokenID = this->GetFirstTokenID();
-    if (tokenID == 0) {
-        tokenID = this->GetCallingTokenID();
-    }
-    PinAuthManager::GetInstance().UnRegisterInputer(tokenID);
+    uint32_t tokenId = GetTokenId();
+    PinAuthManager::GetInstance().UnRegisterInputer(tokenId);
 }
 } // namespace PinAuth
 } // namespace UserIam
