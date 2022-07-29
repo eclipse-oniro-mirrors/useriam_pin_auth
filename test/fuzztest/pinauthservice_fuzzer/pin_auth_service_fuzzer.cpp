@@ -31,7 +31,7 @@
 #undef private
 
 using namespace std;
-using namespace OHOS::UserIAM::Common;
+using namespace OHOS::UserIam::Common;
 
 namespace OHOS {
 namespace UserIam {
