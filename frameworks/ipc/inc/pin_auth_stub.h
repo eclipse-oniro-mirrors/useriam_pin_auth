@@ -16,15 +16,16 @@
 #ifndef PIN_AUTH_STUB_H
 #define PIN_AUTH_STUB_H
 
-#include "iremote_pinauth.h"
 #include "iremote_stub.h"
 #include "message_parcel.h"
 #include "nocopyable.h"
 
+#include "pin_auth_interface.h"
+
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class PinAuthStub : public IRemoteStub<IRemotePinAuth>, public NoCopyable {
+class PinAuthStub : public IRemoteStub<PinAuthInterface>, public NoCopyable {
 public:
     PinAuthStub() = default;
     ~PinAuthStub() override = default;

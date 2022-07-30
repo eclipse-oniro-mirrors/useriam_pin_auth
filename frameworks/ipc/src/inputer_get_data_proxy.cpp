@@ -13,56 +13,59 @@
  * limitations under the License.
  */
 
-#include "i_inputer_data_proxy.h"
-
-#include "ipc_types.h"
-#include "iremote_object.h"
-#include "message_option.h"
-#include "message_parcel.h"
+#include "inputer_get_data_proxy.h"
 
 #include "iam_logger.h"
 
-#define LOG_LABEL OHOS::UserIam::Common::LABEL_PIN_AUTH_SDK
+#define LOG_LABEL UserIam::Common::LABEL_PIN_AUTH_SA
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-void IInputerDataProxy::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
+void InputerGetDataProxy::OnGetData(int32_t authSubType, const std::vector<uint8_t> &salt,
+    const sptr<InputerSetData> &inputerSetData)
 {
     IAM_LOGI("start");
-    MessageParcel dataParcel;
+    MessageParcel data;
     MessageParcel reply;
-
-    if (!dataParcel.WriteInterfaceToken(IInputerDataProxy::GetDescriptor())) {
+    
+    if (!data.WriteInterfaceToken(InputerGetDataProxy::GetDescriptor())) {
         IAM_LOGE("write descriptor fail");
+        return;
+    }
+    if (!data.WriteInt32(authSubType)) {
+        IAM_LOGE("write authSubType fail");
+        return;
     }
 
-    if (!dataParcel.WriteInt64(authSubType)) {
-        IAM_LOGE(" write authSubType fail");
-    }
-    if (!dataParcel.WriteUInt8Vector(data)) {
-        IAM_LOGE("write data fail");
+    if (!data.WriteUInt8Vector(salt)) {
+        IAM_LOGE("write salt fail");
+        return;
     }
 
-    bool ret = SendRequest(static_cast<uint32_t>(IRemoteInputerData::ON_SET_DATA), dataParcel, reply);
+    if (!data.WriteRemoteObject(inputerSetData->AsObject())) {
+        IAM_LOGE("write inputerData fail");
+        return;
+    }
+    bool ret = SendRequest(InputerGetData::ON_GET_DATA, data, reply);
     if (ret) {
         int32_t result = reply.ReadInt32();
         IAM_LOGI("result = %{public}d", result);
     }
 }
 
-bool IInputerDataProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply)
+bool InputerGetDataProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply)
 {
-    IAM_LOGI("start");
+    IAM_LOGI("code = %{public}u", code);
     sptr<IRemoteObject> remote = Remote();
     if (remote == nullptr) {
-        IAM_LOGE("get remote fail");
+        IAM_LOGE("failed to get remote");
         return false;
     }
     MessageOption option(MessageOption::TF_SYNC);
     int32_t result = remote->SendRequest(code, data, reply, option);
     if (result != OHOS::NO_ERROR) {
-        IAM_LOGE("send request fail, result = %{public}d", result);
+        IAM_LOGE("failed to send request, result = %{public}d", result);
         return false;
     }
     return true;

@@ -20,8 +20,6 @@
 
 #include "iam_logger.h"
 #include "iam_ptr.h"
-
-#include "iremote_inputer_data.h"
 #include "scrypt.h"
 
 #define LOG_LABEL OHOS::UserIam::Common::LABEL_PIN_AUTH_SDK
@@ -29,8 +27,8 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-InputerDataImpl::InputerDataImpl(std::vector<uint8_t> salt, sptr<IRemoteInputerData> remoteInputerData) : salt_(salt),
-    remoteInputerData_(remoteInputerData)
+InputerDataImpl::InputerDataImpl(std::vector<uint8_t> salt, sptr<InputerSetData> remoteInputerData) : salt_(salt),
+    inputerSetData_(remoteInputerData)
 {
 }
 
@@ -53,7 +51,7 @@ void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
         return;
     }
 
-    remoteInputerData_->OnSetData(authSubType, scrypt);
+    inputerSetData_->OnSetData(authSubType, scrypt);
 }
 } // namespace PinAuth
 } // namespace UserIam

@@ -13,19 +13,20 @@
  * limitations under the License.
  */
 
-#ifndef PINAUTH_CONTROLLER_H
-#define PINAUTH_CONTROLLER_H
+#ifndef I_INPUTER_DATA_IMPL_H
+#define I_INPUTER_DATA_IMPL_H
 
 #include <cstdint>
 #include <mutex>
 #include <vector>
-#include "i_inputer_data_stub.h"
-#include "pinauth_executor_hdi.h"
+
+#include "inputer_set_data_stub.h"
+#include "pin_auth_executor_hdi.h"
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class IInputerDataImpl : public IInputerDataStub {
+class IInputerDataImpl : public InputerSetDataStub {
 public:
     IInputerDataImpl(uint64_t scheduleId, std::shared_ptr<PinAuthExecutorHdi> hdi);
     ~IInputerDataImpl() override;
@@ -40,4 +41,4 @@ private:
 } // namespace UserIam
 } // namespace OHOS
 
-#endif // PINAUTH_CONTROLLER_H
+#endif // I_INPUTER_DATA_IMPL_H

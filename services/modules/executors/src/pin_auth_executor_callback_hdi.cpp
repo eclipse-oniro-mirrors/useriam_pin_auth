@@ -13,13 +13,16 @@
  * limitations under the License.
  */
 
-#include "pinauth_executor_callback_hdi.h"
+#include "pin_auth_executor_callback_hdi.h"
+
 #include <cinttypes>
 #include <v1_0/executor_proxy.h>
 #include <hdf_base.h>
+
 #include "iam_logger.h"
 #include "iam_common_defines.h"
 #include "i_inputer_data_impl.h"
+#include "inputer_get_data_proxy.h"
 #include "v1_0/pin_auth_types.h"
 
 #define LOG_LABEL UserIam::Common::LABEL_PIN_AUTH_SA
@@ -43,7 +46,7 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(uint64_t scheduleId, const std::ve
     uint64_t authSubType)
 {
     IAM_LOGI("Start tokenId_ is %{public}u", tokenId_);
-    sptr<IRemoteInputer> inputer = PinAuthManager::GetInstance().getInputerLock(tokenId_);
+    sptr<InputerGetData> inputer = PinAuthManager::GetInstance().getInputerLock(tokenId_);
     if (inputer == nullptr) {
         IAM_LOGE("inputer is nullptr");
         return HDF_FAILURE;

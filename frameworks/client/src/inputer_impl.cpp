@@ -30,15 +30,16 @@ namespace PinAuth {
 InputerImpl::InputerImpl(const std::shared_ptr<IInputer> &inputer) : inputer_(inputer) {}
 InputerImpl::~InputerImpl() = default;
 
-void InputerImpl::OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sptr<IRemoteInputerData> inputerData)
+void InputerImpl::OnGetData(int32_t authSubType, const std::vector<uint8_t> &salt,
+    const sptr<InputerSetData> &inputerSetData)
 {
     IAM_LOGI("start");
-    if (inputerData == nullptr) {
-        IAM_LOGE("inputerData is nullptr");
+    if (inputerSetData == nullptr) {
+        IAM_LOGE("inputerSetData is nullptr");
         return;
     }
     
-    std::shared_ptr<IInputerData> sharedInputerData = Common::MakeShared<InputerDataImpl>(salt, inputerData);
+    std::shared_ptr<IInputerData> sharedInputerData = Common::MakeShared<InputerDataImpl>(salt, inputerSetData);
     if (sharedInputerData == nullptr) {
         IAM_LOGE("sharedInputerData is nullptr");
         return;

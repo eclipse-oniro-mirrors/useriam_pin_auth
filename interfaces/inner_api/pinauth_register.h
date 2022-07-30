@@ -22,7 +22,7 @@
 #include "iremote_object.h"
 #include "i_inputer.h"
 #include "refbase.h"
-#include "iremote_pinauth.h"
+#include "pin_auth_interface.h"
 
 namespace OHOS {
 namespace UserIam {
@@ -53,8 +53,8 @@ private:
     };
     void ResetProxy(const wptr<IRemoteObject>& remote);
     std::mutex mutex_;
-    sptr<IRemotePinAuth> GetProxy();
-    sptr<IRemotePinAuth> proxy_ {nullptr};
+    sptr<PinAuthInterface> GetProxy();
+    sptr<PinAuthInterface> proxy_ {nullptr};
     sptr<IRemoteObject::DeathRecipient> deathRecipient_ {nullptr};
 };
 } // namespace PinAuth

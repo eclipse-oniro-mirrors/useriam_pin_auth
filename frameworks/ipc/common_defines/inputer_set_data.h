@@ -13,29 +13,33 @@
  * limitations under the License.
  */
 
-#ifndef IPIN_AUTH_H
-#define IPIN_AUTH_H
+#ifndef INPUTER_SET_DATA_H
+#define INPUTER_SET_DATA_H
+
+#include <vector>
 
 #include "iremote_broker.h"
 #include "iremote_object.h"
-#include "iremote_inputer.h"
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class IRemotePinAuth : public IRemoteBroker {
+class InputerSetData : public IRemoteBroker {
 public:
-    DECLARE_INTERFACE_DESCRIPTOR(u"ohos.PinAuth.IRemotePinAuth");
-    virtual bool RegisterInputer(sptr<IRemoteInputer> inputer) = 0;
-    virtual void UnRegisterInputer() = 0;
+    /*
+     * the inputer is used to set the data.
+     *
+     * param authSubType auth subType.
+     * param data pin data.
+     */
+    virtual void OnSetData(int32_t authSubType, std::vector<uint8_t> data) = 0;
 
-    enum {
-        REGISTER_INPUTER = 1,
-        UNREGISTER_INPUTER = 2
+    enum : uint32_t {
+        ON_SET_DATA = 1,
     };
+    DECLARE_INTERFACE_DESCRIPTOR(u"ohos.PinAuth.InputerSetData");
 };
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS
-
-#endif  // IPIN_AUTH_H
+#endif // INPUTER_SET_DATA_H

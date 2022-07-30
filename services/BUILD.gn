@@ -19,27 +19,29 @@ config("pin_auth_services_config") {
     "//base/useriam/pin_auth/services/modules/driver/inc",
     "//base/useriam/pin_auth/services/modules/executors/inc",
     "//base/useriam/pin_auth/services/modules/inputters/inc",
-    "//base/useriam/user_auth_framework/common/logs",
-    "//base/useriam/user_auth_framework/common/utils",
     "//base/security/access_token/interfaces/innerkits/accesstoken/include",
   ]
 }
 
 ohos_shared_library("pinauthservice") {
   sources = [
-    "//base/useriam/pin_auth/services/modules/driver/src/pinauth_driver_hdi.cpp",
-    "//base/useriam/pin_auth/services/modules/executors/src/pinauth_executor_callback_hdi.cpp",
-    "//base/useriam/pin_auth/services/modules/executors/src/pinauth_executor_hdi.cpp",
+    "//base/useriam/pin_auth/services/modules/driver/src/pin_auth_driver_hdi.cpp",
+    "//base/useriam/pin_auth/services/modules/executors/src/pin_auth_executor_callback_hdi.cpp",
+    "//base/useriam/pin_auth/services/modules/executors/src/pin_auth_executor_hdi.cpp",
     "//base/useriam/pin_auth/services/modules/inputters/src/i_inputer_data_impl.cpp",
-    "//base/useriam/pin_auth/services/modules/inputters/src/pinauth_manager.cpp",
+    "//base/useriam/pin_auth/services/modules/inputters/src/pin_auth_manager.cpp",
     "//base/useriam/pin_auth/services/sa/src/pin_auth_service.cpp",
   ]
 
-  configs = [ ":pin_auth_services_config" ]
+  configs = [
+    ":pin_auth_services_config",
+    "//base/useriam/user_auth_framework/common:iam_log_config",
+    "//base/useriam/user_auth_framework/common:iam_utils_config",
+  ]
 
   deps = [
     "//base/security/access_token/interfaces/innerkits/accesstoken:libaccesstoken_sdk",
-    "//base/useriam/pin_auth/frameworks:pinauth_framework",
+    "//base/useriam/pin_auth/frameworks:pinauth_ipc",
     "//base/useriam/user_auth_framework/common/executors:userauth_executors",
     "//third_party/openssl:libcrypto_static",
   ]

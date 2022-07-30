@@ -16,12 +16,16 @@ import("//build/ohos.gni")
 config("pinauth_config") {
   include_dirs = [
     "//base/useriam/pin_auth/frameworks/client/inc",
-    "//base/useriam/pin_auth/frameworks/ipc/inc",
+    "//base/useriam/pin_auth/interfaces/inner_api",
     "//base/useriam/pin_auth/frameworks/scrypt/inc",
-    "//base/useriam/pin_auth/interfaces/inner_api/include",
-    "//base/useriam/user_auth_framework/common/logs",
-    "//base/useriam/user_auth_framework/common/utils",
     "//base/useriam/user_auth_framework/interfaces/inner_api",
+  ]
+}
+
+config("pinauth_ipc_config") {
+  include_dirs = [
+    "ipc/inc",
+    "ipc/common_defines",
   ]
 }
 
@@ -30,13 +34,13 @@ ohos_shared_library("pinauth_framework") {
     "client/src/inputer_data_impl.cpp",
     "client/src/inputer_impl.cpp",
     "client/src/pinauth_register.cpp",
-    "ipc/src/i_inputer_data_proxy.cpp",
-    "ipc/src/i_inputer_data_stub.cpp",
-    "ipc/src/i_inputer_proxy.cpp",
-    "ipc/src/i_inputer_stub.cpp",
-    "ipc/src/pin_auth_proxy.cpp",
-    "ipc/src/pin_auth_stub.cpp",
     "scrypt/src/scrypt.cpp",
+  ]
+
+  deps = [
+    "//base/useriam/pin_auth/frameworks:pinauth_ipc",
+    "//foundation/distributedschedule/samgr/interfaces/innerkits/samgr_proxy:samgr_proxy",
+    "//third_party/openssl:libcrypto_static",
   ]
 
   external_deps = [
@@ -45,9 +49,10 @@ ohos_shared_library("pinauth_framework") {
     "ipc:ipc_core",
   ]
 
-  deps = [
-    "//foundation/distributedschedule/samgr/interfaces/innerkits/samgr_proxy:samgr_proxy",
-    "//third_party/openssl:libcrypto_static",
+  configs = [
+    "//base/useriam/user_auth_framework/common:iam_log_config",
+    "//base/useriam/user_auth_framework/common:iam_utils_config",
+    "//base/useriam/pin_auth/frameworks/:pinauth_ipc_config",
   ]
 
   public_configs = [ ":pinauth_config" ]
@@ -60,4 +65,30 @@ ohos_shared_library("pinauth_framework") {
 
   subsystem_name = "useriam"
   part_name = "pin_auth"
+}
+
+ohos_source_set("pinauth_ipc") {
+  include_dirs = [
+    "ipc/inc",
+    "ipc/common_defines",
+    "//base/useriam/user_auth_framework/interfaces/inner_api",
+  ]
+
+  sources = [
+    "ipc/src/inputer_get_data_proxy.cpp",
+    "ipc/src/inputer_get_data_stub.cpp",
+    "ipc/src/inputer_set_data_proxy.cpp",
+    "ipc/src/inputer_set_data_stub.cpp",
+    "ipc/src/pin_auth_proxy.cpp",
+    "ipc/src/pin_auth_stub.cpp",
+  ]
+
+  configs = [ "//base/useriam/user_auth_framework/common:iam_log_config" ]
+  public_configs = [ ":pinauth_ipc_config" ]
+
+  external_deps = [
+    "c_utils:utils",
+    "hiviewdfx_hilog_native:libhilog",
+    "ipc:ipc_core",
+  ]
 }

@@ -24,6 +24,8 @@ ohos_unittest("PinAuth_UT_test") {
   include_dirs = [
     "include",
     "//base/useriam/user_auth_framework/common/logs",
+    "//base/useriam/pin_auth/interfaces/inner_api",
+    "//base/useriam/pin_auth/frameworks/ipc/common_defines",
   ]
 
   deps = [ "//base/useriam/pin_auth/frameworks:pinauth_framework" ]
