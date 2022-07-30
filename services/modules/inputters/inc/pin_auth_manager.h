@@ -35,7 +35,7 @@ class PinAuthManager : public DelayedRefSingleton<PinAuthManager> {
     DECLARE_DELAYED_REF_SINGLETON(PinAuthManager);
 
 public:
-    bool RegisterInputer(uint32_t tokenId, sptr<InputerGetData> &inputer);
+    bool RegisterInputer(uint32_t tokenId, const sptr<InputerGetData> &inputer);
     void UnRegisterInputer(uint32_t tokenId);
     sptr<InputerGetData> getInputerLock(uint32_t tokenId);
 

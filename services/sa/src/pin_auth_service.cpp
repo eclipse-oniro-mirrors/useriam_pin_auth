@@ -108,7 +108,7 @@ bool PinAuthService::CheckPermission(const std::string &permission)
     return AccessTokenKit::VerifyAccessToken(tokenId, permission) == RET_SUCCESS;
 }
 
-bool PinAuthService::RegisterInputer(sptr<InputerGetData> inputer)
+bool PinAuthService::RegisterInputer(const sptr<InputerGetData> &inputer)
 {
     IAM_LOGI("start");
     if (!CheckPermission(ACCESS_PIN_AUTH)) {

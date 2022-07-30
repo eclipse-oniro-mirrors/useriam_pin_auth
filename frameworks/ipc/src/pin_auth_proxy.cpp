@@ -25,7 +25,7 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-bool PinAuthProxy::RegisterInputer(sptr<InputerGetData> inputer)
+bool PinAuthProxy::RegisterInputer(const sptr<InputerGetData> &inputer)
 {
     IAM_LOGI("start");
     MessageParcel data;

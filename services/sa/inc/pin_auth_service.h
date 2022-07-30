@@ -37,7 +37,7 @@ public:
     // SystemAbility
     void OnStart() override;
     void OnStop() override;
-    bool RegisterInputer(sptr<InputerGetData> inputer) override;
+    bool RegisterInputer(const sptr<InputerGetData> &inputer) override;
     void UnRegisterInputer() override;
     bool CheckPermission(const std::string &permission);
 

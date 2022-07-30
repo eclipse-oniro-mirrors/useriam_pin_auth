@@ -35,7 +35,7 @@ public:
 
 private:
     std::vector<uint8_t> salt_;
-    sptr<InputerSetData> remoteInputerData_;
+    sptr<InputerSetData> inputerSetData_;
 
 private:
     void getScrypt(std::vector<uint8_t> data, std::vector<uint8_t> &scrypt);

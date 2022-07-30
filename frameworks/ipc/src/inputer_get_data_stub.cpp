@@ -23,7 +23,8 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-int32_t InputerGetDataStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
+int32_t InputerGetDataStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply,
+    MessageOption &option)
 {
     IAM_LOGI("cmd = %{public}u, flags = %{public}d", code, option.GetFlags());
     if (InputerGetDataStub::GetDescriptor() != data.ReadInterfaceToken()) {

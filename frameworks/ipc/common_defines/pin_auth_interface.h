@@ -26,7 +26,7 @@ namespace UserIam {
 namespace PinAuth {
 class PinAuthInterface : public IRemoteBroker {
 public:
-    virtual bool RegisterInputer(sptr<InputerGetData> inputer) = 0;
+    virtual bool RegisterInputer(const sptr<InputerGetData> &inputer) = 0;
     virtual void UnRegisterInputer() = 0;
 
     enum : uint32_t {

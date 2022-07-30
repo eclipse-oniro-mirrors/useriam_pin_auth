@@ -23,7 +23,7 @@ namespace UserIam {
 namespace PinAuth {
 PinAuthManager::PinAuthManager() = default;
 PinAuthManager::~PinAuthManager() = default;
-bool PinAuthManager::RegisterInputer(uint32_t tokenId, sptr<InputerGetData> &inputer)
+bool PinAuthManager::RegisterInputer(uint32_t tokenId, const sptr<InputerGetData> &inputer)
 {
     std::lock_guard<std::mutex> guard(mutex_);
     IAM_LOGI("start, tokenId = %{public}u", tokenId);

@@ -31,7 +31,7 @@ public:
     {
     }
     ~PinAuthProxy() override = default;
-    bool RegisterInputer(sptr<InputerGetData> inputer) override;
+    bool RegisterInputer(const sptr<InputerGetData> &inputer) override;
     void UnRegisterInputer() override;
 
 private:

@@ -28,6 +28,7 @@ ohos_shared_library("pinauth") {
     "src/pin_auth_impl.cpp",
   ]
 
+  configs = [ "//base/useriam/pin_auth/frameworks:pinauth_ipc_config" ]
   public_configs = [ ":pin_auth_napi_public_config" ]
 
   deps = [
