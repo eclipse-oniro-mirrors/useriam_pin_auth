@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-#include "pinauth_driver_hdi.h"
+#include "pin_auth_driver_hdi.h"
 
 #include <vector>
 
@@ -22,7 +22,7 @@
 #include "iam_logger.h"
 #include "iam_ptr.h"
 
-#include "pinauth_executor_hdi.h"
+#include "pin_auth_executor_hdi.h"
 #include "v1_0/iexecutor.h"
 #include "v1_0/ipin_auth_interface.h"
 

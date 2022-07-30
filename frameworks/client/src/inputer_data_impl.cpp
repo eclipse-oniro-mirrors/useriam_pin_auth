@@ -22,7 +22,6 @@
 #include <openssl/kdf.h>
 #include <vector>
 
-#include "iremote_inputer_data.h"
 #include "iam_logger.h"
 
 #define LOG_LABEL OHOS::UserIam::Common::LABEL_PIN_AUTH_SDK
@@ -30,7 +29,7 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-InputerDataImpl::InputerDataImpl(std::vector<uint8_t> salt, sptr<IRemoteInputerData> remoteInputerData) : salt_(salt),
+InputerDataImpl::InputerDataImpl(std::vector<uint8_t> salt, sptr<InputerSetData> remoteInputerData) : salt_(salt),
     remoteInputerData_(remoteInputerData)
 {
 }

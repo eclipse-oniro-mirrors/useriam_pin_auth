@@ -17,8 +17,6 @@
 
 #include "iam_logger.h"
 #include "iam_common_defines.h"
-#include "iremote_inputer.h"
-#include "iremote_pinauth.h"
 
 #define LOG_LABEL UserIam::Common::LABEL_PIN_AUTH_SA
 
@@ -27,16 +25,16 @@ namespace UserIam {
 namespace PinAuth {
 int32_t PinAuthStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
-    IAM_LOGD("cmd = %{public}u, flags = %{public}d", code, option.GetFlags());
+    IAM_LOGI("cmd = %{public}u, flags = %{public}d", code, option.GetFlags());
     if (PinAuthStub::GetDescriptor() != data.ReadInterfaceToken()) {
         IAM_LOGE("descriptor is not matched");
         return UserAuth::FAIL;
     }
     switch (code) {
-        case IRemotePinAuth::REGISTER_INPUTER:
+        case PinAuthInterface::REGISTER_INPUTER:
             RegisterInputerStub(data, reply);
             return UserAuth::SUCCESS;
-        case IRemotePinAuth::UNREGISTER_INPUTER:
+        case PinAuthInterface::UNREGISTER_INPUTER:
             UnRegisterInputerStub(data, reply);
             return UserAuth::SUCCESS;
         default:
@@ -52,7 +50,7 @@ void PinAuthStub::RegisterInputerStub(MessageParcel &data, MessageParcel &reply)
         IAM_LOGE("failed to read remote object");
         return;
     }
-    sptr<IRemoteInputer> inputer = iface_cast<IRemoteInputer>(obj);
+    sptr<InputerGetData> inputer = iface_cast<InputerGetData>(obj);
     if (inputer == nullptr) {
         IAM_LOGE("inputer is nullptr");
         return;

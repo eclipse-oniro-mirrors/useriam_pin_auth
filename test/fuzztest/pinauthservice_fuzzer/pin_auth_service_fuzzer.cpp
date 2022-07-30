@@ -18,7 +18,7 @@
 #include <cstddef>
 #include <cstdint>
 
-#include "iremote_inputer.h"
+#include "inputer_get_data.h"
 #include "parcel.h"
 
 #include "iam_fuzz_test.h"
@@ -37,9 +37,9 @@ namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
 namespace {
-class DummyRemoteInputer : public IRemoteInputer {
+class DummyRemoteInputer : public InputerGetData {
 public:
-    void OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sptr<IRemoteInputerData> inputerData)
+    void OnGetData(int32_t authSubType, const std::vector<uint8_t> &salt, const sptr<InputerSetData> &inputerSetData)
     {
     }
     sptr<IRemoteObject> AsObject()
@@ -67,7 +67,7 @@ void FuzzOnStop(Parcel &parcel)
 void FuzzRegisterInputer(Parcel &parcel)
 {
     IAM_LOGI("begin");
-    sptr<IRemoteInputer> remoteInputer = nullptr;
+    sptr<InputerGetData> remoteInputer = nullptr;
     if (parcel.ReadBool()) {
         remoteInputer = new (std::nothrow) DummyRemoteInputer();
     }

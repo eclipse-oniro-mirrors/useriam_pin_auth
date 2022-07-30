@@ -13,30 +13,28 @@
  * limitations under the License.
  */
 
-#ifndef IINPUTER_STUB_H
-#define IINPUTER_STUB_H
+#ifndef INPUTER_GET_DATA_STUB_H
+#define INPUTER_GET_DATA_STUB_H
 
-#include <cstdint>
-#include "i_inputer.h"
-#include "iremote_inputer.h"
+#include "inputer_get_data.h"
+
 #include "iremote_stub.h"
+#include "message_parcel.h"
 #include "nocopyable.h"
-#include "refbase.h"
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class IInputerStub : public IRemoteStub<IRemoteInputer>, public NoCopyable {
+class InputerGetDataStub : public IRemoteStub<InputerGetData>, public NoCopyable {
 public:
-    IInputerStub();
-    ~IInputerStub();
+    InputerGetDataStub() = default;
+    ~InputerGetDataStub() override = default;
     int32_t OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option) override;
 
 private:
-    void HandlerOnGetData(MessageParcel &data, MessageParcel &reply);
+    void OnGetDataStub(MessageParcel &data, MessageParcel &reply);
 };
-}  // namespace PinAuth
-}  // namespace UserIam
-}  // namespace OHOS
-
-#endif  // IINPUTER_STUB_H
+} // namespace PinAuth
+} // namespace UserIam
+} // namespace OHOS
+#endif // INPUTER_GET_DATA_STUB_H

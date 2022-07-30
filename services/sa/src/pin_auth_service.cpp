@@ -26,8 +26,8 @@
 #include "iam_para2str.h"
 #include "iam_ptr.h"
 #include "idriver_manager.h"
-#include "pinauth_driver_hdi.h"
-#include "pinauth_manager.h"
+#include "pin_auth_driver_hdi.h"
+#include "pin_auth_manager.h"
 
 
 #define LOG_LABEL UserIam::Common::LABEL_PIN_AUTH_SA
@@ -108,7 +108,7 @@ bool PinAuthService::CheckPermission(const std::string &permission)
     return AccessTokenKit::VerifyAccessToken(tokenId, permission) == RET_SUCCESS;
 }
 
-bool PinAuthService::RegisterInputer(sptr<IRemoteInputer> inputer)
+bool PinAuthService::RegisterInputer(sptr<InputerGetData> inputer)
 {
     IAM_LOGI("start");
     if (!CheckPermission(ACCESS_PIN_AUTH)) {

@@ -22,6 +22,7 @@
 #include "nocopyable.h"
 #include "system_ability.h"
 #include "system_ability_definition.h"
+
 #include "pin_auth_stub.h"
 
 namespace OHOS {
@@ -36,7 +37,7 @@ public:
     // SystemAbility
     void OnStart() override;
     void OnStop() override;
-    bool RegisterInputer(sptr<IRemoteInputer> inputer) override;
+    bool RegisterInputer(sptr<InputerGetData> inputer) override;
     void UnRegisterInputer() override;
     bool CheckPermission(const std::string &permission);
 

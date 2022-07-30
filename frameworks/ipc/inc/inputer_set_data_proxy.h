@@ -13,29 +13,31 @@
  * limitations under the License.
  */
 
-#ifndef IINPUTER_PROXY_H
-#define IINPUTER_PROXY_H
+#ifndef INPUTER_SET_DATA_PROXY_H
+#define INPUTER_SET_DATA_PROXY_H
 
-#include "nocopyable.h"
-#include "iremote_inputer.h"
 #include "iremote_proxy.h"
+#include "message_parcel.h"
+#include "nocopyable.h"
+
+#include "inputer_set_data.h"
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class IInputerProxy : public IRemoteProxy<IRemoteInputer>, public NoCopyable {
+class InputerSetDataProxy : public IRemoteProxy<InputerSetData>, public NoCopyable {
 public:
-    explicit IInputerProxy(const sptr<IRemoteObject> &impl)
-        : IRemoteProxy<IRemoteInputer>(impl) {}
-    ~IInputerProxy() override = default;
-    void OnGetData(int32_t authSubType, std::vector<uint8_t> salt, sptr<IRemoteInputerData> inputerData) override;
+    explicit InputerSetDataProxy(const sptr<IRemoteObject> &impl) : IRemoteProxy<InputerSetData>(impl)
+    {
+    }
+    ~InputerSetDataProxy() override = default;
+    void OnSetData(int32_t authSubType, std::vector<uint8_t> data) override;
 
 private:
+    static inline BrokerDelegator<InputerSetDataProxy> delegator_;
     bool SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply);
-    static inline BrokerDelegator<IInputerProxy> delegator_;
 };
-}  // namespace PinAuth
-}  // namespace UserIam
-}  // namespace OHOS
-
-#endif  // IINPUTER_PROXY_H
+} // namespace PinAuth
+} // namespace UserIam
+} // namespace OHOS
+#endif // INPUTER_SET_DATA_PROXY_H

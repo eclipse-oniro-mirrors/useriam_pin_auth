@@ -24,8 +24,7 @@
 #include "iremote_object.h"
 
 #include "inputer_impl.h"
-#include "iremote_inputer.h"
-#include "iremote_pinauth.h"
+#include "inputer_get_data.h"
 #include "iam_logger.h"
 
 #define LOG_LABEL OHOS::UserIam::Common::LABEL_PIN_AUTH_SDK
@@ -48,7 +47,7 @@ bool PinAuthRegister::RegisterInputer(std::shared_ptr<IInputer> inputer)
         IAM_LOGE("get proxy failed");
         return false;
     }
-    sptr<IRemoteInputer> callback = new (std::nothrow) InputerImpl(inputer);
+    sptr<InputerGetData> callback = new (std::nothrow) InputerImpl(inputer);
     if (callback == nullptr) {
         return false;
     }
@@ -66,7 +65,7 @@ void PinAuthRegister::UnRegisterInputer()
     proxy->UnRegisterInputer();
 }
 
-sptr<IRemotePinAuth> PinAuthRegister::GetProxy()
+sptr<PinAuthInterface> PinAuthRegister::GetProxy()
 {
     IAM_LOGI("start");
     if (proxy_ != nullptr) {
@@ -88,7 +87,7 @@ sptr<IRemotePinAuth> PinAuthRegister::GetProxy()
         return nullptr;
     }
 
-    proxy_ = iface_cast<IRemotePinAuth>(obj);
+    proxy_ = iface_cast<PinAuthInterface>(obj);
     deathRecipient_ = dr;
     IAM_LOGI("succeed to connect distributed gallery manager service");
     return proxy_;

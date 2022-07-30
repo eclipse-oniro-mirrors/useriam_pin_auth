@@ -21,7 +21,7 @@
 #include <mutex>
 #include <vector>
 #include "i_inputer_data.h"
-#include "iremote_inputer_data.h"
+#include "inputer_set_data.h"
 #include "refbase.h"
 
 namespace OHOS {
@@ -34,13 +34,13 @@ const int32_t SCRYPT_P = 1;
 
 class InputerDataImpl : public IInputerData {
 public:
-    explicit InputerDataImpl(std::vector<uint8_t> salt, sptr<IRemoteInputerData> remoteInputerData);
+    explicit InputerDataImpl(std::vector<uint8_t> salt, sptr<InputerSetData> remoteInputerData);
     ~InputerDataImpl() override;
     void OnSetData(int32_t authSubType, std::vector<uint8_t> data) override;
 
 private:
     std::vector<uint8_t> salt_;
-    sptr<IRemoteInputerData> remoteInputerData_;
+    sptr<InputerSetData> remoteInputerData_;
 private:
     void getScrypt(std::vector<uint8_t> data, std::vector<uint8_t> &scrypt);
 };

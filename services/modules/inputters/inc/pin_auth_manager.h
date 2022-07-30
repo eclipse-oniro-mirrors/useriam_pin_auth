@@ -13,18 +13,20 @@
  * limitations under the License.
  */
 
-#ifndef PINAUTH_MANAGER_H
-#define PINAUTH_MANAGER_H
+#ifndef PIN_AUTH_MANAGER_H
+#define PIN_AUTH_MANAGER_H
 
 #include <cstdint>
-#include <iremote_object.h>
 #include <mutex>
-#include <singleton.h>
 #include <unordered_map>
 #include <vector>
-#include "iremote_inputer.h"
-#include "i_inputer_data_impl.h"
+
+#include "iremote_object.h"
 #include "refbase.h"
+#include "singleton.h"
+
+#include "inputer_get_data.h"
+#include "i_inputer_data_impl.h"
 
 namespace OHOS {
 namespace UserIam {
@@ -33,12 +35,12 @@ class PinAuthManager : public DelayedRefSingleton<PinAuthManager> {
     DECLARE_DELAYED_REF_SINGLETON(PinAuthManager);
 
 public:
-    bool RegisterInputer(uint32_t tokenId, sptr<IRemoteInputer> &inputer);
+    bool RegisterInputer(uint32_t tokenId, sptr<InputerGetData> &inputer);
     void UnRegisterInputer(uint32_t tokenId);
-    sptr<IRemoteInputer> getInputerLock(uint32_t tokenId);
+    sptr<InputerGetData> getInputerLock(uint32_t tokenId);
 
 private:
-    std::unordered_map<uint32_t, sptr<IRemoteInputer>> pinAuthInputerMap_;
+    std::unordered_map<uint32_t, sptr<InputerGetData>> pinAuthInputerMap_;
     std::mutex mutex_;
     class ResPinauthInputerDeathRecipient : public IRemoteObject::DeathRecipient, public NoCopyable {
     public:
@@ -54,4 +56,4 @@ private:
 } // namespace UserIam
 } // namespace OHOS
 
-#endif // PINAUTH_MANAGER_H
+#endif // PIN_AUTH_MANAGER_H

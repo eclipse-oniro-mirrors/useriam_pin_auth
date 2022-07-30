@@ -13,60 +13,40 @@
  * limitations under the License.
  */
 
-#include "pin_auth_proxy.h"
-
-#include "ipc_types.h"
+#include "inputer_set_data_proxy.h"
 
 #include "iam_logger.h"
-#include "inputer_get_data.h"
 
 #define LOG_LABEL OHOS::UserIam::Common::LABEL_PIN_AUTH_SDK
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-bool PinAuthProxy::RegisterInputer(sptr<InputerGetData> inputer)
+void InputerSetDataProxy::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
     IAM_LOGI("start");
-    MessageParcel data;
+    MessageParcel dataParcel;
     MessageParcel reply;
 
-    if (!data.WriteInterfaceToken(PinAuthProxy::GetDescriptor())) {
-        IAM_LOGE("failed to write descriptor");
-        return false;
+    if (!dataParcel.WriteInterfaceToken(InputerSetDataProxy::GetDescriptor())) {
+        IAM_LOGE("write descriptor fail");
     }
 
-    if (!data.WriteRemoteObject(inputer->AsObject())) {
-        IAM_LOGE("failed to write inputer");
-        return false;
+    if (!dataParcel.WriteInt64(authSubType)) {
+        IAM_LOGE(" write authSubType fail");
+    }
+    if (!dataParcel.WriteUInt8Vector(data)) {
+        IAM_LOGE("write data fail");
     }
 
-    bool ret = SendRequest(PinAuthInterface::REGISTER_INPUTER, data, reply);
-    if (!ret) {
-        return false;
+    bool ret = SendRequest(InputerSetData::ON_SET_DATA, dataParcel, reply);
+    if (ret) {
+        int32_t result = reply.ReadInt32();
+        IAM_LOGI("result = %{public}d", result);
     }
-    bool result = false;
-    if (!reply.ReadBool(result)) {
-        IAM_LOGE("failed to read result");
-    }
-    return result;
 }
 
-void PinAuthProxy::UnRegisterInputer()
-{
-    IAM_LOGI("start");
-    MessageParcel data;
-    MessageParcel reply;
-
-    if (!data.WriteInterfaceToken(PinAuthProxy::GetDescriptor())) {
-        IAM_LOGE("failed to write descriptor");
-        return;
-    }
-
-    SendRequest(PinAuthInterface::UNREGISTER_INPUTER, data, reply);
-}
-
-bool PinAuthProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply)
+bool InputerSetDataProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply)
 {
     IAM_LOGI("code = %{public}u", code);
     sptr<IRemoteObject> remote = Remote();

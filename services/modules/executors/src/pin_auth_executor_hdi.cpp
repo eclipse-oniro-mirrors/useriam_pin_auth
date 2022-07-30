@@ -13,12 +13,13 @@
  * limitations under the License.
  */
 
-#include "pinauth_executor_hdi.h"
+#include "pin_auth_executor_hdi.h"
+
 #include "hdf_base.h"
 #include "iam_logger.h"
 #include "iam_defines.h"
 #include "hisysevent.h"
-#include "pinauth_executor_callback_hdi.h"
+#include "pin_auth_executor_callback_hdi.h"
 
 #define LOG_LABEL UserIam::Common::LABEL_PIN_AUTH_SA
 

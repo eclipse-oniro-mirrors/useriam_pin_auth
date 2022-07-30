@@ -16,7 +16,7 @@
 #include "i_inputer_data_impl.h"
 
 #include "iam_logger.h"
-#include "pinauth_executor_hdi.h"
+#include "pin_auth_executor_hdi.h"
 
 #define LOG_LABEL UserIam::Common::LABEL_PIN_AUTH_SA
 

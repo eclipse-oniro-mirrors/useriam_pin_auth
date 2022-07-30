@@ -16,19 +16,22 @@
 #ifndef PIN_AUTH_PROXY_H
 #define PIN_AUTH_PROXY_H
 
-#include "iremote_pinauth.h"
 #include "iremote_proxy.h"
 #include "message_parcel.h"
 #include "nocopyable.h"
 
+#include "pin_auth_interface.h"
+
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class PinAuthProxy : public IRemoteProxy<IRemotePinAuth>, public NoCopyable {
+class PinAuthProxy : public IRemoteProxy<PinAuthInterface>, public NoCopyable {
 public:
-    explicit PinAuthProxy(const sptr<IRemoteObject> &object);
+    explicit PinAuthProxy(const sptr<IRemoteObject> &object) : IRemoteProxy<PinAuthInterface>(object)
+    {
+    }
     ~PinAuthProxy() override = default;
-    bool RegisterInputer(sptr<IRemoteInputer> inputer) override;
+    bool RegisterInputer(sptr<InputerGetData> inputer) override;
     void UnRegisterInputer() override;
 
 private:

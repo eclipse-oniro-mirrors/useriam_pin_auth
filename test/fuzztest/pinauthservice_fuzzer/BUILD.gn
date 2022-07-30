@@ -27,14 +27,11 @@ ohos_fuzztest("PinAuthServiceFuzzTest") {
   include_dirs = [
     "//base/useriam/pin_auth/services/sa/inc",
     "//base/useriam/pin_auth/services/modules/inputters/inc",
-    "//base/useriam/user_auth_framework/common/logs",
-    "//base/useriam/user_auth_framework/common/utils",
   ]
 
   sources = [ "pin_auth_service_fuzzer.cpp" ]
 
   deps = [
-    "//base/useriam/pin_auth/frameworks:pinauth_framework",
     "//base/useriam/pin_auth/services:pinauthservice",
     "//base/useriam/user_auth_framework/common:iam_test",
   ]
@@ -45,5 +42,11 @@ ohos_fuzztest("PinAuthServiceFuzzTest") {
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr_standard:samgr_proxy",
+  ]
+
+  configs = [
+    "//base/useriam/pin_auth/frameworks:pinauth_ipc_config",
+    "//base/useriam/user_auth_framework/common:iam_log_config",
+    "//base/useriam/user_auth_framework/common:iam_utils_config",
   ]
 }

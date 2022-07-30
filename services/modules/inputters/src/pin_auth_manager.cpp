@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-#include "pinauth_manager.h"
+#include "pin_auth_manager.h"
 #include "iam_logger.h"
 
 #define LOG_LABEL UserIam::Common::LABEL_PIN_AUTH_SA
@@ -23,7 +23,7 @@ namespace UserIam {
 namespace PinAuth {
 PinAuthManager::PinAuthManager() = default;
 PinAuthManager::~PinAuthManager() = default;
-bool PinAuthManager::RegisterInputer(uint32_t tokenId, sptr<IRemoteInputer> &inputer)
+bool PinAuthManager::RegisterInputer(uint32_t tokenId, sptr<InputerGetData> &inputer)
 {
     std::lock_guard<std::mutex> guard(mutex_);
     IAM_LOGI("start, tokenId = %{public}u", tokenId);
@@ -55,7 +55,7 @@ void PinAuthManager::UnRegisterInputer(uint32_t tokenId)
     IAM_LOGI("end");
 }
 
-sptr<IRemoteInputer> PinAuthManager::getInputerLock(uint32_t tokenId)
+sptr<InputerGetData> PinAuthManager::getInputerLock(uint32_t tokenId)
 {
     std::lock_guard<std::mutex> guard(mutex_);
     IAM_LOGI("start");
