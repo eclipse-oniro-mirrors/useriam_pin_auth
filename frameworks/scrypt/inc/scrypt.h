@@ -13,28 +13,27 @@
  * limitations under the License.
  */
 
-#ifndef INPUTER_IMPL_H
-#define INPUTER_IMPL_H
+#ifndef PINAUTH_SECRET_H
+#define PINAUTH_SECRET_H
 
+#include <cstdint>
 #include <vector>
-
-#include "i_inputer.h"
-#include "inputer_get_data_stub.h"
+#include "nocopyable.h"
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class InputerImpl : public InputerGetDataStub {
+class Scrypt : public NoCopyable {
 public:
-    explicit InputerImpl(const std::shared_ptr<IInputer> &inputer);
-    ~InputerImpl() override;
-    void OnGetData(int32_t authSubType, const std::vector<uint8_t> &salt,
-        const sptr<InputerSetData> &inputerSetData) override;
+    Scrypt(std::vector<uint8_t> salt) : salt_(std::move(salt)) {}
+    ~Scrypt() = default;
+    std::vector<uint8_t> GetScrypt(const std::vector<uint8_t> data);
 
 private:
-    std::shared_ptr<IInputer> inputer_;
+    std::vector<uint8_t> salt_;
 };
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS
-#endif // INPUTER_IMPL_H
+
+#endif // PINAUTH_SECRET_H

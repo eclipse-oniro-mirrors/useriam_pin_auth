@@ -17,6 +17,7 @@ config("pinauth_config") {
   include_dirs = [
     "//base/useriam/pin_auth/frameworks/client/inc",
     "//base/useriam/pin_auth/interfaces/inner_api",
+    "//base/useriam/pin_auth/frameworks/scrypt/inc",
     "//base/useriam/user_auth_framework/interfaces/inner_api",
   ]
 }
@@ -33,6 +34,7 @@ ohos_shared_library("pinauth_framework") {
     "client/src/inputer_data_impl.cpp",
     "client/src/inputer_impl.cpp",
     "client/src/pinauth_register.cpp",
+    "scrypt/src/scrypt.cpp",
   ]
 
   deps = [

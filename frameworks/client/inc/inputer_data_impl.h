@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef PINAUTH_IINPUTERDATA_IMPL_H
-#define PINAUTH_IINPUTERDATA_IMPL_H
+#ifndef INPUTER_DATA_IMPL_H
+#define INPUTER_DATA_IMPL_H
 
 #include <cstdint>
 #include <memory>
@@ -27,11 +27,6 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-const int32_t OUT_LENGTH = 64;
-const int32_t SCRYPT_N = 32768;
-const int32_t SCRYPT_R = 3;
-const int32_t SCRYPT_P = 1;
-
 class InputerDataImpl : public IInputerData {
 public:
     explicit InputerDataImpl(std::vector<uint8_t> salt, sptr<InputerSetData> remoteInputerData);
@@ -41,11 +36,11 @@ public:
 private:
     std::vector<uint8_t> salt_;
     sptr<InputerSetData> remoteInputerData_;
+
 private:
     void getScrypt(std::vector<uint8_t> data, std::vector<uint8_t> &scrypt);
 };
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS
-
-#endif // PINAUTH_IINPUTERDATA_H
+#endif // INPUTER_DATA_IMPL_H
