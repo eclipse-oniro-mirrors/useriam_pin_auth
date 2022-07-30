@@ -20,25 +20,24 @@
 #include <memory>
 #include <mutex>
 #include <vector>
+
+#include "refbase.h"
+
 #include "i_inputer_data.h"
 #include "inputer_set_data.h"
-#include "refbase.h"
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
 class InputerDataImpl : public IInputerData {
 public:
-    explicit InputerDataImpl(std::vector<uint8_t> salt, sptr<InputerSetData> remoteInputerData);
-    ~InputerDataImpl() override;
+    explicit InputerDataImpl(const std::vector<uint8_t> &salt, const sptr<InputerSetData> &inputerSetData);
+    ~InputerDataImpl() override = default;
     void OnSetData(int32_t authSubType, std::vector<uint8_t> data) override;
 
 private:
     std::vector<uint8_t> salt_;
-    sptr<InputerSetData> inputerSetData_;
-
-private:
-    void getScrypt(std::vector<uint8_t> data, std::vector<uint8_t> &scrypt);
+    sptr<InputerSetData> inputerSetData_ {nullptr};
 };
 } // namespace PinAuth
 } // namespace UserIam

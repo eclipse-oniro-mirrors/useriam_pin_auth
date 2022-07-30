@@ -13,8 +13,8 @@
  * limitations under the License.
  */
 
-#ifndef INPUTER_IMPL_H
-#define INPUTER_IMPL_H
+#ifndef INPUTER_GET_DATA_SERVICE_H
+#define INPUTER_GET_DATA_SERVICE_H
 
 #include <vector>
 
@@ -24,17 +24,17 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class InputerImpl : public InputerGetDataStub {
+class InputerGetDataService : public InputerGetDataStub {
 public:
-    explicit InputerImpl(const std::shared_ptr<IInputer> &inputer);
-    ~InputerImpl() override;
+    explicit InputerGetDataService(const std::shared_ptr<IInputer> &inputer);
+    ~InputerGetDataService() override = default;
     void OnGetData(int32_t authSubType, const std::vector<uint8_t> &salt,
         const sptr<InputerSetData> &inputerSetData) override;
 
 private:
-    std::shared_ptr<IInputer> inputer_;
+    std::shared_ptr<IInputer> inputer_ {nullptr};
 };
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS
-#endif // INPUTER_IMPL_H
+#endif // INPUTER_GET_DATA_SERVICE_H

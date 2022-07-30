@@ -11,7 +11,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-group("PinAuth_fuzz_test") {
+group("pin_auth_fuzz_test") {
   testonly = true
   deps = [ "pinauthservice_fuzzer:PinAuthServiceFuzzTest" ]
 }

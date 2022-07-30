@@ -15,9 +15,8 @@ import("//build/ohos.gni")
 
 config("pin_auth_napi_public_config") {
   include_dirs = [
-    "include",
+    "inc",
     "//third_party/libuv/include",
-    "//base/useriam/user_auth_framework/common/logs",
   ]
 }
 
@@ -28,7 +27,10 @@ ohos_shared_library("pinauth") {
     "src/pin_auth_impl.cpp",
   ]
 
-  configs = [ "//base/useriam/pin_auth/frameworks:pinauth_ipc_config" ]
+  configs = [
+    "//base/useriam/pin_auth/frameworks:pinauth_ipc_config",
+    "//base/useriam/user_auth_framework/common:iam_log_config",
+  ]
   public_configs = [ ":pin_auth_napi_public_config" ]
 
   deps = [
