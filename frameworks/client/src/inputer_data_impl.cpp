@@ -27,12 +27,8 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-InputerDataImpl::InputerDataImpl(std::vector<uint8_t> salt, sptr<InputerSetData> remoteInputerData) : salt_(salt),
-    inputerSetData_(remoteInputerData)
-{
-}
-
-InputerDataImpl::~InputerDataImpl()
+InputerDataImpl::InputerDataImpl(const std::vector<uint8_t> &salt, const sptr<InputerSetData> &inputerSetData)
+    : salt_(salt), inputerSetData_(inputerSetData)
 {
 }
 

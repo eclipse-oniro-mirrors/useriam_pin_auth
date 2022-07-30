@@ -32,7 +32,7 @@ config("pinauth_ipc_config") {
 ohos_shared_library("pinauth_framework") {
   sources = [
     "client/src/inputer_data_impl.cpp",
-    "client/src/inputer_impl.cpp",
+    "client/src/inputer_get_data_service.cpp",
     "client/src/pinauth_register.cpp",
     "scrypt/src/scrypt.cpp",
   ]

@@ -22,10 +22,8 @@ ohos_unittest("PinAuth_UT_test") {
   sources = [ "src/pinauth_test.cpp" ]
 
   include_dirs = [
-    "include",
-    "//base/useriam/user_auth_framework/common/logs",
+    "inc",
     "//base/useriam/pin_auth/interfaces/inner_api",
-    "//base/useriam/pin_auth/frameworks/ipc/common_defines",
   ]
 
   deps = [ "//base/useriam/pin_auth/frameworks:pinauth_framework" ]
@@ -34,5 +32,10 @@ ohos_unittest("PinAuth_UT_test") {
     "c_utils:utils",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
+  ]
+
+  configs = [
+    "//base/useriam/user_auth_framework/common:iam_log_config",
+    "//base/useriam/pin_auth/frameworks/:pinauth_ipc_config",
   ]
 }

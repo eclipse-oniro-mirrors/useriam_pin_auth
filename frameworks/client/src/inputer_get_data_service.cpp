@@ -13,13 +13,10 @@
  * limitations under the License.
  */
 
-#ifndef PINAUTH_IINPUTER_IMPL_H
-#define PINAUTH_IINPUTER_IMPL_H
+#include "inputer_get_data_service.h"
 
-#include "inputer_impl.h"
 #include "iam_logger.h"
 #include "iam_ptr.h"
-
 #include "inputer_data_impl.h"
 
 #define LOG_LABEL OHOS::UserIam::Common::LABEL_PIN_AUTH_SDK
@@ -27,10 +24,11 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-InputerImpl::InputerImpl(const std::shared_ptr<IInputer> &inputer) : inputer_(inputer) {}
-InputerImpl::~InputerImpl() = default;
+InputerGetDataService::InputerGetDataService(const std::shared_ptr<IInputer> &inputer) : inputer_(inputer)
+{
+}
 
-void InputerImpl::OnGetData(int32_t authSubType, const std::vector<uint8_t> &salt,
+void InputerGetDataService::OnGetData(int32_t authSubType, const std::vector<uint8_t> &salt,
     const sptr<InputerSetData> &inputerSetData)
 {
     IAM_LOGI("start");
@@ -49,5 +47,3 @@ void InputerImpl::OnGetData(int32_t authSubType, const std::vector<uint8_t> &sal
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS
-
-#endif // PINAUTH_IINPUTER_H
