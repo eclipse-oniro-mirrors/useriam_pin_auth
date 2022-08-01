@@ -214,8 +214,8 @@ IamResultCode PinAuthExecutorHdi::SendCommand(UserIam::UserAuth::PropertyMode co
 
 IamResultCode PinAuthExecutorHdi::MoveHdiExecutorInfo(PinHdi::ExecutorInfo &in, UserIam::UserAuth::ExecutorInfo &out)
 {
-    out.executorSensorHint = static_cast<int32_t>(in.sensorId);
-    out.executorMatcher = static_cast<int32_t>(in.executorType);
+    out.executorSensorHint = static_cast<uint32_t>(in.sensorId);
+    out.executorMatcher = in.executorType;
     int32_t ret = ConvertExecutorRole(in.executorRole, out.executorRole);
     if (ret != IamResultCode::SUCCESS) {
         IAM_LOGE("executorProxy is null");
