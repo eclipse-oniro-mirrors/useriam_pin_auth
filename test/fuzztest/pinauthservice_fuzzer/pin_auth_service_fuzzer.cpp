@@ -41,6 +41,9 @@ class DummyRemoteInputer : public InputerGetData {
 public:
     void OnGetData(int32_t authSubType, const std::vector<uint8_t> &salt, const sptr<InputerSetData> &inputerSetData)
     {
+        static_cast<void>(authSubType);
+        static_cast<void>(salt);
+        static_cast<void>(inputerSetData);
     }
     sptr<IRemoteObject> AsObject()
     {
