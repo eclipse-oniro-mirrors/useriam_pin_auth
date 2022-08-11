@@ -47,8 +47,7 @@
             "//base/useriam/pin_auth/sa_profile:pinauth_sa_profile",
             "//base/useriam/pin_auth/frameworks:pinauth_framework",
             "//base/useriam/pin_auth/services:pinauthservice",
-            "//base/useriam/pin_auth/sa_profile:pinauth_sa_profile.init",
-            "//base/useriam/pin_auth/interfaces/kits/napi:pinauth"
+            "//base/useriam/pin_auth/sa_profile:pinauth_sa_profile.init"
         ],
         "inner_kits": [
         ],
