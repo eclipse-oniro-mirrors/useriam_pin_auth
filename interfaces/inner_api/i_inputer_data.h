@@ -27,7 +27,7 @@ class IInputerData : public NoCopyable {
 public:
     IInputerData() = default;
     virtual ~IInputerData() = default;
-    virtual void OnSetData(int32_t authSubType, std::vector<uint8_t> data);
+    virtual void OnSetData(int32_t authSubType, std::vector<uint8_t> data) = 0 ;
 };
 } // namespace PinAuth
 } // namespace UserIam
