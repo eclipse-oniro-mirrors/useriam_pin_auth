@@ -18,7 +18,6 @@
 #include <cinttypes>
 
 #include "accesstoken_kit.h"
-#include "parameter.h"
 #include "i_inputer_data_impl.h"
 #include "iam_check.h"
 #include "iam_common_defines.h"

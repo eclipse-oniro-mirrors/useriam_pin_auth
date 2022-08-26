@@ -49,11 +49,8 @@ ohos_shared_library("pinauthservice") {
   external_deps = [
     "c_utils:utils",
     "drivers_interface_pin_auth:libpin_auth_proxy_1.0",
-    "hdf_core:libhdf_utils",
     "hisysevent_native:libhisysevent",
     "hiviewdfx_hilog_native:libhilog",
-    "init:libbeget_proxy",
-    "init:libbegetutil",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",
     "samgr:samgr_proxy",

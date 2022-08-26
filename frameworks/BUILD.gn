@@ -39,7 +39,6 @@ ohos_shared_library("pinauth_framework") {
 
   deps = [
     "//base/useriam/pin_auth/frameworks:pinauth_ipc",
-    "//foundation/systemabilitymgr/samgr/interfaces/innerkits/samgr_proxy:samgr_proxy",
     "//third_party/openssl:libcrypto_static",
   ]
 
@@ -47,6 +46,7 @@ ohos_shared_library("pinauth_framework") {
     "c_utils:utils",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
+    "samgr:samgr_proxy",
   ]
 
   configs = [
