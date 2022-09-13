@@ -21,7 +21,7 @@
 #include <iauth_driver_hdi.h>
 #include "iremote_broker.h"
 #include "iauth_executor_hdi.h"
-#include "v1_0/pin_auth_interface_proxy.h"
+#include "v1_0/ipin_auth_interface.h"
 #include "nocopyable.h"
 
 namespace OHOS {

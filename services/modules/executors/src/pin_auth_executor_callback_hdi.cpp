@@ -16,7 +16,7 @@
 #include "pin_auth_executor_callback_hdi.h"
 
 #include <cinttypes>
-#include <v1_0/executor_proxy.h>
+#include <v1_0/iexecutor.h>
 #include <hdf_base.h>
 
 #include "iam_logger.h"
