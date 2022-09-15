@@ -18,7 +18,7 @@
 
 #include <cstdint>
 #include <map>
-#include <v1_0/executor_proxy.h>
+#include <v1_0/iexecutor.h>
 #include <vector>
 #include "framework_types.h"
 #include "iauth_executor_hdi.h"
