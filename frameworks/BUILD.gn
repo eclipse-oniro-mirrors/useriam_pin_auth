@@ -39,7 +39,7 @@ ohos_shared_library("pinauth_framework") {
 
   deps = [
     "//base/useriam/pin_auth/frameworks:pinauth_ipc",
-    "//third_party/openssl:libcrypto_static",
+    "//third_party/openssl:libcrypto_shared",
   ]
 
   external_deps = [
