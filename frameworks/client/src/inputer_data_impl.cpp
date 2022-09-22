@@ -47,6 +47,10 @@ void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
         return;
     }
 
+    if (inputerSetData_ == nullptr) {
+        IAM_LOGE("inputerSetData is nullptr");
+        return;
+    }
     inputerSetData_->OnSetData(authSubType, scrypt);
 }
 } // namespace PinAuth

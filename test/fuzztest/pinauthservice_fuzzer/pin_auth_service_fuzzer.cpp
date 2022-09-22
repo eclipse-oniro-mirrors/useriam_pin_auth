@@ -56,14 +56,18 @@ auto g_service = PinAuthService::GetInstance();
 void FuzzOnStart(Parcel &parcel)
 {
     IAM_LOGI("begin");
-    g_service->OnStart();
+    if (g_service != nullptr) {
+        g_service->OnStart();
+    }
     IAM_LOGI("end");
 }
 
 void FuzzOnStop(Parcel &parcel)
 {
     IAM_LOGI("begin");
-    g_service->OnStop();
+    if (g_service != nullptr) {
+        g_service->OnStop();
+    }
     IAM_LOGI("end");
 }
 
@@ -74,14 +78,18 @@ void FuzzRegisterInputer(Parcel &parcel)
     if (parcel.ReadBool()) {
         remoteInputer = new (std::nothrow) DummyRemoteInputer();
     }
-    g_service->RegisterInputer(remoteInputer);
+    if (g_service != nullptr) {
+        g_service->RegisterInputer(remoteInputer);
+    }
     IAM_LOGI("end");
 }
 
 void FuzzUnRegisterInputer(Parcel &parcel)
 {
     IAM_LOGI("begin");
-    g_service->UnRegisterInputer();
+    if (g_service != nullptr) {
+        g_service->UnRegisterInputer();
+    }
     IAM_LOGI("end");
 }
 
@@ -90,7 +98,9 @@ void FuzzCheckPermission(Parcel &parcel)
     IAM_LOGI("begin");
     string permission;
     FillFuzzString(parcel, permission);
-    g_service->CheckPermission(permission);
+    if (g_service != nullptr) {
+        g_service->CheckPermission(permission);
+    }
     IAM_LOGI("end");
 }
 
