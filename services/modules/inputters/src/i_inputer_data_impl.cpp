@@ -32,6 +32,10 @@ void IInputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
     IAM_LOGI("start");
     std::lock_guard<std::mutex> guard(mutex_);
+    if (hdi_ == nullptr) {
+        IAM_LOGE("pin auth executor hdi is nullptr");
+        return;
+    }
     if (hdi_->OnSetData(scheduleId_, authSubType, data) != SUCCESS) {
         IAM_LOGE("event has canceled");
         return;

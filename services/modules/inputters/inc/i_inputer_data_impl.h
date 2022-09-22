@@ -34,8 +34,8 @@ public:
 
 private:
     std::mutex mutex_;
-    uint64_t scheduleId_;
-    std::shared_ptr<PinAuthExecutorHdi> hdi_;
+    uint64_t scheduleId_ {0};
+    std::shared_ptr<PinAuthExecutorHdi> hdi_ {nullptr};
 };
 } // namespace PinAuth
 } // namespace UserIam

@@ -26,6 +26,11 @@ void InputerGetDataProxy::OnGetData(int32_t authSubType, const std::vector<uint8
     const sptr<InputerSetData> &inputerSetData)
 {
     IAM_LOGI("start");
+    if (inputerSetData == nullptr) {
+        IAM_LOGE("inputerSetData is nullptr");
+        return;
+    }
+    
     MessageParcel data;
     MessageParcel reply;
     
