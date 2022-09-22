@@ -28,6 +28,11 @@ namespace PinAuth {
 bool PinAuthProxy::RegisterInputer(const sptr<InputerGetData> &inputer)
 {
     IAM_LOGI("start");
+    if (inputer == nullptr) {
+        IAM_LOGE("inputer is nullptr");
+        return false;
+    }
+    
     MessageParcel data;
     MessageParcel reply;
 

@@ -42,6 +42,10 @@ void InputerGetDataService::OnGetData(int32_t authSubType, const std::vector<uin
         IAM_LOGE("sharedInputerData is nullptr");
         return;
     }
+    if (inputer_ == nullptr) {
+        IAM_LOGE("inputer is nullptr");
+        return;
+    }
     inputer_->OnGetData(authSubType, sharedInputerData);
 }
 } // namespace PinAuth
