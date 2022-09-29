@@ -238,8 +238,8 @@ IamResultCode PinAuthExecutorHdi::MoveHdiExecutorInfo(PinHdi::ExecutorInfo &in, 
 IamResultCode PinAuthExecutorHdi::MoveHdiTemplateInfo(PinHdi::TemplateInfo &in, UserIam::UserAuth::TemplateInfo &out)
 {
     out.executorType = in.executorType;
-    out.freezingTime = in.freezingTime;
-    out.remainTimes = in.remainTimes;
+    out.freezingTime = in.lockoutDuration;
+    out.remainTimes = in.remainAttempts;
     in.extraInfo.swap(out.extraInfo);
     return IamResultCode::SUCCESS;
 }
