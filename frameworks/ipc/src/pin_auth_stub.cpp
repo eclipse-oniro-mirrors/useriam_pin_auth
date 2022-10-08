@@ -28,7 +28,7 @@ int32_t PinAuthStub::OnRemoteRequest(uint32_t code, MessageParcel &data, Message
     IAM_LOGI("cmd = %{public}u, flags = %{public}d", code, option.GetFlags());
     if (PinAuthStub::GetDescriptor() != data.ReadInterfaceToken()) {
         IAM_LOGE("descriptor is not matched");
-        return UserAuth::FAIL;
+        return UserAuth::GENERAL_ERROR;
     }
     switch (code) {
         case PinAuthInterface::REGISTER_INPUTER:
