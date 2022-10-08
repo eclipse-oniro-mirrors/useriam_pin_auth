@@ -29,7 +29,7 @@ int32_t InputerGetDataStub::OnRemoteRequest(uint32_t code, MessageParcel &data, 
     IAM_LOGI("cmd = %{public}u, flags = %{public}d", code, option.GetFlags());
     if (InputerGetDataStub::GetDescriptor() != data.ReadInterfaceToken()) {
         IAM_LOGE("descriptor is not matched");
-        return UserAuth::FAIL;
+        return UserAuth::GENERAL_ERROR;
     }
 
     if (code == InputerGetData::ON_GET_DATA) {
