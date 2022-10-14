@@ -32,8 +32,8 @@ void InputerSetDataProxy::OnSetData(int32_t authSubType, std::vector<uint8_t> da
         IAM_LOGE("write descriptor fail");
     }
 
-    if (!dataParcel.WriteInt64(authSubType)) {
-        IAM_LOGE(" write authSubType fail");
+    if (!dataParcel.WriteInt32(authSubType)) {
+        IAM_LOGE("write authSubType fail");
     }
     if (!dataParcel.WriteUInt8Vector(data)) {
         IAM_LOGE("write data fail");

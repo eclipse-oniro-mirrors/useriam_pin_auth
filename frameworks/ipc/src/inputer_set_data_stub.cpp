@@ -42,10 +42,10 @@ int32_t InputerSetDataStub::OnRemoteRequest(uint32_t code, MessageParcel &data, 
 void InputerSetDataStub::OnSetDataStub(MessageParcel &data, MessageParcel &reply)
 {
     IAM_LOGI("start");
-    uint64_t subType;
+    int32_t subType;
     std::vector<uint8_t> param;
 
-    if (!data.ReadUint64(subType)) {
+    if (!data.ReadInt32(subType)) {
         IAM_LOGE("failed to read subType");
         return;
     }
