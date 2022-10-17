@@ -52,6 +52,7 @@ ohos_unittest("PinAuth_UT_test") {
     "c_utils:utils",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
+    "safwk:system_ability_fwk",
   ]
 
   remove_configs = [ "//build/config/compiler:no_exceptions" ]
