@@ -30,7 +30,6 @@ ohos_unittest("PinAuth_UT_test") {
     "src/pin_auth_register_test.cpp",
     "src/pin_auth_service_test.cpp",
     "src/pin_auth_stub_test.cpp",
-    "src/pinauth_test.cpp",
   ]
 
   include_dirs = [
@@ -49,6 +48,38 @@ ohos_unittest("PinAuth_UT_test") {
     "access_token:libaccesstoken_sdk",
     "access_token:libnativetoken",
     "access_token:libtoken_setproc",
+    "c_utils:utils",
+    "hiviewdfx_hilog_native:libhilog",
+    "ipc:ipc_core",
+    "safwk:system_ability_fwk",
+  ]
+
+  remove_configs = [ "//build/config/compiler:no_exceptions" ]
+
+  configs = [
+    "//base/useriam/pin_auth/services:pin_auth_services_config",
+    "//base/useriam/user_auth_framework/common:iam_log_config",
+    "//base/useriam/pin_auth/frameworks/:pinauth_ipc_config",
+    "//base/useriam/user_auth_framework/common:iam_utils_config",
+  ]
+}
+
+ohos_unittest("PinAuth_Service_test") {
+  module_out_path = module_output_path
+
+  sources = [ "src/pinauth_test.cpp" ]
+
+  include_dirs = [
+    "inc",
+    "//base/useriam/pin_auth/interfaces/inner_api",
+  ]
+
+  deps = [
+    "//base/useriam/pin_auth/frameworks:pinauth_framework",
+    "//base/useriam/pin_auth/services:pinauthservice",
+  ]
+
+  external_deps = [
     "c_utils:utils",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",

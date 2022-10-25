@@ -29,8 +29,6 @@ namespace PinAuth {
 using namespace testing;
 using namespace testing::ext;
 
-static uint64_t tokenId;
-
 void PinAuthServiceTest::SetUpTestCase()
 {
     static const char *PERMS[] = {
@@ -46,15 +44,13 @@ void PinAuthServiceTest::SetUpTestCase()
         .processName = "pin_auth_service_test",
         .aplStr = "system_core",
     };
-    tokenId = GetAccessTokenId(&infoInstance);
+    uint64_t tokenId = GetAccessTokenId(&infoInstance);
     SetSelfTokenID(tokenId);
     Security::AccessToken::AccessTokenKit::ReloadNativeTokenInfo();
 }
 
 void PinAuthServiceTest::TearDownTestCase()
 {
-    Security::AccessToken::AccessTokenKit::DeleteToken(tokenId);
-    Security::AccessToken::AccessTokenKit::ReloadNativeTokenInfo();
 }
 
 void PinAuthServiceTest::SetUp()
