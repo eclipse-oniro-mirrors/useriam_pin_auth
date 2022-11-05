@@ -119,6 +119,10 @@ IamResultCode PinAuthExecutorHdi::Enroll(uint64_t scheduleId, uint32_t tokenId,
         IAM_LOGE("executorProxy is null");
         return IamResultCode::GENERAL_ERROR;
     }
+    if (callbackObj == nullptr) {
+        IAM_LOGE("callbackObj is null");
+        return IamResultCode::GENERAL_ERROR;
+    }
     auto callback = sptr<PinHdi::IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
         shared_from_this(), tokenId));
     if (callback == nullptr) {
@@ -140,6 +144,10 @@ IamResultCode PinAuthExecutorHdi::Authenticate(uint64_t scheduleId, uint32_t tok
 {
     if (executorProxy_ == nullptr) {
         IAM_LOGE("executorProxy is null");
+        return IamResultCode::GENERAL_ERROR;
+    }
+    if (callbackObj == nullptr) {
+        IAM_LOGE("callbackObj is null");
         return IamResultCode::GENERAL_ERROR;
     }
     auto callback = sptr<PinHdi::IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
