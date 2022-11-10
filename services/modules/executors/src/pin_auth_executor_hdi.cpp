@@ -26,13 +26,15 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-using namespace OHOS::UserIam::UserAuth;
 using IamResultCode = OHOS::UserIam::UserAuth::ResultCode;
 using IamExecutorRole = UserIam::UserAuth::ExecutorRole;
-PinAuthExecutorHdi::PinAuthExecutorHdi(sptr<HDI::PinAuth::V1_0::IExecutor> executorProxy)
-    : executorProxy_(executorProxy) {};
 
-IamResultCode PinAuthExecutorHdi::GetExecutorInfo(UserIam::UserAuth::ExecutorInfo &info)
+PinAuthExecutorHdi::PinAuthExecutorHdi(const sptr<HDI::PinAuth::V1_0::IExecutor> &executorProxy)
+    : executorProxy_(executorProxy)
+{
+}
+
+IamResultCode PinAuthExecutorHdi::GetExecutorInfo(UserAuth::ExecutorInfo &info)
 {
     if (executorProxy_ == nullptr) {
         IAM_LOGE("executorProxy is null");
@@ -54,7 +56,7 @@ IamResultCode PinAuthExecutorHdi::GetExecutorInfo(UserIam::UserAuth::ExecutorInf
     return IamResultCode::SUCCESS;
 }
 
-IamResultCode PinAuthExecutorHdi::GetTemplateInfo(uint64_t templateId, UserIam::UserAuth::TemplateInfo &info)
+IamResultCode PinAuthExecutorHdi::GetTemplateInfo(uint64_t templateId, UserAuth::TemplateInfo &info)
 {
     if (executorProxy_ == nullptr) {
         IAM_LOGE("executorProxy is null");
@@ -91,8 +93,8 @@ IamResultCode PinAuthExecutorHdi::OnRegisterFinish(const std::vector<uint64_t> &
     }
 
     OHOS::HiviewDFX::HiSysEvent::Write("USERIAM_PIN", "USERIAM_TEMPLATE_CHANGE",
-        OHOS::HiviewDFX::HiSysEvent::EventType::SECURITY, "EXECUTOR_TYPE", PIN,
-        "CHANGE_TYPE", UserIam::UserAuth::TRACE_DELETE_CREDENTIAL, "TRIGGER_REASON", "Reconciliation");
+        OHOS::HiviewDFX::HiSysEvent::EventType::SECURITY, "EXECUTOR_TYPE", UserAuth::PIN,
+        "CHANGE_TYPE", UserAuth::TRACE_DELETE_CREDENTIAL, "TRIGGER_REASON", "Reconciliation");
     return IamResultCode::SUCCESS;
 }
 
@@ -113,7 +115,7 @@ IamResultCode PinAuthExecutorHdi::OnSetData(uint64_t scheduleId, uint64_t authSu
 }
 
 IamResultCode PinAuthExecutorHdi::Enroll(uint64_t scheduleId, uint32_t tokenId,
-    const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserIam::UserAuth::IExecuteCallback> &callbackObj)
+    const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj)
 {
     if (executorProxy_ == nullptr) {
         IAM_LOGE("executorProxy is null");
@@ -140,7 +142,7 @@ IamResultCode PinAuthExecutorHdi::Enroll(uint64_t scheduleId, uint32_t tokenId,
 
 IamResultCode PinAuthExecutorHdi::Authenticate(uint64_t scheduleId, uint32_t tokenId,
     const std::vector<uint64_t> &templateIdList, const std::vector<uint8_t> &extraInfo,
-    const std::shared_ptr<UserIam::UserAuth::IExecuteCallback> &callbackObj)
+    const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj)
 {
     if (executorProxy_ == nullptr) {
         IAM_LOGE("executorProxy is null");
@@ -170,7 +172,7 @@ IamResultCode PinAuthExecutorHdi::Authenticate(uint64_t scheduleId, uint32_t tok
 }
 
 IamResultCode PinAuthExecutorHdi::Identify(uint64_t scheduleId, uint32_t tokenId,
-    const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserIam::UserAuth::IExecuteCallback> &callbackObj)
+    const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj)
 {
     IAM_LOGI("Adaptor frame interface, temporarily useless");
     static_cast<void>(scheduleId);
@@ -210,8 +212,8 @@ IamResultCode PinAuthExecutorHdi::Cancel(uint64_t scheduleId)
     return IamResultCode::SUCCESS;
 }
 
-IamResultCode PinAuthExecutorHdi::SendCommand(UserIam::UserAuth::PropertyMode commandId,
-    const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserIam::UserAuth::IExecuteCallback> &callbackObj)
+IamResultCode PinAuthExecutorHdi::SendCommand(UserAuth::PropertyMode commandId,
+    const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj)
 {
     IAM_LOGI("Adaptor frame interface, temporarily useless");
     static_cast<void>(commandId);
@@ -220,7 +222,7 @@ IamResultCode PinAuthExecutorHdi::SendCommand(UserIam::UserAuth::PropertyMode co
     return IamResultCode::SUCCESS;
 }
 
-IamResultCode PinAuthExecutorHdi::MoveHdiExecutorInfo(PinHdi::ExecutorInfo &in, UserIam::UserAuth::ExecutorInfo &out)
+IamResultCode PinAuthExecutorHdi::MoveHdiExecutorInfo(PinHdi::ExecutorInfo &in, UserAuth::ExecutorInfo &out)
 {
     out.executorSensorHint = static_cast<uint32_t>(in.sensorId);
     out.executorMatcher = in.executorType;
@@ -243,7 +245,7 @@ IamResultCode PinAuthExecutorHdi::MoveHdiExecutorInfo(PinHdi::ExecutorInfo &in, 
     return IamResultCode::SUCCESS;
 }
 
-IamResultCode PinAuthExecutorHdi::MoveHdiTemplateInfo(PinHdi::TemplateInfo &in, UserIam::UserAuth::TemplateInfo &out)
+IamResultCode PinAuthExecutorHdi::MoveHdiTemplateInfo(PinHdi::TemplateInfo &in, UserAuth::TemplateInfo &out)
 {
     out.executorType = in.executorType;
     out.freezingTime = in.lockoutDuration;
@@ -252,7 +254,7 @@ IamResultCode PinAuthExecutorHdi::MoveHdiTemplateInfo(PinHdi::TemplateInfo &in, 
     return IamResultCode::SUCCESS;
 }
 
-IamResultCode PinAuthExecutorHdi::ConvertCommandId(const UserIam::UserAuth::PropertyMode in, PinHdi::CommandId &out)
+IamResultCode PinAuthExecutorHdi::ConvertCommandId(const UserAuth::PropertyMode in, PinHdi::CommandId &out)
 {
     IAM_LOGI("Adaptor frame interface, temporarily useless");
     static_cast<void>(in);
@@ -260,10 +262,10 @@ IamResultCode PinAuthExecutorHdi::ConvertCommandId(const UserIam::UserAuth::Prop
     return IamResultCode::SUCCESS;
 }
 
-IamResultCode PinAuthExecutorHdi::ConvertAuthType(const PinHdi::AuthType in, UserIam::UserAuth::AuthType &out)
+IamResultCode PinAuthExecutorHdi::ConvertAuthType(const PinHdi::AuthType in, UserAuth::AuthType &out)
 {
-    static const std::map<PinHdi::AuthType, UserIam::UserAuth::AuthType> data = {
-        {PinHdi::PIN, UserIam::UserAuth::AuthType::PIN},
+    static const std::map<PinHdi::AuthType, UserAuth::AuthType> data = {
+        {PinHdi::PIN, UserAuth::AuthType::PIN},
     };
     if (data.count(in) == 0) {
         IAM_LOGE("authType %{public}d is invalid", in);
@@ -289,13 +291,13 @@ IamResultCode PinAuthExecutorHdi::ConvertExecutorRole(const PinHdi::ExecutorRole
 }
 
 IamResultCode PinAuthExecutorHdi::ConvertExecutorSecureLevel(const PinHdi::ExecutorSecureLevel in,
-    UserIam::UserAuth::ExecutorSecureLevel &out)
+    UserAuth::ExecutorSecureLevel &out)
 {
-    static const std::map<PinHdi::ExecutorSecureLevel, UserIam::UserAuth::ExecutorSecureLevel> data = {
-        { PinHdi::ExecutorSecureLevel::ESL0, UserIam::UserAuth::ExecutorSecureLevel::ESL0 },
-        { PinHdi::ExecutorSecureLevel::ESL1, UserIam::UserAuth::ExecutorSecureLevel::ESL1 },
-        { PinHdi::ExecutorSecureLevel::ESL2, UserIam::UserAuth::ExecutorSecureLevel::ESL2 },
-        { PinHdi::ExecutorSecureLevel::ESL3, UserIam::UserAuth::ExecutorSecureLevel::ESL3 },
+    static const std::map<PinHdi::ExecutorSecureLevel, UserAuth::ExecutorSecureLevel> data = {
+        { PinHdi::ExecutorSecureLevel::ESL0, UserAuth::ExecutorSecureLevel::ESL0 },
+        { PinHdi::ExecutorSecureLevel::ESL1, UserAuth::ExecutorSecureLevel::ESL1 },
+        { PinHdi::ExecutorSecureLevel::ESL2, UserAuth::ExecutorSecureLevel::ESL2 },
+        { PinHdi::ExecutorSecureLevel::ESL3, UserAuth::ExecutorSecureLevel::ESL3 },
     };
     if (data.count(in) == 0) {
         IAM_LOGE("executorSecureLevel %{public}d is invalid", in);

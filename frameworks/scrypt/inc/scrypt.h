@@ -25,8 +25,8 @@ namespace UserIam {
 namespace PinAuth {
 class Scrypt : public NoCopyable {
 public:
-    Scrypt(std::vector<uint8_t> salt) : salt_(std::move(salt)) {}
-    ~Scrypt() = default;
+    explicit Scrypt(std::vector<uint8_t> salt) : salt_(std::move(salt)) {}
+    ~Scrypt() override = default;
     std::vector<uint8_t> GetScrypt(const std::vector<uint8_t> data);
 
 private:

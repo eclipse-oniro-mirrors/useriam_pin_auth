@@ -30,41 +30,38 @@ namespace UserIam {
 namespace PinAuth {
 namespace PinHdi = OHOS::HDI::PinAuth::V1_0;
 class PinAuthExecutorHdi : public std::enable_shared_from_this<PinAuthExecutorHdi>,
-    public UserIam::UserAuth::IAuthExecutorHdi, public NoCopyable {
+    public UserAuth::IAuthExecutorHdi, public NoCopyable {
 public:
-    explicit PinAuthExecutorHdi(sptr<HDI::PinAuth::V1_0::IExecutor> executorProxy);
-    virtual ~PinAuthExecutorHdi() = default;
+    explicit PinAuthExecutorHdi(const sptr<HDI::PinAuth::V1_0::IExecutor> &executorProxy);
+    ~PinAuthExecutorHdi() override = default;
 
-    UserIam::UserAuth::ResultCode GetExecutorInfo(UserIam::UserAuth::ExecutorInfo &info);
-    UserIam::UserAuth::ResultCode GetTemplateInfo(uint64_t templateId, UserIam::UserAuth::TemplateInfo &info);
-    UserIam::UserAuth::ResultCode OnRegisterFinish(const std::vector<uint64_t> &templateIdList,
-        const std::vector<uint8_t> &frameworkPublicKey, const std::vector<uint8_t> &extraInfo);
-    UserIam::UserAuth::ResultCode Enroll(uint64_t scheduleId, uint32_t tokenId, const std::vector<uint8_t> &extraInfo,
-        const std::shared_ptr<UserIam::UserAuth::IExecuteCallback> &callbackObj);
-    UserIam::UserAuth::ResultCode Authenticate(uint64_t scheduleId, uint32_t tokenId,
+    UserAuth::ResultCode GetExecutorInfo(UserAuth::ExecutorInfo &info) override;
+    UserAuth::ResultCode GetTemplateInfo(uint64_t templateId, UserAuth::TemplateInfo &info) override;
+    UserAuth::ResultCode OnRegisterFinish(const std::vector<uint64_t> &templateIdList,
+        const std::vector<uint8_t> &frameworkPublicKey, const std::vector<uint8_t> &extraInfo) override;
+    UserAuth::ResultCode Enroll(uint64_t scheduleId, uint32_t tokenId, const std::vector<uint8_t> &extraInfo,
+        const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj) override;
+    UserAuth::ResultCode Authenticate(uint64_t scheduleId, uint32_t tokenId,
         const std::vector<uint64_t> &templateIdList, const std::vector<uint8_t> &extraInfo,
-        const std::shared_ptr<UserIam::UserAuth::IExecuteCallback> &callbackObj);
-    UserIam::UserAuth::ResultCode OnSetData(uint64_t scheduleId, uint64_t authSubType,
-        const std::vector<uint8_t>& data);
-    UserIam::UserAuth::ResultCode Identify(uint64_t scheduleId, uint32_t tokenId,
-        const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserIam::UserAuth::IExecuteCallback> &callbackObj);
-    UserIam::UserAuth::ResultCode Delete(const std::vector<uint64_t> &templateIdList);
-    UserIam::UserAuth::ResultCode Cancel(uint64_t scheduleId);
-    UserIam::UserAuth::ResultCode SendCommand(UserIam::UserAuth::PropertyMode commandId,
-        const std::vector<uint8_t> &extraInfo,
-        const std::shared_ptr<UserIam::UserAuth::IExecuteCallback> &callbackObj);
+        const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj) override;
+    UserAuth::ResultCode OnSetData(uint64_t scheduleId, uint64_t authSubType, const std::vector<uint8_t>& data);
+    UserAuth::ResultCode Identify(uint64_t scheduleId, uint32_t tokenId, const std::vector<uint8_t> &extraInfo,
+        const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj) override;
+    UserAuth::ResultCode Delete(const std::vector<uint64_t> &templateIdList) override;
+    UserAuth::ResultCode Cancel(uint64_t scheduleId) override;
+    UserAuth::ResultCode SendCommand(UserAuth::PropertyMode commandId, const std::vector<uint8_t> &extraInfo,
+        const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj) override;
 
 private:
-    UserIam::UserAuth::ResultCode MoveHdiExecutorInfo(PinHdi::ExecutorInfo &in, UserIam::UserAuth::ExecutorInfo &out);
-    UserIam::UserAuth::ResultCode MoveHdiTemplateInfo(PinHdi::TemplateInfo &in, UserIam::UserAuth::TemplateInfo &out);
-    UserIam::UserAuth::ResultCode ConvertCommandId(const UserIam::UserAuth::PropertyMode in, PinHdi::CommandId &out);
-    UserIam::UserAuth::ResultCode ConvertAuthType(const PinHdi::AuthType in, UserIam::UserAuth::AuthType &out);
-    UserIam::UserAuth::ResultCode ConvertExecutorRole(const PinHdi::ExecutorRole in,
-        UserIam::UserAuth::ExecutorRole &out);
-    UserIam::UserAuth::ResultCode ConvertExecutorSecureLevel(
-        const PinHdi::ExecutorSecureLevel in, UserIam::UserAuth::ExecutorSecureLevel &out);
-    UserIam::UserAuth::ResultCode ConvertResultCode(const int32_t in);
-    sptr<PinHdi::IExecutor> executorProxy_;
+    UserAuth::ResultCode MoveHdiExecutorInfo(PinHdi::ExecutorInfo &in, UserAuth::ExecutorInfo &out);
+    UserAuth::ResultCode MoveHdiTemplateInfo(PinHdi::TemplateInfo &in, UserAuth::TemplateInfo &out);
+    UserAuth::ResultCode ConvertCommandId(const UserAuth::PropertyMode in, PinHdi::CommandId &out);
+    UserAuth::ResultCode ConvertAuthType(const PinHdi::AuthType in, UserAuth::AuthType &out);
+    UserAuth::ResultCode ConvertExecutorRole(const PinHdi::ExecutorRole in, UserAuth::ExecutorRole &out);
+    UserAuth::ResultCode ConvertExecutorSecureLevel(const PinHdi::ExecutorSecureLevel in,
+        UserAuth::ExecutorSecureLevel &out);
+    UserAuth::ResultCode ConvertResultCode(const int32_t in);
+    sptr<PinHdi::IExecutor> executorProxy_ {nullptr};
 };
 } // PinAuth
 } // UserIam
