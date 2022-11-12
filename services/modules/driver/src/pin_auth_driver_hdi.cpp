@@ -31,10 +31,12 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-PinAuthDriverHdi::PinAuthDriverHdi(const std::shared_ptr<PinAuthInterfaceAdapter> pinAuthInterfaceAdapter)
-    : pinAuthInterfaceAdapter_(pinAuthInterfaceAdapter) {}
+PinAuthDriverHdi::PinAuthDriverHdi(const std::shared_ptr<PinAuthInterfaceAdapter> &pinAuthInterfaceAdapter)
+    : pinAuthInterfaceAdapter_(pinAuthInterfaceAdapter)
+{
+}
 
-void PinAuthDriverHdi::GetExecutorList(std::vector<std::shared_ptr<UserIam::UserAuth::IAuthExecutorHdi>> &executorList)
+void PinAuthDriverHdi::GetExecutorList(std::vector<std::shared_ptr<UserAuth::IAuthExecutorHdi>> &executorList)
 {
     IAM_LOGI("start");
     if (pinAuthInterfaceAdapter_ == nullptr) {
