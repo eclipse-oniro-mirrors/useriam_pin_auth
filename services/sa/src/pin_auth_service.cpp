@@ -86,13 +86,16 @@ inline uint32_t PinAuthService::GetTokenId()
 void PinAuthService::StartDriverManager()
 {
     IAM_LOGI("start");
-    auto pinAuthDefaultHdi = Common::MakeShared<PinAuthDriverHdi>();
-    IF_FALSE_LOGE_AND_RETURN(pinAuthDefaultHdi != nullptr);
     const uint16_t pinAuthDefaultHdiId = 1;
+    const auto adapter = Common::MakeShared<PinAuthInterfaceAdapter>();
+    IF_FALSE_LOGE_AND_RETURN(adapter != nullptr);
+    auto pinAuthDefaultHdi = Common::MakeShared<PinAuthDriverHdi>(adapter);
+    IF_FALSE_LOGE_AND_RETURN(pinAuthDefaultHdi != nullptr);
     // serviceName and HdiConfig.id must be globally unique
-    const std::map<std::string, UserIam::UserAuth::HdiConfig> hdiName2Config  = {
+    const std::map<std::string, UserAuth::HdiConfig> hdiName2Config = {
         {"pin_auth_interface_service", {pinAuthDefaultHdiId, pinAuthDefaultHdi}},
     };
+
     int ret = UserIam::UserAuth::IDriverManager::Start(hdiName2Config);
     if (ret != UserAuth::SUCCESS) {
         IAM_LOGE("start driver manager failed");

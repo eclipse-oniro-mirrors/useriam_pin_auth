@@ -59,7 +59,7 @@ void PinAuthManager::UnRegisterInputer(uint32_t tokenId)
     IAM_LOGI("end");
 }
 
-sptr<InputerGetData> PinAuthManager::getInputerLock(uint32_t tokenId)
+sptr<InputerGetData> PinAuthManager::GetInputerLock(uint32_t tokenId)
 {
     std::lock_guard<std::mutex> guard(mutex_);
     IAM_LOGI("start");

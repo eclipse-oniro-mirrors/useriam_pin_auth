@@ -13,24 +13,29 @@
  * limitations under the License.
  */
 
-#ifndef PINAUTH_IINPUTERDATA_H
-#define PINAUTH_IINPUTERDATA_H
+#ifndef MOCK_IPIN_AUTH_INTERFACE_H
+#define MOCK_IPIN_AUTH_INTERFACE_H
 
-#include <memory>
-#include <vector>
-#include "nocopyable.h"
+#include "gmock/gmock.h"
+
+#include "v1_0/ipin_auth_interface.h"
 
 namespace OHOS {
-namespace UserIam {
+namespace HDI {
 namespace PinAuth {
-class IInputerData : public NoCopyable {
+namespace V1_0 {
+using namespace OHOS;
+using namespace OHOS::HDI;
+
+class MockIPinAuthInterface : public IPinAuthInterface {
 public:
-    IInputerData() = default;
-    ~IInputerData() override = default;
-    virtual void OnSetData(int32_t authSubType, std::vector<uint8_t> data) = 0 ;
+    virtual ~MockIPinAuthInterface() = default;
+
+    MOCK_METHOD1(GetExecutorList, int32_t(std::vector<sptr<IExecutor>> &executorList));
 };
+} // namespace V1_0
 } // namespace PinAuth
-} // namespace UserIam
+} // namespace HDI
 } // namespace OHOS
 
-#endif // PINAUTH_IINPUTERDATA_H
+#endif // MOCK_IPIN_AUTH_INTERFACE_H

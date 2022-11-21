@@ -26,6 +26,9 @@ ohos_unittest("PinAuth_UT_test") {
     "src/inputer_get_data_stub_test.cpp",
     "src/inputer_set_data_proxy_test.cpp",
     "src/inputer_set_data_stub_test.cpp",
+    "src/pin_auth_driver_hdi_unit_test.cpp",
+    "src/pin_auth_executor_callback_hdi_unit_test.cpp",
+    "src/pin_auth_executor_hdi_unit_test.cpp",
     "src/pin_auth_proxy_test.cpp",
     "src/pin_auth_register_test.cpp",
     "src/pin_auth_service_test.cpp",
@@ -36,6 +39,14 @@ ohos_unittest("PinAuth_UT_test") {
     "inc",
     "mocks",
     "//base/useriam/pin_auth/interfaces/inner_api",
+    "//base/useriam/pin_auth/services/sa/inc",
+    "//base/useriam/pin_auth/services/modules/driver/inc",
+    "//base/useriam/pin_auth/services/modules/executors/inc",
+    "//base/useriam/pin_auth/services/modules/inputters/inc",
+    "//base/useriam/user_auth_framework/common/logs",
+    "//base/useriam/user_auth_framework/common/utils",
+    "//base/useriam/user_auth_framework/common/executors/include/public",
+    "//base/useriam/user_auth_framework/interfaces/inner_api",
   ]
 
   deps = [
@@ -49,6 +60,7 @@ ohos_unittest("PinAuth_UT_test") {
     "access_token:libnativetoken",
     "access_token:libtoken_setproc",
     "c_utils:utils",
+    "drivers_interface_pin_auth:libpin_auth_proxy_1.0",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_core",
     "safwk:system_ability_fwk",

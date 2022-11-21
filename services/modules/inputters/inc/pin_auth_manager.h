@@ -33,11 +33,10 @@ namespace UserIam {
 namespace PinAuth {
 class PinAuthManager : public DelayedRefSingleton<PinAuthManager> {
     DECLARE_DELAYED_REF_SINGLETON(PinAuthManager);
-
 public:
     bool RegisterInputer(uint32_t tokenId, const sptr<InputerGetData> &inputer);
     void UnRegisterInputer(uint32_t tokenId);
-    sptr<InputerGetData> getInputerLock(uint32_t tokenId);
+    sptr<InputerGetData> GetInputerLock(uint32_t tokenId);
 
 private:
     std::unordered_map<uint32_t, sptr<InputerGetData>> pinAuthInputerMap_;

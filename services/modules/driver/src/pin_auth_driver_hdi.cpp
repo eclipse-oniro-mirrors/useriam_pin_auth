@@ -31,18 +31,35 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-void PinAuthDriverHdi::GetExecutorList(std::vector<std::shared_ptr<UserIam::UserAuth::IAuthExecutorHdi>> &executorList)
+PinAuthDriverHdi::PinAuthDriverHdi(const std::shared_ptr<PinAuthInterfaceAdapter> &pinAuthInterfaceAdapter)
+    : pinAuthInterfaceAdapter_(pinAuthInterfaceAdapter)
+{
+}
+
+void PinAuthDriverHdi::GetExecutorList(std::vector<std::shared_ptr<UserAuth::IAuthExecutorHdi>> &executorList)
 {
     IAM_LOGI("start");
-    auto pinInterface = HDI::PinAuth::V1_0::IPinAuthInterface::Get();
+    if (pinAuthInterfaceAdapter_ == nullptr) {
+        IAM_LOGE("pinAuthInterfaceAdapter_ is null");
+        return;
+    }
+    auto pinInterface = pinAuthInterfaceAdapter_->Get();
     if (pinInterface == nullptr) {
         IAM_LOGE("IPinAuthInterface is null");
         return;
     }
 
     std::vector<sptr<HDI::PinAuth::V1_0::IExecutor>> iExecutorList;
-    pinInterface->GetExecutorList(iExecutorList);
+    auto ret = pinInterface->GetExecutorList(iExecutorList);
+    if (ret != HDF_SUCCESS) {
+        IAM_LOGE("GetExecutorList fail");
+        return;
+    }
     for (const auto &iExecutor : iExecutorList) {
+        if (iExecutor == nullptr) {
+            IAM_LOGE("iExecutor is nullptr");
+            continue;
+        }
         auto executor = Common::MakeShared<PinAuthExecutorHdi>(iExecutor);
         if (executor == nullptr) {
             IAM_LOGE("make share failed");
