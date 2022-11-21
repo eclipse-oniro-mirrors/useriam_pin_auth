@@ -13,24 +13,19 @@
  * limitations under the License.
  */
 
-#ifndef PINAUTH_IINPUTERDATA_H
-#define PINAUTH_IINPUTERDATA_H
+#include "pin_auth_interface_adapter.h"
 
-#include <memory>
-#include <vector>
-#include "nocopyable.h"
+#include "refbase.h"
+
+#include "v1_0/ipin_auth_interface.h"
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class IInputerData : public NoCopyable {
-public:
-    IInputerData() = default;
-    ~IInputerData() override = default;
-    virtual void OnSetData(int32_t authSubType, std::vector<uint8_t> data) = 0 ;
-};
+sptr<IPinAuthInterface> PinAuthInterfaceAdapter::Get()
+{
+    return IPinAuthInterface::Get();
+}
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS
-
-#endif // PINAUTH_IINPUTERDATA_H

@@ -16,23 +16,28 @@
 #ifndef PIN_AUTH_DRIVER_HDI
 #define PIN_AUTH_DRIVER_HDI
 
-
+#include <mutex>
 #include <vector>
+
 #include <iauth_driver_hdi.h>
 #include "iremote_broker.h"
 #include "iauth_executor_hdi.h"
-#include "v1_0/ipin_auth_interface.h"
+#include "pin_auth_interface_adapter.h"
 #include "nocopyable.h"
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
 namespace PinHdi = OHOS::HDI::PinAuth::V1_0;
-class PinAuthDriverHdi : public UserIam::UserAuth::IAuthDriverHdi, public NoCopyable {
+class PinAuthDriverHdi : public UserAuth::IAuthDriverHdi, public NoCopyable {
 public:
-    PinAuthDriverHdi() = default;
-    virtual ~PinAuthDriverHdi() = default;
-    void GetExecutorList(std::vector<std::shared_ptr<UserIam::UserAuth::IAuthExecutorHdi>> &executorList);
+    explicit PinAuthDriverHdi(const std::shared_ptr<PinAuthInterfaceAdapter> &pinAuthInterfaceAdapter);
+    ~PinAuthDriverHdi() override = default;
+    void GetExecutorList(std::vector<std::shared_ptr<UserAuth::IAuthExecutorHdi>> &executorList) override;
+
+private:
+    static std::mutex mutex_;
+    const std::shared_ptr<PinAuthInterfaceAdapter> pinAuthInterfaceAdapter_;
 };
 } // PinAuth
 } // UserIam

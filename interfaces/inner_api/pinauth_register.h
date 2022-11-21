@@ -17,7 +17,7 @@
 #define PINAUTH_REGISTER_H
 
 #include <singleton.h>
-#include <stdint.h>
+#include <cstdint>
 #include <mutex>
 #include "iremote_object.h"
 #include "i_inputer.h"
@@ -48,7 +48,7 @@ private:
     class PinAuthDeathRecipient : public IRemoteObject::DeathRecipient, public NoCopyable {
     public:
         PinAuthDeathRecipient() = default;
-        ~PinAuthDeathRecipient() = default;
+        ~PinAuthDeathRecipient() override = default;
         void OnRemoteDied(const wptr<IRemoteObject>& remote) override;
     };
     void ResetProxy(const wptr<IRemoteObject>& remote);

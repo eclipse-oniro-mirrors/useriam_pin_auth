@@ -46,7 +46,7 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(uint64_t scheduleId, const std::ve
     uint64_t authSubType)
 {
     IAM_LOGI("Start tokenId_ is %{public}u", tokenId_);
-    sptr<InputerGetData> inputer = PinAuthManager::GetInstance().getInputerLock(tokenId_);
+    sptr<InputerGetData> inputer = PinAuthManager::GetInstance().GetInputerLock(tokenId_);
     if (inputer == nullptr) {
         IAM_LOGE("inputer is nullptr");
         return HDF_FAILURE;
