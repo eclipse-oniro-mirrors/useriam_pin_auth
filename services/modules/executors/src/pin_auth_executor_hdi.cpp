@@ -92,7 +92,7 @@ IamResultCode PinAuthExecutorHdi::OnRegisterFinish(const std::vector<uint64_t> &
         return result;
     }
 
-    OHOS::HiviewDFX::HiSysEvent::Write("USERIAM_PIN", "USERIAM_TEMPLATE_CHANGE",
+    HiSysEventWrite(OHOS::HiviewDFX::HiSysEvent::Domain::USERIAM_PIN, "USERIAM_TEMPLATE_CHANGE",
         OHOS::HiviewDFX::HiSysEvent::EventType::SECURITY, "EXECUTOR_TYPE", UserAuth::PIN,
         "CHANGE_TYPE", UserAuth::TRACE_DELETE_CREDENTIAL, "TRIGGER_REASON", "Reconciliation");
     return IamResultCode::SUCCESS;
