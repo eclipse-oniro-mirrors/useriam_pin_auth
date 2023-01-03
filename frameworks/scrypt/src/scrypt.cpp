@@ -27,7 +27,7 @@ namespace PinAuth {
 namespace {
     constexpr int32_t OUT_LENGTH = 64;
     constexpr int32_t SCRYPT_N = 32768;
-    constexpr int32_t SCRYPT_R = 3;
+    constexpr int32_t SCRYPT_R = 8;
     constexpr int32_t SCRYPT_P = 1;
 }
 
