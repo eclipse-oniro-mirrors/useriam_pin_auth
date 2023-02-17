@@ -40,6 +40,7 @@ public:
 
 private:
     std::unordered_map<uint32_t, sptr<InputerGetData>> pinAuthInputerMap_;
+    std::unordered_map<uint32_t, sptr<IRemoteObject::DeathRecipient>> pinAuthDeathMap_;
     std::mutex mutex_;
     class ResPinauthInputerDeathRecipient : public IRemoteObject::DeathRecipient, public NoCopyable {
     public:
