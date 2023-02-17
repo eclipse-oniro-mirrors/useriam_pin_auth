@@ -14,7 +14,7 @@
 domain: USERIAM_PIN
 
 USERIAM_TEMPLATE_CHANGE:
-  __BASE: {type: SECURITY, level: CRITICAL, tag:UserIdm, desc: template change message}
+  __BASE: {type: SECURITY, level: CRITICAL, tag: UserIdm, desc: template change message}
   EXECUTOR_TYPE: {type: INT32, desc: executor type}
   CHANGE_TYPE: {type: UINT32, desc: change type}
   TRIGGER_REASON: {type: STRING, desc: trigger reason}
