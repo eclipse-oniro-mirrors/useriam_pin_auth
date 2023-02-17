@@ -40,6 +40,7 @@ bool PinAuthManager::RegisterInputer(uint32_t tokenId, const sptr<InputerGetData
     if (dr == nullptr || inputer->AsObject() == nullptr) {
         IAM_LOGE("dr or inputer's object is nullptr");
     } else {
+        pinAuthDeathMap_.emplace(tokenId, dr);
         if (!inputer->AsObject()->AddDeathRecipient(dr)) {
             IAM_LOGE("add death recipient fail");
         }
@@ -53,6 +54,15 @@ void PinAuthManager::UnRegisterInputer(uint32_t tokenId)
     std::lock_guard<std::mutex> guard(mutex_);
     IAM_LOGI("start, tokenId = %{public}u", tokenId);
     if (pinAuthInputerMap_.find(tokenId) != pinAuthInputerMap_.end()) {
+        if (pinAuthDeathMap_.find(tokenId) != pinAuthDeathMap_.end()) {
+            auto inputer = pinAuthInputerMap_[tokenId];
+            if (inputer == nullptr || inputer->AsObject() == nullptr) {
+                IAM_LOGE("inputer or inputer's object is nullptr");
+            } else if (!inputer->AsObject()->RemoveDeathRecipient(pinAuthDeathMap_[tokenId])) {
+                IAM_LOGE("remove death recipient fail");
+            }
+            pinAuthDeathMap_.erase(tokenId);
+        }
         pinAuthInputerMap_.erase(tokenId);
         IAM_LOGE("pinAuthInputerMap_ erase success");
     }
