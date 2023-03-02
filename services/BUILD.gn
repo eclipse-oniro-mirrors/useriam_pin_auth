@@ -42,7 +42,6 @@ ohos_shared_library("pinauthservice") {
 
   deps = [
     "//base/useriam/pin_auth/frameworks:pinauth_ipc",
-    "//base/useriam/user_auth_framework/common/executors:userauth_executors",
     "//third_party/openssl:libcrypto_shared",
   ]
 
@@ -52,8 +51,9 @@ ohos_shared_library("pinauthservice") {
     "drivers_interface_pin_auth:libpin_auth_proxy_1.0",
     "hisysevent_native:libhisysevent",
     "hiviewdfx_hilog_native:libhilog",
-    "ipc:ipc_core",
+    "ipc:ipc_single",
     "safwk:system_ability_fwk",
+    "user_auth_framework:userauth_executors",
   ]
   remove_configs = [ "//build/config/compiler:no_exceptions" ]
 

@@ -56,6 +56,18 @@
           ]
         },
         "inner_kits": [
+          {
+            "type": "so",
+            "name": "//base/useriam/pin_auth/frameworks:pinauth_framework",
+            "header": {
+              "header_files": [
+                "i_inputer_data.h",
+                "i_inputer.h",
+                "pinauth_register.h"
+              ],
+              "header_base": "//base/useriam/pin_auth/interfaces/inner_api/"
+            }
+          }
         ],
         "test": [
             "//base/useriam/pin_auth/test/unittest:PinAuth_UT_test",
