@@ -20,9 +20,9 @@
 #include <map>
 #include <v1_0/iexecutor.h>
 #include <vector>
-#include "framework_types.h"
-#include "iauth_executor_hdi.h"
-#include "iexecute_callback.h"
+#include "iam_executor_framework_types.h"
+#include "iam_executor_iauth_executor_hdi.h"
+#include "iam_executor_iexecute_callback.h"
 #include "nocopyable.h"
 
 namespace OHOS {
