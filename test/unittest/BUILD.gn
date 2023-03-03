@@ -46,7 +46,7 @@ ohos_unittest("PinAuth_UT_test") {
     "//base/useriam/user_auth_framework/common/logs",
     "//base/useriam/user_auth_framework/common/utils",
     "//base/useriam/user_auth_framework/interfaces/inner_api",
-    "//base/useriam/user_auth_framework/interfaces/inner_api/iam_executor",
+    "../../../user_auth_framework/interfaces/inner_api/iam_executor",
   ]
 
   deps = [
@@ -62,8 +62,8 @@ ohos_unittest("PinAuth_UT_test") {
     "drivers_interface_pin_auth:libpin_auth_proxy_1.0",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_single",
-    "safwk:system_ability_fwk",
     "pin_auth:pinauth_framework",
+    "safwk:system_ability_fwk",
   ]
 
   remove_configs = [ "//build/config/compiler:no_exceptions" ]
@@ -86,16 +86,14 @@ ohos_unittest("PinAuth_Service_test") {
     "//base/useriam/pin_auth/interfaces/inner_api",
   ]
 
-  deps = [
-    "//base/useriam/pin_auth/services:pinauthservice",
-  ]
+  deps = [ "../../services:pinauthservice" ]
 
   external_deps = [
     "c_utils:utils",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_single",
-    "safwk:system_ability_fwk",
     "pin_auth:pinauth_framework",
+    "safwk:system_ability_fwk",
   ]
 
   remove_configs = [ "//build/config/compiler:no_exceptions" ]
