@@ -19,9 +19,9 @@
 #include <mutex>
 #include <vector>
 
-#include <iauth_driver_hdi.h>
+#include "iam_executor_iauth_driver_hdi.h"
 #include "iremote_broker.h"
-#include "iauth_executor_hdi.h"
+#include "iam_executor_iauth_executor_hdi.h"
 #include "pin_auth_interface_adapter.h"
 #include "nocopyable.h"
 
