@@ -13,6 +13,14 @@
  * limitations under the License.
  */
 
+/**
+ * @file i_inputer_data.h
+ *
+ * @brief The definition of pinAuth's inputer data.
+ * @since 3.1
+ * @version 3.2
+ */
+
 #ifndef PINAUTH_IINPUTERDATA_H
 #define PINAUTH_IINPUTERDATA_H
 
@@ -25,8 +33,24 @@ namespace UserIam {
 namespace PinAuth {
 class IInputerData : public NoCopyable {
 public:
+    /**
+     * @brief Get IInputerData's instance.
+     *
+     * @return IInputerData's instance.
+     */
     IInputerData() = default;
+
+    /**
+     * @brief Deconstructor.
+     */
     ~IInputerData() override = default;
+
+    /**
+     * @brief Transfers the pin data from the pin input dialog box to the pin auth service ability.
+     *
+     * @param authSubType PinAuth sub type.
+     * @param data Pin data.
+     */
     virtual void OnSetData(int32_t authSubType, std::vector<uint8_t> data) = 0 ;
 };
 } // namespace PinAuth

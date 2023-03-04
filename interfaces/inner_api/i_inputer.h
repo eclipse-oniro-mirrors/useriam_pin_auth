@@ -13,6 +13,14 @@
  * limitations under the License.
  */
 
+/**
+ * @file i_inputer.h
+ *
+ * @brief The definition of pinAuth's inputer.
+ * @since 3.1
+ * @version 3.2
+ */
+
 #ifndef PINAUTH_IINPUTER_H
 #define PINAUTH_IINPUTER_H
 
@@ -23,6 +31,13 @@ namespace UserIam {
 namespace PinAuth {
 class IInputer {
 public:
+
+    /**
+     * @brief Obtains the pin data.
+     *
+     * @param authSubType PinAuth sub type.
+     * @param inputerData PinAuth's inputer data.
+     */
     virtual void OnGetData(int32_t authSubType, std::shared_ptr<IInputerData> inputerData);
 };
 } // namespace PinAuth
