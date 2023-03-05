@@ -13,6 +13,14 @@
  * limitations under the License.
  */
 
+/**
+ * @file pinauth_register.h
+ *
+ * @brief APIs for managing input dialog boxes.
+ * @since 3.1
+ * @version 3.2
+ */
+
 #ifndef PINAUTH_REGISTER_H
 #define PINAUTH_REGISTER_H
 
@@ -32,15 +40,15 @@ class PinAuthRegister : public DelayedRefSingleton<PinAuthRegister> {
 
 public:
     /*
-     * register inputer that used to obtain pin data.
+     * @brief Register inputer that used to obtain pin data.
      *
-     * param inputer used to obtain pin data.
-     * return is it successful.
+     * @param inputer Used to obtain pin data.
+     * @return Is it successful.
      */
     bool RegisterInputer(std::shared_ptr<IInputer> inputer);
 
     /*
-     * unregister inputer that used to obtain pin data.
+     * @brief UnRegister inputer that used to obtain pin data.
      */
     void UnRegisterInputer();
 
