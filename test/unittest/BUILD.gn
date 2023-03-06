@@ -20,6 +20,10 @@ ohos_unittest("PinAuth_UT_test") {
   module_out_path = module_output_path
 
   sources = [
+    "../../frameworks/client/src/inputer_data_impl.cpp",
+    "../../frameworks/client/src/inputer_get_data_service.cpp",
+    "../../frameworks/client/src/pinauth_register.cpp",
+    "../../frameworks/scrypt/src/scrypt.cpp",
     "src/inputer_data_impl_test.cpp",
     "src/inputer_get_data_proxy_test.cpp",
     "src/inputer_get_data_service_test.cpp",
@@ -50,8 +54,10 @@ ohos_unittest("PinAuth_UT_test") {
   ]
 
   deps = [
+    "../../frameworks:pinauth_ipc",
     "//base/useriam/pin_auth/services:pinauthservice",
     "//third_party/googletest:gmock",
+    "//third_party/openssl:libcrypto_shared",
   ]
 
   external_deps = [
@@ -62,13 +68,14 @@ ohos_unittest("PinAuth_UT_test") {
     "drivers_interface_pin_auth:libpin_auth_proxy_1.0",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_single",
-    "pin_auth:pinauth_framework",
     "safwk:system_ability_fwk",
+    "samgr:samgr_proxy",
   ]
 
   remove_configs = [ "//build/config/compiler:no_exceptions" ]
 
   configs = [
+    "../../frameworks:pinauth_config",
     "//base/useriam/pin_auth/services:pin_auth_services_config",
     "//base/useriam/user_auth_framework/common:iam_log_config",
     "//base/useriam/pin_auth/frameworks/:pinauth_ipc_config",

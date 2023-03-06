@@ -42,6 +42,10 @@ ohos_shared_library("pinauth_framework") {
     "//third_party/openssl:libcrypto_shared",
   ]
 
+  if (use_musl) {
+    version_script = "pin_auth_framework_map"
+  }
+
   external_deps = [
     "c_utils:utils",
     "hiviewdfx_hilog_native:libhilog",
