@@ -65,7 +65,6 @@ ohos_shared_library("pinauth_framework") {
     "PINAUTH_LOG_TAG = \"PinAuth\"",
     "LOG_DOMAIN = 0xD002422",
   ]
-  remove_configs = [ "//build/config/compiler:no_exceptions" ]
 
   subsystem_name = "useriam"
   part_name = "pin_auth"
