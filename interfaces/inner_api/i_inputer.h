@@ -38,7 +38,7 @@ public:
      * @param authSubType PinAuth sub type.
      * @param inputerData PinAuth's inputer data.
      */
-    virtual void OnGetData(int32_t authSubType, std::shared_ptr<IInputerData> inputerData);
+    virtual void OnGetData(int32_t authSubType, std::shared_ptr<IInputerData> inputerData) = 0;
 };
 } // namespace PinAuth
 } // namespace UserIam

@@ -33,7 +33,7 @@ ohos_shared_library("pinauth_framework") {
   sources = [
     "client/src/inputer_data_impl.cpp",
     "client/src/inputer_get_data_service.cpp",
-    "client/src/pinauth_register.cpp",
+    "client/src/pinauth_register_impl.cpp",
     "scrypt/src/scrypt.cpp",
   ]
 
@@ -65,6 +65,7 @@ ohos_shared_library("pinauth_framework") {
     "PINAUTH_LOG_TAG = \"PinAuth\"",
     "LOG_DOMAIN = 0xD002422",
   ]
+  remove_configs = [ "//build/config/compiler:no_exceptions" ]
 
   subsystem_name = "useriam"
   part_name = "pin_auth"

@@ -24,46 +24,37 @@
 #ifndef PINAUTH_REGISTER_H
 #define PINAUTH_REGISTER_H
 
-#include <singleton.h>
-#include <cstdint>
-#include <mutex>
-#include "iremote_object.h"
 #include "i_inputer.h"
-#include "refbase.h"
-#include "pin_auth_interface.h"
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class PinAuthRegister : public DelayedRefSingleton<PinAuthRegister> {
-    DECLARE_DELAYED_REF_SINGLETON(PinAuthRegister);
-
+class PinAuthRegister {
 public:
+    /**
+     * @brief Get PinAuthRegister instance.
+     *
+     * @return PinAuthRegister's instance.
+     */
+    static PinAuthRegister &GetInstance();
+
+    /**
+     * @brief Deconstructor.
+     */
+    virtual ~PinAuthRegister() = default;
+
     /*
      * @brief Register inputer that used to obtain pin data.
      *
      * @param inputer Used to obtain pin data.
      * @return Is it successful.
      */
-    bool RegisterInputer(std::shared_ptr<IInputer> inputer);
+    virtual bool RegisterInputer(std::shared_ptr<IInputer> inputer) = 0;
 
     /*
      * @brief UnRegister inputer that used to obtain pin data.
      */
-    void UnRegisterInputer();
-
-private:
-    class PinAuthDeathRecipient : public IRemoteObject::DeathRecipient, public NoCopyable {
-    public:
-        PinAuthDeathRecipient() = default;
-        ~PinAuthDeathRecipient() override = default;
-        void OnRemoteDied(const wptr<IRemoteObject>& remote) override;
-    };
-    void ResetProxy(const wptr<IRemoteObject>& remote);
-    std::mutex mutex_;
-    sptr<PinAuthInterface> GetProxy();
-    sptr<PinAuthInterface> proxy_ {nullptr};
-    sptr<IRemoteObject::DeathRecipient> deathRecipient_ {nullptr};
+    virtual void UnRegisterInputer() = 0;
 };
 } // namespace PinAuth
 } // namespace UserIam
