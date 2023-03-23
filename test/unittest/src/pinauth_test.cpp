@@ -58,7 +58,7 @@ void UseriamUtTest::TearDown()
 {
 }
 /**
- * @tc.cpp: /interfaces/innerkits/src/piuauth_innerkits/src/pinauth_register.cpp
+ * @tc.cpp: /interfaces/innerkits/src/piuauth_innerkits/src/pinauth_register_impl.cpp
  */
 
 /**

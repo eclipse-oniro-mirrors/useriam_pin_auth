@@ -33,7 +33,7 @@ ohos_shared_library("pinauth_framework") {
   sources = [
     "client/src/inputer_data_impl.cpp",
     "client/src/inputer_get_data_service.cpp",
-    "client/src/pinauth_register.cpp",
+    "client/src/pinauth_register_impl.cpp",
     "scrypt/src/scrypt.cpp",
   ]
 

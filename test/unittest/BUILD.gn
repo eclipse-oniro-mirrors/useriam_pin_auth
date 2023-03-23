@@ -22,7 +22,7 @@ ohos_unittest("PinAuth_UT_test") {
   sources = [
     "../../frameworks/client/src/inputer_data_impl.cpp",
     "../../frameworks/client/src/inputer_get_data_service.cpp",
-    "../../frameworks/client/src/pinauth_register.cpp",
+    "../../frameworks/client/src/pinauth_register_impl.cpp",
     "../../frameworks/scrypt/src/scrypt.cpp",
     "src/inputer_data_impl_test.cpp",
     "src/inputer_get_data_proxy_test.cpp",

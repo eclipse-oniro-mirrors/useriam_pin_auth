@@ -13,7 +13,7 @@
  * limitations under the License.
  */
 
-#include "pinauth_register.h"
+#include "pinauth_register_impl.h"
 
 #include <if_system_ability_manager.h>
 #include <iservice_registry.h>
@@ -32,10 +32,7 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-PinAuthRegister::PinAuthRegister() = default;
-PinAuthRegister::~PinAuthRegister() = default;
-
-bool PinAuthRegister::RegisterInputer(std::shared_ptr<IInputer> inputer)
+bool PinAuthRegisterImpl::RegisterInputer(std::shared_ptr<IInputer> inputer)
 {
     IAM_LOGI("start");
     if (inputer == nullptr) {
@@ -54,7 +51,7 @@ bool PinAuthRegister::RegisterInputer(std::shared_ptr<IInputer> inputer)
     return proxy->RegisterInputer(callback);
 }
 
-void PinAuthRegister::UnRegisterInputer()
+void PinAuthRegisterImpl::UnRegisterInputer()
 {
     IAM_LOGI("start");
     auto proxy = GetProxy();
@@ -65,7 +62,7 @@ void PinAuthRegister::UnRegisterInputer()
     proxy->UnRegisterInputer();
 }
 
-sptr<PinAuthInterface> PinAuthRegister::GetProxy()
+sptr<PinAuthInterface> PinAuthRegisterImpl::GetProxy()
 {
     IAM_LOGI("start");
     if (proxy_ != nullptr) {
@@ -93,7 +90,7 @@ sptr<PinAuthInterface> PinAuthRegister::GetProxy()
     return proxy_;
 }
 
-void PinAuthRegister::ResetProxy(const wptr<IRemoteObject>& remote)
+void PinAuthRegisterImpl::ResetProxy(const wptr<IRemoteObject>& remote)
 {
     IAM_LOGI("start");
     std::lock_guard<std::mutex> lock(mutex_);
@@ -104,14 +101,25 @@ void PinAuthRegister::ResetProxy(const wptr<IRemoteObject>& remote)
     }
 }
 
-void PinAuthRegister::PinAuthDeathRecipient::OnRemoteDied(const wptr<IRemoteObject>& remote)
+PinAuthRegisterImpl &PinAuthRegisterImpl::Instance()
+{
+    static PinAuthRegisterImpl impl;
+    return impl;
+}
+
+PinAuthRegister &PinAuthRegister::GetInstance()
+{
+    return PinAuthRegisterImpl::Instance();
+}
+
+void PinAuthRegisterImpl::PinAuthDeathRecipient::OnRemoteDied(const wptr<IRemoteObject>& remote)
 {
     IAM_LOGI("start");
     if (remote == nullptr) {
         IAM_LOGE("remote is nullptr");
         return;
     }
-    PinAuthRegister::GetInstance().ResetProxy(remote);
+    PinAuthRegisterImpl::Instance().ResetProxy(remote);
     IAM_LOGI("recv death notice");
 }
 } // namespace PinAuth
