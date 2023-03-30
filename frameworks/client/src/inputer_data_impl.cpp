@@ -35,18 +35,24 @@ InputerDataImpl::InputerDataImpl(const std::vector<uint8_t> &salt, const sptr<In
 void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
     IAM_LOGI("start and data size is %{public}zu", data.size());
+    std::vector<uint8_t> scrypt;
+    if (data.size() == 0) {
+        IAM_LOGE("data size is 0");
+        goto EXIT;
+    }
     auto scryptPointer = Common::MakeUnique<Scrypt>(salt_);
     if (scryptPointer == nullptr) {
         IAM_LOGE("scryptPointer is nullptr");
-        return;
+        goto EXIT;
     }
 
-    std::vector<uint8_t> scrypt = scryptPointer->GetScrypt(data);
+    scrypt = scryptPointer->GetScrypt(data);
     if (scrypt.empty()) {
         IAM_LOGE("get scrypt fail");
-        return;
+        goto EXIT;
     }
 
+EXIT:
     if (inputerSetData_ == nullptr) {
         IAM_LOGE("inputerSetData is nullptr");
         return;
