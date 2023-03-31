@@ -38,21 +38,22 @@ void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
     std::vector<uint8_t> scrypt;
     if (data.size() == 0) {
         IAM_LOGE("data size is 0");
-        goto EXIT;
+        return OnSetDataInner(authSubType, scrypt);
     }
     auto scryptPointer = Common::MakeUnique<Scrypt>(salt_);
     if (scryptPointer == nullptr) {
         IAM_LOGE("scryptPointer is nullptr");
-        goto EXIT;
+        return OnSetDataInner(authSubType, scrypt);
     }
-
     scrypt = scryptPointer->GetScrypt(data);
     if (scrypt.empty()) {
         IAM_LOGE("get scrypt fail");
-        goto EXIT;
     }
+    return OnSetDataInner(authSubType, scrypt);
+}
 
-EXIT:
+void InputerDataImpl::OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &scrypt)
+{
     if (inputerSetData_ == nullptr) {
         IAM_LOGE("inputerSetData is nullptr");
         return;

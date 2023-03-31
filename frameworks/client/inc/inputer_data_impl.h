@@ -36,6 +36,7 @@ public:
     void OnSetData(int32_t authSubType, std::vector<uint8_t> data) override;
 
 private:
+    void OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &scrypt);
     std::vector<uint8_t> salt_;
     sptr<InputerSetData> inputerSetData_ {nullptr};
 };

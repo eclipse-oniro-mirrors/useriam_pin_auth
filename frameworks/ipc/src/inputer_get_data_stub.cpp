@@ -63,7 +63,7 @@ void InputerGetDataStub::OnGetDataStub(MessageParcel &data, MessageParcel &reply
         return;
     }
 
-    OnGetData(authSubType, salt, inputerSetData.GetRefPtr());
+    OnGetData(authSubType, salt, inputerSetData);
 }
 } // namespace PinAuth
 } // namespace UserIam
