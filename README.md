@@ -1,12 +1,11 @@
 # PIN Authentication (pinauth)
 
 
-
 ## Introduction
 
-The PIN authentication (pinauth) module allows users to set and delete their Personal Information Numbers (PINs) and supports authentication of these PINs. Working with the basic framework of the User IAM subsystem, the pinauth module supports PIN change.
+The PIN authentication (pinauth) module supports the setting, deletion, and authentication of user PINs. Working with the User IAM subsystem framework, the pinauth module supports PIN change.
 
-pinauth is one of the basic user identity authentication executors of OpenHarmony. It registers resource information related to PIN authentication to the collaborative authentication framework based on the resource registration interface defined by collaborative authentication, and implements PIN setting, deletion, and authentication based on the scheduling of the collaborative authentication framework.
+pinauth is one of the basic user identity authentication executors of OpenHarmony. It registers PIN authentication resource information with the collaborative authentication framework based on the resource registration interface defined by collaborative authentication, and implements PIN setting, deletion, and authentication based on the scheduling of the collaborative authentication framework.
 
 **Figure 1** pinauth architecture
 
@@ -16,25 +15,24 @@ pinauth is one of the basic user identity authentication executors of OpenHarmon
 
 PINs are core assets in the system. The following security measures are taken in PIN authentication for security purposes:
 
-- The PIN input user interface (currently including the PIN setting and PIN authentication dialog boxes) is provided by the system-level application (<sup>Note 1</sup>). The dialog boxes involved in user settings are provided by the **Settings** application, and the PIN input dialog boxes involved in the screen unlock authentication are provided by the **Lock screen** application.
+- The PIN input user interface (currently including the PIN setting and PIN authentication dialog boxes) is provided by system applications (<sup>NOTE 1</sup>). The dialog boxes involved in user settings are provided by the **Settings** application, and the PIN input dialog boxes involved in the screen unlock authentication are provided by the **Lock screen** application.
 - Password data transmission: The raw PIN data is not transmitted across devices. After a user PIN is entered in the PIN input dialog box, the raw PIN data entered is transmitted to the pinauth Service ability only after unidirectional processing in the input model management innerAPI.
-- Secure storage and comparison of PIN data: The pinauth HDI defines the adaptation interfaces for device vendors. Device vendors can implement secure PIN comparison and storage in a TEE. <sup>Note 2</sup>
+- Secure storage and comparison of PIN data: The pinauth HDI defines the adaptation interfaces for device vendors. Device vendors can implement secure PIN comparison and storage in a TEE. <sup>NOTE 2</sup>
 
-Note 1: To implement the PIN input dialog box, the application needs to register the PIN input dialog box with the pinauth Service ability through the input dialog box management API. The input box management API requires a high-level access permission and can be invoked only by system users.
+**NOTE 1**: To implement the PIN input dialog box, the application needs to register the PIN input dialog box with the pinauth Service ability through the input dialog box management API. The input box management API requires a high-level access permission and can be invoked only by system users.
 
-Note 2: The OpenHarmony framework provides pure software implementation of PIN authentication for developers to demonstrate the PIN authentication function. The pure software implementation does not include the secure storage capability.
+**NOTE 2**: The OpenHarmony framework provides pure software implementation of PIN authentication for developers to demonstrate the PIN authentication function. The pure software implementation does not include the secure storage capability.
 
 ## Directory Structure
 
 ```undefined
 //base/useriam/pin_auth
-├── frameworks			# Framework code
-├── hdi					# APIs defined by device vendors for adaptation
-├── interfaces			# Directory for storing external interfaces
-│   └── inner_api		# Header files exposed to the internal subsystems
-├── sa_profile			# Profile of the Service ability
-├── services			# Implementation of the Service ability
-├── unittest			# Directory for storing test code
+├── frameworks		    # Framework code
+├── interfaces		    # APIs exposed externally
+│   └── inner_api		# Header file exposed to internal subsystems for system abilities
+├── sa_profile		    # Service ability profile (configuration)
+├── services		    # Implementation fo the Service ability
+├── unittest		    # Directory for storing test code
 ├── bundle.json			# Component description file
 └── pinauth.gni			# Build configuration
 ```
@@ -55,12 +53,12 @@ Note 2: The OpenHarmony framework provides pure software implementation of PIN a
 
 | API| Description                      |
 | ------ | -------------------------------- |
-| onGetData : (callback:IInputData)=>void | Obtains the PIN data.|
-| onSetData:(pinSubType:AuthSubType, data:Uint8Array)=>void | Transfers the PIN data from the PIN input dialog box to the pinauth Service ability.|
+| onGetData: (callback:IInputData)=>void | **inputer** callback invoked by the pinauth Service ability to obtain the PIN data. |
+| onSetData: (pinSubType:AuthSubType, data:Uint8Array)=>void | **inputerdata** callback invoked to transfer the PIN data from the PIN input dialog box to the pinauth Service ability. |
 
 ### Usage Guidelines
 
-- The APIs defined in the header file ```driver\interface\pin_auth\IExecutor.idl``` must be implemented in a secure environment. The PIN related information must be protected with the highest security level (TEE or security chip).
+The interfaces defined in **driver\interface\pin_auth\IExecutor.idl** must be implemented in a secure environment (trusted execution environment or security chip) to ensure protection of the highest security level on user PIN information.
 
 ## Repositories Involved
 
