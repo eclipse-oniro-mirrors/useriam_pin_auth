@@ -21,8 +21,8 @@
       "hisysevent_config": [
         "//base/useriam/pin_auth/hisysevent.yaml"
       ],
-      "rom": "6200KB",
-      "ram": "2500KB",
+      "rom": "1024KB",
+      "ram": "6072KB",
       "deps": {
         "components": [
             "hiviewdfx_hilog_native",
