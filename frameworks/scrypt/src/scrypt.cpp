@@ -39,7 +39,7 @@ std::vector<uint8_t> Scrypt::GetScrypt(const std::vector<uint8_t> data)
         IAM_LOGE("EVP_PKEY_derive_init fail");
         return {};
     }
-    if (EVP_PKEY_CTX_set1_pbe_pass(pctx, data.data(), data.size()) <= 0) {
+    if (EVP_PKEY_CTX_set1_pbe_pass(pctx, reinterpret_cast<const char *>(data.data()), data.size()) <= 0) {
         IAM_LOGE("EVP_PKEY_CTX_set1_pbe_pass fail");
         EVP_PKEY_CTX_free(pctx);
         return {};
