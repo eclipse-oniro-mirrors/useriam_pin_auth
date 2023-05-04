@@ -1,6 +1,6 @@
 {
     "name": "@openharmony/pin_auth",
-    "version": "3.1.0",
+    "version": "4.0",
     "description": "PIN Authentication capability",
     "homePage": "https://gitee.com/openharmony",
     "author": {},
@@ -29,14 +29,12 @@
             "ipc",
             "safwk",
             "samgr",
-            "hdf_core",
             "access_token",
             "hisysevent_native",
-            "common",
-            "napi",
-            "init",
             "user_auth_framework",
-            "drivers_interface_pin_auth"
+            "drivers_interface_pin_auth",
+            "hilog_native",
+            "c_utils"
         ],
         "third_party": [
             "openssl"

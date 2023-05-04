@@ -16,8 +16,8 @@ import("//build/test.gni")
 
 ohos_fuzztest("PinAuthServiceFuzzTest") {
   module_out_path = "useriam/pin_auth"
-  fuzz_config_file =
-      "//base/useriam/pin_auth/test/fuzztest/pinauthservice_fuzzer"
+  fuzz_config_file = "../pinauthservice_fuzzer"
+
   cflags = [
     "-g",
     "-O0",
