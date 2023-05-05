@@ -44,6 +44,10 @@ ohos_shared_library("pinauthservice") {
     "//third_party/openssl:libcrypto_shared",
   ]
 
+  if (use_musl) {
+    version_script = "pin_auth_service_map"
+  }
+
   external_deps = [
     "access_token:libaccesstoken_sdk",
     "c_utils:utils",

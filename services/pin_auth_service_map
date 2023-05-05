@@ -13,9 +13,6 @@
 
 {
     global:
-        extern "C++" {
-            OHOS::UserIam::PinAuth::PinAuthRegister::GetInstance*;
-        };
     local:
         *;
 };
