@@ -23,8 +23,6 @@
 #include "iam_ptr.h"
 
 #include "pin_auth_executor_hdi.h"
-#include "v1_0/iexecutor.h"
-#include "v1_0/ipin_auth_interface.h"
 
 #define LOG_LABEL UserIam::Common::LABEL_PIN_AUTH_SA
 
@@ -49,8 +47,8 @@ void PinAuthDriverHdi::GetExecutorList(std::vector<std::shared_ptr<UserAuth::IAu
         return;
     }
 
-    std::vector<sptr<HDI::PinAuth::V1_0::IExecutor>> iExecutorList;
-    auto ret = pinInterface->GetExecutorList(iExecutorList);
+    std::vector<sptr<HDI::PinAuth::V1_1::IExecutor>> iExecutorList;
+    auto ret = pinInterface->GetExecutorListV1_1(iExecutorList);
     if (ret != HDF_SUCCESS) {
         IAM_LOGE("GetExecutorList fail");
         return;
@@ -68,6 +66,11 @@ void PinAuthDriverHdi::GetExecutorList(std::vector<std::shared_ptr<UserAuth::IAu
         executorList.push_back(executor);
     }
 }
-} // PinAuth
-} // UserIam
-} // OHOS
+
+void PinAuthDriverHdi::OnHdiDisconnect()
+{
+    IAM_LOGI("start");
+}
+} // namespace PinAuth
+} // namespace UserIam
+} // namespace OHOS

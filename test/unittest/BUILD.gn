@@ -20,17 +20,6 @@ ohos_unittest("PinAuth_UT_test") {
   module_out_path = module_output_path
 
   sources = [
-    "../../frameworks/client/src/inputer_data_impl.cpp",
-    "../../frameworks/client/src/inputer_get_data_service.cpp",
-    "../../frameworks/client/src/pinauth_register_impl.cpp",
-    "../../frameworks/scrypt/src/scrypt.cpp",
-    "../../services/modules/driver/src/pin_auth_driver_hdi.cpp",
-    "../../services/modules/driver/src/pin_auth_interface_adapter.cpp",
-    "../../services/modules/executors/src/pin_auth_executor_callback_hdi.cpp",
-    "../../services/modules/executors/src/pin_auth_executor_hdi.cpp",
-    "../../services/modules/inputters/src/i_inputer_data_impl.cpp",
-    "../../services/modules/inputters/src/pin_auth_manager.cpp",
-    "../../services/sa/src/pin_auth_service.cpp",
     "src/inputer_data_impl_test.cpp",
     "src/inputer_get_data_proxy_test.cpp",
     "src/inputer_get_data_service_test.cpp",
@@ -49,17 +38,12 @@ ohos_unittest("PinAuth_UT_test") {
   include_dirs = [
     "inc",
     "mocks",
-    "../../interfaces/inner_api",
-    "../../services/sa/inc",
-    "../../services/modules/driver/inc",
-    "../../services/modules/executors/inc",
-    "../../services/modules/inputters/inc",
-    "../../common/logs",
-    "../../common/utils",
   ]
 
   deps = [
+    "../../frameworks:pinauth_framework_source_set",
     "../../frameworks:pinauth_ipc",
+    "../../services:pinauthservice_source_set",
     "//third_party/googletest:gmock",
     "//third_party/openssl:libcrypto_shared",
   ]
@@ -69,7 +53,7 @@ ohos_unittest("PinAuth_UT_test") {
     "access_token:libnativetoken",
     "access_token:libtoken_setproc",
     "c_utils:utils",
-    "drivers_interface_pin_auth:libpin_auth_proxy_1.0",
+    "drivers_interface_pin_auth:libpin_auth_proxy_1.1",
     "hisysevent_native:libhisysevent",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_single",
@@ -82,7 +66,6 @@ ohos_unittest("PinAuth_UT_test") {
   remove_configs = [ "//build/config/compiler:no_exceptions" ]
 
   configs = [
-    "../../services:pin_auth_services_config",
     "../../frameworks:pinauth_config",
     "../../common:iam_log_config",
     "../../frameworks/:pinauth_ipc_config",

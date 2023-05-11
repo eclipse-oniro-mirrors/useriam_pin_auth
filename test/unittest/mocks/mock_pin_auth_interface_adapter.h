@@ -17,13 +17,12 @@
 #define MOCK_FACE_AUTH_INTERFACE_ADAPTER
 
 #include "pin_auth_interface_adapter.h"
-#include "v1_0/ipin_auth_interface.h"
+#include "pin_auth_hdi.h"
 #include "gmock/gmock.h"
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-using namespace OHOS::HDI::PinAuth::V1_0;
 class MockPinAuthInterfaceAdapter : public PinAuthInterfaceAdapter {
 public:
     MockPinAuthInterfaceAdapter() = default;
