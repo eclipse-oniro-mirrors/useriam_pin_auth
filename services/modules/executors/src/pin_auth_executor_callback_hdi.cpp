@@ -16,14 +16,13 @@
 #include "pin_auth_executor_callback_hdi.h"
 
 #include <cinttypes>
-#include <v1_0/iexecutor.h>
 #include <hdf_base.h>
 
 #include "iam_logger.h"
 #include "iam_common_defines.h"
 #include "i_inputer_data_impl.h"
 #include "inputer_get_data_proxy.h"
-#include "v1_0/pin_auth_types.h"
+#include "pin_auth_hdi.h"
 
 #define LOG_LABEL UserIam::Common::LABEL_PIN_AUTH_SA
 

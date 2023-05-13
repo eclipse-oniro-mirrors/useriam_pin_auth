@@ -26,7 +26,6 @@
 
 using namespace testing;
 using namespace testing::ext;
-using namespace OHOS::HDI::PinAuth::V1_0;
 using namespace OHOS::UserIam::UserAuth;
 using namespace OHOS::UserIam::Common;
 

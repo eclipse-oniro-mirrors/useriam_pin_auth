@@ -29,7 +29,6 @@
 using namespace testing;
 using namespace testing::ext;
 using namespace OHOS::UserIam::Common;
-namespace PinHdi = OHOS::HDI::PinAuth::V1_0;
 
 namespace OHOS {
 namespace UserIam {
@@ -76,13 +75,13 @@ void PinAuthExecutorHdiUnitTest::TearDown()
 
 HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_GetExecutorInfo_001, TestSize.Level0)
 {
-    auto executorProxy = new (std::nothrow) PinHdi::MockIExecutor();
+    auto executorProxy = new (std::nothrow) MockIExecutor();
     ASSERT_TRUE(executorProxy != nullptr);
-    EXPECT_CALL(*executorProxy, GetExecutorInfo(_)).Times(Exactly(1)).WillOnce([](PinHdi::ExecutorInfo &info) {
+    EXPECT_CALL(*executorProxy, GetExecutorInfo(_)).Times(Exactly(1)).WillOnce([](ExecutorInfo &info) {
         info = {
-            .executorRole = PinHdi::ExecutorRole::ALL_IN_ONE,
-            .authType = PinHdi::PIN,
-            .esl = PinHdi::ExecutorSecureLevel::ESL0,
+            .executorRole = ExecutorRole::ALL_IN_ONE,
+            .authType = AuthType::PIN,
+            .esl = ExecutorSecureLevel::ESL0,
         };
         return HDF_SUCCESS;
     });
@@ -98,15 +97,15 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_GetExecutorInfo_001, Tes
 HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_GetExecutorInfo_002, TestSize.Level0)
 {
     for (const auto &pair : RESULT_CODE_MAP) {
-        auto executorProxy = new (std::nothrow) PinHdi::MockIExecutor();
+        auto executorProxy = new (std::nothrow) MockIExecutor();
         ASSERT_TRUE(executorProxy != nullptr);
         EXPECT_CALL(*executorProxy, GetExecutorInfo(_))
             .Times(Exactly(1))
-            .WillOnce([&pair](PinHdi::ExecutorInfo &info) {
+            .WillOnce([&pair](ExecutorInfo &info) {
                 info = {
-                    .executorRole = PinHdi::ExecutorRole::ALL_IN_ONE,
-                    .authType = PinHdi::PIN,
-                    .esl = PinHdi::ExecutorSecureLevel::ESL0,
+                    .executorRole = ExecutorRole::ALL_IN_ONE,
+                    .authType = AuthType::PIN,
+                    .esl = ExecutorSecureLevel::ESL0,
                 };
                 return static_cast<int32_t>(pair.first);
             });
@@ -119,23 +118,23 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_GetExecutorInfo_002, Tes
 
 HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_GetExecutorInfo_003, TestSize.Level0)
 {
-    static const std::map<PinHdi::AuthType, pair<IamAuthType, IamResultCode>> data = {
-        {PinHdi::PIN, {IamAuthType::PIN, IamResultCode::SUCCESS}},
-        {static_cast<PinHdi::AuthType>(PinHdi::PIN + 1),
+    static const std::map<AuthType, pair<IamAuthType, IamResultCode>> data = {
+        {AuthType::PIN, {IamAuthType::PIN, IamResultCode::SUCCESS}},
+        {static_cast<AuthType>(AuthType::PIN + 1),
             {IamAuthType::PIN, IamResultCode::GENERAL_ERROR}},
-        {static_cast<PinHdi::AuthType>(PinHdi::PIN - 1),
+        {static_cast<AuthType>(AuthType::PIN - 1),
             {IamAuthType::PIN, IamResultCode::GENERAL_ERROR}},
     };
     for (const auto &pair : data) {
-        auto executorProxy = new (std::nothrow) PinHdi::MockIExecutor();
+        auto executorProxy = new (std::nothrow) MockIExecutor();
         ASSERT_TRUE(executorProxy != nullptr);
         EXPECT_CALL(*executorProxy, GetExecutorInfo(_))
             .Times(Exactly(1))
-            .WillOnce([&pair](PinHdi::ExecutorInfo &info) {
+            .WillOnce([&pair](ExecutorInfo &info) {
                 info = {
-                    .executorRole = PinHdi::ExecutorRole::ALL_IN_ONE,
+                    .executorRole = ExecutorRole::ALL_IN_ONE,
                     .authType = pair.first,
-                    .esl = PinHdi::ExecutorSecureLevel::ESL0,
+                    .esl = ExecutorSecureLevel::ESL0,
                 };
                 return HDF_SUCCESS;
             });
@@ -151,25 +150,25 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_GetExecutorInfo_003, Tes
 
 HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_GetExecutorInfo_004, TestSize.Level0)
 {
-    static const std::map<PinHdi::ExecutorRole, pair<IamExecutorRole, IamResultCode>> data = {
-        {PinHdi::ExecutorRole::COLLECTOR, {IamExecutorRole::COLLECTOR, IamResultCode::SUCCESS}},
-        {PinHdi::ExecutorRole::VERIFIER, {IamExecutorRole::VERIFIER, IamResultCode::SUCCESS}},
-        {PinHdi::ExecutorRole::ALL_IN_ONE, {IamExecutorRole::ALL_IN_ONE, IamResultCode::SUCCESS}},
-        {static_cast<PinHdi::ExecutorRole>(PinHdi::ExecutorRole::COLLECTOR - 1),
+    static const std::map<ExecutorRole, pair<IamExecutorRole, IamResultCode>> data = {
+        {ExecutorRole::COLLECTOR, {IamExecutorRole::COLLECTOR, IamResultCode::SUCCESS}},
+        {ExecutorRole::VERIFIER, {IamExecutorRole::VERIFIER, IamResultCode::SUCCESS}},
+        {ExecutorRole::ALL_IN_ONE, {IamExecutorRole::ALL_IN_ONE, IamResultCode::SUCCESS}},
+        {static_cast<ExecutorRole>(ExecutorRole::COLLECTOR - 1),
             {IamExecutorRole::ALL_IN_ONE, IamResultCode::GENERAL_ERROR}},
-        {static_cast<PinHdi::ExecutorRole>(PinHdi::ExecutorRole::ALL_IN_ONE + 1),
+        {static_cast<ExecutorRole>(ExecutorRole::ALL_IN_ONE + 1),
             {IamExecutorRole::ALL_IN_ONE, IamResultCode::GENERAL_ERROR}},
     };
     for (const auto &pair : data) {
-        auto executorProxy = new (std::nothrow) PinHdi::MockIExecutor();
+        auto executorProxy = new (std::nothrow) MockIExecutor();
         ASSERT_TRUE(executorProxy != nullptr);
         EXPECT_CALL(*executorProxy, GetExecutorInfo(_))
             .Times(Exactly(1))
-            .WillOnce([&pair](PinHdi::ExecutorInfo &info) {
+            .WillOnce([&pair](ExecutorInfo &info) {
                 info = {
                     .executorRole = pair.first,
-                    .authType = PinHdi::PIN,
-                    .esl = PinHdi::ExecutorSecureLevel::ESL0,
+                    .authType = AuthType::PIN,
+                    .esl = ExecutorSecureLevel::ESL0,
                 };
                 return HDF_SUCCESS;
             });
@@ -185,26 +184,26 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_GetExecutorInfo_004, Tes
 
 HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_GetExecutorInfo_005, TestSize.Level0)
 {
-    static const std::map<PinHdi::ExecutorSecureLevel, pair<IamExecutorSecureLevel, IamResultCode>> data =
+    static const std::map<ExecutorSecureLevel, pair<IamExecutorSecureLevel, IamResultCode>> data =
         {
-            {PinHdi::ExecutorSecureLevel::ESL0, {IamExecutorSecureLevel::ESL0, IamResultCode::SUCCESS}},
-            {PinHdi::ExecutorSecureLevel::ESL1, {IamExecutorSecureLevel::ESL1, IamResultCode::SUCCESS}},
-            {PinHdi::ExecutorSecureLevel::ESL2, {IamExecutorSecureLevel::ESL2, IamResultCode::SUCCESS}},
-            {PinHdi::ExecutorSecureLevel::ESL3, {IamExecutorSecureLevel::ESL3, IamResultCode::SUCCESS}},
-            {static_cast<PinHdi::ExecutorSecureLevel>(PinHdi::ExecutorSecureLevel::ESL0 - 1),
+            {ExecutorSecureLevel::ESL0, {IamExecutorSecureLevel::ESL0, IamResultCode::SUCCESS}},
+            {ExecutorSecureLevel::ESL1, {IamExecutorSecureLevel::ESL1, IamResultCode::SUCCESS}},
+            {ExecutorSecureLevel::ESL2, {IamExecutorSecureLevel::ESL2, IamResultCode::SUCCESS}},
+            {ExecutorSecureLevel::ESL3, {IamExecutorSecureLevel::ESL3, IamResultCode::SUCCESS}},
+            {static_cast<ExecutorSecureLevel>(ExecutorSecureLevel::ESL0 - 1),
                 {IamExecutorSecureLevel::ESL3, IamResultCode::GENERAL_ERROR}},
-            {static_cast<PinHdi::ExecutorSecureLevel>(PinHdi::ExecutorSecureLevel::ESL3 + 1),
+            {static_cast<ExecutorSecureLevel>(ExecutorSecureLevel::ESL3 + 1),
                 {IamExecutorSecureLevel::ESL3, IamResultCode::GENERAL_ERROR}},
         };
     for (const auto &pair : data) {
-        auto executorProxy = new (std::nothrow) PinHdi::MockIExecutor();
+        auto executorProxy = new (std::nothrow) MockIExecutor();
         ASSERT_TRUE(executorProxy != nullptr);
         EXPECT_CALL(*executorProxy, GetExecutorInfo(_))
             .Times(Exactly(1))
-            .WillOnce([&pair](PinHdi::ExecutorInfo &info) {
+            .WillOnce([&pair](ExecutorInfo &info) {
                 info = {
-                    .executorRole = PinHdi::ExecutorRole::ALL_IN_ONE,
-                    .authType = PinHdi::PIN,
+                    .executorRole = ExecutorRole::ALL_IN_ONE,
+                    .authType = AuthType::PIN,
                     .esl = pair.first,
                 };
                 return HDF_SUCCESS;
@@ -227,60 +226,10 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_GetExecutorInfo_006, Tes
     EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
 }
 
-HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_GetTemplateInfo_001, TestSize.Level0)
-{
-    const UserAuth::TemplateInfo data = {.executorType = 1,
-        .freezingTime = 2,
-        .remainTimes = 3,
-        .extraInfo = {4, 5, 6}};
-    auto executorProxy = new (std::nothrow) PinHdi::MockIExecutor();
-    ASSERT_TRUE(executorProxy != nullptr);
-    EXPECT_CALL(*executorProxy, GetTemplateInfo(_, _))
-        .Times(Exactly(1))
-        .WillOnce([&data](uint64_t templateId, PinHdi::TemplateInfo &info) {
-            info = {.executorType = data.executorType,
-                .lockoutDuration = data.freezingTime,
-                .remainAttempts = data.remainTimes,
-                .extraInfo = data.extraInfo};
-            return HDF_SUCCESS;
-        });
-    PinAuthExecutorHdi executorHdi(executorProxy);
-    UserAuth::TemplateInfo info = {};
-    auto ret = executorHdi.GetTemplateInfo(0, info);
-    EXPECT_TRUE(ret == IamResultCode::SUCCESS);
-    EXPECT_TRUE(info.executorType == data.executorType);
-    EXPECT_TRUE(info.freezingTime == data.freezingTime);
-    EXPECT_TRUE(info.remainTimes == data.remainTimes);
-    EXPECT_TRUE(info.extraInfo == data.extraInfo);
-}
-
-HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_GetTemplateInfo_002, TestSize.Level0)
-{
-    for (const auto &pair : RESULT_CODE_MAP) {
-        auto executorProxy = new (std::nothrow) PinHdi::MockIExecutor();
-        ASSERT_TRUE(executorProxy != nullptr);
-        EXPECT_CALL(*executorProxy, GetTemplateInfo(_, _))
-            .Times(Exactly(1))
-            .WillOnce([&pair](uint64_t templateId, PinHdi::TemplateInfo &info) { return pair.first; });
-        PinAuthExecutorHdi executorHdi(executorProxy);
-        UserAuth::TemplateInfo info = {};
-        auto ret = executorHdi.GetTemplateInfo(0, info);
-        EXPECT_TRUE(ret == pair.second);
-    }
-}
-
-HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_GetTemplateInfo_003, TestSize.Level0)
-{
-    PinAuthExecutorHdi executorHdi(nullptr);
-    UserAuth::TemplateInfo info = {};
-    auto ret = executorHdi.GetTemplateInfo(0, info);
-    EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
-}
-
 HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_OnRegisterFinish_001, TestSize.Level0)
 {
     for (const auto &pair : RESULT_CODE_MAP) {
-        auto executorProxy = new (std::nothrow) PinHdi::MockIExecutor();
+        auto executorProxy = new (std::nothrow) MockIExecutor();
         ASSERT_TRUE(executorProxy != nullptr);
         EXPECT_CALL(*executorProxy, OnRegisterFinish(_, _, _))
             .Times(Exactly(1))
@@ -305,7 +254,7 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_OnRegisterFinish_002, Te
 HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_OnSetData_001, TestSize.Level0)
 {
     for (const auto &pair : RESULT_CODE_MAP) {
-        auto executorProxy = new (std::nothrow) PinHdi::MockIExecutor();
+        auto executorProxy = new (std::nothrow) MockIExecutor();
         ASSERT_TRUE(executorProxy != nullptr);
         EXPECT_CALL(*executorProxy, OnSetData(_, _, _))
             .Times(Exactly(1))
@@ -329,28 +278,28 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_OnSetData_002, TestSize.
 HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_Enroll_001, TestSize.Level0)
 {
     for (const auto &pair : RESULT_CODE_MAP) {
-        auto executorProxy = new (std::nothrow) PinHdi::MockIExecutor();
+        auto executorProxy = new (std::nothrow) MockIExecutor();
         ASSERT_TRUE(executorProxy != nullptr);
         EXPECT_CALL(*executorProxy, Enroll(_, _, _))
             .Times(Exactly(1))
             .WillOnce([&pair](uint64_t scheduleId, const std::vector<uint8_t> &extraInfo,
-                          const sptr<PinHdi::IExecutorCallback> &callbackObj) { return pair.first; });
+                          const sptr<IExecutorCallback> &callbackObj) { return pair.first; });
         auto executorHdi = MakeShared<PinAuthExecutorHdi>(executorProxy);
         ASSERT_TRUE(executorHdi != nullptr);
         auto executeCallback = MakeShared<UserIam::UserAuth::MockIExecuteCallback>();
         ASSERT_TRUE(executeCallback != nullptr);
-        auto ret = executorHdi->Enroll(0, 0, std::vector<uint8_t>(), executeCallback);
+        auto ret = executorHdi->Enroll(0, UserAuth::EnrollParam{0, std::vector<uint8_t>()}, executeCallback);
         EXPECT_TRUE(ret == pair.second);
     }
 }
 
 HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_Enroll_002, TestSize.Level0)
 {
-    auto executorProxy = new (std::nothrow) PinHdi::MockIExecutor();
+    auto executorProxy = new (std::nothrow) MockIExecutor();
     ASSERT_TRUE(executorProxy != nullptr);
     auto executorHdi = MakeShared<PinAuthExecutorHdi>(executorProxy);
     ASSERT_TRUE(executorHdi != nullptr);
-    auto ret = executorHdi->Enroll(0, 0, std::vector<uint8_t>(), nullptr);
+    auto ret = executorHdi->Enroll(0, UserAuth::EnrollParam{0, std::vector<uint8_t>()}, nullptr);
     EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
 }
 
@@ -360,34 +309,36 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_Enroll_003, TestSize.Lev
     ASSERT_TRUE(executorHdi != nullptr);
     auto executeCallback = MakeShared<UserIam::UserAuth::MockIExecuteCallback>();
     ASSERT_TRUE(executeCallback != nullptr);
-    auto ret = executorHdi->Enroll(0, 0, std::vector<uint8_t>(), executeCallback);
+    auto ret = executorHdi->Enroll(0, UserAuth::EnrollParam{0, std::vector<uint8_t>()}, executeCallback);
     EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
 }
 
 HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_Authenticate_001, TestSize.Level0)
 {
     for (const auto &pair : RESULT_CODE_MAP) {
-        auto executorProxy = new (std::nothrow) PinHdi::MockIExecutor();
+        auto executorProxy = new (std::nothrow) MockIExecutor();
         ASSERT_TRUE(executorProxy != nullptr);
         EXPECT_CALL(*executorProxy, Authenticate(_, _, _, _)).Times(Exactly(1)).WillOnce([&pair](uint64_t scheduleId,
             uint64_t templateIdList, const std::vector<uint8_t> &extraInfo,
-            const sptr<PinHdi::IExecutorCallback> &callbackObj) { return pair.first; });
+            const sptr<IExecutorCallback> &callbackObj) { return pair.first; });
         auto executorHdi = MakeShared<PinAuthExecutorHdi>(executorProxy);
         ASSERT_TRUE(executorHdi != nullptr);
         auto executeCallback = MakeShared<UserIam::UserAuth::MockIExecuteCallback>();
         ASSERT_TRUE(executeCallback != nullptr);
         const std::vector<uint64_t> templateIdList = {1, 2};
-        auto ret = executorHdi->Authenticate(0, 0, templateIdList, std::vector<uint8_t>(), executeCallback);
+        auto ret = executorHdi->Authenticate(0,
+            UserAuth::AuthenticateParam{0, templateIdList, std::vector<uint8_t>()}, executeCallback);
         EXPECT_TRUE(ret == pair.second);
     }
 }
 
 HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_Authenticate_002, TestSize.Level0)
 {
-    auto executorProxy = new (std::nothrow) PinHdi::MockIExecutor();
+    auto executorProxy = new (std::nothrow) MockIExecutor();
     ASSERT_TRUE(executorProxy != nullptr);
     auto executorHdi = MakeShared<PinAuthExecutorHdi>(executorProxy);
-    auto ret = executorHdi->Authenticate(0, 0, std::vector<uint64_t>(), std::vector<uint8_t>(), nullptr);
+    auto ret = executorHdi->Authenticate(0,
+        UserAuth::AuthenticateParam{0, std::vector<uint64_t>(), std::vector<uint8_t>()}, nullptr);
     EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
 }
 
@@ -396,23 +347,24 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_Authenticate_003, TestSi
     auto executorHdi = MakeShared<PinAuthExecutorHdi>(nullptr);
     auto executeCallback = MakeShared<UserIam::UserAuth::MockIExecuteCallback>();
     ASSERT_TRUE(executeCallback != nullptr);
-    auto ret = executorHdi->Authenticate(0, 0, std::vector<uint64_t>(), std::vector<uint8_t>(), executeCallback);
+    auto ret = executorHdi->Authenticate(0,
+        UserAuth::AuthenticateParam{0, std::vector<uint64_t>(), std::vector<uint8_t>()}, executeCallback);
     EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
 }
 
 HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_Identify_001, TestSize.Level0)
 {
-    auto executorProxy = new (std::nothrow) PinHdi::MockIExecutor();
+    auto executorProxy = new (std::nothrow) MockIExecutor();
     ASSERT_TRUE(executorProxy != nullptr);
     PinAuthExecutorHdi executorHdi(executorProxy);
-    auto ret = executorHdi.Identify(0, 0, std::vector<uint8_t>(), nullptr);
+    auto ret = executorHdi.Identify(0, UserAuth::IdentifyParam{0, std::vector<uint8_t>()}, nullptr);
     EXPECT_TRUE(ret == IamResultCode::SUCCESS);
 }
 
 HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_Delete_001, TestSize.Level0)
 {
     for (const auto &pair : RESULT_CODE_MAP) {
-        auto executorProxy = new (std::nothrow) PinHdi::MockIExecutor();
+        auto executorProxy = new (std::nothrow) MockIExecutor();
         ASSERT_TRUE(executorProxy != nullptr);
         EXPECT_CALL(*executorProxy, Delete(_))
             .Times(Exactly(1))
@@ -435,7 +387,7 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_Delete_002, TestSize.Lev
 HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_Cancel_001, TestSize.Level0)
 {
     for (const auto &pair : RESULT_CODE_MAP) {
-        auto executorProxy = new (std::nothrow) PinHdi::MockIExecutor();
+        auto executorProxy = new (std::nothrow) MockIExecutor();
         ASSERT_TRUE(executorProxy != nullptr);
         EXPECT_CALL(*executorProxy, Cancel(_)).Times(Exactly(1)).WillOnce([&pair](uint64_t scheduleId) {
             return pair.first;
@@ -455,7 +407,7 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_Cancel_002, TestSize.Lev
 
 HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_SendCommand_001, TestSize.Level0)
 {
-    auto executorProxy = new (std::nothrow) PinHdi::MockIExecutor();
+    auto executorProxy = new (std::nothrow) MockIExecutor();
     ASSERT_TRUE(executorProxy != nullptr);
     PinAuthExecutorHdi executorHdi(executorProxy);
     auto ret = executorHdi.SendCommand(IamPropertyMode::PROPERTY_MODE_FREEZE, std::vector<uint8_t>(), nullptr);

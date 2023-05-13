@@ -18,12 +18,11 @@
 
 #include "gmock/gmock.h"
 
-#include "v1_0/iexecutor.h"
+#include "pin_auth_hdi.h"
 
 namespace OHOS {
-namespace HDI {
+namespace UserIam {
 namespace PinAuth {
-namespace V1_0 {
 using namespace OHOS;
 using namespace OHOS::HDI;
 class MockIExecutor : public IExecutor {
@@ -44,10 +43,12 @@ public:
     MOCK_METHOD3(SendCommand, int32_t(int32_t commandId, const std::vector<uint8_t> &extraInfo,
         const sptr<IExecutorCallback> &callbackObj));
     MOCK_METHOD3(OnSetData, int32_t(uint64_t scheduleId, uint64_t authSubType, const std::vector<uint8_t> &data));
+    MOCK_METHOD3(GetProperty, int32_t(const std::vector<uint64_t>& templateIdList,
+         const std::vector<GetPropertyType>& propertyTypes, Property& property));
+    MOCK_METHOD1(SetCachedTemplates, int32_t(const std::vector<uint64_t>& templateIdList));
 };
-} // namespace V1_0
 } // namespace PinAuth
-} // namespace HDI
+} // namespace UserIam
 } // namespace OHOS
 
 #endif // MOCK_IEXECUTOR_H

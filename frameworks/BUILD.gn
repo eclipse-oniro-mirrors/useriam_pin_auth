@@ -28,7 +28,7 @@ config("pinauth_ipc_config") {
   ]
 }
 
-ohos_shared_library("pinauth_framework") {
+ohos_source_set("pinauth_framework_source_set") {
   sources = [
     "client/src/inputer_data_impl.cpp",
     "client/src/inputer_get_data_service.cpp",
@@ -40,10 +40,6 @@ ohos_shared_library("pinauth_framework") {
     ":pinauth_ipc",
     "//third_party/openssl:libcrypto_shared",
   ]
-
-  if (use_musl) {
-    version_script = "pin_auth_framework_map"
-  }
 
   external_deps = [
     "c_utils:utils",
@@ -66,6 +62,19 @@ ohos_shared_library("pinauth_framework") {
     "LOG_DOMAIN = 0xD002422",
   ]
   remove_configs = [ "//build/config/compiler:no_exceptions" ]
+
+  subsystem_name = "useriam"
+  part_name = "pin_auth"
+}
+
+ohos_shared_library("pinauth_framework") {
+  deps = [ ":pinauth_framework_source_set" ]
+
+  if (use_musl) {
+    version_script = "pin_auth_framework_map"
+  }
+
+  public_configs = [ ":pinauth_config" ]
 
   subsystem_name = "useriam"
   part_name = "pin_auth"

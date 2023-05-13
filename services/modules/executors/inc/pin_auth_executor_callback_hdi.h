@@ -21,16 +21,15 @@
 
 #include "nocopyable.h"
 
-#include "v1_0/iexecutor_callback.h"
 #include "iam_executor_iexecute_callback.h"
+#include "pin_auth_hdi.h"
 #include "pin_auth_manager.h"
 #include "pin_auth_executor_hdi.h"
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-namespace PinHdi = OHOS::HDI::PinAuth::V1_0;
-class PinAuthExecutorCallbackHdi : public PinHdi::IExecutorCallback, public NoCopyable {
+class PinAuthExecutorCallbackHdi : public IExecutorCallback, public NoCopyable {
 public:
     explicit PinAuthExecutorCallbackHdi(std::shared_ptr<UserAuth::IExecuteCallback> frameworkCallback,
         std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi, uint32_t tokenId);

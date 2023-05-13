@@ -16,13 +16,14 @@ import("//build/ohos.gni")
 config("pin_auth_services_config") {
   include_dirs = [
     "sa/inc",
+    "modules/common/inc",
     "modules/driver/inc",
     "modules/executors/inc",
     "modules/inputters/inc",
   ]
 }
 
-ohos_shared_library("pinauthservice") {
+ohos_source_set("pinauthservice_source_set") {
   sources = [
     "modules/driver/src/pin_auth_driver_hdi.cpp",
     "modules/driver/src/pin_auth_interface_adapter.cpp",
@@ -39,19 +40,17 @@ ohos_shared_library("pinauthservice") {
     "../common:iam_utils_config",
   ]
 
+  public_configs = [ ":pin_auth_services_config" ]
+
   deps = [
     "../frameworks:pinauth_ipc",
     "//third_party/openssl:libcrypto_shared",
   ]
 
-  if (use_musl) {
-    version_script = "pin_auth_service_map"
-  }
-
   external_deps = [
     "access_token:libaccesstoken_sdk",
     "c_utils:utils",
-    "drivers_interface_pin_auth:libpin_auth_proxy_1.0",
+    "drivers_interface_pin_auth:libpin_auth_proxy_1.1",
     "hisysevent_native:libhisysevent",
     "hiviewdfx_hilog_native:libhilog",
     "ipc:ipc_single",
@@ -60,6 +59,19 @@ ohos_shared_library("pinauthservice") {
     "user_auth_framework:userauth_executors",
   ]
   remove_configs = [ "//build/config/compiler:no_exceptions" ]
+
+  subsystem_name = "useriam"
+  part_name = "pin_auth"
+}
+
+ohos_shared_library("pinauthservice") {
+  deps = [ ":pinauthservice_source_set" ]
+
+  public_configs = [ ":pin_auth_services_config" ]
+
+  if (use_musl) {
+    version_script = "pin_auth_service_map"
+  }
 
   subsystem_name = "useriam"
   part_name = "pin_auth"

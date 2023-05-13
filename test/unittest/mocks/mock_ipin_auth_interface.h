@@ -18,12 +18,11 @@
 
 #include "gmock/gmock.h"
 
-#include "v1_0/ipin_auth_interface.h"
+#include "pin_auth_hdi.h"
 
 namespace OHOS {
-namespace HDI {
+namespace UserIam {
 namespace PinAuth {
-namespace V1_0 {
 using namespace OHOS;
 using namespace OHOS::HDI;
 
@@ -31,11 +30,12 @@ class MockIPinAuthInterface : public IPinAuthInterface {
 public:
     virtual ~MockIPinAuthInterface() = default;
 
-    MOCK_METHOD1(GetExecutorList, int32_t(std::vector<sptr<IExecutor>> &executorList));
+    MOCK_METHOD1(GetExecutorList, int32_t(std::vector<sptr<IExecutorV1_0>> &executorList));
+
+    MOCK_METHOD1(GetExecutorListV1_1, int32_t(std::vector<sptr<IExecutor>> &executorList));
 };
-} // namespace V1_0
 } // namespace PinAuth
-} // namespace HDI
+} // namespace UserIam
 } // namespace OHOS
 
 #endif // MOCK_IPIN_AUTH_INTERFACE_H

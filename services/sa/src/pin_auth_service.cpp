@@ -48,7 +48,7 @@ PinAuthService::PinAuthService() : SystemAbility(SUBSYS_USERIAM_SYS_ABILITY_PINA
 std::shared_ptr<PinAuthService> PinAuthService::GetInstance()
 {
     if (instance_ == nullptr) {
-        std::lock_guard<std::mutex> gurard(mutex_);
+        std::lock_guard<std::mutex> guard(mutex_);
         if (instance_ == nullptr) {
             instance_ = Common::MakeShared<PinAuthService>();
             if (instance_ == nullptr) {

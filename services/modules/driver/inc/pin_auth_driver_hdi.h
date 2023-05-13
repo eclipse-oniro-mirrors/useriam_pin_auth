@@ -19,21 +19,23 @@
 #include <mutex>
 #include <vector>
 
+#include "nocopyable.h"
+
 #include "iam_executor_iauth_driver_hdi.h"
 #include "iremote_broker.h"
 #include "iam_executor_iauth_executor_hdi.h"
 #include "pin_auth_interface_adapter.h"
-#include "nocopyable.h"
+#include "pin_auth_hdi.h"
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-namespace PinHdi = OHOS::HDI::PinAuth::V1_0;
 class PinAuthDriverHdi : public UserAuth::IAuthDriverHdi, public NoCopyable {
 public:
     explicit PinAuthDriverHdi(const std::shared_ptr<PinAuthInterfaceAdapter> &pinAuthInterfaceAdapter);
     ~PinAuthDriverHdi() override = default;
     void GetExecutorList(std::vector<std::shared_ptr<UserAuth::IAuthExecutorHdi>> &executorList) override;
+    void OnHdiDisconnect() override;
 
 private:
     static std::mutex mutex_;

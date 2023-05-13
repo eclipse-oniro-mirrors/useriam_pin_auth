@@ -24,25 +24,15 @@ ohos_fuzztest("PinAuthServiceFuzzTest") {
     "-Wno-unused-variable",
     "-fno-omit-frame-pointer",
   ]
-  include_dirs = [
-    "../../../services/sa/inc",
-    "../../../services/modules/inputters/inc",
-  ]
 
   sources = [
-    "../../../services/modules/driver/src/pin_auth_driver_hdi.cpp",
-    "../../../services/modules/driver/src/pin_auth_interface_adapter.cpp",
-    "../../../services/modules/executors/src/pin_auth_executor_callback_hdi.cpp",
-    "../../../services/modules/executors/src/pin_auth_executor_hdi.cpp",
-    "../../../services/modules/inputters/src/i_inputer_data_impl.cpp",
-    "../../../services/modules/inputters/src/pin_auth_manager.cpp",
-    "../../../services/sa/src/pin_auth_service.cpp",
     "iam_fuzz_test.cpp",
     "pin_auth_service_fuzzer.cpp",
   ]
 
   deps = [
     "../../../frameworks:pinauth_ipc",
+    "../../../services:pinauthservice_source_set",
     "//third_party/openssl:libcrypto_shared",
   ]
 
@@ -61,7 +51,6 @@ ohos_fuzztest("PinAuthServiceFuzzTest") {
   remove_configs = [ "//build/config/compiler:no_exceptions" ]
 
   configs = [
-    "../../../services:pin_auth_services_config",
     "../../../frameworks:pinauth_ipc_config",
     "../../../common:iam_log_config",
     "../../../common:iam_utils_config",
