@@ -345,6 +345,10 @@ IamResultCode PinAuthExecutorHdi::ConvertAttributeKeyVectorToPropertyType(
 {
     outItems.clear();
     for (auto &inItem : inItems) {
+        if (inItem == UserAuth::Attributes::ATTR_ENROLL_PROGRESS ||
+            inItem == UserAuth::Attributes::ATTR_SENSOR_INFO) {
+            continue;
+        }
         GetPropertyType outItem;
         IamResultCode result = ConvertAttributeKeyToPropertyType(inItem, outItem);
         IF_FALSE_LOGE_AND_RETURN_VAL(result == IamResultCode::SUCCESS, IamResultCode::GENERAL_ERROR);
