@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -53,24 +53,6 @@ public:
 
 auto g_service = PinAuthService::GetInstance();
 
-void FuzzOnStart(Parcel &parcel)
-{
-    IAM_LOGI("begin");
-    if (g_service != nullptr) {
-        g_service->OnStart();
-    }
-    IAM_LOGI("end");
-}
-
-void FuzzOnStop(Parcel &parcel)
-{
-    IAM_LOGI("begin");
-    if (g_service != nullptr) {
-        g_service->OnStop();
-    }
-    IAM_LOGI("end");
-}
-
 void FuzzRegisterInputer(Parcel &parcel)
 {
     IAM_LOGI("begin");
@@ -104,8 +86,8 @@ void FuzzCheckPermission(Parcel &parcel)
     IAM_LOGI("end");
 }
 
-using FuzzFunc = decltype(FuzzOnStart);
-FuzzFunc *g_fuzzFuncs[] = {FuzzOnStart, FuzzOnStop, FuzzRegisterInputer, FuzzUnRegisterInputer, FuzzCheckPermission};
+using FuzzFunc = decltype(FuzzRegisterInputer);
+FuzzFunc *g_fuzzFuncs[] = {FuzzRegisterInputer, FuzzUnRegisterInputer, FuzzCheckPermission};
 
 void PinAuthServiceFuzzTest(const uint8_t *data, size_t size)
 {

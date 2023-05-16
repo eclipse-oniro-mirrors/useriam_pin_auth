@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,12 +34,14 @@ public:
     PinAuthService();
     static std::shared_ptr<PinAuthService> GetInstance();
 
-    // SystemAbility
-    void OnStart() override;
-    void OnStop() override;
     bool RegisterInputer(const sptr<InputerGetData> &inputer) override;
     void UnRegisterInputer() override;
     bool CheckPermission(const std::string &permission);
+
+protected:
+    // SystemAbility
+    void OnStart() override;
+    void OnStop() override;
 
 private:
     static std::mutex mutex_;
