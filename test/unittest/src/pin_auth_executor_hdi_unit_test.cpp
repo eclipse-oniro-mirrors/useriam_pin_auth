@@ -414,6 +414,60 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_SendCommand_001, TestSiz
     EXPECT_TRUE(ret == IamResultCode::SUCCESS);
 }
 
+HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_GetProperty_001, TestSize.Level0)
+{
+    PinAuthExecutorHdi executorHdi(nullptr);
+    std::vector<uint64_t> templateIdList;
+    std::vector<UserAuth::Attributes::AttributeKey> keys;
+    UserAuth::Property property = {};
+    auto ret = executorHdi.GetProperty(templateIdList, keys, property);
+    EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
+}
+
+HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_GetProperty_002, TestSize.Level0)
+{
+    auto executorProxy = new (std::nothrow) MockIExecutor();
+    ASSERT_TRUE(executorProxy != nullptr);
+    PinAuthExecutorHdi executorHdi(executorProxy);
+    std::vector<uint64_t> templateIdList;
+    std::vector<UserAuth::Attributes::AttributeKey> keys = { UserAuth::Attributes::ATTR_SIGNATURE };
+    UserAuth::Property property = {};
+    auto ret = executorHdi.GetProperty(templateIdList, keys, property);
+    EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
+}
+
+HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_GetProperty_003, TestSize.Level0)
+{
+    for (const auto &pair : RESULT_CODE_MAP) {
+        auto executorProxy = new (std::nothrow) MockIExecutor();
+        ASSERT_TRUE(executorProxy != nullptr);
+        EXPECT_CALL(*executorProxy, GetProperty(_, _, _)).Times(Exactly(1)).WillOnce([&pair](
+            const std::vector<uint64_t> &templateIdList,
+            const std::vector<GetPropertyType> &propertyTypes, Property &property) {
+                return pair.first;
+            });
+        PinAuthExecutorHdi executorHdi(executorProxy);
+        std::vector<uint64_t> templateIdList;
+        std::vector<UserAuth::Attributes::AttributeKey> keys;
+        if (pair.first != HDF_SUCCESS) {
+            keys.push_back(UserAuth::Attributes::ATTR_PIN_SUB_TYPE);
+        }
+        UserAuth::Property property = {};
+        auto ret = executorHdi.GetProperty(templateIdList, keys, property);
+        EXPECT_TRUE(ret == pair.second);
+    }
+}
+
+HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_SetCachedTemplates_001, TestSize.Level0)
+{
+    auto executorProxy = new (std::nothrow) MockIExecutor();
+    ASSERT_TRUE(executorProxy != nullptr);
+    PinAuthExecutorHdi executorHdi(executorProxy);
+    std::vector<uint64_t> templateIdList;
+    auto ret = executorHdi.SetCachedTemplates(templateIdList);
+    EXPECT_TRUE(ret == IamResultCode::SUCCESS);
+}
+
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS

@@ -195,6 +195,13 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_008, Tes
     driverHdi.GetExecutorList(executorList);
     EXPECT_TRUE(executorList.size() == 0);
 }
+
+HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_OnHdiDisconnectTest_001, TestSize.Level0)
+{
+    auto driverHdi = MakeShared<PinAuthDriverHdi>(nullptr);
+    ASSERT_TRUE(driverHdi != nullptr);
+    driverHdi->OnHdiDisconnect();
+}
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS
