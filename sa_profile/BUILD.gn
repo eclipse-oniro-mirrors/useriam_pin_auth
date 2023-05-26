@@ -15,7 +15,7 @@ import("//build/ohos.gni")
 import("//build/ohos/sa_profile/sa_profile.gni")
 
 ohos_sa_profile("pinauth_sa_profile") {
-  sources = [ "941.xml" ]
+  sources = [ "941.json" ]
 
   part_name = "pin_auth"
 }
