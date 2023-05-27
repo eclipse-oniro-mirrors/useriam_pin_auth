@@ -1,4 +1,4 @@
-# Copyright (c) 2022-2023 Huawei Device Co., Ltd.
+# Copyright (c) 2023 Huawei Device Co., Ltd.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -14,9 +14,9 @@
 import("//build/config/features.gni")
 import("//build/test.gni")
 
-ohos_fuzztest("PinAuthServiceFuzzTest") {
+ohos_fuzztest("InputerDataFuzzTest") {
   module_out_path = "useriam/pin_auth"
-  fuzz_config_file = "../pinauthservice_fuzzer"
+  fuzz_config_file = "../inputerdata_fuzzer"
 
   cflags = [
     "-g",
@@ -29,24 +29,18 @@ ohos_fuzztest("PinAuthServiceFuzzTest") {
 
   sources = [
     "../utils_fuzz/iam_fuzz_test.cpp",
-    "pin_auth_service_fuzzer.cpp",
+    "inputer_data_fuzzer.cpp",
   ]
 
   deps = [
     "../../../frameworks:pinauth_ipc",
     "../../../services:pinauthservice_source_set",
-    "//third_party/openssl:libcrypto_shared",
   ]
 
   external_deps = [
-    "access_token:libaccesstoken_sdk",
-    "c_utils:utils",
     "drivers_interface_pin_auth:libpin_auth_proxy_1.0",
     "hisysevent_native:libhisysevent",
     "hiviewdfx_hilog_native:libhilog",
-    "ipc:ipc_single",
-    "safwk:system_ability_fwk",
-    "samgr:samgr_proxy",
     "user_auth_framework:userauth_executors",
   ]
 
