@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -328,6 +328,7 @@ IamResultCode PinAuthExecutorHdi::ConvertResultCode(const int32_t in)
         {HDF_ERR_TIMEOUT, IamResultCode::TIMEOUT},
         {HDF_ERR_QUEUE_FULL, IamResultCode::BUSY},
         {HDF_ERR_DEVICE_BUSY, IamResultCode::BUSY},
+        {HDF_ERR_INVALID_PARAM, IamResultCode::INVALID_PARAMETERS},
     };
 
     IamResultCode out;
