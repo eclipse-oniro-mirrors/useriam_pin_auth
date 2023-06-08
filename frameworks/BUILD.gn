@@ -77,6 +77,7 @@ ohos_shared_library("pinauth_framework") {
   public_configs = [ ":pinauth_config" ]
 
   subsystem_name = "useriam"
+  innerapi_tags = [ "platformsdk_indirect" ]
   part_name = "pin_auth"
 }
 
