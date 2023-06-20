@@ -25,7 +25,7 @@
       "ram": "6072KB",
       "deps": {
         "components": [
-            "hiviewdfx_hilog_native",
+            "hilog",
             "ipc",
             "safwk",
             "samgr",
@@ -33,7 +33,6 @@
             "hisysevent_native",
             "user_auth_framework",
             "drivers_interface_pin_auth",
-            "hilog_native",
             "c_utils"
         ],
         "third_party": [
