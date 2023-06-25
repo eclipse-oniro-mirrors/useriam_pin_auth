@@ -39,8 +39,8 @@ ohos_fuzztest("InputerSetDataStubFuzzTest") {
 
   external_deps = [
     "drivers_interface_pin_auth:libpin_auth_proxy_1.0",
-    "hisysevent_native:libhisysevent",
-    "hiviewdfx_hilog_native:libhilog",
+    "hilog:libhilog",
+    "hisysevent:libhisysevent",
     "user_auth_framework:userauth_executors",
   ]
 
