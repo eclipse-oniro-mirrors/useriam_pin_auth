@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -31,10 +31,10 @@ int32_t PinAuthStub::OnRemoteRequest(uint32_t code, MessageParcel &data, Message
         return UserAuth::GENERAL_ERROR;
     }
     switch (code) {
-        case PinAuthInterface::REGISTER_INPUTER:
+        case PinAuthInterfaceCode::REGISTER_INPUTER:
             RegisterInputerStub(data, reply);
             return UserAuth::SUCCESS;
-        case PinAuthInterface::UNREGISTER_INPUTER:
+        case PinAuthInterfaceCode::UNREGISTER_INPUTER:
             UnRegisterInputerStub(data, reply);
             return UserAuth::SUCCESS;
         default:

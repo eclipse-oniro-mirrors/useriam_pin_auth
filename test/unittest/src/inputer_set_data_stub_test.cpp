@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -63,7 +63,7 @@ HWTEST_F(InputerSetDataStubTest, InputerSetDataStubTestOnSetData001, TestSize.Le
     EXPECT_TRUE(data.WriteInterfaceToken(InputerSetData::GetDescriptor()));
     EXPECT_TRUE(data.WriteInt32(testAuthSubType));
     EXPECT_TRUE(data.WriteUInt8Vector(testData));
-    uint32_t code = InputerSetData::ON_SET_DATA;
+    uint32_t code = InputerSetDataInterfaceCode::ON_SET_DATA;
     MessageOption option(MessageOption::TF_SYNC);
 
     EXPECT_EQ(inputerDataImpl.OnRemoteRequest(code, data, reply, option), UserAuth::SUCCESS);
@@ -81,7 +81,7 @@ HWTEST_F(InputerSetDataStubTest, InputerSetDataStubTestOnSetData002, TestSize.Le
 
     EXPECT_TRUE(data.WriteInt32(testAuthSubType));
     EXPECT_TRUE(data.WriteUInt8Vector(testData));
-    uint32_t code = InputerSetData::ON_SET_DATA;
+    uint32_t code = InputerSetDataInterfaceCode::ON_SET_DATA;
     MessageOption option(MessageOption::TF_SYNC);
 
     EXPECT_EQ(inputerDataImpl.OnRemoteRequest(code, data, reply, option), UserAuth::GENERAL_ERROR);

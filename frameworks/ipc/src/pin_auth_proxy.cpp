@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -46,7 +46,7 @@ bool PinAuthProxy::RegisterInputer(const sptr<InputerGetData> &inputer)
         return false;
     }
 
-    bool ret = SendRequest(PinAuthInterface::REGISTER_INPUTER, data, reply);
+    bool ret = SendRequest(PinAuthInterfaceCode::REGISTER_INPUTER, data, reply);
     if (!ret) {
         return false;
     }
@@ -68,7 +68,7 @@ void PinAuthProxy::UnRegisterInputer()
         return;
     }
 
-    SendRequest(PinAuthInterface::UNREGISTER_INPUTER, data, reply);
+    SendRequest(PinAuthInterfaceCode::UNREGISTER_INPUTER, data, reply);
 }
 
 bool PinAuthProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply)

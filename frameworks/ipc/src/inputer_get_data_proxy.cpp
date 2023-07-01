@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -52,7 +52,7 @@ void InputerGetDataProxy::OnGetData(int32_t authSubType, const std::vector<uint8
         IAM_LOGE("write inputerData fail");
         return;
     }
-    bool ret = SendRequest(InputerGetData::ON_GET_DATA, data, reply);
+    bool ret = SendRequest(InputerGetDataInterfaceCode::ON_GET_DATA, data, reply);
     if (ret) {
         int32_t result = reply.ReadInt32();
         IAM_LOGI("result = %{public}d", result);

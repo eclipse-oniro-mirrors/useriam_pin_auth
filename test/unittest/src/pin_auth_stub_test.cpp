@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -69,7 +69,7 @@ HWTEST_F(PinAuthStubTest, PinAuthStubTestRegisterInputer, TestSize.Level0)
     EXPECT_TRUE(data.WriteInterfaceToken(PinAuthInterface::GetDescriptor()));
     EXPECT_NE(testInputerGetData->AsObject(), nullptr);
     EXPECT_TRUE(data.WriteRemoteObject(testInputerGetData->AsObject()));
-    uint32_t code = PinAuthInterface::REGISTER_INPUTER;
+    uint32_t code = PinAuthInterfaceCode::REGISTER_INPUTER;
     MessageOption option(MessageOption::TF_SYNC);
 
     EXPECT_EQ(service.OnRemoteRequest(code, data, reply, option), UserAuth::SUCCESS);
@@ -87,7 +87,7 @@ HWTEST_F(PinAuthStubTest, PinAuthStubTestUnRegisterInputer001, TestSize.Level0)
     MessageParcel reply;
 
     EXPECT_TRUE(data.WriteInterfaceToken(PinAuthInterface::GetDescriptor()));
-    uint32_t code = PinAuthInterface::UNREGISTER_INPUTER;
+    uint32_t code = PinAuthInterfaceCode::UNREGISTER_INPUTER;
     MessageOption option(MessageOption::TF_SYNC);
 
     EXPECT_EQ(service.OnRemoteRequest(code, data, reply, option), UserAuth::SUCCESS);
@@ -100,7 +100,7 @@ HWTEST_F(PinAuthStubTest, PinAuthStubTestUnRegisterInputer002, TestSize.Level0)
     MessageParcel data;
     MessageParcel reply;
 
-    uint32_t code = PinAuthInterface::UNREGISTER_INPUTER;
+    uint32_t code = PinAuthInterfaceCode::UNREGISTER_INPUTER;
     MessageOption option(MessageOption::TF_SYNC);
 
     EXPECT_EQ(service.OnRemoteRequest(code, data, reply, option), UserAuth::GENERAL_ERROR);
