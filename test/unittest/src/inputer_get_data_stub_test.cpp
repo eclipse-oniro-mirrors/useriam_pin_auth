@@ -74,7 +74,7 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData001, TestSize.Le
     EXPECT_TRUE(data.WriteUInt8Vector(testSalt));
     EXPECT_NE(testInputerSetData->AsObject(), nullptr);
     EXPECT_TRUE(data.WriteRemoteObject(testInputerSetData->AsObject()));
-    uint32_t code = static_cast<uint32_t>(InputerGetDataInterfaceCode::ON_GET_DATA);
+    uint32_t code = InputerGetDataInterfaceCode::ON_GET_DATA;
     MessageOption option(MessageOption::TF_SYNC);
 
     EXPECT_EQ(service.OnRemoteRequest(code, data, reply, option), UserAuth::SUCCESS);
@@ -97,7 +97,7 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData002, TestSize.Le
     EXPECT_TRUE(data.WriteUInt8Vector(testSalt));
     EXPECT_NE(testInputerSetData->AsObject(), nullptr);
     EXPECT_TRUE(data.WriteRemoteObject(testInputerSetData->AsObject()));
-    uint32_t code = static_cast<uint32_t>(InputerGetDataInterfaceCode::ON_GET_DATA);
+    uint32_t code = InputerGetDataInterfaceCode::ON_GET_DATA;
     MessageOption option(MessageOption::TF_SYNC);
 
     EXPECT_EQ(service.OnRemoteRequest(code, data, reply, option), UserAuth::GENERAL_ERROR);

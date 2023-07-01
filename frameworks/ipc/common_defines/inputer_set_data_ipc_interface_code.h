@@ -20,7 +20,7 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-enum class InputerSetDataInterfaceCode {
+enum InputerSetDataInterfaceCode : uint32_t {
     ON_SET_DATA = 1,
 };
 } // namespace PinAuth

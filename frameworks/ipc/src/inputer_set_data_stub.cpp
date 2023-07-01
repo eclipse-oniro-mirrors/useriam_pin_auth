@@ -32,7 +32,7 @@ int32_t InputerSetDataStub::OnRemoteRequest(uint32_t code, MessageParcel &data, 
         return UserAuth::GENERAL_ERROR;
     }
     switch (code) {
-        case static_cast<uint32_t>(InputerSetDataInterfaceCode::ON_SET_DATA):
+        case InputerSetDataInterfaceCode::ON_SET_DATA:
             OnSetDataStub(data, reply);
             return UserAuth::SUCCESS;
         default:

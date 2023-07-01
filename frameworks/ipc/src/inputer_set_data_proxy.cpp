@@ -39,7 +39,7 @@ void InputerSetDataProxy::OnSetData(int32_t authSubType, std::vector<uint8_t> da
         IAM_LOGE("write data fail");
     }
 
-    bool ret = SendRequest(static_cast<uint32_t>(InputerSetDataInterfaceCode::ON_SET_DATA), dataParcel, reply);
+    bool ret = SendRequest(InputerSetDataInterfaceCode::ON_SET_DATA, dataParcel, reply);
     if (ret) {
         int32_t result = reply.ReadInt32();
         IAM_LOGI("result = %{public}d", result);

@@ -46,7 +46,7 @@ bool PinAuthProxy::RegisterInputer(const sptr<InputerGetData> &inputer)
         return false;
     }
 
-    bool ret = SendRequest(static_cast<uint32_t>(PinAuthInterfaceCode::REGISTER_INPUTER), data, reply);
+    bool ret = SendRequest(PinAuthInterfaceCode::REGISTER_INPUTER, data, reply);
     if (!ret) {
         return false;
     }
@@ -68,7 +68,7 @@ void PinAuthProxy::UnRegisterInputer()
         return;
     }
 
-    SendRequest(static_cast<uint32_t>(PinAuthInterfaceCode::UNREGISTER_INPUTER), data, reply);
+    SendRequest(PinAuthInterfaceCode::UNREGISTER_INPUTER, data, reply);
 }
 
 bool PinAuthProxy::SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply)

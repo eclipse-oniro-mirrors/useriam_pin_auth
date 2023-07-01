@@ -20,7 +20,7 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-enum class PinAuthInterfaceCode {
+enum PinAuthInterfaceCode : uint32_t {
     REGISTER_INPUTER = 1,
     UNREGISTER_INPUTER = 2,
 };

@@ -69,7 +69,7 @@ HWTEST_F(PinAuthStubTest, PinAuthStubTestRegisterInputer, TestSize.Level0)
     EXPECT_TRUE(data.WriteInterfaceToken(PinAuthInterface::GetDescriptor()));
     EXPECT_NE(testInputerGetData->AsObject(), nullptr);
     EXPECT_TRUE(data.WriteRemoteObject(testInputerGetData->AsObject()));
-    uint32_t code = static_cast<uint32_t>(PinAuthInterfaceCode::REGISTER_INPUTER);
+    uint32_t code = PinAuthInterfaceCode::REGISTER_INPUTER;
     MessageOption option(MessageOption::TF_SYNC);
 
     EXPECT_EQ(service.OnRemoteRequest(code, data, reply, option), UserAuth::SUCCESS);
@@ -87,7 +87,7 @@ HWTEST_F(PinAuthStubTest, PinAuthStubTestUnRegisterInputer001, TestSize.Level0)
     MessageParcel reply;
 
     EXPECT_TRUE(data.WriteInterfaceToken(PinAuthInterface::GetDescriptor()));
-    uint32_t code = static_cast<uint32_t>(PinAuthInterfaceCode::UNREGISTER_INPUTER);
+    uint32_t code = PinAuthInterfaceCode::UNREGISTER_INPUTER;
     MessageOption option(MessageOption::TF_SYNC);
 
     EXPECT_EQ(service.OnRemoteRequest(code, data, reply, option), UserAuth::SUCCESS);
@@ -100,7 +100,7 @@ HWTEST_F(PinAuthStubTest, PinAuthStubTestUnRegisterInputer002, TestSize.Level0)
     MessageParcel data;
     MessageParcel reply;
 
-    uint32_t code = static_cast<uint32_t>(PinAuthInterfaceCode::UNREGISTER_INPUTER);
+    uint32_t code = PinAuthInterfaceCode::UNREGISTER_INPUTER;
     MessageOption option(MessageOption::TF_SYNC);
 
     EXPECT_EQ(service.OnRemoteRequest(code, data, reply, option), UserAuth::GENERAL_ERROR);
