@@ -31,12 +31,13 @@ int32_t InputerGetDataStub::OnRemoteRequest(uint32_t code, MessageParcel &data, 
         IAM_LOGE("descriptor is not matched");
         return UserAuth::GENERAL_ERROR;
     }
-
-    if (code == InputerGetData::ON_GET_DATA) {
-        OnGetDataStub(data, reply);
-        return UserAuth::SUCCESS;
+    switch (code) {
+        case static_cast<uint32_t>(InputerGetDataInterfaceCode::ON_GET_DATA):
+            OnGetDataStub(data, reply);
+            return UserAuth::SUCCESS;
+        default:
+            return IPCObjectStub::OnRemoteRequest(code, data, reply, option);
     }
-    return IPCObjectStub::OnRemoteRequest(code, data, reply, option);
 }
 
 void InputerGetDataStub::OnGetDataStub(MessageParcel &data, MessageParcel &reply)

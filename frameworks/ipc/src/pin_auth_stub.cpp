@@ -31,10 +31,10 @@ int32_t PinAuthStub::OnRemoteRequest(uint32_t code, MessageParcel &data, Message
         return UserAuth::GENERAL_ERROR;
     }
     switch (code) {
-        case PinAuthInterface::REGISTER_INPUTER:
+        case static_cast<uint32_t>(PinAuthInterfaceCode::REGISTER_INPUTER):
             RegisterInputerStub(data, reply);
             return UserAuth::SUCCESS;
-        case PinAuthInterface::UNREGISTER_INPUTER:
+        case static_cast<uint32_t>(PinAuthInterfaceCode::UNREGISTER_INPUTER):
             UnRegisterInputerStub(data, reply);
             return UserAuth::SUCCESS;
         default:

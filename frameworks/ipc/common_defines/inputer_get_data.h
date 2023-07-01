@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License") = 0;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,6 +20,7 @@
 #include "iremote_object.h"
 
 #include "inputer_set_data.h"
+#include "inputer_get_data_ipc_interface_code.h"
 
 namespace OHOS {
 namespace UserIam {
@@ -36,9 +37,6 @@ public:
     virtual void OnGetData(int32_t authSubType, const std::vector<uint8_t> &salt,
         const sptr<InputerSetData> &inputerSetData) = 0;
 
-    enum : uint32_t {
-        ON_GET_DATA = 1,
-    };
     DECLARE_INTERFACE_DESCRIPTOR(u"ohos.PinAuth.InputerGetData");
 };
 } // namespace PinAuth

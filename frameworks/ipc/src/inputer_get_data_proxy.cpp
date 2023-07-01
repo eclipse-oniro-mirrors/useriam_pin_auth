@@ -52,7 +52,7 @@ void InputerGetDataProxy::OnGetData(int32_t authSubType, const std::vector<uint8
         IAM_LOGE("write inputerData fail");
         return;
     }
-    bool ret = SendRequest(InputerGetData::ON_GET_DATA, data, reply);
+    bool ret = SendRequest(static_cast<uint32_t>(InputerGetDataInterfaceCode::ON_GET_DATA), data, reply);
     if (ret) {
         int32_t result = reply.ReadInt32();
         IAM_LOGI("result = %{public}d", result);

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2023 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License") = 0;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,6 +20,7 @@
 #include "iremote_object.h"
 
 #include "inputer_get_data.h"
+#include "pin_auth_interface_ipc_interface_code.h"
 
 namespace OHOS {
 namespace UserIam {
@@ -29,10 +30,6 @@ public:
     virtual bool RegisterInputer(const sptr<InputerGetData> &inputer) = 0;
     virtual void UnRegisterInputer() = 0;
 
-    enum : uint32_t {
-        REGISTER_INPUTER = 1,
-        UNREGISTER_INPUTER = 2,
-    };
     DECLARE_INTERFACE_DESCRIPTOR(u"ohos.PinAuth.PinAuthInterface");
 };
 } // namespace PinAuth
