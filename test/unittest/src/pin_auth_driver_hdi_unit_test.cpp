@@ -78,7 +78,7 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_002, Tes
 
 HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_003, TestSize.Level0)
 {
-    sptr<MockIPinAuthInterface> interface = new (std::nothrow) MockIPinAuthInterface();
+    sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
     ASSERT_TRUE(interface != nullptr);
     EXPECT_CALL(*interface, GetExecutorListV1_1(_)).Times(Exactly(1));
 
@@ -94,7 +94,7 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_003, Tes
 
 HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_004, TestSize.Level0)
 {
-    sptr<MockIPinAuthInterface> interface = new (std::nothrow) MockIPinAuthInterface();
+    sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
     ASSERT_TRUE(interface != nullptr);
     EXPECT_CALL(*interface, GetExecutorListV1_1(_)).Times(Exactly(1)).WillOnce([](std::vector<sptr<IExecutor>> &list) {
         return static_cast<int32_t>(HDF_FAILURE);
@@ -112,7 +112,7 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_004, Tes
 
 HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_005, TestSize.Level0)
 {
-    sptr<MockIPinAuthInterface> interface = new (std::nothrow) MockIPinAuthInterface();
+    sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
     ASSERT_TRUE(interface != nullptr);
     EXPECT_CALL(*interface, GetExecutorListV1_1(_)).Times(Exactly(1)).WillOnce([](std::vector<sptr<IExecutor>> &list) {
         return static_cast<int32_t>(HDF_SUCCESS);
@@ -130,7 +130,7 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_005, Tes
 
 HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_006, TestSize.Level0)
 {
-    sptr<MockIPinAuthInterface> interface = new (std::nothrow) MockIPinAuthInterface();
+    sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
     ASSERT_TRUE(interface != nullptr);
     EXPECT_CALL(*interface, GetExecutorListV1_1(_)).Times(Exactly(1)).WillOnce([](std::vector<sptr<IExecutor>> &list) {
         auto executor = sptr<IExecutor>(new (std::nothrow) MockIExecutor());
@@ -151,7 +151,7 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_006, Tes
 
 HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_007, TestSize.Level0)
 {
-    sptr<MockIPinAuthInterface> interface = new (std::nothrow) MockIPinAuthInterface();
+    sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
     ASSERT_TRUE(interface != nullptr);
     EXPECT_CALL(*interface, GetExecutorListV1_1(_)).Times(Exactly(1)).WillOnce([](std::vector<sptr<IExecutor>> &list) {
         list.push_back(sptr<IExecutor>(nullptr));
@@ -177,7 +177,7 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_007, Tes
 
 HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_008, TestSize.Level0)
 {
-    sptr<MockIPinAuthInterface> interface = new (std::nothrow) MockIPinAuthInterface();
+    sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
     ASSERT_TRUE(interface != nullptr);
     EXPECT_CALL(*interface, GetExecutorListV1_1(_)).Times(Exactly(1)).WillOnce([](std::vector<sptr<IExecutor>> &list) {
         auto executor = sptr<IExecutor>(new (std::nothrow) MockIExecutor());

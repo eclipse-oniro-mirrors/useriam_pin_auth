@@ -50,7 +50,7 @@ bool InputerSetDataStubFuzzTest(const uint8_t *rawData, size_t size)
         return false;
     }
 
-    sptr<HDI::PinAuth::V1_1::IExecutor> executorProxy = nullptr;
+    sptr<HDI::PinAuth::V1_1::IExecutor> executorProxy(nullptr);
     std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi_ = Common::MakeShared<PinAuthExecutorHdi>(executorProxy);
     IInputerDataImpl iInputerDataImpl(SCHEDULE_ID, pinAuthExecutorHdi_);
     for (uint32_t code = INPUTER_SET_DATA_CODE_MIN; code <= INPUTER_SET_DATA_CODE_MAX; code++) {

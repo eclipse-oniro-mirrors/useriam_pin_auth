@@ -47,9 +47,9 @@ HWTEST_F(InputerGetDataProxyTest, InputerGetDataProxyTest001, TestSize.Level0)
 {
     int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5, 6};
-    sptr<InputerSetData> testInputerSetData = new MockInputerSetData();
+    sptr<InputerSetData> testInputerSetData(new (std::nothrow) MockInputerSetData());
     EXPECT_NE(testInputerSetData, nullptr);
-    sptr<MockRemoteObject> obj = new MockRemoteObject();
+    sptr<MockRemoteObject> obj(new (std::nothrow) MockRemoteObject());
     EXPECT_NE(obj, nullptr);
     auto proxy = Common::MakeShared<InputerGetDataProxy>(obj);
     EXPECT_NE(proxy, nullptr);
@@ -77,8 +77,8 @@ HWTEST_F(InputerGetDataProxyTest, InputerGetDataProxyTest002, TestSize.Level0)
 {
     int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5, 6};
-    sptr<InputerSetData> testInputerSetData = nullptr;
-    sptr<MockRemoteObject> obj = new MockRemoteObject();
+    sptr<InputerSetData> testInputerSetData(nullptr);
+    sptr<MockRemoteObject> obj(new (std::nothrow) MockRemoteObject());
     EXPECT_NE(obj, nullptr);
     auto proxy = Common::MakeShared<InputerGetDataProxy>(obj);
     EXPECT_NE(proxy, nullptr);

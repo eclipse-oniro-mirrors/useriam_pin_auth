@@ -52,10 +52,8 @@ HWTEST_F(InputerDataImplTest, InputerDataImplTest001, TestSize.Level0)
     EXPECT_NE(scryptPtr, nullptr);
     std::vector<uint8_t> testScrypt = scryptPtr->GetScrypt(testData);
 
-    MockInputerSetData *tempInputerSetData = new MockInputerSetData();
+    sptr<MockInputerSetData> tempInputerSetData(new (std::nothrow) MockInputerSetData());
     EXPECT_NE(tempInputerSetData, nullptr);
-    sptr<InputerSetData> testInputerSetData = static_cast<InputerSetData *>(tempInputerSetData);
-    EXPECT_NE(testInputerSetData, nullptr);
 
     EXPECT_CALL(*tempInputerSetData, OnSetData(_, _))
         .Times(Exactly(1))
@@ -65,7 +63,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplTest001, TestSize.Level0)
             return;
         });
 
-    auto inputerDataImpl = Common::MakeShared<InputerDataImpl>(testSalt, testInputerSetData);
+    auto inputerDataImpl = Common::MakeShared<InputerDataImpl>(testSalt, tempInputerSetData);
     EXPECT_NE(inputerDataImpl, nullptr);
 
     inputerDataImpl->OnSetData(testAuthSubType, testData);

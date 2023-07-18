@@ -47,7 +47,8 @@ public:
     }
     sptr<IRemoteObject> AsObject()
     {
-        return nullptr;
+        sptr<IRemoteObject> obj(nullptr);
+        return obj;
     }
 };
 
@@ -56,9 +57,9 @@ auto g_service = PinAuthService::GetInstance();
 void FuzzRegisterInputer(Parcel &parcel)
 {
     IAM_LOGI("begin");
-    sptr<InputerGetData> remoteInputer = nullptr;
+    sptr<InputerGetData> remoteInputer(nullptr);
     if (parcel.ReadBool()) {
-        remoteInputer = new (std::nothrow) DummyRemoteInputer();
+        remoteInputer = sptr<InputerGetData>(new (std::nothrow) DummyRemoteInputer());
     }
     if (g_service != nullptr) {
         g_service->RegisterInputer(remoteInputer);

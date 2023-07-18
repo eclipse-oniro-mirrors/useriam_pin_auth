@@ -46,7 +46,7 @@ HWTEST_F(InputerGetDataServiceTest, InputerGetDataServiceTest001, TestSize.Level
 {
     int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
-    sptr<InputerSetData> testInputerSetData = new MockInputerSetData();
+    sptr<InputerSetData> testInputerSetData(new (std::nothrow) MockInputerSetData());
     EXPECT_NE(testInputerSetData, nullptr);
 
     auto testInputer = Common::MakeShared<MockInputer>();

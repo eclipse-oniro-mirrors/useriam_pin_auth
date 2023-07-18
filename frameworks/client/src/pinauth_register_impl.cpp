@@ -44,7 +44,7 @@ bool PinAuthRegisterImpl::RegisterInputer(std::shared_ptr<IInputer> inputer)
         IAM_LOGE("get proxy failed");
         return false;
     }
-    sptr<InputerGetData> callback = new (std::nothrow) InputerGetDataService(inputer);
+    sptr<InputerGetData> callback(new (std::nothrow) InputerGetDataService(inputer));
     if (callback == nullptr) {
         return false;
     }
@@ -78,7 +78,7 @@ sptr<PinAuthInterface> PinAuthRegisterImpl::GetProxy()
         IAM_LOGE("get distributed gallery manager service fail");
         return nullptr;
     }
-    sptr<IRemoteObject::DeathRecipient> dr = new PinAuthDeathRecipient();
+    sptr<IRemoteObject::DeathRecipient> dr(new (std::nothrow) PinAuthDeathRecipient());
     if ((obj->IsProxyObject()) && (!obj->AddDeathRecipient(dr))) {
         IAM_LOGE("add death recipient fail");
         return nullptr;

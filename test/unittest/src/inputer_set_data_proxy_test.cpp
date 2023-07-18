@@ -47,7 +47,7 @@ HWTEST_F(InputerSetDataProxyTest, InputerSetDataProxyTest, TestSize.Level0)
 {
     int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5, 6};
-    sptr<MockRemoteObject> obj = new MockRemoteObject();
+    sptr<MockRemoteObject> obj(new (std::nothrow) MockRemoteObject());
     EXPECT_NE(obj, nullptr);
     auto proxy = Common::MakeShared<InputerSetDataProxy>(obj);
     EXPECT_NE(proxy, nullptr);
