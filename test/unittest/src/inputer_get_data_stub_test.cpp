@@ -61,9 +61,9 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData001, TestSize.Le
                     }
             }
         );
-    MockInputerSetData *tempInputerSetData = new MockInputerSetData();
+
+    sptr<MockInputerSetData> tempInputerSetData(new (std::nothrow) MockInputerSetData());
     EXPECT_NE(tempInputerSetData, nullptr);
-    sptr<InputerSetData> testInputerSetData = static_cast<InputerSetData *>(tempInputerSetData);
     EXPECT_CALL(*tempInputerSetData, OnSetData(_, _)).Times(1);
 
     MessageParcel data;
@@ -72,8 +72,8 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData001, TestSize.Le
     EXPECT_TRUE(data.WriteInterfaceToken(InputerGetData::GetDescriptor()));
     EXPECT_TRUE(data.WriteInt32(testAuthSubType));
     EXPECT_TRUE(data.WriteUInt8Vector(testSalt));
-    EXPECT_NE(testInputerSetData->AsObject(), nullptr);
-    EXPECT_TRUE(data.WriteRemoteObject(testInputerSetData->AsObject()));
+    EXPECT_NE(tempInputerSetData->AsObject(), nullptr);
+    EXPECT_TRUE(data.WriteRemoteObject(tempInputerSetData->AsObject()));
     uint32_t code = InputerGetDataInterfaceCode::ON_GET_DATA;
     MessageOption option(MessageOption::TF_SYNC);
 
@@ -87,7 +87,7 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData002, TestSize.Le
 
     MockInputerGetDataService service;
 
-    sptr<InputerSetData> testInputerSetData = new MockInputerSetData();
+    sptr<InputerSetData> testInputerSetData(new (std::nothrow) MockInputerSetData());
     EXPECT_NE(testInputerSetData, nullptr);
 
     MessageParcel data;

@@ -36,7 +36,7 @@ bool PinAuthManager::RegisterInputer(uint32_t tokenId, const sptr<InputerGetData
         return false;
     }
     pinAuthInputerMap_.emplace(tokenId, inputer);
-    sptr<IRemoteObject::DeathRecipient> dr = new (std::nothrow) ResPinauthInputerDeathRecipient(tokenId);
+    sptr<IRemoteObject::DeathRecipient> dr(new (std::nothrow) ResPinauthInputerDeathRecipient(tokenId));
     if (dr == nullptr || inputer->AsObject() == nullptr) {
         IAM_LOGE("dr or inputer's object is nullptr");
     } else {

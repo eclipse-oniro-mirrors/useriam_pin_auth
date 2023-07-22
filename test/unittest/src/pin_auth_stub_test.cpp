@@ -46,10 +46,8 @@ void PinAuthStubTest::TearDown()
 HWTEST_F(PinAuthStubTest, PinAuthStubTestRegisterInputer, TestSize.Level0)
 {
     MockPinAuthService service;
-    MockInputerGetData *tempInputerGetData = new MockInputerGetData();
+    sptr<MockInputerGetData> tempInputerGetData(new (std::nothrow) MockInputerGetData());
     EXPECT_NE(tempInputerGetData, nullptr);
-    sptr<InputerGetData> testInputerGetData = static_cast<InputerGetData *>(tempInputerGetData);
-    EXPECT_NE(testInputerGetData, nullptr);
     EXPECT_CALL(service, RegisterInputer(_)).Times(1);
     ON_CALL(service, RegisterInputer)
         .WillByDefault(
@@ -67,8 +65,8 @@ HWTEST_F(PinAuthStubTest, PinAuthStubTestRegisterInputer, TestSize.Level0)
     MessageParcel reply;
 
     EXPECT_TRUE(data.WriteInterfaceToken(PinAuthInterface::GetDescriptor()));
-    EXPECT_NE(testInputerGetData->AsObject(), nullptr);
-    EXPECT_TRUE(data.WriteRemoteObject(testInputerGetData->AsObject()));
+    EXPECT_NE(tempInputerGetData->AsObject(), nullptr);
+    EXPECT_TRUE(data.WriteRemoteObject(tempInputerGetData->AsObject()));
     uint32_t code = PinAuthInterfaceCode::REGISTER_INPUTER;
     MessageOption option(MessageOption::TF_SYNC);
 

@@ -65,7 +65,7 @@ HWTEST_F(PinAuthServiceTest, PinAuthServiceTest001, TestSize.Level0)
 {
     auto service = Common::MakeShared<PinAuthService>();
     EXPECT_NE(service, nullptr);
-    sptr<InputerGetData> testInputerGetData = nullptr;
+    sptr<InputerGetData> testInputerGetData(nullptr);
     EXPECT_EQ(service->RegisterInputer(testInputerGetData), false);
     service->UnRegisterInputer();
 }
@@ -74,7 +74,7 @@ HWTEST_F(PinAuthServiceTest, PinAuthServiceTest002, TestSize.Level0)
 {
     auto service = Common::MakeShared<PinAuthService>();
     EXPECT_NE(service, nullptr);
-    sptr<InputerGetData> testInputerGetData = new MockInputerGetData();
+    sptr<InputerGetData> testInputerGetData(new (std::nothrow) MockInputerGetData());
     EXPECT_NE(testInputerGetData, nullptr);
     EXPECT_EQ(service->RegisterInputer(testInputerGetData), true);
     service->UnRegisterInputer();

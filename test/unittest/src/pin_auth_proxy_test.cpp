@@ -46,11 +46,11 @@ void PinAuthProxyTest::TearDown()
 
 HWTEST_F(PinAuthProxyTest, PinAuthProxyTestRegisterInputer001, TestSize.Level0)
 {
-    sptr<MockRemoteObject> obj = new MockRemoteObject();
+    sptr<MockRemoteObject> obj(new (std::nothrow) MockRemoteObject());
     EXPECT_NE(obj, nullptr);
     auto proxy = Common::MakeShared<PinAuthProxy>(obj);
     EXPECT_NE(proxy, nullptr);
-    sptr<InputerGetData> testInputerGetData = new MockInputerGetDataService();
+    sptr<InputerGetData> testInputerGetData(new (std::nothrow) MockInputerGetDataService());
     EXPECT_NE(testInputerGetData, nullptr);
 
     auto service = Common::MakeShared<MockPinAuthService>();
@@ -71,22 +71,22 @@ HWTEST_F(PinAuthProxyTest, PinAuthProxyTestRegisterInputer001, TestSize.Level0)
 
 HWTEST_F(PinAuthProxyTest, PinAuthProxyTestRegisterInputer002, TestSize.Level0)
 {
-    sptr<MockRemoteObject> obj = new MockRemoteObject();
+    sptr<MockRemoteObject> obj(new (std::nothrow) MockRemoteObject());
     EXPECT_NE(obj, nullptr);
     auto proxy = Common::MakeShared<PinAuthProxy>(obj);
     EXPECT_NE(proxy, nullptr);
-    sptr<InputerGetData> testInputerGetData = nullptr;
+    sptr<InputerGetData> testInputerGetData(nullptr);
 
     EXPECT_EQ(proxy->RegisterInputer(testInputerGetData), false);
 }
 
 HWTEST_F(PinAuthProxyTest, PinAuthProxyTestUnRegisterInputer, TestSize.Level0)
 {
-    sptr<MockRemoteObject> obj = new MockRemoteObject();
+    sptr<MockRemoteObject> obj(new (std::nothrow) MockRemoteObject());
     EXPECT_NE(obj, nullptr);
     auto proxy = Common::MakeShared<PinAuthProxy>(obj);
     EXPECT_NE(proxy, nullptr);
-    sptr<InputerGetData> testInputerGetData = new MockInputerGetDataService();
+    sptr<InputerGetData> testInputerGetData(new (std::nothrow) MockInputerGetDataService());
     EXPECT_NE(testInputerGetData, nullptr);
 
     auto service = Common::MakeShared<MockPinAuthService>();

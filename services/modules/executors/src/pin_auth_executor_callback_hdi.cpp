@@ -50,7 +50,7 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(uint64_t scheduleId, const std::ve
         IAM_LOGE("inputer is nullptr");
         return HDF_FAILURE;
     }
-    sptr<IInputerDataImpl> iInputerDataImpl = new (std::nothrow) IInputerDataImpl(scheduleId, pinAuthExecutorHdi_);
+    sptr<IInputerDataImpl> iInputerDataImpl(new (std::nothrow) IInputerDataImpl(scheduleId, pinAuthExecutorHdi_));
     if (iInputerDataImpl == nullptr) {
         IAM_LOGE("iInputerDataImpl is nullptr");
     }
