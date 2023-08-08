@@ -58,6 +58,18 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(uint64_t scheduleId, const std::ve
     return HDF_SUCCESS;
 }
 
+int32_t PinAuthExecutorCallbackHdi::OnGetDataV1_1(uint64_t scheduleId, const std::vector<uint8_t> &algoParameter,
+    uint64_t authSubType, uint32_t algoVersion)
+{
+    IAM_LOGI("interface mock start");
+    static_cast<void>(scheduleId);
+    static_cast<void>(algoParameter);
+    static_cast<void>(authSubType);
+    static_cast<void>(algoVersion);
+
+    return HDF_SUCCESS;
+}
+
 UserAuth::ResultCode PinAuthExecutorCallbackHdi::ConvertResultCode(const int32_t in)
 {
     UserAuth::ResultCode hdiIn = static_cast<UserAuth::ResultCode>(in);
