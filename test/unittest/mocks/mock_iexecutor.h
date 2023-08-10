@@ -34,8 +34,12 @@ public:
         const std::vector<uint8_t> &frameworkPublicKey, const std::vector<uint8_t> &extraInfo));
     MOCK_METHOD3(Enroll, int32_t(uint64_t scheduleId, const std::vector<uint8_t> &extraInfo,
         const sptr<IExecutorCallback> &callbackObj));
+    MOCK_METHOD3(EnrollV1_1, int32_t(uint64_t scheduleId, const std::vector<uint8_t> &extraInfo,
+        const sptr<IExecutorCallbackV1_1> &callbackObj));
     MOCK_METHOD4(Authenticate, int32_t(uint64_t scheduleId, uint64_t templateId, const std::vector<uint8_t> &extraInfo,
         const sptr<IExecutorCallback> &callbackObj));
+    MOCK_METHOD4(AuthenticateV1_1, int32_t(uint64_t scheduleId, uint64_t templateId,
+        const std::vector<uint8_t> &extraInfo, const sptr<IExecutorCallbackV1_1> &callbackObj));
     MOCK_METHOD3(Identify, int32_t(uint64_t scheduleId, const std::vector<uint8_t> &extraInfo,
         const sptr<IExecutorCallback> &callbackObj));
     MOCK_METHOD1(Delete, int32_t(uint64_t templateId));
