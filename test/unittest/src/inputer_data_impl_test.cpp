@@ -45,12 +45,14 @@ void InputerDataImplTest::TearDown()
 HWTEST_F(InputerDataImplTest, InputerDataImplTest001, TestSize.Level0)
 {
     int32_t testAuthSubType = 10000;
+    uint32_t testAlgoVersion = 0;
+    bool testIsEnroll = false;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
     std::vector<uint8_t> testData = {6, 7, 8, 9};
 
     auto scryptPtr = Common::MakeUnique<Scrypt>(testSalt);
     EXPECT_NE(scryptPtr, nullptr);
-    std::vector<uint8_t> testScrypt = scryptPtr->GetScrypt(testData);
+    std::vector<uint8_t> testScrypt = scryptPtr->GetScrypt(testData, testAlgoVersion);
 
     sptr<MockInputerSetData> tempInputerSetData(new (std::nothrow) MockInputerSetData());
     EXPECT_NE(tempInputerSetData, nullptr);
@@ -63,7 +65,8 @@ HWTEST_F(InputerDataImplTest, InputerDataImplTest001, TestSize.Level0)
             return;
         });
 
-    auto inputerDataImpl = Common::MakeShared<InputerDataImpl>(testSalt, tempInputerSetData);
+    auto inputerDataImpl = Common::MakeShared<InputerDataImpl>(testSalt, tempInputerSetData,
+        testAlgoVersion, testIsEnroll);
     EXPECT_NE(inputerDataImpl, nullptr);
 
     inputerDataImpl->OnSetData(testAuthSubType, testData);

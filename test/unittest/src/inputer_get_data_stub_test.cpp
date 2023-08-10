@@ -47,17 +47,22 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData001, TestSize.Le
 {
     int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
+    uint32_t testAlgoVersion = 0;
+    bool testIsEnroll = false;
 
     MockInputerGetDataService service;
-    EXPECT_CALL(service, OnGetData(_, _, _)).Times(1);
+    EXPECT_CALL(service, OnGetData(_, _, _, _, _)).Times(1);
     ON_CALL(service, OnGetData)
         .WillByDefault(
-            [&testAuthSubType](int32_t authSubType, const std::vector<uint8_t> &salt,
-                const sptr<InputerSetData> &inputerSetData) {
+            [&testAuthSubType, &testAlgoVersion, &testIsEnroll](int32_t authSubType,
+                const std::vector<uint8_t> &algoParameter, const sptr<InputerSetData> &inputerSetData,
+                    uint32_t algoVersion, bool isEnroll) {
                     EXPECT_EQ(authSubType, testAuthSubType);
-                    EXPECT_THAT(salt, ElementsAre(1, 2, 3, 4, 5));
+                    EXPECT_THAT(algoParameter, ElementsAre(1, 2, 3, 4, 5));
+                    EXPECT_EQ(algoVersion, testAlgoVersion);
+                    EXPECT_EQ(isEnroll, testIsEnroll);
                     if (inputerSetData != nullptr) {
-                        inputerSetData->OnSetData(authSubType, salt);
+                        inputerSetData->OnSetData(authSubType, algoParameter);
                     }
             }
         );
@@ -74,6 +79,9 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData001, TestSize.Le
     EXPECT_TRUE(data.WriteUInt8Vector(testSalt));
     EXPECT_NE(tempInputerSetData->AsObject(), nullptr);
     EXPECT_TRUE(data.WriteRemoteObject(tempInputerSetData->AsObject()));
+    EXPECT_TRUE(data.WriteUint32(testAlgoVersion));
+    EXPECT_TRUE(data.WriteBool(testIsEnroll));
+
     uint32_t code = InputerGetDataInterfaceCode::ON_GET_DATA;
     MessageOption option(MessageOption::TF_SYNC);
 
@@ -84,6 +92,8 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData002, TestSize.Le
 {
     int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
+    uint32_t testAlgoVersion = 0;
+    bool testIsEnroll = false;
 
     MockInputerGetDataService service;
 
@@ -96,6 +106,8 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData002, TestSize.Le
     EXPECT_TRUE(data.WriteInt32(testAuthSubType));
     EXPECT_TRUE(data.WriteUInt8Vector(testSalt));
     EXPECT_NE(testInputerSetData->AsObject(), nullptr);
+    EXPECT_TRUE(data.WriteUint32(testAlgoVersion));
+    EXPECT_TRUE(data.WriteBool(testIsEnroll));
     EXPECT_TRUE(data.WriteRemoteObject(testInputerSetData->AsObject()));
     uint32_t code = InputerGetDataInterfaceCode::ON_GET_DATA;
     MessageOption option(MessageOption::TF_SYNC);

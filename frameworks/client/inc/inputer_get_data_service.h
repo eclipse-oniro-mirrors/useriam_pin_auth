@@ -28,8 +28,8 @@ class InputerGetDataService : public InputerGetDataStub {
 public:
     explicit InputerGetDataService(const std::shared_ptr<IInputer> &inputer);
     ~InputerGetDataService() override = default;
-    void OnGetData(int32_t authSubType, const std::vector<uint8_t> &salt,
-        const sptr<InputerSetData> &inputerSetData) override;
+    void OnGetData(int32_t authSubType, const std::vector<uint8_t> &algoParameter,
+        const sptr<InputerSetData> &inputerSetData, uint32_t algoVersion, bool isEnroll) override;
 
 private:
     std::shared_ptr<IInputer> inputer_ {nullptr};

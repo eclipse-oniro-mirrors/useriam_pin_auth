@@ -43,14 +43,16 @@ int32_t InputerGetDataStub::OnRemoteRequest(uint32_t code, MessageParcel &data, 
 void InputerGetDataStub::OnGetDataStub(MessageParcel &data, MessageParcel &reply)
 {
     int32_t authSubType;
-    std::vector<uint8_t> salt;
+    std::vector<uint8_t> algoParameter;
+    uint32_t algoVersion;
+    bool isEnroll;
 
     if (!data.ReadInt32(authSubType)) {
         IAM_LOGE("failed to read authSubType");
         return;
     }
-    if (!data.ReadUInt8Vector(&salt)) {
-        IAM_LOGE("failed to read salt");
+    if (!data.ReadUInt8Vector(&algoParameter)) {
+        IAM_LOGE("failed to read algoParameter");
         return;
     }
     sptr<IRemoteObject> obj = data.ReadRemoteObject();
@@ -63,8 +65,16 @@ void InputerGetDataStub::OnGetDataStub(MessageParcel &data, MessageParcel &reply
         IAM_LOGE("inputerSetData is nullptr");
         return;
     }
+    if (!data.ReadUint32(algoVersion)) {
+        IAM_LOGE("failed to read algoVersion");
+        return;
+    }
+    if (!data.ReadBool(isEnroll)) {
+        IAM_LOGE("failed to read isEnroll");
+        return;
+    }
 
-    OnGetData(authSubType, salt, inputerSetData);
+    OnGetData(authSubType, algoParameter, inputerSetData, algoVersion, isEnroll);
 }
 } // namespace PinAuth
 } // namespace UserIam

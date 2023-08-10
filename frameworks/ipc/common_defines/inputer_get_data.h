@@ -31,11 +31,11 @@ public:
      * request inputer to get data.
      *
      * param authSubType auth subType.
-     * param salt desensitization for pin data.
+     * param algoParameter desensitization for pin data.
      * param inputerData callback for getting data.
      */
-    virtual void OnGetData(int32_t authSubType, const std::vector<uint8_t> &salt,
-        const sptr<InputerSetData> &inputerSetData) = 0;
+    virtual void OnGetData(int32_t authSubType, const std::vector<uint8_t> &algoParameter,
+        const sptr<InputerSetData> &inputerSetData, uint32_t algoVersion, bool isEnroll) = 0;
 
     DECLARE_INTERFACE_DESCRIPTOR(u"ohos.PinAuth.InputerGetData");
 };

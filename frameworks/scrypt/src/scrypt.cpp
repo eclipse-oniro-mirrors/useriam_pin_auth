@@ -14,9 +14,10 @@
  */
 
 #include "scrypt.h"
-#include <openssl/evp.h>
 #include <openssl/ossl_typ.h>
 #include <openssl/kdf.h>
+#include "securec.h"
+#include <unordered_map>
 #include "iam_logger.h"
 
 #define LOG_LABEL OHOS::UserIam::Common::LABEL_PIN_AUTH_SDK
@@ -25,54 +26,93 @@ namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
 namespace {
-    constexpr int32_t OUT_LENGTH = 64;
-    constexpr int32_t SCRYPT_N = 32768;
-    constexpr int32_t SCRYPT_R = 8;
-    constexpr int32_t SCRYPT_P = 1;
+constexpr uint32_t ALGO_VERSION_V0 = 0;
+constexpr uint32_t ALGO_VERSION_V1 = 1;
+constexpr uint32_t OUT_LENGTH = 64;
+constexpr uint32_t SCRYPT_N_V0 = 32768;
+constexpr uint32_t SCRYPT_N_V1 = 2048;
+constexpr uint32_t SCRYPT_R = 8;
+constexpr uint32_t SCRYPT_P = 1;
+
+struct ScryptParameters {
+    int32_t scryptN;
+    int32_t scryptR;
+    int32_t scryptP;
+};
+
+std::unordered_map<uint32_t, ScryptParameters> g_version2Param_ = {
+    { ALGO_VERSION_V0, { SCRYPT_N_V0, SCRYPT_R, SCRYPT_P } },
+    { ALGO_VERSION_V1, { SCRYPT_N_V1, SCRYPT_R, SCRYPT_P } }
+};
 }
 
-std::vector<uint8_t> Scrypt::GetScrypt(const std::vector<uint8_t> data)
+bool Scrypt::DoScrypt(std::vector<uint8_t> data, uint32_t algoVersion, EVP_PKEY_CTX *pctx)
+{
+    auto index = g_version2Param_.find(algoVersion);
+    if (index == g_version2Param_.end()) {
+        IAM_LOGE("version is not in g_version2Param_");
+        return false;
+    }
+    ScryptParameters scryptParameters = index->second;
+    if (EVP_PKEY_CTX_set1_pbe_pass(pctx, reinterpret_cast<const char *>(data.data()), data.size()) <= 0) {
+        IAM_LOGE("EVP_PKEY_CTX_set1_pbe_pass fail");
+        return false;
+    }
+    if (EVP_PKEY_CTX_set1_scrypt_salt(pctx, algoParameter_.data(), algoParameter_.size()) <= 0) {
+        IAM_LOGE("EVP_PKEY_CTX_set1_scrypt_salt fail");
+        return false;
+    }
+    if (EVP_PKEY_CTX_set_scrypt_N(pctx, scryptParameters.scryptN) <= 0) {
+        IAM_LOGE("EVP_PKEY_CTX_set_scrypt_N fail");
+        return false;
+    }
+    if (EVP_PKEY_CTX_set_scrypt_r(pctx, scryptParameters.scryptR) <= 0) {
+        IAM_LOGE("EVP_PKEY_CTX_set_scrypt_r fail");
+        return false;
+    }
+    if (EVP_PKEY_CTX_set_scrypt_p(pctx, scryptParameters.scryptP) <= 0) {
+        IAM_LOGE("EVP_PKEY_CTX_set_scrypt_p fail");
+        return false;
+    }
+
+    return true;
+}
+
+void Scrypt::ClearPinData(std::vector<uint8_t> &data)
+{
+    // Delete the data in the vector completely
+    (void)memset_s(data.data(), data.size(), 0, data.size());
+    data.clear();
+    (void)memset_s(algoParameter_.data(), algoParameter_.size(), 0, algoParameter_.size());
+    algoParameter_.clear();
+}
+
+std::vector<uint8_t> Scrypt::GetScrypt(std::vector<uint8_t> data, uint32_t algoVersion)
 {
     IAM_LOGI("start");
     EVP_PKEY_CTX *pctx = EVP_PKEY_CTX_new_id(EVP_PKEY_SCRYPT, NULL);
     if (EVP_PKEY_derive_init(pctx) <= 0) {
+        ClearPinData(data);
         IAM_LOGE("EVP_PKEY_derive_init fail");
         return {};
     }
-    if (EVP_PKEY_CTX_set1_pbe_pass(pctx, reinterpret_cast<const char *>(data.data()), data.size()) <= 0) {
-        IAM_LOGE("EVP_PKEY_CTX_set1_pbe_pass fail");
-        EVP_PKEY_CTX_free(pctx);
-        return {};
-    }
-    if (EVP_PKEY_CTX_set1_scrypt_salt(pctx, salt_.data(), salt_.size()) <= 0) {
-        IAM_LOGE("EVP_PKEY_CTX_set1_scrypt_salt fail");
-        EVP_PKEY_CTX_free(pctx);
-        return {};
-    }
-    if (EVP_PKEY_CTX_set_scrypt_N(pctx, SCRYPT_N) <= 0) {
-        IAM_LOGE("EVP_PKEY_CTX_set_scrypt_N fail");
-        EVP_PKEY_CTX_free(pctx);
-        return {};
-    }
-    if (EVP_PKEY_CTX_set_scrypt_r(pctx, SCRYPT_R) <= 0) {
-        IAM_LOGE("EVP_PKEY_CTX_set_scrypt_r fail");
-        EVP_PKEY_CTX_free(pctx);
-        return {};
-    }
-    if (EVP_PKEY_CTX_set_scrypt_p(pctx, SCRYPT_P) <= 0) {
-        IAM_LOGE("EVP_PKEY_CTX_set_scrypt_p fail");
-        EVP_PKEY_CTX_free(pctx);
-        return {};
-    }
 
+    if (!DoScrypt(data, algoVersion, pctx)) {
+        IAM_LOGE("DoScrypt fail");
+        ClearPinData(data);
+        EVP_PKEY_CTX_free(pctx);
+        return {};
+    }
     std::vector<uint8_t> out(OUT_LENGTH);
     size_t outlen = out.size();
     if (EVP_PKEY_derive(pctx, out.data(), &outlen) <= 0) {
         IAM_LOGE("EVP_PKEY_derive fail");
+        ClearPinData(data);
         EVP_PKEY_CTX_free(pctx);
         return {};
     }
 
+    ClearPinData(data);
     EVP_PKEY_CTX_free(pctx);
     return out;
 }

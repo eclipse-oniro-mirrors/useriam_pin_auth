@@ -280,10 +280,10 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_Enroll_001, TestSize.Lev
     for (const auto &pair : RESULT_CODE_MAP) {
         auto executorProxy = new (std::nothrow) MockIExecutor();
         ASSERT_TRUE(executorProxy != nullptr);
-        EXPECT_CALL(*executorProxy, Enroll(_, _, _))
+        EXPECT_CALL(*executorProxy, EnrollV1_1(_, _, _))
             .Times(Exactly(1))
             .WillOnce([&pair](uint64_t scheduleId, const std::vector<uint8_t> &extraInfo,
-                          const sptr<IExecutorCallback> &callbackObj) { return pair.first; });
+                          const sptr<IExecutorCallbackV1_0> &callbackObj) { return pair.first; });
         auto executorHdi = MakeShared<PinAuthExecutorHdi>(executorProxy);
         ASSERT_TRUE(executorHdi != nullptr);
         auto executeCallback = MakeShared<UserIam::UserAuth::MockIExecuteCallback>();
@@ -318,9 +318,9 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_Authenticate_001, TestSi
     for (const auto &pair : RESULT_CODE_MAP) {
         auto executorProxy = new (std::nothrow) MockIExecutor();
         ASSERT_TRUE(executorProxy != nullptr);
-        EXPECT_CALL(*executorProxy, Authenticate(_, _, _, _)).Times(Exactly(1)).WillOnce([&pair](uint64_t scheduleId,
-            uint64_t templateIdList, const std::vector<uint8_t> &extraInfo,
-            const sptr<IExecutorCallback> &callbackObj) { return pair.first; });
+        EXPECT_CALL(*executorProxy, AuthenticateV1_1(_, _, _, _)).Times(Exactly(1)).WillOnce([&pair](
+            uint64_t scheduleId, uint64_t templateIdList, const std::vector<uint8_t> &extraInfo,
+            const sptr<IExecutorCallbackV1_0> &callbackObj) { return pair.first; });
         auto executorHdi = MakeShared<PinAuthExecutorHdi>(executorProxy);
         ASSERT_TRUE(executorHdi != nullptr);
         auto executeCallback = MakeShared<UserIam::UserAuth::MockIExecuteCallback>();

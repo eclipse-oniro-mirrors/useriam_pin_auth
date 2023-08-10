@@ -31,7 +31,8 @@ public:
     MOCK_METHOD2(OnResult, void(ResultCode result, const std::vector<uint8_t> &extraInfo));
     MOCK_METHOD1(OnResult, void(ResultCode result));
     MOCK_METHOD2(OnAcquireInfo, void(int32_t acquire, const std::vector<uint8_t> &extraInfo));
-    MOCK_METHOD3(OnGetData, int32_t(uint64_t scheduleId, const std::vector<uint8_t> &salt, uint64_t authSubType));
+    MOCK_METHOD5(OnGetData, int32_t(uint64_t scheduleId, const std::vector<uint8_t> &algoParameter,
+        uint64_t authSubType, uint32_t algoVersion, bool isEnroll));
 };
 } // namespace UserAuth
 } // namespace UserIam

@@ -29,10 +29,10 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class PinAuthExecutorCallbackHdi : public IExecutorCallbackV1_1, public NoCopyable {
+class PinAuthExecutorCallbackHdi : public IExecutorCallback, public NoCopyable {
 public:
     explicit PinAuthExecutorCallbackHdi(std::shared_ptr<UserAuth::IExecuteCallback> frameworkCallback,
-        std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi, uint32_t tokenId);
+        std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi, uint32_t tokenId, bool isEnroll);
     ~PinAuthExecutorCallbackHdi() override = default;
     int32_t OnResult(int32_t code, const std::vector<uint8_t> &extraInfo) override;
     int32_t OnGetData(uint64_t scheduleId, const std::vector<uint8_t> &salt, uint64_t authSubType) override;
@@ -44,6 +44,7 @@ private:
     std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi_;
     UserAuth::ResultCode ConvertResultCode(const int32_t in);
     uint32_t tokenId_;
+    bool isEnroll_;
 };
 } // PinAuth
 } // UserIam

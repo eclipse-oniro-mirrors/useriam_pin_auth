@@ -27,8 +27,12 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-InputerDataImpl::InputerDataImpl(const std::vector<uint8_t> &salt, const sptr<InputerSetData> &inputerSetData)
-    : salt_(salt), inputerSetData_(inputerSetData)
+namespace {
+constexpr uint32_t MIN_PIN_LENGTH = 6;
+}
+InputerDataImpl::InputerDataImpl(const std::vector<uint8_t> &algoParameter, const sptr<InputerSetData> &inputerSetData,
+    uint32_t algoVersion, bool isEnroll) : algoParameter_(algoParameter),
+    inputerSetData_(inputerSetData), algoVersion_(algoVersion), isEnroll_(isEnroll)
 {
 }
 
@@ -36,16 +40,24 @@ void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
     IAM_LOGI("start and data size is %{public}zu", data.size());
     std::vector<uint8_t> scrypt;
-    if (data.size() == 0) {
-        IAM_LOGE("data size is 0");
-        return OnSetDataInner(authSubType, scrypt);
+    if (isEnroll_) {
+        if (data.size() < MIN_PIN_LENGTH) {
+            IAM_LOGE("enroll pin data size is less than min pin data length");
+            return OnSetDataInner(authSubType, scrypt);
+        }
+    } else {
+        if (data.size() == 0) {
+            IAM_LOGE("auth pin data size is 0");
+            return OnSetDataInner(authSubType, scrypt);
+        }
     }
-    auto scryptPointer = Common::MakeUnique<Scrypt>(salt_);
+
+    auto scryptPointer = Common::MakeUnique<Scrypt>(algoParameter_);
     if (scryptPointer == nullptr) {
         IAM_LOGE("scryptPointer is nullptr");
         return OnSetDataInner(authSubType, scrypt);
     }
-    scrypt = scryptPointer->GetScrypt(data);
+    scrypt = scryptPointer->GetScrypt(data, algoVersion_);
     if (scrypt.empty()) {
         IAM_LOGE("get scrypt fail");
     }

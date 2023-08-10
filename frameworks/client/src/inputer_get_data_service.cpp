@@ -28,8 +28,8 @@ InputerGetDataService::InputerGetDataService(const std::shared_ptr<IInputer> &in
 {
 }
 
-void InputerGetDataService::OnGetData(int32_t authSubType, const std::vector<uint8_t> &salt,
-    const sptr<InputerSetData> &inputerSetData)
+void InputerGetDataService::OnGetData(int32_t authSubType, const std::vector<uint8_t> &algoParameter,
+    const sptr<InputerSetData> &inputerSetData, uint32_t algoVersion, bool isEnroll)
 {
     IAM_LOGI("start");
     if (inputerSetData == nullptr) {
@@ -37,7 +37,8 @@ void InputerGetDataService::OnGetData(int32_t authSubType, const std::vector<uin
         return;
     }
     
-    std::shared_ptr<IInputerData> sharedInputerData = Common::MakeShared<InputerDataImpl>(salt, inputerSetData);
+    std::shared_ptr<IInputerData> sharedInputerData =
+        Common::MakeShared<InputerDataImpl>(algoParameter, inputerSetData, algoVersion, isEnroll);
     if (sharedInputerData == nullptr) {
         IAM_LOGE("sharedInputerData is nullptr");
         return;
