@@ -29,6 +29,16 @@ config("pinauth_ipc_config") {
 }
 
 ohos_source_set("pinauth_framework_source_set") {
+  sanitize = {
+    integer_overflow = true
+    ubsan = true
+    boundary_sanitize = true
+    cfi = true
+    cfi_cross_dso = true
+    debug = false
+    blocklist = "../cfi_blocklist.txt"
+  }
+  stack_protector_ret = true
   sources = [
     "client/src/inputer_data_impl.cpp",
     "client/src/inputer_get_data_service.cpp",
@@ -68,6 +78,16 @@ ohos_source_set("pinauth_framework_source_set") {
 }
 
 ohos_shared_library("pinauth_framework") {
+  sanitize = {
+    integer_overflow = true
+    ubsan = true
+    boundary_sanitize = true
+    cfi = true
+    cfi_cross_dso = true
+    blocklist = "../cfi_blocklist.txt"
+    debug = false
+  }
+  stack_protector_ret = true
   deps = [ ":pinauth_framework_source_set" ]
 
   if (use_musl) {
@@ -82,6 +102,16 @@ ohos_shared_library("pinauth_framework") {
 }
 
 ohos_source_set("pinauth_ipc") {
+  sanitize = {
+    integer_overflow = true
+    ubsan = true
+    boundary_sanitize = true
+    cfi = true
+    cfi_cross_dso = true
+    debug = false
+    blocklist = "../cfi_blocklist.txt"
+  }
+  stack_protector_ret = true
   include_dirs = [
     "ipc/inc",
     "ipc/common_defines",

@@ -24,6 +24,16 @@ config("pin_auth_services_config") {
 }
 
 ohos_source_set("pinauthservice_source_set") {
+  sanitize = {
+    integer_overflow = true
+    ubsan = true
+    boundary_sanitize = true
+    cfi = true
+    cfi_cross_dso = true
+    debug = false
+    blocklist = "../cfi_blocklist.txt"
+  }
+  stack_protector_ret = true
   sources = [
     "modules/driver/src/pin_auth_driver_hdi.cpp",
     "modules/driver/src/pin_auth_interface_adapter.cpp",
@@ -65,6 +75,16 @@ ohos_source_set("pinauthservice_source_set") {
 }
 
 ohos_shared_library("pinauthservice") {
+  sanitize = {
+    integer_overflow = true
+    ubsan = true
+    boundary_sanitize = true
+    cfi = true
+    cfi_cross_dso = true
+    debug = false
+    blocklist = "../cfi_blocklist.txt"
+  }
+  stack_protector_ret = true
   deps = [ ":pinauthservice_source_set" ]
 
   public_configs = [ ":pin_auth_services_config" ]
