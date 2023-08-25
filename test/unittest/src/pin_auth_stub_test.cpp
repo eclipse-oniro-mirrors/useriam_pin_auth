@@ -53,13 +53,13 @@ HWTEST_F(PinAuthStubTest, PinAuthStubTestRegisterInputer, TestSize.Level0)
         .WillByDefault(
             [](const sptr<InputerGetData> &inputer) {
                 if (inputer != nullptr) {
-                    std::vector<uint8_t> salt = {1, 2, 3, 4};
-                    inputer->OnGetData(10000, salt, nullptr);
+                    std::vector<uint8_t> algoParameter = {1, 2, 3, 4};
+                    inputer->OnGetData(10000, algoParameter, nullptr, 0, false);
                 }
                 return true;
             }
         );
-    EXPECT_CALL(*tempInputerGetData, OnGetData(_, _, _)).Times(1);
+    EXPECT_CALL(*tempInputerGetData, OnGetData(_, _, _, _, _)).Times(1);
 
     MessageParcel data;
     MessageParcel reply;

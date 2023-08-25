@@ -39,11 +39,14 @@ namespace PinAuth {
 namespace {
 class DummyRemoteInputer : public InputerGetData {
 public:
-    void OnGetData(int32_t authSubType, const std::vector<uint8_t> &salt, const sptr<InputerSetData> &inputerSetData)
+    void OnGetData(int32_t authSubType, const std::vector<uint8_t> &algoParameter,
+        const sptr<InputerSetData> &inputerSetData, uint32_t algoVersion, bool isEnroll)
     {
         static_cast<void>(authSubType);
-        static_cast<void>(salt);
+        static_cast<void>(algoParameter);
         static_cast<void>(inputerSetData);
+        static_cast<void>(algoVersion);
+        static_cast<void>(isEnroll);
     }
     sptr<IRemoteObject> AsObject()
     {

@@ -31,14 +31,17 @@ namespace UserIam {
 namespace PinAuth {
 class InputerDataImpl : public IInputerData {
 public:
-    explicit InputerDataImpl(const std::vector<uint8_t> &salt, const sptr<InputerSetData> &inputerSetData);
+    InputerDataImpl(const std::vector<uint8_t> &algoParameter, const sptr<InputerSetData> &inputerSetData,
+        uint32_t algoVersion, bool isEnroll);
     ~InputerDataImpl() override = default;
     void OnSetData(int32_t authSubType, std::vector<uint8_t> data) override;
 
 private:
     void OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &scrypt);
-    std::vector<uint8_t> salt_;
+    std::vector<uint8_t> algoParameter_ = {};
     sptr<InputerSetData> inputerSetData_ {nullptr};
+    uint32_t algoVersion_ = 0;
+    bool isEnroll_ = false;
 };
 } // namespace PinAuth
 } // namespace UserIam

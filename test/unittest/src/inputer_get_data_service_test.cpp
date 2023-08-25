@@ -46,6 +46,8 @@ HWTEST_F(InputerGetDataServiceTest, InputerGetDataServiceTest001, TestSize.Level
 {
     int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
+    uint32_t testAlgoVersion = 0;
+    bool testIsEnroll = false;
     sptr<InputerSetData> testInputerSetData(new (std::nothrow) MockInputerSetData());
     EXPECT_NE(testInputerSetData, nullptr);
 
@@ -62,7 +64,7 @@ HWTEST_F(InputerGetDataServiceTest, InputerGetDataServiceTest001, TestSize.Level
     auto service = Common::MakeShared<InputerGetDataService>(testInputer);
     EXPECT_NE(service, nullptr);
 
-    service->OnGetData(testAuthSubType, testSalt, testInputerSetData);
+    service->OnGetData(testAuthSubType, testSalt, testInputerSetData, testAlgoVersion, testIsEnroll);
 }
 } // namespace PinAuth
 } // namespace UserIam

@@ -26,8 +26,8 @@ namespace UserIam {
 namespace PinAuth {
 class MockInputerGetData final : public IRemoteStub<InputerGetData> {
 public:
-    MOCK_METHOD3(OnGetData, void(int32_t authSubType, const std::vector<uint8_t> &salt,
-        const sptr<InputerSetData> &inputerSetData));
+    MOCK_METHOD5(OnGetData, void(int32_t authSubType, const std::vector<uint8_t> &algoParameter,
+        const sptr<InputerSetData> &inputerSetData, uint32_t algoVersion, bool isEnroll));
 };
 } // namespace PinAuth
 } // namespace UserIam

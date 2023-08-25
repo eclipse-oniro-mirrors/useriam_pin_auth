@@ -31,8 +31,8 @@ public:
     {
     }
     ~InputerGetDataProxy() override = default;
-    void OnGetData(int32_t authSubType, const std::vector<uint8_t> &salt,
-        const sptr<InputerSetData> &inputerSetData) override;
+    void OnGetData(int32_t authSubType, const std::vector<uint8_t> &algoParameter,
+        const sptr<InputerSetData> &inputerSetData, uint32_t algoVersion, bool isEnroll) override;
 
 private:
     static inline BrokerDelegator<InputerGetDataProxy> delegator_;

@@ -48,6 +48,9 @@ HWTEST_F(InputerGetDataProxyTest, InputerGetDataProxyTest001, TestSize.Level0)
     int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5, 6};
     sptr<InputerSetData> testInputerSetData(new (std::nothrow) MockInputerSetData());
+    uint32_t testAlgoVersion = 0;
+    bool testIsEnroll = false;
+
     EXPECT_NE(testInputerSetData, nullptr);
     sptr<MockRemoteObject> obj(new (std::nothrow) MockRemoteObject());
     EXPECT_NE(obj, nullptr);
@@ -56,13 +59,16 @@ HWTEST_F(InputerGetDataProxyTest, InputerGetDataProxyTest001, TestSize.Level0)
 
     auto service = Common::MakeShared<MockInputerGetDataService>();
     EXPECT_NE(service, nullptr);
-    EXPECT_CALL(*service, OnGetData(_, _, _))
+    EXPECT_CALL(*service, OnGetData(_, _, _, _, _))
         .Times(Exactly(1))
-        .WillOnce([&testAuthSubType, &testInputerSetData](int32_t authSubType, const std::vector<uint8_t> &salt,
-            const sptr<InputerSetData> &inputerSetData) {
+        .WillOnce([&testAuthSubType, &testInputerSetData, &testAlgoVersion, &testIsEnroll](int32_t authSubType,
+            const std::vector<uint8_t> &algoParameter, const sptr<InputerSetData> &inputerSetData,
+            uint32_t algoVersion, bool isEnroll) {
             EXPECT_EQ(authSubType, testAuthSubType);
             EXPECT_EQ(inputerSetData, testInputerSetData);
-            EXPECT_THAT(salt, ElementsAre(1, 2, 3, 4, 5, 6));
+            EXPECT_EQ(algoVersion, testAlgoVersion);
+            EXPECT_EQ(isEnroll, testIsEnroll);
+            EXPECT_THAT(algoParameter, ElementsAre(1, 2, 3, 4, 5, 6));
             return;
         });
     EXPECT_CALL(*obj, SendRequest(_, _, _, _)).Times(1);
@@ -70,12 +76,14 @@ HWTEST_F(InputerGetDataProxyTest, InputerGetDataProxyTest001, TestSize.Level0)
         .WillByDefault([&service](uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option) {
             return service->OnRemoteRequest(code, data, reply, option);
         });
-    proxy->OnGetData(testAuthSubType, testSalt, testInputerSetData);
+    proxy->OnGetData(testAuthSubType, testSalt, testInputerSetData, testAlgoVersion, testIsEnroll);
 }
 
 HWTEST_F(InputerGetDataProxyTest, InputerGetDataProxyTest002, TestSize.Level0)
 {
     int32_t testAuthSubType = 10000;
+    uint32_t testAlgoVersion = 0;
+    bool testIsEnroll = false;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5, 6};
     sptr<InputerSetData> testInputerSetData(nullptr);
     sptr<MockRemoteObject> obj(new (std::nothrow) MockRemoteObject());
@@ -83,7 +91,7 @@ HWTEST_F(InputerGetDataProxyTest, InputerGetDataProxyTest002, TestSize.Level0)
     auto proxy = Common::MakeShared<InputerGetDataProxy>(obj);
     EXPECT_NE(proxy, nullptr);
 
-    proxy->OnGetData(testAuthSubType, testSalt, testInputerSetData);
+    proxy->OnGetData(testAuthSubType, testSalt, testInputerSetData, testAlgoVersion, testIsEnroll);
 }
 } // namespace PinAuth
 } // namespace UserIam

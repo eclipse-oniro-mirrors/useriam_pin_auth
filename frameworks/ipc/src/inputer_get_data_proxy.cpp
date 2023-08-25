@@ -22,8 +22,8 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-void InputerGetDataProxy::OnGetData(int32_t authSubType, const std::vector<uint8_t> &salt,
-    const sptr<InputerSetData> &inputerSetData)
+void InputerGetDataProxy::OnGetData(int32_t authSubType, const std::vector<uint8_t> &algoParameter,
+    const sptr<InputerSetData> &inputerSetData, uint32_t algoVersion, bool isEnroll)
 {
     IAM_LOGI("start");
     if (inputerSetData == nullptr) {
@@ -43,13 +43,21 @@ void InputerGetDataProxy::OnGetData(int32_t authSubType, const std::vector<uint8
         return;
     }
 
-    if (!data.WriteUInt8Vector(salt)) {
-        IAM_LOGE("write salt fail");
+    if (!data.WriteUInt8Vector(algoParameter)) {
+        IAM_LOGE("write algoParameter fail");
         return;
     }
 
     if (!data.WriteRemoteObject(inputerSetData->AsObject())) {
         IAM_LOGE("write inputerData fail");
+        return;
+    }
+    if (!data.WriteUint32(algoVersion)) {
+        IAM_LOGE("write algoVersion fail");
+        return;
+    }
+    if (!data.WriteBool(isEnroll)) {
+        IAM_LOGE("write isEnroll fail");
         return;
     }
     bool ret = SendRequest(InputerGetDataInterfaceCode::ON_GET_DATA, data, reply);

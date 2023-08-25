@@ -17,6 +17,7 @@
 #define PINAUTH_SECRET_H
 
 #include <cstdint>
+#include <openssl/evp.h>
 #include <vector>
 #include "nocopyable.h"
 
@@ -25,12 +26,14 @@ namespace UserIam {
 namespace PinAuth {
 class Scrypt : public NoCopyable {
 public:
-    explicit Scrypt(std::vector<uint8_t> salt) : salt_(std::move(salt)) {}
+    explicit Scrypt(std::vector<uint8_t> algoParameter) : algoParameter_(std::move(algoParameter)) {}
     ~Scrypt() override = default;
-    std::vector<uint8_t> GetScrypt(const std::vector<uint8_t> data);
+    std::vector<uint8_t> GetScrypt(std::vector<uint8_t> data, uint32_t algoVersion);
 
 private:
-    std::vector<uint8_t> salt_;
+    bool DoScrypt(std::vector<uint8_t> data, uint32_t algoVersion, EVP_PKEY_CTX *pctx);
+    void ClearPinData(std::vector<uint8_t> &data);
+    std::vector<uint8_t> algoParameter_ = {};
 };
 } // namespace PinAuth
 } // namespace UserIam

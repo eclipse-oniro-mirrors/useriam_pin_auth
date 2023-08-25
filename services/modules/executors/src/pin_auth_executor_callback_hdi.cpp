@@ -30,8 +30,9 @@ namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserIam::UserAuth::IExecuteCallback>
-    frameworkCallback, std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi, uint32_t tokenId)
-    : frameworkCallback_(frameworkCallback), pinAuthExecutorHdi_(pinAuthExecutorHdi), tokenId_(tokenId) {}
+    frameworkCallback, std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi, uint32_t tokenId, bool isEnroll)
+    : frameworkCallback_(frameworkCallback), pinAuthExecutorHdi_(pinAuthExecutorHdi),
+      tokenId_(tokenId), isEnroll_(isEnroll) {}
 
 int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uint8_t>& extraInfo)
 {
@@ -41,8 +42,19 @@ int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uin
     return HDF_SUCCESS;
 }
 
-int32_t PinAuthExecutorCallbackHdi::OnGetData(uint64_t scheduleId, const std::vector<uint8_t>& salt,
+int32_t PinAuthExecutorCallbackHdi::OnGetData(uint64_t scheduleId, const std::vector<uint8_t> &salt,
     uint64_t authSubType)
+{
+    IAM_LOGI("Start tokenId_ is %{public}u", tokenId_);
+    if (OnGetDataV1_1(scheduleId, salt, authSubType, 0) != HDF_SUCCESS) {
+        IAM_LOGE("invoke OnGetDataV1_1 fail");
+        return HDF_FAILURE;
+    }
+    return HDF_SUCCESS;
+}
+
+int32_t PinAuthExecutorCallbackHdi::OnGetDataV1_1(uint64_t scheduleId, const std::vector<uint8_t> &algoParameter,
+    uint64_t authSubType, uint32_t algoVersion)
 {
     IAM_LOGI("Start tokenId_ is %{public}u", tokenId_);
     sptr<InputerGetData> inputer = PinAuthManager::GetInstance().GetInputerLock(tokenId_);
@@ -54,19 +66,8 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(uint64_t scheduleId, const std::ve
     if (iInputerDataImpl == nullptr) {
         IAM_LOGE("iInputerDataImpl is nullptr");
     }
-    inputer->OnGetData(authSubType, salt, iInputerDataImpl);
-    return HDF_SUCCESS;
-}
 
-int32_t PinAuthExecutorCallbackHdi::OnGetDataV1_1(uint64_t scheduleId, const std::vector<uint8_t> &algoParameter,
-    uint64_t authSubType, uint32_t algoVersion)
-{
-    IAM_LOGI("interface mock start");
-    static_cast<void>(scheduleId);
-    static_cast<void>(algoParameter);
-    static_cast<void>(authSubType);
-    static_cast<void>(algoVersion);
-
+    inputer->OnGetData(authSubType, algoParameter, iInputerDataImpl, algoVersion, isEnroll_);
     return HDF_SUCCESS;
 }
 
