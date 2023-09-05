@@ -15,6 +15,7 @@ import("//build/config/features.gni")
 import("//build/test.gni")
 
 ohos_fuzztest("PinAuthStubFuzzTest") {
+  stack_protector_ret = true
   module_out_path = "useriam/pin_auth"
   fuzz_config_file = "../pinauthstub_fuzzer"
 
@@ -33,8 +34,8 @@ ohos_fuzztest("PinAuthStubFuzzTest") {
   ]
 
   deps = [
-    "../../../frameworks:pinauth_ipc",
-    "../../../services:pinauthservice_source_set",
+    "../common_fuzzer:pinauth_ipc_fuzzer",
+    "../common_fuzzer:pinauthservice_source_set_fuzzer",
     "//third_party/openssl:libcrypto_shared",
   ]
 

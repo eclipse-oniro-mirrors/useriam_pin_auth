@@ -17,6 +17,16 @@ import("//build/test.gni")
 module_output_path = "pin_auth/PinAuth_UT_test"
 
 ohos_unittest("PinAuth_UT_test") {
+  sanitize = {
+    integer_overflow = true
+    ubsan = true
+    boundary_sanitize = true
+    cfi = true
+    cfi_cross_dso = true
+    debug = false
+    blocklist = "../../cfi_blocklist.txt"
+  }
+  stack_protector_ret = true
   module_out_path = module_output_path
 
   sources = [
@@ -77,6 +87,16 @@ ohos_unittest("PinAuth_UT_test") {
 }
 
 ohos_unittest("PinAuth_Service_test") {
+  sanitize = {
+    integer_overflow = true
+    ubsan = true
+    boundary_sanitize = true
+    cfi = true
+    cfi_cross_dso = true
+    debug = false
+    blocklist = "../../cfi_blocklist.txt"
+  }
+  stack_protector_ret = true
   module_out_path = module_output_path
 
   sources = [ "src/pinauth_test.cpp" ]
