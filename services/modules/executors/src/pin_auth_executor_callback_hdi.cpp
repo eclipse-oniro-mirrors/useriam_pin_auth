@@ -18,6 +18,8 @@
 #include <cinttypes>
 #include <hdf_base.h>
 
+#include "vibrator_agent.h"
+
 #include "iam_logger.h"
 #include "iam_common_defines.h"
 #include "i_inputer_data_impl.h"
@@ -29,15 +31,47 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
+namespace {
+    constexpr const char *PIN_AUTH_EFFECT = "haptic.clock.timer";
+}
+
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserIam::UserAuth::IExecuteCallback>
     frameworkCallback, std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi, uint32_t tokenId, bool isEnroll)
     : frameworkCallback_(frameworkCallback), pinAuthExecutorHdi_(pinAuthExecutorHdi),
       tokenId_(tokenId), isEnroll_(isEnroll) {}
 
+void PinAuthExecutorCallbackHdi::DoVibrator()
+{
+    IAM_LOGI("begin");
+    bool pinEffectState = false;
+    int32_t ret = Sensors::IsSupportEffect(PIN_AUTH_EFFECT, &pinEffectState);
+    if (ret != 0) {
+        IAM_LOGE("call IsSupportEffect fail %{public}d", ret);
+        return;
+    }
+    if (!pinEffectState) {
+        IAM_LOGE("effect not support");
+        return;
+    }
+    if (!Sensors::SetUsage(USAGE_PHYSICAL_FEEDBACK)) {
+        IAM_LOGE("call SetUsage fail");
+        return;
+    }
+    ret = Sensors::StartVibrator(PIN_AUTH_EFFECT);
+    if (ret != 0) {
+        IAM_LOGE("call StartVibrator fail %{public}d", ret);
+        return;
+    }
+    IAM_LOGI("end");
+}
+
 int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uint8_t>& extraInfo)
 {
     IAM_LOGI("OnResult %{public}d", code);
     UserAuth::ResultCode retCode = ConvertResultCode(code);
+    if ((!isEnroll_) && (retCode == UserAuth::FAIL)) {
+        DoVibrator();
+    }
     frameworkCallback_->OnResult(retCode, extraInfo);
     return HDF_SUCCESS;
 }

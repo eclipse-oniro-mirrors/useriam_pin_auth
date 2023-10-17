@@ -64,6 +64,7 @@ ohos_source_set("pinauthservice_source_set") {
     "hilog:libhilog",
     "hisysevent:libhisysevent",
     "ipc:ipc_single",
+    "miscdevice:vibrator_interface_native",
     "safwk:system_ability_fwk",
     "samgr:samgr_proxy",
     "user_auth_framework:userauth_executors",

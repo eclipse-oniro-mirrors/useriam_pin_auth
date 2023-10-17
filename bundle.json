@@ -31,6 +31,7 @@
             "samgr",
             "access_token",
             "hisysevent",
+            "miscdevice",
             "user_auth_framework",
             "drivers_interface_pin_auth",
             "c_utils"

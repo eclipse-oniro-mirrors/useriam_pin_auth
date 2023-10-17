@@ -40,6 +40,7 @@ public:
         uint32_t algoVersion) override;
 
 private:
+    void DoVibrator();
     std::shared_ptr<UserAuth::IExecuteCallback> frameworkCallback_;
     std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi_;
     UserAuth::ResultCode ConvertResultCode(const int32_t in);
