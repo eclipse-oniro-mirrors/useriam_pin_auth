@@ -14,7 +14,7 @@
 import("//build/ohos.gni")
 
 ohos_source_set("pinauth_ipc_fuzzer") {
-  stack_protector_ret = true
+  branch_protector_ret = "pac_ret"
   include_dirs = [
     "../../../frameworks/ipc/inc",
     "../../../frameworks/ipc/common_defines",
@@ -44,7 +44,7 @@ ohos_source_set("pinauth_ipc_fuzzer") {
 }
 
 ohos_source_set("pinauthservice_source_set_fuzzer") {
-  stack_protector_ret = true
+  branch_protector_ret = "pac_ret"
   sources = [
     "../../../services/modules/driver/src/pin_auth_driver_hdi.cpp",
     "../../../services/modules/driver/src/pin_auth_interface_adapter.cpp",
