@@ -71,17 +71,18 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnResult_00
         ASSERT_TRUE(executeCallback != nullptr);
         std::vector<uint8_t> testExtraInfo = {1, 2, 3, 4, 5, 6};
         EXPECT_CALL(*executeCallback, OnResult(_, _))
-            .Times(Exactly(1))
-            .WillOnce([&pair, &testExtraInfo](int32_t result, const std::vector<uint8_t> &extraInfo) {
+            .Times(Exactly(2))
+            .WillRepeatedly([&pair, &testExtraInfo](int32_t result, const std::vector<uint8_t> &extraInfo) {
                 EXPECT_TRUE(result == pair.second);
                 EXPECT_TRUE(testExtraInfo.size() == extraInfo.size());
                 EXPECT_TRUE(std::equal(extraInfo.begin(), extraInfo.end(), testExtraInfo.begin()));
             });
         std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi = MakeShared<PinAuthExecutorHdi>(nullptr);
         const uint32_t tokenId = 123;
-        bool isEnroll = false;
-        PinAuthExecutorCallbackHdi callbackHdi(executeCallback, pinAuthExecutorHdi, tokenId, isEnroll);
-        callbackHdi.OnResult(pair.first, testExtraInfo);
+        PinAuthExecutorCallbackHdi callbackHdi1(executeCallback, pinAuthExecutorHdi, tokenId, false);
+        callbackHdi1.OnResult(pair.first, testExtraInfo);
+        PinAuthExecutorCallbackHdi callbackHdi2(executeCallback, pinAuthExecutorHdi, tokenId, true);
+        callbackHdi2.OnResult(pair.first, testExtraInfo);
     }
 }
 } // namespace PinAuth
