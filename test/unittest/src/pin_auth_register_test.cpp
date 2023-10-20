@@ -37,6 +37,7 @@ void PinAuthRegisterTest::SetUpTestCase()
     static const char *PERMS[] = {
         "ohos.permission.ACCESS_PIN_AUTH"
     };
+    string isEnforcing;
     NativeTokenInfoParams infoInstance = {
         .dcapsNum = 0,
         .permsNum = 1,
@@ -50,14 +51,20 @@ void PinAuthRegisterTest::SetUpTestCase()
     tokenId = GetAccessTokenId(&infoInstance);
     SetSelfTokenID(tokenId);
     Security::AccessToken::AccessTokenKit::ReloadNativeTokenInfo();
-    SaveStringToFile("/sys/fs/selinux/enforce", "0");
+    LoadStringFromFile("/sys/fs/selinux/enforce", isEnforcing);
+    if (isEnforcing.compare("1") == 0) {
+        PinAuthRegisterTest::isEnforcing_ = true;
+        SaveStringToFile("/sys/fs/selinux/enforce", "0");
+    }
 }
 
 void PinAuthRegisterTest::TearDownTestCase()
 {
     Security::AccessToken::AccessTokenKit::DeleteToken(tokenId);
     Security::AccessToken::AccessTokenKit::ReloadNativeTokenInfo();
-    SaveStringToFile("/sys/fs/selinux/enforce", "1");
+    if (PinAuthRegisterTest::isEnforcing_) {
+        SaveStringToFile("/sys/fs/selinux/enforce", "1");
+    }
 }
 
 void PinAuthRegisterTest::SetUp()
@@ -67,6 +74,8 @@ void PinAuthRegisterTest::SetUp()
 void PinAuthRegisterTest::TearDown()
 {
 }
+
+bool PinAuthRegisterTest::isEnforcing_ = false;
 
 HWTEST_F(PinAuthRegisterTest, PinAuthRegisterTest001, TestSize.Level0)
 {
