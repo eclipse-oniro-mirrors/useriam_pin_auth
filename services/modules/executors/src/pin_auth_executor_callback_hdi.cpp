@@ -32,7 +32,7 @@ namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
 namespace {
-    constexpr const char *PIN_AUTH_EFFECT = "haptic.clock.timer";
+    constexpr const char *PIN_AUTH_EFFECT = "haptic.fail";
 }
 
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserIam::UserAuth::IExecuteCallback>
