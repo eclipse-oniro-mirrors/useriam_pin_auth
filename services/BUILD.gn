@@ -33,7 +33,7 @@ ohos_source_set("pinauthservice_source_set") {
     debug = false
     blocklist = "../cfi_blocklist.txt"
   }
-  stack_protector_ret = true
+  branch_protector_ret = "pac_ret"
   sources = [
     "modules/driver/src/pin_auth_driver_hdi.cpp",
     "modules/driver/src/pin_auth_interface_adapter.cpp",
@@ -85,7 +85,7 @@ ohos_shared_library("pinauthservice") {
     debug = false
     blocklist = "../cfi_blocklist.txt"
   }
-  stack_protector_ret = true
+  branch_protector_ret = "pac_ret"
   deps = [ ":pinauthservice_source_set" ]
 
   public_configs = [ ":pin_auth_services_config" ]

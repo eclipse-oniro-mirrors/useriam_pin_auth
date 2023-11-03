@@ -38,7 +38,7 @@ ohos_source_set("pinauth_framework_source_set") {
     debug = false
     blocklist = "../cfi_blocklist.txt"
   }
-  stack_protector_ret = true
+  branch_protector_ret = "pac_ret"
   sources = [
     "client/src/inputer_data_impl.cpp",
     "client/src/inputer_get_data_service.cpp",
@@ -87,7 +87,7 @@ ohos_shared_library("pinauth_framework") {
     blocklist = "../cfi_blocklist.txt"
     debug = false
   }
-  stack_protector_ret = true
+  branch_protector_ret = "pac_ret"
   deps = [ ":pinauth_framework_source_set" ]
 
   if (use_musl) {
@@ -111,7 +111,7 @@ ohos_source_set("pinauth_ipc") {
     debug = false
     blocklist = "../cfi_blocklist.txt"
   }
-  stack_protector_ret = true
+  branch_protector_ret = "pac_ret"
   include_dirs = [
     "ipc/inc",
     "ipc/common_defines",

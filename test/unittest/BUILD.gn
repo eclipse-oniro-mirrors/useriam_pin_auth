@@ -26,7 +26,7 @@ ohos_unittest("PinAuth_UT_test") {
     debug = false
     blocklist = "../../cfi_blocklist.txt"
   }
-  stack_protector_ret = true
+  branch_protector_ret = "pac_ret"
   module_out_path = module_output_path
 
   sources = [
@@ -96,7 +96,7 @@ ohos_unittest("PinAuth_Service_test") {
     debug = false
     blocklist = "../../cfi_blocklist.txt"
   }
-  stack_protector_ret = true
+  branch_protector_ret = "pac_ret"
   module_out_path = module_output_path
 
   sources = [ "src/pinauth_test.cpp" ]
