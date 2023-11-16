@@ -24,6 +24,12 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
+enum AuthType : uint32_t {
+    ALGO_VERSION_V0 = 0,
+    ALGO_VERSION_V1 = 1,
+    ALGO_VERSION_V2 = 2
+};
+
 class Scrypt : public NoCopyable {
 public:
     explicit Scrypt(std::vector<uint8_t> algoParameter) : algoParameter_(std::move(algoParameter)) {}

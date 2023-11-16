@@ -18,6 +18,8 @@
 #include <cstddef>
 #include <vector>
 
+#include <openssl/sha.h>
+
 #include "iam_logger.h"
 #include "iam_ptr.h"
 #include "scrypt.h"
@@ -30,6 +32,7 @@ namespace PinAuth {
 namespace {
 constexpr uint32_t MIN_PIN_LENGTH = 6;
 }
+
 InputerDataImpl::InputerDataImpl(const std::vector<uint8_t> &algoParameter, const sptr<InputerSetData> &inputerSetData,
     uint32_t algoVersion, bool isEnroll) : algoParameter_(algoParameter),
     inputerSetData_(inputerSetData), algoVersion_(algoVersion), isEnroll_(isEnroll)
@@ -38,39 +41,55 @@ InputerDataImpl::InputerDataImpl(const std::vector<uint8_t> &algoParameter, cons
 
 void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
-    IAM_LOGI("start and data size is %{public}zu", data.size());
-    std::vector<uint8_t> scrypt;
+    IAM_LOGI("start and data size:%{public}zu algo version:%{public}u", data.size(), algoVersion_);
+    std::vector<uint8_t> setData;
     if (isEnroll_) {
         if (data.size() < MIN_PIN_LENGTH) {
             IAM_LOGE("enroll pin data size is less than min pin data length");
-            return OnSetDataInner(authSubType, scrypt);
+            return OnSetDataInner(authSubType, setData);
         }
     } else {
         if (data.size() == 0) {
             IAM_LOGE("auth pin data size is 0");
-            return OnSetDataInner(authSubType, scrypt);
+            return OnSetDataInner(authSubType, setData);
         }
     }
 
     auto scryptPointer = Common::MakeUnique<Scrypt>(algoParameter_);
     if (scryptPointer == nullptr) {
         IAM_LOGE("scryptPointer is nullptr");
-        return OnSetDataInner(authSubType, scrypt);
+        return OnSetDataInner(authSubType, setData);
     }
-    scrypt = scryptPointer->GetScrypt(data, algoVersion_);
-    if (scrypt.empty()) {
+    setData = scryptPointer->GetScrypt(data, algoVersion_);
+    if (setData.empty()) {
         IAM_LOGE("get scrypt fail");
+        return OnSetDataInner(authSubType, setData);
     }
-    return OnSetDataInner(authSubType, scrypt);
+    if ((algoVersion_ > ALGO_VERSION_V1) && isEnroll_ && (!GetSha256(data, setData))) {
+        IAM_LOGE("get sha256 fail");
+        setData.clear();
+    }
+    return OnSetDataInner(authSubType, setData);
 }
 
-void InputerDataImpl::OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &scrypt)
+bool InputerDataImpl::GetSha256(std::vector<uint8_t> &data, std::vector<uint8_t> &out)
+{
+    uint8_t sha256Result[SHA256_DIGEST_LENGTH] = {};
+    if (SHA256(data.data(), data.size(), sha256Result) != sha256Result) {
+        IAM_LOGE("get sha256 fail");
+        return false;
+    }
+    out.insert(out.end(), sha256Result, sha256Result + SHA256_DIGEST_LENGTH);
+    return true;
+}
+
+void InputerDataImpl::OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &setData)
 {
     if (inputerSetData_ == nullptr) {
         IAM_LOGE("inputerSetData is nullptr");
         return;
     }
-    inputerSetData_->OnSetData(authSubType, scrypt);
+    inputerSetData_->OnSetData(authSubType, setData);
 }
 } // namespace PinAuth
 } // namespace UserIam
