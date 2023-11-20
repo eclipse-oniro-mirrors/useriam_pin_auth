@@ -26,8 +26,6 @@ namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
 namespace {
-constexpr uint32_t ALGO_VERSION_V0 = 0;
-constexpr uint32_t ALGO_VERSION_V1 = 1;
 constexpr uint32_t OUT_LENGTH = 64;
 constexpr uint32_t SCRYPT_N_V0 = 32768;
 constexpr uint32_t SCRYPT_N_V1 = 2048;
@@ -42,7 +40,8 @@ struct ScryptParameters {
 
 std::unordered_map<uint32_t, ScryptParameters> g_version2Param_ = {
     { ALGO_VERSION_V0, { SCRYPT_N_V0, SCRYPT_R, SCRYPT_P } },
-    { ALGO_VERSION_V1, { SCRYPT_N_V1, SCRYPT_R, SCRYPT_P } }
+    { ALGO_VERSION_V1, { SCRYPT_N_V1, SCRYPT_R, SCRYPT_P } },
+    { ALGO_VERSION_V2, { SCRYPT_N_V1, SCRYPT_R, SCRYPT_P } }
 };
 }
 

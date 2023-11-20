@@ -37,7 +37,8 @@ public:
     void OnSetData(int32_t authSubType, std::vector<uint8_t> data) override;
 
 private:
-    void OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &scrypt);
+    bool GetSha256(std::vector<uint8_t> &data, std::vector<uint8_t> &out);
+    void OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &setData);
     std::vector<uint8_t> algoParameter_ = {};
     sptr<InputerSetData> inputerSetData_ {nullptr};
     uint32_t algoVersion_ = 0;
