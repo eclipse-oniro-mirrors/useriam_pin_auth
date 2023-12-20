@@ -18,7 +18,9 @@
 #include <cinttypes>
 #include <hdf_base.h>
 
+#ifdef SENSORS_MISCDEVICE_ENABLE
 #include "vibrator_agent.h"
+#endif
 
 #include "iam_logger.h"
 #include "iam_common_defines.h"
@@ -31,9 +33,11 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
+#ifdef SENSORS_MISCDEVICE_ENABLE
 namespace {
     constexpr const char *PIN_AUTH_EFFECT = "haptic.clock.timer";
 }
+#endif
 
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserIam::UserAuth::IExecuteCallback>
     frameworkCallback, std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi, uint32_t tokenId, bool isEnroll)
@@ -43,6 +47,7 @@ PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserIam::
 void PinAuthExecutorCallbackHdi::DoVibrator()
 {
     IAM_LOGI("begin");
+#ifdef SENSORS_MISCDEVICE_ENABLE
     bool pinEffectState = false;
     int32_t ret = Sensors::IsSupportEffect(PIN_AUTH_EFFECT, &pinEffectState);
     if (ret != 0) {
@@ -62,6 +67,10 @@ void PinAuthExecutorCallbackHdi::DoVibrator()
         IAM_LOGE("call StartVibrator fail %{public}d", ret);
         return;
     }
+#else
+    IAM_LOGE("vibrator not support");
+    return;
+#endif
     IAM_LOGI("end");
 }
 
