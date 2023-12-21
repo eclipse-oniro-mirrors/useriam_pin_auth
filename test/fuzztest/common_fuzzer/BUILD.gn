@@ -12,6 +12,7 @@
 # limitations under the License.
 
 import("//build/ohos.gni")
+import("../../../pin_auth.gni")
 
 ohos_source_set("pinauth_ipc_fuzzer") {
   branch_protector_ret = "pac_ret"
@@ -75,11 +76,17 @@ ohos_source_set("pinauthservice_source_set_fuzzer") {
     "hilog:libhilog",
     "hisysevent:libhisysevent",
     "ipc:ipc_single",
-    "miscdevice:vibrator_interface_native",
     "safwk:system_ability_fwk",
     "samgr:samgr_proxy",
     "user_auth_framework:userauth_executors",
   ]
+
+  defines = []
+  if (sensors_miscdevice_enable) {
+    external_deps += [ "miscdevice:vibrator_interface_native" ]
+    defines += [ "SENSORS_MISCDEVICE_ENABLE" ]
+  }
+
   remove_configs = [ "//build/config/compiler:no_exceptions" ]
 
   subsystem_name = "useriam"
