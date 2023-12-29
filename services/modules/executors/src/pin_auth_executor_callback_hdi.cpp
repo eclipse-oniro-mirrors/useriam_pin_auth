@@ -43,9 +43,9 @@ PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserIam::
 void PinAuthExecutorCallbackHdi::DoVibrator()
 {
     IAM_LOGI("begin");
-    static const char *PIN_AUTH_EFFECT = "haptic.clock.timer";
+    static const char *pinAuthEffect = "haptic.clock.timer";
     bool pinEffectState = false;
-    int32_t ret = Sensors::IsSupportEffect(PIN_AUTH_EFFECT, &pinEffectState);
+    int32_t ret = Sensors::IsSupportEffect(pinAuthEffect, &pinEffectState);
     if (ret != 0) {
         IAM_LOGE("call IsSupportEffect fail %{public}d", ret);
         return;
@@ -58,7 +58,7 @@ void PinAuthExecutorCallbackHdi::DoVibrator()
         IAM_LOGE("call SetUsage fail");
         return;
     }
-    ret = Sensors::StartVibrator(PIN_AUTH_EFFECT);
+    ret = Sensors::StartVibrator(pinAuthEffect);
     if (ret != 0) {
         IAM_LOGE("call StartVibrator fail %{public}d", ret);
         return;
