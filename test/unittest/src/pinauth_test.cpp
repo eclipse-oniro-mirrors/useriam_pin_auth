@@ -62,10 +62,10 @@ void UseriamUtTest::TearDown()
  */
 
 /**
- * @tc.name: UseriamUtTest.UseriamUtTest_001
+ * @tc.name: UseriamUtTest.UseriamUtTest001
  * @tc.type: FUNC
  */
-HWTEST_F(UseriamUtTest, UseriamUtTest_001, TestSize.Level1)
+HWTEST_F(UseriamUtTest, UseriamUtTest001, TestSize.Level1)
 {
     IAM_LOGI("**********UseriamUtTest***001***in**********");
     std::shared_ptr<IInputer> inputer = nullptr;
@@ -74,10 +74,10 @@ HWTEST_F(UseriamUtTest, UseriamUtTest_001, TestSize.Level1)
 }
 
 /**
- * @tc.name: UseriamUtTest.UseriamUtTest_002
+ * @tc.name: UseriamUtTest.UseriamUtTest002
  * @tc.type: FUNC
  */
-HWTEST_F(UseriamUtTest, UseriamUtTest_002, TestSize.Level1)
+HWTEST_F(UseriamUtTest, UseriamUtTest002, TestSize.Level1)
 {
     IAM_LOGI("**********UseriamUtTest***002***in**********");
     std::shared_ptr<IInputer> inputer = std::make_shared<InputerUT>();
@@ -86,10 +86,10 @@ HWTEST_F(UseriamUtTest, UseriamUtTest_002, TestSize.Level1)
 }
 
 /**
- * @tc.name: UseriamUtTest.UseriamUtTest_003
+ * @tc.name: UseriamUtTest.UseriamUtTest003
  * @tc.type: FUNC
  */
-HWTEST_F(UseriamUtTest, UseriamUtTest_003, TestSize.Level1)
+HWTEST_F(UseriamUtTest, UseriamUtTest003, TestSize.Level1)
 {
     IAM_LOGI("**********UseriamUtTest***003***in**********");
     PinAuthRegister::GetInstance().UnRegisterInputer();

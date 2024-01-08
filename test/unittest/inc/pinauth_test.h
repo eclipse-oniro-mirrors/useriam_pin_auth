@@ -16,8 +16,8 @@
 #ifndef PINAUTH_TEST_H
 #define PINAUTH_TEST_H
 
-void UseriamUtTest_001(void);
-void UseriamUtTest_002(void);
-void UseriamUtTest_003(void);
+void UseriamUtTest001(void);
+void UseriamUtTest002(void);
+void UseriamUtTest003(void);
 
 #endif
