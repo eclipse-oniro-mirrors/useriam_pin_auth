@@ -33,6 +33,10 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
+namespace {
+/* tip indicates that the password authentication result is returned */
+constexpr int32_t TIP_AUTH_PASS_NOTICE = 1;
+};
 
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserIam::UserAuth::IExecuteCallback>
     frameworkCallback, std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi, uint32_t tokenId, bool isEnroll)
@@ -78,6 +82,12 @@ int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uin
 #else
     IAM_LOGE("vibrator not support");
 #endif
+
+    /* OnAcquireInfo api is used to return auth result in advance */
+    if ((!isEnroll_) && (retCode == UserAuth::SUCCESS)) {
+        IAM_LOGI("use OnAcquireInfo to return auth succ");
+        frameworkCallback_->OnAcquireInfo(TIP_AUTH_PASS_NOTICE, extraInfo);
+    }
     frameworkCallback_->OnResult(retCode, extraInfo);
     return HDF_SUCCESS;
 }
