@@ -18,7 +18,7 @@
 #include "iam_logger.h"
 #include "iam_common_defines.h"
 
-#define LOG_LABEL UserIam::Common::LABEL_PIN_AUTH_SA
+#define LOG_TAG "PIN_AUTH_SA"
 
 namespace OHOS {
 namespace UserIam {

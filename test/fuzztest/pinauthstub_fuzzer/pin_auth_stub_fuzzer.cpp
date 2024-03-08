@@ -26,7 +26,7 @@
 
 #include "pin_auth_service.h"
 
-#define LOG_LABEL UserIam::Common::LABEL_PIN_AUTH_SA
+#define LOG_TAG "PIN_AUTH_SA"
 
 #undef private
 

@@ -20,7 +20,7 @@
 #include "pinauth_register.h"
 #include "i_inputer.h"
 
-#define LOG_LABEL OHOS::UserIam::Common::LABEL_PIN_AUTH_SDK
+#define LOG_TAG "PIN_AUTH_SDK"
 
 using namespace testing::ext;
 namespace OHOS {
