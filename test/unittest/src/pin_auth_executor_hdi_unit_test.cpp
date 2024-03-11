@@ -24,7 +24,7 @@
 #include "mock_iexecute_callback.h"
 #include "mock_iexecutor.h"
 
-#define LOG_LABEL OHOS::UserIam::Common::LABEL_PIN_AUTH_SA
+#define LOG_TAG "PIN_AUTH_SA"
 
 using namespace testing;
 using namespace testing::ext;

@@ -29,7 +29,7 @@
 #include "pin_auth_manager.h"
 
 
-#define LOG_LABEL UserIam::Common::LABEL_PIN_AUTH_SA
+#define LOG_TAG "PIN_AUTH_SA"
 
 namespace OHOS {
 namespace UserIam {

@@ -90,6 +90,8 @@ ohos_shared_library("pinauth_framework") {
   branch_protector_ret = "pac_ret"
   deps = [ ":pinauth_framework_source_set" ]
 
+  external_deps = [ "hilog:libhilog" ]
+
   if (use_musl) {
     version_script = "pin_auth_framework_map"
   }
