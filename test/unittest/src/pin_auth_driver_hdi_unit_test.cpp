@@ -80,7 +80,7 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_003, Tes
 {
     sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
     ASSERT_TRUE(interface != nullptr);
-    EXPECT_CALL(*interface, GetExecutorListV1_1(_)).Times(Exactly(1));
+    EXPECT_CALL(*interface, GetExecutorList(_, _, _)).Times(Exactly(1));
 
     auto adapter = MakeShared<MockPinAuthInterfaceAdapter>();
     ASSERT_TRUE(adapter != nullptr);
@@ -96,9 +96,11 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_004, Tes
 {
     sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
     ASSERT_TRUE(interface != nullptr);
-    EXPECT_CALL(*interface, GetExecutorListV1_1(_)).Times(Exactly(1)).WillOnce([](std::vector<sptr<IExecutor>> &list) {
-        return static_cast<int32_t>(HDF_FAILURE);
-    });
+    EXPECT_CALL(*interface, GetExecutorList(_, _, _)).Times(Exactly(1)).WillOnce(
+        [](std::vector<sptr<IExecutor>>& allInOneExecutors,
+            std::vector<sptr<IVerifier>>& verifiers, std::vector<sptr<ICollector>>& collectors) {
+            return static_cast<int32_t>(HDF_FAILURE);
+        });
 
     auto adapter = MakeShared<MockPinAuthInterfaceAdapter>();
     ASSERT_TRUE(adapter != nullptr);
@@ -114,9 +116,11 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_005, Tes
 {
     sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
     ASSERT_TRUE(interface != nullptr);
-    EXPECT_CALL(*interface, GetExecutorListV1_1(_)).Times(Exactly(1)).WillOnce([](std::vector<sptr<IExecutor>> &list) {
-        return static_cast<int32_t>(HDF_SUCCESS);
-    });
+    EXPECT_CALL(*interface, GetExecutorList(_, _, _)).Times(Exactly(1)).WillOnce(
+        [](std::vector<sptr<IExecutor>>& allInOneExecutors,
+            std::vector<sptr<IVerifier>>& verifiers, std::vector<sptr<ICollector>>& collectors) {
+            return static_cast<int32_t>(HDF_SUCCESS);
+        });
 
     auto adapter = MakeShared<MockPinAuthInterfaceAdapter>();
     ASSERT_TRUE(adapter != nullptr);
@@ -132,12 +136,14 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_006, Tes
 {
     sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
     ASSERT_TRUE(interface != nullptr);
-    EXPECT_CALL(*interface, GetExecutorListV1_1(_)).Times(Exactly(1)).WillOnce([](std::vector<sptr<IExecutor>> &list) {
-        auto executor = sptr<IExecutor>(new (std::nothrow) MockIExecutor());
-        EXPECT_TRUE(executor != nullptr);
-        list.push_back(executor);
-        return static_cast<int32_t>(HDF_SUCCESS);
-    });
+    EXPECT_CALL(*interface, GetExecutorList(_, _, _)).Times(Exactly(1)).WillOnce(
+        [](std::vector<sptr<IExecutor>>& allInOneExecutors,
+            std::vector<sptr<IVerifier>>& verifiers, std::vector<sptr<ICollector>>& collectors) {
+            auto executor = sptr<IExecutor>(new (std::nothrow) MockIExecutor());
+            EXPECT_TRUE(executor != nullptr);
+            allInOneExecutors.push_back(executor);
+            return static_cast<int32_t>(HDF_SUCCESS);
+        });
 
     auto adapter = MakeShared<MockPinAuthInterfaceAdapter>();
     ASSERT_TRUE(adapter != nullptr);
@@ -153,17 +159,19 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_007, Tes
 {
     sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
     ASSERT_TRUE(interface != nullptr);
-    EXPECT_CALL(*interface, GetExecutorListV1_1(_)).Times(Exactly(1)).WillOnce([](std::vector<sptr<IExecutor>> &list) {
-        list.push_back(sptr<IExecutor>(nullptr));
-        auto executor = sptr<IExecutor>(new (std::nothrow) MockIExecutor());
-        EXPECT_TRUE(executor != nullptr);
-        list.push_back(executor);
-        list.push_back(sptr<IExecutor>(nullptr));
-        executor = sptr<IExecutor>(new (std::nothrow) MockIExecutor());
-        EXPECT_TRUE(executor != nullptr);
-        list.push_back(executor);
-        return static_cast<int32_t>(HDF_SUCCESS);
-    });
+    EXPECT_CALL(*interface, GetExecutorList(_, _, _)).Times(Exactly(1)).WillOnce(
+        [](std::vector<sptr<IExecutor>>& allInOneExecutors,
+            std::vector<sptr<IVerifier>>& verifiers, std::vector<sptr<ICollector>>& collectors) {
+            allInOneExecutors.push_back(sptr<IExecutor>(nullptr));
+            auto executor = sptr<IExecutor>(new (std::nothrow) MockIExecutor());
+            EXPECT_TRUE(executor != nullptr);
+            allInOneExecutors.push_back(executor);
+            allInOneExecutors.push_back(sptr<IExecutor>(nullptr));
+            executor = sptr<IExecutor>(new (std::nothrow) MockIExecutor());
+            EXPECT_TRUE(executor != nullptr);
+            allInOneExecutors.push_back(executor);
+            return static_cast<int32_t>(HDF_SUCCESS);
+        });
 
     auto adapter = MakeShared<MockPinAuthInterfaceAdapter>();
     ASSERT_TRUE(adapter != nullptr);
@@ -179,12 +187,14 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_008, Tes
 {
     sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
     ASSERT_TRUE(interface != nullptr);
-    EXPECT_CALL(*interface, GetExecutorListV1_1(_)).Times(Exactly(1)).WillOnce([](std::vector<sptr<IExecutor>> &list) {
-        auto executor = sptr<IExecutor>(new (std::nothrow) MockIExecutor());
-        EXPECT_TRUE(executor != nullptr);
-        list.push_back(executor);
-        return static_cast<int32_t>(HDF_FAILURE);
-    });
+    EXPECT_CALL(*interface, GetExecutorList(_, _, _)).Times(Exactly(1)).WillOnce(
+        [](std::vector<sptr<IExecutor>>& allInOneExecutors,
+            std::vector<sptr<IVerifier>>& verifiers, std::vector<sptr<ICollector>>& collectors) {
+            auto executor = sptr<IExecutor>(new (std::nothrow) MockIExecutor());
+            EXPECT_TRUE(executor != nullptr);
+            allInOneExecutors.push_back(executor);
+            return static_cast<int32_t>(HDF_FAILURE);
+        });
 
     auto adapter = Common::MakeShared<MockPinAuthInterfaceAdapter>();
     ASSERT_TRUE(adapter != nullptr);
