@@ -22,6 +22,7 @@
 #include "iam_defines.h"
 #include "iam_logger.h"
 #include "pin_auth_executor_callback_hdi.h"
+#include "pin_auth_executor_callback_manager.h"
 
 #define LOG_TAG "PIN_AUTH_SA"
 
@@ -105,16 +106,19 @@ IamResultCode PinAuthExecutorHdi::Enroll(uint64_t scheduleId, const UserAuth::En
         IAM_LOGE("callbackObj is null");
         return IamResultCode::GENERAL_ERROR;
     }
-    auto callback = sptr<IExecutorCallback>(
-        new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj, shared_from_this(), param.tokenId, true));
+    auto callback = sptr<PinAuthExecutorCallbackHdi>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
+        shared_from_this(), param.tokenId, true));
     if (callback == nullptr) {
         IAM_LOGE("callback is null");
         return IamResultCode::GENERAL_ERROR;
     }
-    int32_t status = executorProxy_->EnrollV1_1(scheduleId, param.extraInfo, callback);
+    PinAuthExecutorCallbackManager::GetInstance().SetCallback(scheduleId, callback);
+    int32_t status = executorProxy_->EnrollV1_1(scheduleId,
+        param.extraInfo, sptr<IExecutorCallback>(callback));
     IamResultCode result = ConvertResultCode(status);
     if (result != IamResultCode::SUCCESS) {
         IAM_LOGE("Enroll fail ret=%{public}d", result);
+        PinAuthExecutorCallbackManager::GetInstance().RemoveCallback(scheduleId);
         return result;
     }
     return IamResultCode::SUCCESS;
@@ -131,20 +135,23 @@ IamResultCode PinAuthExecutorHdi::Authenticate(uint64_t scheduleId, const UserAu
         IAM_LOGE("callbackObj is null");
         return IamResultCode::GENERAL_ERROR;
     }
-    auto callback = sptr<IExecutorCallback>(
-        new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj, shared_from_this(), param.tokenId, false));
+    auto callback = sptr<PinAuthExecutorCallbackHdi>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
+        shared_from_this(), param.tokenId, false));
     if (callback == nullptr) {
         IAM_LOGE("callback is null");
         return IamResultCode::GENERAL_ERROR;
     }
+    PinAuthExecutorCallbackManager::GetInstance().SetCallback(scheduleId, callback);
     if (param.templateIdList.size() == 0) {
         IAM_LOGE("Error param");
         return IamResultCode::GENERAL_ERROR;
     }
-    int32_t status = executorProxy_->AuthenticateV1_1(scheduleId, param.templateIdList[0], param.extraInfo, callback);
+    int32_t status = executorProxy_->AuthenticateV1_1(scheduleId,
+        param.templateIdList[0], param.extraInfo, sptr<IExecutorCallback>(callback));
     IamResultCode result = ConvertResultCode(status);
     if (result != IamResultCode::SUCCESS) {
         IAM_LOGE("Authenticate fail ret=%{public}d", result);
+        PinAuthExecutorCallbackManager::GetInstance().RemoveCallback(scheduleId);
         return result;
     }
     return IamResultCode::SUCCESS;
