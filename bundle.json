@@ -34,7 +34,8 @@
             "miscdevice",
             "user_auth_framework",
             "drivers_interface_pin_auth",
-            "c_utils"
+            "c_utils",
+            "enterprise_device_management"
         ],
         "third_party": [
             "openssl"

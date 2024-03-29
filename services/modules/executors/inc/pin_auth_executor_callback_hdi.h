@@ -21,6 +21,7 @@
 
 #include "nocopyable.h"
 
+#include "iam_common_defines.h"
 #include "iam_executor_iexecute_callback.h"
 #include "pin_auth_hdi.h"
 #include "pin_auth_manager.h"
@@ -38,6 +39,7 @@ public:
     int32_t OnGetData(uint64_t scheduleId, const std::vector<uint8_t> &salt, uint64_t authSubType) override;
     int32_t OnGetDataV1_1(uint64_t scheduleId, const std::vector<uint8_t> &algoParameter, uint64_t authSubType,
         uint32_t algoVersion) override;
+    void SetErrorCode(int32_t errorCode);
 
 private:
     void DoVibrator();
@@ -46,6 +48,7 @@ private:
     UserAuth::ResultCode ConvertResultCode(const int32_t in);
     uint32_t tokenId_;
     bool isEnroll_;
+    int32_t errorCode_ = {UserAuth::SUCCESS};
 };
 } // PinAuth
 } // UserIam

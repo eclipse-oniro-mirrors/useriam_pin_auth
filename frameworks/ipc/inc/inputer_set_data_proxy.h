@@ -31,7 +31,7 @@ public:
     {
     }
     ~InputerSetDataProxy() override = default;
-    void OnSetData(int32_t authSubType, std::vector<uint8_t> data) override;
+    void OnSetData(int32_t authSubType, std::vector<uint8_t> data, int32_t errorCode) override;
 
 private:
     static inline BrokerDelegator<InputerSetDataProxy> delegator_;

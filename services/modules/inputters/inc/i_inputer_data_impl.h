@@ -30,7 +30,7 @@ class IInputerDataImpl : public InputerSetDataStub {
 public:
     IInputerDataImpl(uint64_t scheduleId, std::shared_ptr<PinAuthExecutorHdi> hdi);
     ~IInputerDataImpl() override;
-    void OnSetData(int32_t authSubType, std::vector<uint8_t> data) override;
+    void OnSetData(int32_t authSubType, std::vector<uint8_t> data, int32_t errorCode) override;
 
 private:
     std::mutex mutex_;

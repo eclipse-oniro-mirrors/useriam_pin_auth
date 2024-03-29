@@ -23,6 +23,7 @@
 
 #include "refbase.h"
 
+#include "iam_common_defines.h"
 #include "i_inputer_data.h"
 #include "inputer_set_data.h"
 
@@ -38,11 +39,12 @@ public:
 
 private:
     bool GetSha256(std::vector<uint8_t> &data, std::vector<uint8_t> &out);
-    void OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &setData);
+    void OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &setData, int32_t errorCode);
     std::vector<uint8_t> algoParameter_ = {};
     sptr<InputerSetData> inputerSetData_ {nullptr};
     uint32_t algoVersion_ = 0;
     bool isEnroll_ = false;
+    int32_t CheckPinComplexity (int32_t authSubType, std::vector<uint8_t> data);
 };
 } // namespace PinAuth
 } // namespace UserIam
