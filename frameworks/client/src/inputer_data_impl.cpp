@@ -24,7 +24,6 @@
 #include "iam_logger.h"
 #include "iam_ptr.h"
 #include "scrypt.h"
-#include "security_manager_proxy.h"
 
 #define LOG_TAG "PIN_AUTH_SDK"
 
@@ -47,7 +46,12 @@ void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
     std::vector<uint8_t> setData;
     int32_t errorCode = {UserAuth::SUCCESS};
     if (isEnroll_) {
+#ifdef CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
         errorCode = CheckPinComplexity(authSubType, data);
+#else
+        IAM_LOGE("This device not support edm");
+        errorCode = data.size() >= MIN_PIN_LENGTH ? UserAuth::SUCCESS : UserAuth::COMPLEXITY_CHECK_FAILED;
+#endif
         if (errorCode != UserAuth::SUCCESS) {
             IAM_LOGE("CheckPinComplexity failed");
             return OnSetDataInner(authSubType, setData, errorCode);
@@ -96,6 +100,7 @@ void InputerDataImpl::OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &
     inputerSetData_->OnSetData(authSubType, setData, errorCode);
 }
 
+#ifdef CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
 int32_t InputerDataImpl::CheckPinComplexity(int32_t authSubType, std::vector<uint8_t> data)
 {
     EDM::PasswordPolicy policy;
@@ -117,6 +122,7 @@ int32_t InputerDataImpl::CheckPinComplexity(int32_t authSubType, std::vector<uin
 
     return UserAuth::SUCCESS;
 }
+#endif
 
 } // namespace PinAuth
 } // namespace UserIam

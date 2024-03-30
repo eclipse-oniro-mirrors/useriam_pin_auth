@@ -74,7 +74,6 @@ ohos_source_set("pinauthservice_source_set_fuzzer") {
     "access_token:libaccesstoken_sdk",
     "c_utils:utils",
     "drivers_interface_pin_auth:libpin_auth_proxy_1.1",
-    "enterprise_device_management:edmservice_kits",
     "hilog:libhilog",
     "hisysevent:libhisysevent",
     "ipc:ipc_single",
@@ -87,6 +86,10 @@ ohos_source_set("pinauthservice_source_set_fuzzer") {
   if (sensors_miscdevice_enable) {
     external_deps += [ "miscdevice:vibrator_interface_native" ]
     defines += [ "SENSORS_MISCDEVICE_ENABLE" ]
+  }
+  if (customization_enterprise_device_management_enable) {
+    external_deps += [ "enterprise_device_management:edmservice_kits" ]
+    defines += [ "CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE" ]
   }
 
   remove_configs = [ "//build/config/compiler:no_exceptions" ]
