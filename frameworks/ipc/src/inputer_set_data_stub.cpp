@@ -45,6 +45,7 @@ void InputerSetDataStub::OnSetDataStub(MessageParcel &data, MessageParcel &reply
     IAM_LOGI("start");
     int32_t subType;
     std::vector<uint8_t> param;
+    int32_t errorCode;
 
     if (!data.ReadInt32(subType)) {
         IAM_LOGE("failed to read subType");
@@ -54,8 +55,12 @@ void InputerSetDataStub::OnSetDataStub(MessageParcel &data, MessageParcel &reply
         IAM_LOGE("failed to read param");
         return;
     }
+    if (!data.ReadInt32(errorCode)) {
+        IAM_LOGE("failed to read errorCode");
+        return;
+    }
 
-    OnSetData(subType, param);
+    OnSetData(subType, param, errorCode);
 }
 } // namespace PinAuth
 } // namespace UserIam

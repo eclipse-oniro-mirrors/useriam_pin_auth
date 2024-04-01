@@ -12,6 +12,7 @@
 # limitations under the License.
 
 import("//build/ohos.gni")
+import("../pin_auth.gni")
 
 config("pinauth_config") {
   include_dirs = [
@@ -71,6 +72,10 @@ ohos_source_set("pinauth_framework_source_set") {
     "PINAUTH_LOG_TAG = \"PinAuth\"",
     "LOG_DOMAIN = 0xD002422",
   ]
+  if (customization_enterprise_device_management_enable) {
+    external_deps += [ "enterprise_device_management:edmservice_kits" ]
+    defines += [ "CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE" ]
+  }
   remove_configs = [ "//build/config/compiler:no_exceptions" ]
 
   subsystem_name = "useriam"

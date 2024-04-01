@@ -49,12 +49,13 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData001, TestSize.Le
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
     uint32_t testAlgoVersion = 0;
     bool testIsEnroll = false;
+    int32_t testErrorCode = 0;
 
     MockInputerGetDataService service;
     EXPECT_CALL(service, OnGetData(_, _, _, _, _)).Times(1);
     ON_CALL(service, OnGetData)
         .WillByDefault(
-            [&testAuthSubType, &testAlgoVersion, &testIsEnroll](int32_t authSubType,
+            [&testAuthSubType, &testAlgoVersion, &testIsEnroll, &testErrorCode](int32_t authSubType,
                 const std::vector<uint8_t> &algoParameter, const sptr<InputerSetData> &inputerSetData,
                     uint32_t algoVersion, bool isEnroll) {
                     EXPECT_EQ(authSubType, testAuthSubType);
@@ -62,14 +63,14 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData001, TestSize.Le
                     EXPECT_EQ(algoVersion, testAlgoVersion);
                     EXPECT_EQ(isEnroll, testIsEnroll);
                     if (inputerSetData != nullptr) {
-                        inputerSetData->OnSetData(authSubType, algoParameter);
+                        inputerSetData->OnSetData(authSubType, algoParameter, testErrorCode);
                     }
             }
         );
 
     sptr<MockInputerSetData> tempInputerSetData(new (std::nothrow) MockInputerSetData());
     EXPECT_NE(tempInputerSetData, nullptr);
-    EXPECT_CALL(*tempInputerSetData, OnSetData(_, _)).Times(1);
+    EXPECT_CALL(*tempInputerSetData, OnSetData(_, _, _)).Times(1);
 
     MessageParcel data;
     MessageParcel reply;

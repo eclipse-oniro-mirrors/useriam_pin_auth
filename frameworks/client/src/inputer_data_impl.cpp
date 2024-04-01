@@ -16,6 +16,7 @@
 #include "inputer_data_impl.h"
 
 #include <cstddef>
+#include <regex>
 #include <vector>
 
 #include <openssl/sha.h>
@@ -43,33 +44,40 @@ void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
     IAM_LOGI("start and data size:%{public}zu algo version:%{public}u", data.size(), algoVersion_);
     std::vector<uint8_t> setData;
+    int32_t errorCode = {UserAuth::SUCCESS};
     if (isEnroll_) {
-        if (data.size() < MIN_PIN_LENGTH) {
-            IAM_LOGE("enroll pin data size is less than min pin data length");
-            return OnSetDataInner(authSubType, setData);
+#ifdef CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
+        errorCode = CheckPinComplexity(authSubType, data);
+#else
+        IAM_LOGE("This device not support edm");
+        errorCode = data.size() >= MIN_PIN_LENGTH ? UserAuth::SUCCESS : UserAuth::COMPLEXITY_CHECK_FAILED;
+#endif
+        if (errorCode != UserAuth::SUCCESS) {
+            IAM_LOGE("CheckPinComplexity failed");
+            return OnSetDataInner(authSubType, setData, errorCode);
         }
     } else {
         if (data.size() == 0) {
             IAM_LOGE("auth pin data size is 0");
-            return OnSetDataInner(authSubType, setData);
+            return OnSetDataInner(authSubType, setData, errorCode);
         }
     }
 
     auto scryptPointer = Common::MakeUnique<Scrypt>(algoParameter_);
     if (scryptPointer == nullptr) {
         IAM_LOGE("scryptPointer is nullptr");
-        return OnSetDataInner(authSubType, setData);
+        return OnSetDataInner(authSubType, setData, errorCode);
     }
     setData = scryptPointer->GetScrypt(data, algoVersion_);
     if (setData.empty()) {
         IAM_LOGE("get scrypt fail");
-        return OnSetDataInner(authSubType, setData);
+        return OnSetDataInner(authSubType, setData, errorCode);
     }
     if ((algoVersion_ > ALGO_VERSION_V1) && isEnroll_ && (!GetSha256(data, setData))) {
         IAM_LOGE("get sha256 fail");
         setData.clear();
     }
-    return OnSetDataInner(authSubType, setData);
+    return OnSetDataInner(authSubType, setData, errorCode);
 }
 
 bool InputerDataImpl::GetSha256(std::vector<uint8_t> &data, std::vector<uint8_t> &out)
@@ -83,14 +91,39 @@ bool InputerDataImpl::GetSha256(std::vector<uint8_t> &data, std::vector<uint8_t>
     return true;
 }
 
-void InputerDataImpl::OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &setData)
+void InputerDataImpl::OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &setData, int32_t errorCode)
 {
     if (inputerSetData_ == nullptr) {
         IAM_LOGE("inputerSetData is nullptr");
         return;
     }
-    inputerSetData_->OnSetData(authSubType, setData);
+    inputerSetData_->OnSetData(authSubType, setData, errorCode);
 }
+
+#ifdef CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
+int32_t InputerDataImpl::CheckPinComplexity(int32_t authSubType, std::vector<uint8_t> data)
+{
+    EDM::PasswordPolicy policy;
+    int32_t ret = EDM::SecurityManagerProxy::GetSecurityManagerProxy()->GetPasswordPolicy(policy);
+    if (ret != ERR_OK || policy.complexityReg.empty()) {
+        IAM_LOGE("GetPasswordPolicy failed, use default policy");
+        return (data.size() >= MIN_PIN_LENGTH ? UserAuth::SUCCESS : UserAuth::COMPLEXITY_CHECK_FAILED);
+    }
+    if (authSubType != UserAuth::PIN_MIXED) {
+        IAM_LOGE("GetPasswordPolicy success, authSubType can only be PIN_MIXED");
+        return UserAuth::COMPLEXITY_CHECK_FAILED;
+    }
+    std::regex regex(policy.complexityReg);
+    bool checkRet = std::regex_match(reinterpret_cast<char*>(data.data()), regex);
+    if (!checkRet) {
+        IAM_LOGE("PIN_MIXED does not pass complexity check");
+        return UserAuth::COMPLEXITY_CHECK_FAILED;
+    }
+
+    return UserAuth::SUCCESS;
+}
+#endif
+
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS

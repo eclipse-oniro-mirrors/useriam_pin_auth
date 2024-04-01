@@ -26,6 +26,7 @@
 #include "iam_common_defines.h"
 #include "i_inputer_data_impl.h"
 #include "inputer_get_data_proxy.h"
+#include "pin_auth_executor_callback_manager.h"
 #include "pin_auth_hdi.h"
 
 #define LOG_TAG "PIN_AUTH_SA"
@@ -75,6 +76,11 @@ void PinAuthExecutorCallbackHdi::DoVibrator()
 int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uint8_t>& extraInfo)
 {
     IAM_LOGI("OnResult %{public}d", code);
+
+    if (isEnroll_ && errorCode_ != UserAuth::SUCCESS) {
+        IAM_LOGE("Mixed password does not pass complexity check");
+        code = errorCode_;
+    }
     UserAuth::ResultCode retCode = ConvertResultCode(code);
 #ifdef SENSORS_MISCDEVICE_ENABLE
     if ((!isEnroll_) && (retCode == UserAuth::FAIL)) {
@@ -130,13 +136,18 @@ int32_t PinAuthExecutorCallbackHdi::OnMessage(int32_t destRole, const std::vecto
 UserAuth::ResultCode PinAuthExecutorCallbackHdi::ConvertResultCode(const int32_t in)
 {
     UserAuth::ResultCode hdiIn = static_cast<UserAuth::ResultCode>(in);
-    if (hdiIn < UserAuth::ResultCode::SUCCESS || hdiIn > UserAuth::ResultCode::LOCKED) {
+    if (hdiIn < UserAuth::ResultCode::SUCCESS || hdiIn > UserAuth::ResultCode::COMPLEXITY_CHECK_FAILED) {
         IAM_LOGE("convert hdi undefined result code %{public}d to framework result code GENERAL_ERROR", hdiIn);
         return UserAuth::ResultCode::GENERAL_ERROR;
     }
 
     IAM_LOGI("covert hdi result code %{public}d to framework result code", hdiIn);
     return hdiIn;
+}
+
+void PinAuthExecutorCallbackHdi::SetErrorCode(int32_t errorCode)
+{
+    errorCode_ = errorCode;
 }
 } // PinAuth
 } // UserIam

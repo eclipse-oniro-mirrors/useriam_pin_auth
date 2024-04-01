@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,22 +13,25 @@
  * limitations under the License.
  */
 
-#ifndef MOCK_INPUTER_SET_DATA_H
-#define MOCK_INPUTER_SET_DATA_H
+#ifndef PIN_AUTH_EXECUTOR_CALLBACK_MANAGER_TEST_H
+#define PIN_AUTH_EXECUTOR_CALLBACK_MANAGER_TEST_H
 
-#include <gmock/gmock.h>
-#include <iremote_stub.h>
-
-#include "inputer_set_data.h"
+#include <gtest/gtest.h>
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class MockInputerSetData final : public IRemoteStub<InputerSetData> {
+class PinAuthExecutorCallbackManagerTest : public testing::Test {
 public:
-    MOCK_METHOD3(OnSetData, void(int32_t authSubType, std::vector<uint8_t> data, int32_t errorCode));
+    static void SetUpTestCase();
+
+    static void TearDownTestCase();
+
+    void SetUp() override;
+
+    void TearDown() override;
 };
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS
-#endif // MOCK_INPUTER_SET_DATA_H
+#endif // PIN_AUTH_EXECUTOR_CALLBACK_MANAGER_TEST_H

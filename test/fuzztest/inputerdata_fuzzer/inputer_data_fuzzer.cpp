@@ -48,9 +48,10 @@ void FuzzRegisterInputer(Parcel &parcel)
     IAM_LOGI("begin");
     int32_t authSubType = parcel.ReadInt32();
     std::vector<uint8_t> data;
+    int32_t errorCode = parcel.ReadInt32();
     FillFuzzUint8Vector(parcel, data);
     if (g_service != nullptr) {
-        g_service->OnSetData(authSubType, data);
+        g_service->OnSetData(authSubType, data, errorCode);
     }
     IAM_LOGI("end");
 }

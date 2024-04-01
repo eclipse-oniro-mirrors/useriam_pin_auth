@@ -45,18 +45,21 @@ void InputerDataImplTest::TearDown()
 }
 
 namespace {
-sptr<MockInputerSetData> GetMockInputerSetData(int32_t testAuthSubType, std::vector<uint8_t> testSetData)
+sptr<MockInputerSetData> GetMockInputerSetData(int32_t testAuthSubType,
+    std::vector<uint8_t> testSetData, int32_t testErrorCode)
 {
     sptr<MockInputerSetData> mockInputerSetData(new (std::nothrow) MockInputerSetData());
     if (mockInputerSetData == nullptr) {
         return nullptr;
     }
 
-    EXPECT_CALL(*mockInputerSetData, OnSetData(_, _))
+    EXPECT_CALL(*mockInputerSetData, OnSetData(_, _, _))
         .Times(Exactly(1))
-        .WillOnce([testAuthSubType, testSetData](int32_t authSubType, std::vector<uint8_t> data) {
+        .WillOnce([testAuthSubType, testSetData, testErrorCode](int32_t authSubType,
+            std::vector<uint8_t> data, int32_t errorCode) {
             EXPECT_EQ(authSubType, testAuthSubType);
             EXPECT_THAT(data, ElementsAreArray(testSetData));
+            EXPECT_EQ(errorCode, testErrorCode);
             return;
         });
 
@@ -72,8 +75,9 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest001, TestSize.Level0)
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
     std::vector<uint8_t> testData;
     std::vector<uint8_t> testSetData;
+    constexpr int32_t testErrorCode = 14;
 
-    auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData);
+    auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
     ASSERT_NE(mockInputerSetData, nullptr);
 
     InputerDataImpl inputerDataImpl(testSalt, mockInputerSetData, testAlgoVersion, testIsEnroll);
@@ -87,11 +91,12 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest002, TestSize.Level0)
     constexpr bool testIsEnroll = true;
     std::vector<uint8_t> testSalt = {2, 3, 4, 5, 6, 7};
     std::vector<uint8_t> testData = {1, 2, 3, 4, 5, 6};
+    constexpr int32_t testErrorCode = 0;
 
     Scrypt scrypt(testSalt);
     std::vector<uint8_t> testSetData = scrypt.GetScrypt(testData, testAlgoVersion);
 
-    auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData);
+    auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
     ASSERT_NE(mockInputerSetData, nullptr);
 
     InputerDataImpl inputerDataImpl(testSalt, mockInputerSetData, testAlgoVersion, testIsEnroll);
@@ -105,11 +110,12 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest003, TestSize.Level0)
     constexpr bool testIsEnroll = true;
     std::vector<uint8_t> testSalt = {3, 4, 5, 6, 7, 8};
     std::vector<uint8_t> testData = {2, 3, 4, 5, 6, 7};
+    constexpr int32_t testErrorCode = 0;
 
     Scrypt scrypt(testSalt);
     std::vector<uint8_t> testSetData = scrypt.GetScrypt(testData, testAlgoVersion);
 
-    auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData);
+    auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
     ASSERT_NE(mockInputerSetData, nullptr);
 
     InputerDataImpl inputerDataImpl(testSalt, mockInputerSetData, testAlgoVersion, testIsEnroll);
@@ -123,6 +129,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest004, TestSize.Level0)
     constexpr bool testIsEnroll = true;
     std::vector<uint8_t> testSalt = {4, 5, 6, 7, 8, 9};
     std::vector<uint8_t> testData = {3, 4, 5, 6, 7, 8};
+    constexpr int32_t testErrorCode = 0;
 
     Scrypt scrypt(testSalt);
     std::vector<uint8_t> testSetData = scrypt.GetScrypt(testData, testAlgoVersion);
@@ -131,7 +138,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest004, TestSize.Level0)
     EXPECT_EQ(SHA256(testData.data(), testData.size(), sha256Result), sha256Result);
     testSetData.insert(testSetData.end(), sha256Result, sha256Result + SHA256_DIGEST_LENGTH);
 
-    auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData);
+    auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
     ASSERT_NE(mockInputerSetData, nullptr);
 
     InputerDataImpl inputerDataImpl(testSalt, mockInputerSetData, testAlgoVersion, testIsEnroll);
@@ -146,8 +153,9 @@ HWTEST_F(InputerDataImplTest, InputerDataImplAuthTest001, TestSize.Level0)
     std::vector<uint8_t> testSalt;
     std::vector<uint8_t> testData;
     std::vector<uint8_t> testSetData;
+    constexpr int32_t testErrorCode = 0;
 
-    auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData);
+    auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
     ASSERT_NE(mockInputerSetData, nullptr);
 
     InputerDataImpl inputerDataImpl(testSalt, mockInputerSetData, testAlgoVersion, testIsEnroll);
@@ -161,11 +169,12 @@ HWTEST_F(InputerDataImplTest, InputerDataImplAuthTest002, TestSize.Level0)
     constexpr bool testIsEnroll = false;
     std::vector<uint8_t> testSalt = {5, 6, 7, 8, 9, 10};
     std::vector<uint8_t> testData = {5, 6, 7, 8, 9, 10};
+    constexpr int32_t testErrorCode = 0;
 
     Scrypt scrypt(testSalt);
     std::vector<uint8_t> testSetData = scrypt.GetScrypt(testData, testAlgoVersion);
 
-    auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData);
+    auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
     ASSERT_NE(mockInputerSetData, nullptr);
 
     InputerDataImpl inputerDataImpl(testSalt, mockInputerSetData, testAlgoVersion, testIsEnroll);
@@ -179,11 +188,12 @@ HWTEST_F(InputerDataImplTest, InputerDataImplAuthTest003, TestSize.Level0)
     constexpr bool testIsEnroll = false;
     std::vector<uint8_t> testSalt = {6, 7, 8, 9, 10, 11};
     std::vector<uint8_t> testData = {6, 7, 8, 9, 10, 11};
+    constexpr int32_t testErrorCode = 0;
 
     Scrypt scrypt(testSalt);
     std::vector<uint8_t> testSetData = scrypt.GetScrypt(testData, testAlgoVersion);
 
-    auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData);
+    auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
     ASSERT_NE(mockInputerSetData, nullptr);
 
     InputerDataImpl inputerDataImpl(testSalt, mockInputerSetData, testAlgoVersion, testIsEnroll);

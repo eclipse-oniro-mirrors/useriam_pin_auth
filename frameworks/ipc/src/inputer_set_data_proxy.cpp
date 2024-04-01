@@ -22,7 +22,7 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-void InputerSetDataProxy::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
+void InputerSetDataProxy::OnSetData(int32_t authSubType, std::vector<uint8_t> data, int32_t errorCode)
 {
     IAM_LOGI("start");
     MessageParcel dataParcel;
@@ -37,6 +37,9 @@ void InputerSetDataProxy::OnSetData(int32_t authSubType, std::vector<uint8_t> da
     }
     if (!dataParcel.WriteUInt8Vector(data)) {
         IAM_LOGE("write data fail");
+    }
+    if (!dataParcel.WriteInt32(errorCode)) {
+        IAM_LOGE("write errorCode fail");
     }
 
     bool ret = SendRequest(InputerSetDataInterfaceCode::ON_SET_DATA, dataParcel, reply);
