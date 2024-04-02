@@ -40,9 +40,10 @@ constexpr int32_t TIP_AUTH_PASS_NOTICE = 1;
 };
 
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserIam::UserAuth::IExecuteCallback>
-    frameworkCallback, std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi, uint32_t tokenId, bool isEnroll)
+    frameworkCallback, std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi, uint32_t tokenId, bool isEnroll,
+    uint64_t scheduleId)
     : frameworkCallback_(frameworkCallback), pinAuthExecutorHdi_(pinAuthExecutorHdi),
-      tokenId_(tokenId), isEnroll_(isEnroll) {}
+      tokenId_(tokenId), isEnroll_(isEnroll), scheduleId_(scheduleId) {}
 
 #ifdef SENSORS_MISCDEVICE_ENABLE
 void PinAuthExecutorCallbackHdi::DoVibrator()
@@ -98,32 +99,37 @@ int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uin
     return HDF_SUCCESS;
 }
 
-int32_t PinAuthExecutorCallbackHdi::OnGetData(uint64_t scheduleId, const std::vector<uint8_t> &salt,
-    uint64_t authSubType)
+int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t>& algoParameter, uint64_t authSubType,
+    uint32_t algoVersion, const std::vector<uint8_t>& challenge)
 {
-    IAM_LOGI("Start tokenId_ is %{public}u", tokenId_);
-    if (OnGetDataV1_1(scheduleId, salt, authSubType, 0) != HDF_SUCCESS) {
-        IAM_LOGE("invoke OnGetDataV1_1 fail");
-        return HDF_FAILURE;
-    }
-    return HDF_SUCCESS;
-}
+    static_cast<void>(challenge);
 
-int32_t PinAuthExecutorCallbackHdi::OnGetDataV1_1(uint64_t scheduleId, const std::vector<uint8_t> &algoParameter,
-    uint64_t authSubType, uint32_t algoVersion)
-{
     IAM_LOGI("Start tokenId_ is %{public}u", tokenId_);
     sptr<InputerGetData> inputer = PinAuthManager::GetInstance().GetInputerLock(tokenId_);
     if (inputer == nullptr) {
         IAM_LOGE("inputer is nullptr");
         return HDF_FAILURE;
     }
-    sptr<IInputerDataImpl> iInputerDataImpl(new (std::nothrow) IInputerDataImpl(scheduleId, pinAuthExecutorHdi_));
+    sptr<IInputerDataImpl> iInputerDataImpl(new (std::nothrow) IInputerDataImpl(scheduleId_, pinAuthExecutorHdi_));
     if (iInputerDataImpl == nullptr) {
         IAM_LOGE("iInputerDataImpl is nullptr");
     }
 
     inputer->OnGetData(authSubType, algoParameter, iInputerDataImpl, algoVersion, isEnroll_);
+    return HDF_SUCCESS;
+}
+
+int32_t PinAuthExecutorCallbackHdi::OnTip(int32_t tip, const std::vector<uint8_t>& extraInfo)
+{
+    static_cast<void>(tip);
+    static_cast<void>(extraInfo);
+    return HDF_SUCCESS;
+}
+
+int32_t PinAuthExecutorCallbackHdi::OnMessage(int32_t destRole, const std::vector<uint8_t>& msg)
+{
+    static_cast<void>(destRole);
+    static_cast<void>(msg);
     return HDF_SUCCESS;
 }
 

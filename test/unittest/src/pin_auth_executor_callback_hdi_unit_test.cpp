@@ -79,9 +79,10 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnResult_00
             });
         std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi = MakeShared<PinAuthExecutorHdi>(nullptr);
         const uint32_t tokenId = 123;
-        PinAuthExecutorCallbackHdi callbackHdi1(executeCallback, pinAuthExecutorHdi, tokenId, false);
+        const uint64_t scheduleId = 1;
+        PinAuthExecutorCallbackHdi callbackHdi1(executeCallback, pinAuthExecutorHdi, tokenId, false, scheduleId);
         callbackHdi1.OnResult(pair.first, testExtraInfo);
-        PinAuthExecutorCallbackHdi callbackHdi2(executeCallback, pinAuthExecutorHdi, tokenId, true);
+        PinAuthExecutorCallbackHdi callbackHdi2(executeCallback, pinAuthExecutorHdi, tokenId, true, scheduleId);
         callbackHdi2.OnResult(pair.first, testExtraInfo);
     }
 }

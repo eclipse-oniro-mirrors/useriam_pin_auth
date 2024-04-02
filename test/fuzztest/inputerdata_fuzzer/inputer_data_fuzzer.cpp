@@ -25,6 +25,7 @@
 #include "iam_ptr.h"
 
 #include "i_inputer_data_impl.h"
+#include "pin_auth_hdi.h"
 
 #define LOG_TAG "PIN_AUTH_SA"
 
@@ -38,7 +39,7 @@ namespace UserIam {
 namespace PinAuth {
 namespace {
 const uint32_t SCHEDULE_ID = 123;
-sptr<HDI::PinAuth::V1_1::IExecutor> executorProxy(nullptr);
+sptr<IExecutor> executorProxy(nullptr);
 std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi_ = Common::MakeShared<PinAuthExecutorHdi>(executorProxy);
 auto g_service = new (std::nothrow) IInputerDataImpl(SCHEDULE_ID, pinAuthExecutorHdi_);
 

@@ -30,9 +30,8 @@ class MockIPinAuthInterface : public IPinAuthInterface {
 public:
     virtual ~MockIPinAuthInterface() = default;
 
-    MOCK_METHOD1(GetExecutorList, int32_t(std::vector<sptr<IExecutorV1_0>> &executorList));
-
-    MOCK_METHOD1(GetExecutorListV1_1, int32_t(std::vector<sptr<IExecutor>> &executorList));
+    MOCK_METHOD3(GetExecutorList, int32_t(std::vector<sptr<IExecutor>>& allInOneExecutors,
+        std::vector<sptr<IVerifier>>& verifiers, std::vector<sptr<ICollector>>& collectors));
 };
 } // namespace PinAuth
 } // namespace UserIam

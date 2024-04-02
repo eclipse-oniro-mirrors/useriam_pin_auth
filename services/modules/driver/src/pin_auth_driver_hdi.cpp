@@ -47,8 +47,10 @@ void PinAuthDriverHdi::GetExecutorList(std::vector<std::shared_ptr<UserAuth::IAu
         return;
     }
 
-    std::vector<sptr<HDI::PinAuth::V1_1::IExecutor>> iExecutorList;
-    auto ret = pinInterface->GetExecutorListV1_1(iExecutorList);
+    std::vector<sptr<ICollector>> iCollectorList;
+    std::vector<sptr<IVerifier>> iVerifierList;
+    std::vector<sptr<IExecutor>> iExecutorList;
+    auto ret = pinInterface->GetExecutorList(iExecutorList, iVerifierList, iCollectorList);
     if (ret != HDF_SUCCESS) {
         IAM_LOGE("GetExecutorList fail");
         return;

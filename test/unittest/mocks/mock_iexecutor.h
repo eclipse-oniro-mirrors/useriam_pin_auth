@@ -29,27 +29,19 @@ class MockIExecutor : public IExecutor {
 public:
     virtual ~MockIExecutor() = default;
     MOCK_METHOD1(GetExecutorInfo, int32_t(ExecutorInfo &executorInfo));
-    MOCK_METHOD2(GetTemplateInfo, int32_t(uint64_t templateId, TemplateInfo &templateInfo));
     MOCK_METHOD3(OnRegisterFinish, int32_t(const std::vector<uint64_t> &templateIdList,
         const std::vector<uint8_t> &frameworkPublicKey, const std::vector<uint8_t> &extraInfo));
-    MOCK_METHOD3(Enroll, int32_t(uint64_t scheduleId, const std::vector<uint8_t> &extraInfo,
-        const sptr<IExecutorCallbackV1_0> &callbackObj));
-    MOCK_METHOD3(EnrollV1_1, int32_t(uint64_t scheduleId, const std::vector<uint8_t> &extraInfo,
-        const sptr<IExecutorCallback> &callbackObj));
-    MOCK_METHOD4(Authenticate, int32_t(uint64_t scheduleId, uint64_t templateId, const std::vector<uint8_t> &extraInfo,
-        const sptr<IExecutorCallbackV1_0> &callbackObj));
-    MOCK_METHOD4(AuthenticateV1_1, int32_t(uint64_t scheduleId, uint64_t templateId,
-        const std::vector<uint8_t> &extraInfo, const sptr<IExecutorCallback> &callbackObj));
-    MOCK_METHOD3(Identify, int32_t(uint64_t scheduleId, const std::vector<uint8_t> &extraInfo,
-        const sptr<IExecutorCallbackV1_0> &callbackObj));
-    MOCK_METHOD1(Delete, int32_t(uint64_t templateId));
     MOCK_METHOD1(Cancel, int32_t(uint64_t scheduleId));
-    MOCK_METHOD3(SendCommand, int32_t(int32_t commandId, const std::vector<uint8_t> &extraInfo,
-        const sptr<IExecutorCallbackV1_0> &callbackObj));
-    MOCK_METHOD3(OnSetData, int32_t(uint64_t scheduleId, uint64_t authSubType, const std::vector<uint8_t> &data));
+    MOCK_METHOD3(SendMessage, int32_t(uint64_t scheduleId, int32_t srcRole, const std::vector<uint8_t>& msg));
+    MOCK_METHOD4(SetData, int32_t(uint64_t scheduleId, uint64_t authSubType, const std::vector<uint8_t>& data,
+        int32_t resultCode));
+    MOCK_METHOD3(Enroll, int32_t(uint64_t scheduleId, const std::vector<uint8_t> &extraInfo,
+        const sptr<IExecutorCallback> &callbackObj));
+    MOCK_METHOD4(Authenticate, int32_t(uint64_t scheduleId, const std::vector<uint64_t>& templateIdList,
+         const std::vector<uint8_t>& extraInfo, const sptr<IExecutorCallback>& callbackObj));
+    MOCK_METHOD1(Delete, int32_t(uint64_t templateId));
     MOCK_METHOD3(GetProperty, int32_t(const std::vector<uint64_t>& templateIdList,
-         const std::vector<GetPropertyType>& propertyTypes, Property& property));
-    MOCK_METHOD1(SetCachedTemplates, int32_t(const std::vector<uint64_t>& templateIdList));
+        const std::vector<int32_t>& propertyTypes, Property& property));
 };
 } // namespace PinAuth
 } // namespace UserIam

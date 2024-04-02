@@ -31,7 +31,7 @@ namespace PinAuth {
 class PinAuthExecutorHdi : public std::enable_shared_from_this<PinAuthExecutorHdi>,
     public UserAuth::IAuthExecutorHdi, public NoCopyable {
 public:
-    explicit PinAuthExecutorHdi(const sptr<HDI::PinAuth::V1_1::IExecutor> &executorProxy);
+    explicit PinAuthExecutorHdi(const sptr<IExecutor> &executorProxy);
     ~PinAuthExecutorHdi() override = default;
 
     UserAuth::ResultCode GetExecutorInfo(UserAuth::ExecutorInfo &info) override;
@@ -54,19 +54,15 @@ public:
 
 private:
     UserAuth::ResultCode MoveHdiExecutorInfo(ExecutorInfo &in, UserAuth::ExecutorInfo &out);
-    UserAuth::ResultCode MoveHdiTemplateInfo(TemplateInfo &in, UserAuth::TemplateInfo &out);
     void MoveHdiProperty(Property &in, UserAuth::Property &out);
-    UserAuth::ResultCode ConvertCommandId(const UserAuth::PropertyMode in, CommandId &out);
     UserAuth::ResultCode ConvertAuthType(const AuthType in, UserAuth::AuthType &out);
     UserAuth::ResultCode ConvertExecutorRole(const ExecutorRole in, UserAuth::ExecutorRole &out);
-    UserAuth::ResultCode ConvertExecutorSecureLevel(const ExecutorSecureLevel in,
-        UserAuth::ExecutorSecureLevel &out);
+    UserAuth::ResultCode ConvertExecutorSecureLevel(const ExecutorSecureLevel in, UserAuth::ExecutorSecureLevel &out);
     UserAuth::ResultCode ConvertResultCode(const int32_t in);
-    UserAuth::ResultCode ConvertAttributeKeyToPropertyType(const UserAuth::Attributes::AttributeKey in,
-        GetPropertyType &out);
+    UserAuth::ResultCode ConvertAttributeKeyToPropertyType(const UserAuth::Attributes::AttributeKey in, int32_t &out);
     UserAuth::ResultCode ConvertAttributeKeyVectorToPropertyType(
         const std::vector<UserAuth::Attributes::AttributeKey> inVector,
-        std::vector<GetPropertyType> &outVector);
+        std::vector<int32_t> &outVector);
 
     sptr<IExecutor> executorProxy_ { nullptr };
 };

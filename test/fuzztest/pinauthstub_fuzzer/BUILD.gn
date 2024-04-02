@@ -42,7 +42,7 @@ ohos_fuzztest("PinAuthStubFuzzTest") {
   external_deps = [
     "access_token:libaccesstoken_sdk",
     "c_utils:utils",
-    "drivers_interface_pin_auth:libpin_auth_proxy_1.0",
+    "drivers_interface_pin_auth:libpin_auth_proxy_2.0",
     "hilog:libhilog",
     "hisysevent:libhisysevent",
     "ipc:ipc_single",

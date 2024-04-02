@@ -49,7 +49,7 @@ void PinAuthExecutorCallbackManagerTest::TearDown()
 HWTEST_F(PinAuthExecutorCallbackManagerTest, PinAuthExecutorCallbackManagerTest001, TestSize.Level0)
 {
     uint64_t scheduleId = 0;
-    auto pinAuthExecutorCallback = new (std::nothrow) PinAuthExecutorCallbackHdi(nullptr, nullptr, 0, true);
+    auto pinAuthExecutorCallback = new (std::nothrow) PinAuthExecutorCallbackHdi(nullptr, nullptr, 0, true, scheduleId);
     EXPECT_TRUE(pinAuthExecutorCallback != nullptr);
 
     bool ret = PinAuthExecutorCallbackManager::GetInstance().SetCallback(scheduleId, pinAuthExecutorCallback);
