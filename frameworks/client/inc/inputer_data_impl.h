@@ -26,9 +26,6 @@
 #include "iam_common_defines.h"
 #include "i_inputer_data.h"
 #include "inputer_set_data.h"
-#ifdef CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
-#include "security_manager_proxy.h"
-#endif
 
 namespace OHOS {
 namespace UserIam {
@@ -47,9 +44,7 @@ private:
     sptr<InputerSetData> inputerSetData_ {nullptr};
     uint32_t algoVersion_ = 0;
     bool isEnroll_ = false;
-#ifdef CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
     int32_t CheckPinComplexity (int32_t authSubType, std::vector<uint8_t> data);
-#endif
 };
 } // namespace PinAuth
 } // namespace UserIam

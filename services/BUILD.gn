@@ -39,7 +39,6 @@ ohos_source_set("pinauthservice_source_set") {
     "modules/driver/src/pin_auth_driver_hdi.cpp",
     "modules/driver/src/pin_auth_interface_adapter.cpp",
     "modules/executors/src/pin_auth_executor_callback_hdi.cpp",
-    "modules/executors/src/pin_auth_executor_callback_manager.cpp",
     "modules/executors/src/pin_auth_executor_hdi.cpp",
     "modules/inputters/src/i_inputer_data_impl.cpp",
     "modules/inputters/src/pin_auth_manager.cpp",

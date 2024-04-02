@@ -16,7 +16,6 @@
 #include "i_inputer_data_impl.h"
 
 #include "iam_logger.h"
-#include "pin_auth_executor_callback_manager.h"
 #include "pin_auth_executor_hdi.h"
 
 #define LOG_TAG "PIN_AUTH_SA"
@@ -37,14 +36,7 @@ void IInputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data,
         IAM_LOGE("pin auth executor hdi is nullptr");
         return;
     }
-    auto callback = PinAuthExecutorCallbackManager::GetInstance().GetCallbackLock(scheduleId_);
-    if (callback == nullptr) {
-        IAM_LOGE("callback is nullptr");
-        return;
-    }
-    callback->SetErrorCode(errorCode);
-    PinAuthExecutorCallbackManager::GetInstance().RemoveCallback(scheduleId_);
-    if (hdi_->OnSetData(scheduleId_, authSubType, data) != SUCCESS) {
+    if (hdi_->OnSetData(scheduleId_, authSubType, data, errorCode) != SUCCESS) {
         IAM_LOGE("event has canceled");
         return;
     }

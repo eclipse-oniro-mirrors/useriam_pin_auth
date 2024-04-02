@@ -19,6 +19,7 @@
 #include <cstdint>
 #include <map>
 #include <vector>
+
 #include "iam_executor_framework_types.h"
 #include "iam_executor_iauth_executor_hdi.h"
 #include "iam_executor_iexecute_callback.h"
@@ -41,7 +42,8 @@ public:
         const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj) override;
     UserAuth::ResultCode Authenticate(uint64_t scheduleId, const UserAuth::AuthenticateParam &param,
         const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj) override;
-    UserAuth::ResultCode OnSetData(uint64_t scheduleId, uint64_t authSubType, const std::vector<uint8_t> &data);
+    UserAuth::ResultCode OnSetData(uint64_t scheduleId, uint64_t authSubType, const std::vector<uint8_t> &data,
+        int32_t errorCode);
     UserAuth::ResultCode Identify(uint64_t scheduleId, const UserAuth::IdentifyParam &param,
         const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj) override;
     UserAuth::ResultCode Delete(const std::vector<uint64_t> &templateIdList) override;

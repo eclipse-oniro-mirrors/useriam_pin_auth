@@ -38,7 +38,6 @@ ohos_unittest("PinAuth_UT_test") {
     "src/inputer_set_data_stub_test.cpp",
     "src/pin_auth_driver_hdi_unit_test.cpp",
     "src/pin_auth_executor_callback_hdi_unit_test.cpp",
-    "src/pin_auth_executor_callback_manager_test.cpp",
     "src/pin_auth_executor_hdi_unit_test.cpp",
     "src/pin_auth_proxy_test.cpp",
     "src/pin_auth_register_test.cpp",
