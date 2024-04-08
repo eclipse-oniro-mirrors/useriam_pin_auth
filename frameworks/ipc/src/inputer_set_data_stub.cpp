@@ -23,6 +23,10 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
+
+// When true is passed into IRemoteStub, sa will process request serially.
+InputerSetDataStub::InputerSetDataStub() : IRemoteStub(true) {};
+
 int32_t InputerSetDataStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply,
     MessageOption &option)
 {

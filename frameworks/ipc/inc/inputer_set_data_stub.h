@@ -27,7 +27,7 @@ namespace UserIam {
 namespace PinAuth {
 class InputerSetDataStub : public IRemoteStub<InputerSetData>, public NoCopyable {
 public:
-    InputerSetDataStub() = default;
+    InputerSetDataStub();
     ~InputerSetDataStub() override = default;
     int32_t OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option) override;
 

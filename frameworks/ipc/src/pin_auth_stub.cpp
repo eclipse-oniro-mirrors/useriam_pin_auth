@@ -23,6 +23,10 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
+
+// When true is passed into IRemoteStub, sa will process request serially.
+PinAuthStub::PinAuthStub() : IRemoteStub(true) {};
+
 int32_t PinAuthStub::OnRemoteRequest(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option)
 {
     IAM_LOGI("cmd = %{public}u, flags = %{public}d", code, option.GetFlags());
