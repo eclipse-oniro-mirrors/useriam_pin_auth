@@ -24,6 +24,9 @@
 #include "iam_logger.h"
 #include "iam_ptr.h"
 #include "scrypt.h"
+#ifdef CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
+#include "security_manager_proxy.h"
+#endif
 
 #define LOG_TAG "PIN_AUTH_SDK"
 

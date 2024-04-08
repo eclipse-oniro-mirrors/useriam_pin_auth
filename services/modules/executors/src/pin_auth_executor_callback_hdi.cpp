@@ -26,7 +26,6 @@
 #include "iam_common_defines.h"
 #include "i_inputer_data_impl.h"
 #include "inputer_get_data_proxy.h"
-#include "pin_auth_executor_callback_manager.h"
 #include "pin_auth_hdi.h"
 
 #define LOG_TAG "PIN_AUTH_SA"
@@ -77,10 +76,6 @@ int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uin
 {
     IAM_LOGI("OnResult %{public}d", code);
 
-    if (isEnroll_ && errorCode_ != UserAuth::SUCCESS) {
-        IAM_LOGE("Mixed password does not pass complexity check");
-        code = errorCode_;
-    }
     UserAuth::ResultCode retCode = ConvertResultCode(code);
 #ifdef SENSORS_MISCDEVICE_ENABLE
     if ((!isEnroll_) && (retCode == UserAuth::FAIL)) {
@@ -145,10 +140,6 @@ UserAuth::ResultCode PinAuthExecutorCallbackHdi::ConvertResultCode(const int32_t
     return hdiIn;
 }
 
-void PinAuthExecutorCallbackHdi::SetErrorCode(int32_t errorCode)
-{
-    errorCode_ = errorCode;
-}
 } // PinAuth
 } // UserIam
 } // OHOS

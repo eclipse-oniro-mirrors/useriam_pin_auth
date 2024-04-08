@@ -50,7 +50,6 @@ ohos_source_set("pinauthservice_source_set_fuzzer") {
     "../../../services/modules/driver/src/pin_auth_driver_hdi.cpp",
     "../../../services/modules/driver/src/pin_auth_interface_adapter.cpp",
     "../../../services/modules/executors/src/pin_auth_executor_callback_hdi.cpp",
-    "../../../services/modules/executors/src/pin_auth_executor_callback_manager.cpp",
     "../../../services/modules/executors/src/pin_auth_executor_hdi.cpp",
     "../../../services/modules/inputters/src/i_inputer_data_impl.cpp",
     "../../../services/modules/inputters/src/pin_auth_manager.cpp",

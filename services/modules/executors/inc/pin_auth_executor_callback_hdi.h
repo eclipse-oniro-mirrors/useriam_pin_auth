@@ -21,7 +21,6 @@
 
 #include "nocopyable.h"
 
-#include "iam_common_defines.h"
 #include "iam_executor_iexecute_callback.h"
 #include "pin_auth_hdi.h"
 #include "pin_auth_manager.h"
@@ -41,7 +40,6 @@ public:
          const std::vector<uint8_t>& challenge) override;
     int32_t OnTip(int32_t tip, const std::vector<uint8_t>& extraInfo) override;
     int32_t OnMessage(int32_t destRole, const std::vector<uint8_t>& msg) override;
-    void SetErrorCode(int32_t errorCode);
 
 private:
     void DoVibrator();
@@ -51,7 +49,6 @@ private:
     uint32_t tokenId_;
     bool isEnroll_;
     uint64_t scheduleId_;
-    int32_t errorCode_ = {UserAuth::SUCCESS};
 };
 } // PinAuth
 } // UserIam

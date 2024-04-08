@@ -264,7 +264,7 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_OnSetData_001, TestSize.
         PinAuthExecutorHdi executorHdi(executorProxy);
         UserAuth::TemplateInfo info = {};
         auto ret =
-            executorHdi.OnSetData(0, 0, std::vector<uint8_t>());
+            executorHdi.OnSetData(0, 0, std::vector<uint8_t>(), 0);
         EXPECT_TRUE(ret == pair.second);
     }
 }
@@ -272,7 +272,7 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_OnSetData_001, TestSize.
 HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_OnSetData_002, TestSize.Level0)
 {
     PinAuthExecutorHdi executorHdi(nullptr);
-    auto ret = executorHdi.OnSetData(0, 0, std::vector<uint8_t>());
+    auto ret = executorHdi.OnSetData(0, 0, std::vector<uint8_t>(), 0);
     EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
 }
 
