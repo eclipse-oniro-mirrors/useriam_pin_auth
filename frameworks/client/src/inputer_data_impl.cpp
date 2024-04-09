@@ -113,6 +113,7 @@ int32_t InputerDataImpl::CheckPinComplexity(int32_t authSubType, std::vector<uin
         IAM_LOGE("GetPasswordPolicy success, authSubType can only be PIN_MIXED");
         return UserAuth::COMPLEXITY_CHECK_FAILED;
     }
+    data.emplace_back('\0');
     std::regex regex(policy.complexityReg);
     bool checkRet = std::regex_match(reinterpret_cast<char*>(data.data()), regex);
     if (!checkRet) {
