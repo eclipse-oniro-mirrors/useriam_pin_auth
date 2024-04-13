@@ -78,6 +78,18 @@ IamResultCode PinAuthExecutorHdi::OnRegisterFinish(const std::vector<uint64_t> &
     return IamResultCode::SUCCESS;
 }
 
+IamResultCode PinAuthExecutorHdi::SendMessage(uint64_t scheduleId, int32_t srcRole, const std::vector<uint8_t> &msg)
+{
+    IF_FALSE_LOGE_AND_RETURN_VAL(executorProxy_ != nullptr, IamResultCode::GENERAL_ERROR);
+    int32_t status = executorProxy_->SendMessage(scheduleId, srcRole, msg);
+    IamResultCode result = ConvertResultCode(status);
+    if (result != IamResultCode::SUCCESS) {
+        IAM_LOGE("Authenticate fail result %{public}d", result);
+        return result;
+    }
+    return IamResultCode::SUCCESS;
+}
+
 IamResultCode PinAuthExecutorHdi::OnSetData(uint64_t scheduleId, uint64_t authSubType,
     const std::vector<uint8_t> &data, int32_t errorCode)
 {
@@ -246,6 +258,7 @@ IamResultCode PinAuthExecutorHdi::MoveHdiExecutorInfo(ExecutorInfo &in, UserAuth
         IAM_LOGE("ConvertExecutorSecureLevel fail ret=%{public}d", ret);
         return IamResultCode::GENERAL_ERROR;
     }
+    out.maxTemplateAcl = in.maxTemplateAcl;
     in.publicKey.swap(out.publicKey);
     return IamResultCode::SUCCESS;
 }
