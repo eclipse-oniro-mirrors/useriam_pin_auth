@@ -22,6 +22,7 @@
 #include "vibrator_agent.h"
 #endif
 
+#include "iam_check.h"
 #include "iam_logger.h"
 #include "iam_common_defines.h"
 #include "i_inputer_data_impl.h"
@@ -116,15 +117,15 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t>& algoPa
 
 int32_t PinAuthExecutorCallbackHdi::OnTip(int32_t tip, const std::vector<uint8_t>& extraInfo)
 {
-    static_cast<void>(tip);
-    static_cast<void>(extraInfo);
+    IF_FALSE_LOGE_AND_RETURN_VAL(frameworkCallback_ != nullptr, HDF_FAILURE);
+    frameworkCallback_->OnAcquireInfo(tip, extraInfo);
     return HDF_SUCCESS;
 }
 
 int32_t PinAuthExecutorCallbackHdi::OnMessage(int32_t destRole, const std::vector<uint8_t>& msg)
 {
-    static_cast<void>(destRole);
-    static_cast<void>(msg);
+    IF_FALSE_LOGE_AND_RETURN_VAL(frameworkCallback_ != nullptr, HDF_FAILURE);
+    frameworkCallback_->OnMessage(destRole, msg);
     return HDF_SUCCESS;
 }
 

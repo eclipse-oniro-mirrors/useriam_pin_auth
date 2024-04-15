@@ -237,7 +237,6 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_OnRegisterFinish_001, Te
                 [&pair](const std::vector<uint64_t> &templateIdList, const std::vector<uint8_t> &frameworkPublicKey,
                     const std::vector<uint8_t> &extraInfo) { return pair.first; });
         PinAuthExecutorHdi executorHdi(executorProxy);
-        UserAuth::TemplateInfo info = {};
         auto ret =
             executorHdi.OnRegisterFinish(std::vector<uint64_t>(), std::vector<uint8_t>(), std::vector<uint8_t>());
         EXPECT_TRUE(ret == pair.second);
@@ -262,9 +261,7 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_OnSetData_001, TestSize.
                 int32_t resultCode)
                     { return pair.first; });
         PinAuthExecutorHdi executorHdi(executorProxy);
-        UserAuth::TemplateInfo info = {};
-        auto ret =
-            executorHdi.OnSetData(0, 0, std::vector<uint8_t>(), 0);
+        auto ret = executorHdi.OnSetData(0, 0, std::vector<uint8_t>(), 0);
         EXPECT_TRUE(ret == pair.second);
     }
 }
@@ -412,6 +409,16 @@ HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_SendCommand_001, TestSiz
     ASSERT_TRUE(executorProxy != nullptr);
     PinAuthExecutorHdi executorHdi(executorProxy);
     auto ret = executorHdi.SendCommand(IamPropertyMode::PROPERTY_MODE_FREEZE, std::vector<uint8_t>(), nullptr);
+    EXPECT_TRUE(ret == IamResultCode::SUCCESS);
+}
+
+HWTEST_F(PinAuthExecutorHdiUnitTest, PinAuthExecutorHdi_SendMessage_001, TestSize.Level0)
+{
+    auto executorProxy = new (std::nothrow) MockIExecutor();
+    ASSERT_TRUE(executorProxy != nullptr);
+    PinAuthExecutorHdi executorHdi(executorProxy);
+    std::vector<uint8_t> data;
+    auto ret = executorHdi.SendMessage(1, 1, data);
     EXPECT_TRUE(ret == IamResultCode::SUCCESS);
 }
 
