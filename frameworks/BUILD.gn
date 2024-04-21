@@ -47,15 +47,13 @@ ohos_source_set("pinauth_framework_source_set") {
     "scrypt/src/scrypt.cpp",
   ]
 
-  deps = [
-    ":pinauth_ipc",
-    "//third_party/openssl:libcrypto_shared",
-  ]
+  deps = [ ":pinauth_ipc" ]
 
   external_deps = [
     "c_utils:utils",
     "hilog:libhilog",
     "ipc:ipc_single",
+    "openssl:libcrypto_shared",
     "samgr:samgr_proxy",
     "user_auth_framework:userauth_client",
   ]
