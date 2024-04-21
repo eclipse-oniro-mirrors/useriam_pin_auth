@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,15 +39,26 @@ namespace {
 constexpr int32_t TIP_AUTH_PASS_NOTICE = 1;
 };
 
-PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserIam::UserAuth::IExecuteCallback>
-    frameworkCallback, std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi, uint32_t tokenId, bool isEnroll,
-    uint64_t scheduleId)
-    : frameworkCallback_(frameworkCallback), pinAuthExecutorHdi_(pinAuthExecutorHdi),
+PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(
+    std::shared_ptr<UserIam::UserAuth::IExecuteCallback> frameworkCallback,
+    std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi, uint32_t tokenId, bool isEnroll, uint64_t scheduleId)
+    : frameworkCallback_(frameworkCallback), pinAuthAllInOneHdi_(pinAuthAllInOneHdi), pinAuthCollectorHdi_(nullptr),
       tokenId_(tokenId), isEnroll_(isEnroll), scheduleId_(scheduleId) {}
 
-#ifdef SENSORS_MISCDEVICE_ENABLE
+PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(
+    std::shared_ptr<UserAuth::IExecuteCallback> frameworkCallback,
+    std::shared_ptr<PinAuthCollectorHdi> pinAuthCollectorHdi, uint32_t tokenId, bool isEnroll, uint64_t scheduleId)
+    : frameworkCallback_(frameworkCallback), pinAuthAllInOneHdi_(nullptr), pinAuthCollectorHdi_(pinAuthCollectorHdi),
+      tokenId_(tokenId), isEnroll_(isEnroll), scheduleId_(scheduleId) {}
+
+PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserAuth::IExecuteCallback> frameworkCallback,
+    uint32_t tokenId, bool isEnroll, uint64_t scheduleId)
+    : frameworkCallback_(frameworkCallback), pinAuthAllInOneHdi_(nullptr), pinAuthCollectorHdi_(nullptr),
+      tokenId_(tokenId), isEnroll_(isEnroll), scheduleId_(scheduleId) {}
+
 void PinAuthExecutorCallbackHdi::DoVibrator()
 {
+#ifdef SENSORS_MISCDEVICE_ENABLE
     IAM_LOGI("begin");
     static const char *pinAuthEffect = "haptic.fail";
     bool pinEffectState = false;
@@ -70,21 +81,21 @@ void PinAuthExecutorCallbackHdi::DoVibrator()
         return;
     }
     IAM_LOGI("end");
-}
+#else
+    IAM_LOGE("vibrator not support");
 #endif
+}
 
 int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uint8_t>& extraInfo)
 {
     IAM_LOGI("OnResult %{public}d", code);
 
     UserAuth::ResultCode retCode = ConvertResultCode(code);
-#ifdef SENSORS_MISCDEVICE_ENABLE
     if ((!isEnroll_) && (retCode == UserAuth::FAIL)) {
         DoVibrator();
     }
-#else
-    IAM_LOGE("vibrator not support");
-#endif
+
+    IF_FALSE_LOGE_AND_RETURN_VAL(frameworkCallback_ != nullptr, HDF_FAILURE);
 
     /* OnAcquireInfo api is used to return auth result in advance */
     if ((!isEnroll_) && (retCode == UserAuth::SUCCESS)) {
@@ -106,13 +117,43 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t>& algoPa
         IAM_LOGE("inputer is nullptr");
         return HDF_FAILURE;
     }
-    sptr<IInputerDataImpl> iInputerDataImpl(new (std::nothrow) IInputerDataImpl(scheduleId_, pinAuthExecutorHdi_));
-    if (iInputerDataImpl == nullptr) {
-        IAM_LOGE("iInputerDataImpl is nullptr");
-    }
 
-    inputer->OnGetData(authSubType, algoParameter, iInputerDataImpl, algoVersion, isEnroll_);
-    return HDF_SUCCESS;
+    if (pinAuthAllInOneHdi_ != nullptr) {
+        sptr<IInputerDataImpl> iInputerDataImpl(new (std::nothrow) IInputerDataImpl(scheduleId_, pinAuthAllInOneHdi_));
+        if (iInputerDataImpl == nullptr) {
+            IAM_LOGE("iInputerDataImpl is nullptr");
+            return HDF_FAILURE;
+        }
+
+        InputerGetDataParam param = {
+            .mode = isEnroll_ ? GET_DATA_MODE_ALL_IN_ONE_ENROLL : GET_DATA_MODE_ALL_IN_ONE_AUTH,
+            .authSubType = authSubType,
+            .algoVersion = algoVersion,
+            .algoParameter = algoParameter,
+            .challenge = challenge,
+            .inputerSetData = iInputerDataImpl,
+        };
+        inputer->OnGetData(param);
+        return HDF_SUCCESS;
+    } else if (pinAuthCollectorHdi_ != nullptr) {
+        sptr<IInputerDataImpl> iInputerDataImpl(new (std::nothrow) IInputerDataImpl(scheduleId_, pinAuthCollectorHdi_));
+        if (iInputerDataImpl == nullptr) {
+            IAM_LOGE("iInputerDataImpl is nullptr");
+            return HDF_FAILURE;
+        }
+
+        InputerGetDataParam param = {
+            .mode = GET_DATA_MODE_COLLECTOR,
+            .authSubType = authSubType,
+            .algoVersion = algoVersion,
+            .algoParameter = algoParameter,
+            .challenge = challenge,
+            .inputerSetData = iInputerDataImpl,
+        };
+        inputer->OnGetData(param);
+        return HDF_SUCCESS;
+    }
+    return HDF_FAILURE;
 }
 
 int32_t PinAuthExecutorCallbackHdi::OnTip(int32_t tip, const std::vector<uint8_t>& extraInfo)

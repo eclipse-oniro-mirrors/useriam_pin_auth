@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -38,7 +38,13 @@ public:
     void OnHdiDisconnect() override;
 
 private:
-    static std::mutex mutex_;
+    void GetAllInOneExecutorList(std::vector<std::shared_ptr<UserAuth::IAuthExecutorHdi>> &executorList,
+        std::vector<sptr<IAllInOneExecutor>> &iExecutorList);
+    void GetCollectorExecutorList(std::vector<std::shared_ptr<UserAuth::IAuthExecutorHdi>> &executorList,
+        std::vector<sptr<ICollector>> &iCollectorList);
+    void GetVerifierExecutorList(std::vector<std::shared_ptr<UserAuth::IAuthExecutorHdi>> &executorList,
+        std::vector<sptr<IVerifier>> &iVerifierList);
+
     const std::shared_ptr<PinAuthInterfaceAdapter> pinAuthInterfaceAdapter_;
 };
 } // PinAuth

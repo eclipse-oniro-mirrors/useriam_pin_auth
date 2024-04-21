@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -42,17 +42,28 @@ int32_t InputerGetDataStub::OnRemoteRequest(uint32_t code, MessageParcel &data, 
 
 void InputerGetDataStub::OnGetDataStub(MessageParcel &data, MessageParcel &reply)
 {
-    int32_t authSubType;
-    std::vector<uint8_t> algoParameter;
-    uint32_t algoVersion;
-    bool isEnroll;
+    InputerGetDataParam getDataParam;
 
-    if (!data.ReadInt32(authSubType)) {
+    int32_t mode;
+    if (!data.ReadInt32(mode)) {
+        IAM_LOGE("failed to read mode");
+        return;
+    }
+    getDataParam.mode = static_cast<GetDataMode>(mode);
+    if (!data.ReadInt32(getDataParam.authSubType)) {
         IAM_LOGE("failed to read authSubType");
         return;
     }
-    if (!data.ReadUInt8Vector(&algoParameter)) {
+    if (!data.ReadUint32(getDataParam.algoVersion)) {
+        IAM_LOGE("failed to read algoVersion");
+        return;
+    }
+    if (!data.ReadUInt8Vector(&(getDataParam.algoParameter))) {
         IAM_LOGE("failed to read algoParameter");
+        return;
+    }
+    if (!data.ReadUInt8Vector(&(getDataParam.challenge))) {
+        IAM_LOGE("failed to read challenge");
         return;
     }
     sptr<IRemoteObject> obj = data.ReadRemoteObject();
@@ -60,21 +71,13 @@ void InputerGetDataStub::OnGetDataStub(MessageParcel &data, MessageParcel &reply
         IAM_LOGE("failed to read remote object");
         return;
     }
-    sptr<InputerSetData> inputerSetData = iface_cast<InputerSetData>(obj);
-    if (inputerSetData == nullptr) {
+    getDataParam.inputerSetData = iface_cast<InputerSetData>(obj);
+    if (getDataParam.inputerSetData == nullptr) {
         IAM_LOGE("inputerSetData is nullptr");
         return;
     }
-    if (!data.ReadUint32(algoVersion)) {
-        IAM_LOGE("failed to read algoVersion");
-        return;
-    }
-    if (!data.ReadBool(isEnroll)) {
-        IAM_LOGE("failed to read isEnroll");
-        return;
-    }
 
-    OnGetData(authSubType, algoParameter, inputerSetData, algoVersion, isEnroll);
+    OnGetData(getDataParam);
 }
 } // namespace PinAuth
 } // namespace UserIam

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,9 +25,9 @@ namespace UserIam {
 namespace PinAuth {
 using namespace OHOS;
 using namespace OHOS::HDI;
-class MockIExecutor : public IExecutor {
+class MockIAllInOneExecutor : public IAllInOneExecutor {
 public:
-    virtual ~MockIExecutor() = default;
+    virtual ~MockIAllInOneExecutor() = default;
     MOCK_METHOD1(GetExecutorInfo, int32_t(ExecutorInfo &executorInfo));
     MOCK_METHOD3(OnRegisterFinish, int32_t(const std::vector<uint64_t> &templateIdList,
         const std::vector<uint8_t> &frameworkPublicKey, const std::vector<uint8_t> &extraInfo));

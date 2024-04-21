@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License") = 0;
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,17 +25,30 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
+enum GetDataMode : int32_t {
+    GET_DATA_MODE_NONE = 0,
+    GET_DATA_MODE_ALL_IN_ONE_ENROLL = 1,
+    GET_DATA_MODE_ALL_IN_ONE_AUTH = 2,
+    GET_DATA_MODE_COLLECTOR = 3,
+};
+
+struct InputerGetDataParam {
+    GetDataMode mode{GET_DATA_MODE_NONE};
+    int32_t authSubType{0};
+    uint32_t algoVersion{0};
+    std::vector<uint8_t> algoParameter;
+    std::vector<uint8_t> challenge;
+    sptr<InputerSetData> inputerSetData;
+};
+
 class InputerGetData : public IRemoteBroker {
 public:
     /*
      * request inputer to get data.
      *
-     * param authSubType auth subType.
-     * param algoParameter desensitization for pin data.
-     * param inputerData callback for getting data.
+     * param getDataParam get data param.
      */
-    virtual void OnGetData(int32_t authSubType, const std::vector<uint8_t> &algoParameter,
-        const sptr<InputerSetData> &inputerSetData, uint32_t algoVersion, bool isEnroll) = 0;
+    virtual void OnGetData(const InputerGetDataParam &getDataParam) = 0;
 
     DECLARE_INTERFACE_DESCRIPTOR(u"ohos.PinAuth.InputerGetData");
 };

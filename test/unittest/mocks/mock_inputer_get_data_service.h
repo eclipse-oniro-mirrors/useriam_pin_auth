@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,8 +25,7 @@ namespace UserIam {
 namespace PinAuth {
 class MockInputerGetDataService final : public InputerGetDataStub {
 public:
-    MOCK_METHOD5(OnGetData, void(int32_t authSubType, const std::vector<uint8_t> &algoParameter,
-        const sptr<InputerSetData> &inputerSetData, uint32_t algoVersion, bool isEnroll));
+    MOCK_METHOD1(OnGetData, void(const InputerGetDataParam &getDataParam));
 };
 } // namespace PinAuth
 } // namespace UserIam

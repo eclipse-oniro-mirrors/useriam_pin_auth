@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -16,7 +16,8 @@
 #include "i_inputer_data_impl.h"
 
 #include "iam_logger.h"
-#include "pin_auth_executor_hdi.h"
+#include "pin_auth_all_in_one_hdi.h"
+#include "pin_auth_collector_hdi.h"
 
 #define LOG_TAG "PIN_AUTH_SA"
 
@@ -24,23 +25,33 @@ namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
 using namespace OHOS::UserIam::UserAuth;
-IInputerDataImpl::IInputerDataImpl(uint64_t scheduleId, std::shared_ptr<PinAuthExecutorHdi> hdi)
-    : scheduleId_(scheduleId), hdi_(hdi) {}
+IInputerDataImpl::IInputerDataImpl(uint64_t scheduleId, std::shared_ptr<PinAuthAllInOneHdi> hdi)
+    : scheduleId_(scheduleId), allInOneHdi_(hdi), collectorHdi_(nullptr) {}
+
+IInputerDataImpl::IInputerDataImpl(uint64_t scheduleId, std::shared_ptr<PinAuthCollectorHdi> hdi)
+    : scheduleId_(scheduleId), allInOneHdi_(nullptr), collectorHdi_(hdi) {}
+
 IInputerDataImpl::~IInputerDataImpl() {}
 
 void IInputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data, int32_t errorCode)
 {
     IAM_LOGI("start");
     std::lock_guard<std::mutex> guard(mutex_);
-    if (hdi_ == nullptr) {
-        IAM_LOGE("pin auth executor hdi is nullptr");
-        return;
+    if (allInOneHdi_ != nullptr) {
+        IAM_LOGI("all in one set data");
+        if (allInOneHdi_->OnSetData(scheduleId_, authSubType, data, errorCode) != SUCCESS) {
+            IAM_LOGE("event has canceled");
+            return;
+        }
+    } else if (collectorHdi_ != nullptr) {
+        IAM_LOGI("collector set data");
+        if (collectorHdi_->OnSetData(scheduleId_, authSubType, data, errorCode) != SUCCESS) {
+            IAM_LOGE("event has canceled");
+            return;
+        }
+    } else {
+        IAM_LOGE("no hdi exist");
     }
-    if (hdi_->OnSetData(scheduleId_, authSubType, data, errorCode) != SUCCESS) {
-        IAM_LOGE("event has canceled");
-        return;
-    }
-
     IAM_LOGI("end");
 }
 } // namespace PinAuth

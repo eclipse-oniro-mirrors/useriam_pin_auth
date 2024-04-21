@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -53,13 +53,20 @@ HWTEST_F(PinAuthStubTest, PinAuthStubTestRegisterInputer, TestSize.Level0)
         .WillByDefault(
             [](const sptr<InputerGetData> &inputer) {
                 if (inputer != nullptr) {
-                    std::vector<uint8_t> algoParameter = {1, 2, 3, 4};
-                    inputer->OnGetData(10000, algoParameter, nullptr, 0, false);
+                    InputerGetDataParam getDataParam = {
+                        .mode = GET_DATA_MODE_ALL_IN_ONE_AUTH,
+                        .authSubType = 10000,
+                        .algoVersion = 0,
+                        .algoParameter = {1, 2, 3, 4},
+                        .challenge = {},
+                        .inputerSetData = nullptr,
+                    };
+                    inputer->OnGetData(getDataParam);
                 }
                 return true;
             }
         );
-    EXPECT_CALL(*tempInputerGetData, OnGetData(_, _, _, _, _)).Times(1);
+    EXPECT_CALL(*tempInputerGetData, OnGetData(_)).Times(1);
 
     MessageParcel data;
     MessageParcel reply;

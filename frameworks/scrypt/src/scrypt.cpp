@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -45,7 +45,7 @@ std::unordered_map<uint32_t, ScryptParameters> g_version2Param_ = {
 };
 }
 
-bool Scrypt::DoScrypt(std::vector<uint8_t> data, uint32_t algoVersion, EVP_PKEY_CTX *pctx)
+bool Scrypt::DoScrypt(const std::vector<uint8_t> &data, uint32_t algoVersion, EVP_PKEY_CTX *pctx)
 {
     auto index = g_version2Param_.find(algoVersion);
     if (index == g_version2Param_.end()) {
@@ -77,41 +77,31 @@ bool Scrypt::DoScrypt(std::vector<uint8_t> data, uint32_t algoVersion, EVP_PKEY_
     return true;
 }
 
-void Scrypt::ClearPinData(std::vector<uint8_t> &data)
-{
-    // Delete the data in the vector completely
-    (void)memset_s(data.data(), data.size(), 0, data.size());
-    data.clear();
-    (void)memset_s(algoParameter_.data(), algoParameter_.size(), 0, algoParameter_.size());
-    algoParameter_.clear();
-}
-
-std::vector<uint8_t> Scrypt::GetScrypt(std::vector<uint8_t> data, uint32_t algoVersion)
+std::vector<uint8_t> Scrypt::GetScrypt(const std::vector<uint8_t> &data, uint32_t algoVersion)
 {
     IAM_LOGI("start");
+    std::vector<uint8_t> out;
     EVP_PKEY_CTX *pctx = EVP_PKEY_CTX_new_id(EVP_PKEY_SCRYPT, NULL);
     if (EVP_PKEY_derive_init(pctx) <= 0) {
-        ClearPinData(data);
         IAM_LOGE("EVP_PKEY_derive_init fail");
-        return {};
+        return out;
     }
 
     if (!DoScrypt(data, algoVersion, pctx)) {
         IAM_LOGE("DoScrypt fail");
-        ClearPinData(data);
         EVP_PKEY_CTX_free(pctx);
-        return {};
+        return out;
     }
-    std::vector<uint8_t> out(OUT_LENGTH);
+    out.resize(OUT_LENGTH);
     size_t outlen = out.size();
     if (EVP_PKEY_derive(pctx, out.data(), &outlen) <= 0) {
         IAM_LOGE("EVP_PKEY_derive fail");
-        ClearPinData(data);
         EVP_PKEY_CTX_free(pctx);
-        return {};
+        (void)memset_s(out.data(), out.size(), 0, out.size());
+        out.clear();
+        return out;
     }
 
-    ClearPinData(data);
     EVP_PKEY_CTX_free(pctx);
     return out;
 }

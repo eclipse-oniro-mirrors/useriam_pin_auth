@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -71,7 +71,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest001, TestSize.Level0)
 {
     constexpr int32_t testAuthSubType = 10000;
     constexpr uint32_t testAlgoVersion = ALGO_VERSION_V0;
-    constexpr bool testIsEnroll = true;
+    constexpr GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_ENROLL;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
     std::vector<uint8_t> testData;
     std::vector<uint8_t> testSetData;
@@ -80,7 +80,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest001, TestSize.Level0)
     auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
     ASSERT_NE(mockInputerSetData, nullptr);
 
-    InputerDataImpl inputerDataImpl(testSalt, mockInputerSetData, testAlgoVersion, testIsEnroll);
+    InputerDataImpl inputerDataImpl(testMode, testAlgoVersion, testSalt, mockInputerSetData);
     inputerDataImpl.OnSetData(testAuthSubType, testData);
 }
 
@@ -88,7 +88,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest002, TestSize.Level0)
 {
     constexpr int32_t testAuthSubType = 10000;
     constexpr uint32_t testAlgoVersion = ALGO_VERSION_V0;
-    constexpr bool testIsEnroll = true;
+    constexpr GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_ENROLL;
     std::vector<uint8_t> testSalt = {2, 3, 4, 5, 6, 7};
     std::vector<uint8_t> testData = {1, 2, 3, 4, 5, 6};
     constexpr int32_t testErrorCode = 0;
@@ -99,7 +99,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest002, TestSize.Level0)
     auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
     ASSERT_NE(mockInputerSetData, nullptr);
 
-    InputerDataImpl inputerDataImpl(testSalt, mockInputerSetData, testAlgoVersion, testIsEnroll);
+    InputerDataImpl inputerDataImpl(testMode, testAlgoVersion, testSalt, mockInputerSetData);
     inputerDataImpl.OnSetData(testAuthSubType, testData);
 }
 
@@ -107,7 +107,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest003, TestSize.Level0)
 {
     constexpr int32_t testAuthSubType = 10000;
     constexpr uint32_t testAlgoVersion = ALGO_VERSION_V1;
-    constexpr bool testIsEnroll = true;
+    constexpr GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_ENROLL;
     std::vector<uint8_t> testSalt = {3, 4, 5, 6, 7, 8};
     std::vector<uint8_t> testData = {2, 3, 4, 5, 6, 7};
     constexpr int32_t testErrorCode = 0;
@@ -118,7 +118,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest003, TestSize.Level0)
     auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
     ASSERT_NE(mockInputerSetData, nullptr);
 
-    InputerDataImpl inputerDataImpl(testSalt, mockInputerSetData, testAlgoVersion, testIsEnroll);
+    InputerDataImpl inputerDataImpl(testMode, testAlgoVersion, testSalt, mockInputerSetData);
     inputerDataImpl.OnSetData(testAuthSubType, testData);
 }
 
@@ -126,7 +126,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest004, TestSize.Level0)
 {
     constexpr int32_t testAuthSubType = 10000;
     constexpr uint32_t testAlgoVersion = ALGO_VERSION_V2;
-    constexpr bool testIsEnroll = true;
+    constexpr GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_ENROLL;
     std::vector<uint8_t> testSalt = {4, 5, 6, 7, 8, 9};
     std::vector<uint8_t> testData = {3, 4, 5, 6, 7, 8};
     constexpr int32_t testErrorCode = 0;
@@ -141,7 +141,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest004, TestSize.Level0)
     auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
     ASSERT_NE(mockInputerSetData, nullptr);
 
-    InputerDataImpl inputerDataImpl(testSalt, mockInputerSetData, testAlgoVersion, testIsEnroll);
+    InputerDataImpl inputerDataImpl(testMode, testAlgoVersion, testSalt, mockInputerSetData);
     inputerDataImpl.OnSetData(testAuthSubType, testData);
 }
 
@@ -149,16 +149,16 @@ HWTEST_F(InputerDataImplTest, InputerDataImplAuthTest001, TestSize.Level0)
 {
     constexpr int32_t testAuthSubType = 10000;
     constexpr uint32_t testAlgoVersion = ALGO_VERSION_V0;
-    constexpr bool testIsEnroll = false;
+    constexpr GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_AUTH;
     std::vector<uint8_t> testSalt;
     std::vector<uint8_t> testData;
     std::vector<uint8_t> testSetData;
-    constexpr int32_t testErrorCode = 0;
+    constexpr int32_t testErrorCode = 14;
 
     auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
     ASSERT_NE(mockInputerSetData, nullptr);
 
-    InputerDataImpl inputerDataImpl(testSalt, mockInputerSetData, testAlgoVersion, testIsEnroll);
+    InputerDataImpl inputerDataImpl(testMode, testAlgoVersion, testSalt, mockInputerSetData);
     inputerDataImpl.OnSetData(testAuthSubType, testData);
 }
 
@@ -166,7 +166,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplAuthTest002, TestSize.Level0)
 {
     constexpr int32_t testAuthSubType = 10000;
     constexpr uint32_t testAlgoVersion = ALGO_VERSION_V0;
-    constexpr bool testIsEnroll = false;
+    constexpr GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_AUTH;
     std::vector<uint8_t> testSalt = {5, 6, 7, 8, 9, 10};
     std::vector<uint8_t> testData = {5, 6, 7, 8, 9, 10};
     constexpr int32_t testErrorCode = 0;
@@ -177,7 +177,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplAuthTest002, TestSize.Level0)
     auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
     ASSERT_NE(mockInputerSetData, nullptr);
 
-    InputerDataImpl inputerDataImpl(testSalt, mockInputerSetData, testAlgoVersion, testIsEnroll);
+    InputerDataImpl inputerDataImpl(testMode, testAlgoVersion, testSalt, mockInputerSetData);
     inputerDataImpl.OnSetData(testAuthSubType, testData);
 }
 
@@ -185,7 +185,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplAuthTest003, TestSize.Level0)
 {
     constexpr int32_t testAuthSubType = 10000;
     constexpr uint32_t testAlgoVersion = ALGO_VERSION_V1;
-    constexpr bool testIsEnroll = false;
+    constexpr GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_AUTH;
     std::vector<uint8_t> testSalt = {6, 7, 8, 9, 10, 11};
     std::vector<uint8_t> testData = {6, 7, 8, 9, 10, 11};
     constexpr int32_t testErrorCode = 0;
@@ -196,7 +196,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplAuthTest003, TestSize.Level0)
     auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
     ASSERT_NE(mockInputerSetData, nullptr);
 
-    InputerDataImpl inputerDataImpl(testSalt, mockInputerSetData, testAlgoVersion, testIsEnroll);
+    InputerDataImpl inputerDataImpl(testMode, testAlgoVersion, testSalt, mockInputerSetData);
     inputerDataImpl.OnSetData(testAuthSubType, testData);
 }
 } // namespace PinAuth

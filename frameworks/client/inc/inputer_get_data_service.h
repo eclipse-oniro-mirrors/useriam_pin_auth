@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,8 +28,7 @@ class InputerGetDataService : public InputerGetDataStub {
 public:
     explicit InputerGetDataService(const std::shared_ptr<IInputer> &inputer);
     ~InputerGetDataService() override = default;
-    void OnGetData(int32_t authSubType, const std::vector<uint8_t> &algoParameter,
-        const sptr<InputerSetData> &inputerSetData, uint32_t algoVersion, bool isEnroll) override;
+    void OnGetData(const InputerGetDataParam &getDataParam) override;
 
 private:
     std::shared_ptr<IInputer> inputer_ {nullptr};
