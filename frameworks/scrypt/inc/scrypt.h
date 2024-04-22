@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -34,11 +34,10 @@ class Scrypt : public NoCopyable {
 public:
     explicit Scrypt(std::vector<uint8_t> algoParameter) : algoParameter_(std::move(algoParameter)) {}
     ~Scrypt() override = default;
-    std::vector<uint8_t> GetScrypt(std::vector<uint8_t> data, uint32_t algoVersion);
+    std::vector<uint8_t> GetScrypt(const std::vector<uint8_t> &data, uint32_t algoVersion);
 
 private:
-    bool DoScrypt(std::vector<uint8_t> data, uint32_t algoVersion, EVP_PKEY_CTX *pctx);
-    void ClearPinData(std::vector<uint8_t> &data);
+    bool DoScrypt(const std::vector<uint8_t> &data, uint32_t algoVersion, EVP_PKEY_CTX *pctx);
     std::vector<uint8_t> algoParameter_ = {};
 };
 } // namespace PinAuth

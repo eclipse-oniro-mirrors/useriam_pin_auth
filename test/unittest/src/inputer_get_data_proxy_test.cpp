@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -45,13 +45,16 @@ void InputerGetDataProxyTest::TearDown()
 
 HWTEST_F(InputerGetDataProxyTest, InputerGetDataProxyTest001, TestSize.Level0)
 {
-    int32_t testAuthSubType = 10000;
-    std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5, 6};
-    sptr<InputerSetData> testInputerSetData(new (std::nothrow) MockInputerSetData());
-    uint32_t testAlgoVersion = 0;
-    bool testIsEnroll = false;
+    InputerGetDataParam testParam = {
+        .mode = GET_DATA_MODE_ALL_IN_ONE_AUTH,
+        .authSubType = 10000,
+        .algoVersion = 0,
+        .algoParameter = {1, 2, 3, 4, 5, 6},
+        .challenge = {2, 3, 4, 5, 6, 7},
+        .inputerSetData = new (std::nothrow) MockInputerSetData(),
+    };
 
-    EXPECT_NE(testInputerSetData, nullptr);
+    ASSERT_NE(testParam.inputerSetData, nullptr);
     sptr<MockRemoteObject> obj(new (std::nothrow) MockRemoteObject());
     EXPECT_NE(obj, nullptr);
     auto proxy = Common::MakeShared<InputerGetDataProxy>(obj);
@@ -59,16 +62,14 @@ HWTEST_F(InputerGetDataProxyTest, InputerGetDataProxyTest001, TestSize.Level0)
 
     auto service = Common::MakeShared<MockInputerGetDataService>();
     EXPECT_NE(service, nullptr);
-    EXPECT_CALL(*service, OnGetData(_, _, _, _, _))
+    EXPECT_CALL(*service, OnGetData(_))
         .Times(Exactly(1))
-        .WillOnce([&testAuthSubType, &testInputerSetData, &testAlgoVersion, &testIsEnroll](int32_t authSubType,
-            const std::vector<uint8_t> &algoParameter, const sptr<InputerSetData> &inputerSetData,
-            uint32_t algoVersion, bool isEnroll) {
-            EXPECT_EQ(authSubType, testAuthSubType);
-            EXPECT_EQ(inputerSetData, testInputerSetData);
-            EXPECT_EQ(algoVersion, testAlgoVersion);
-            EXPECT_EQ(isEnroll, testIsEnroll);
-            EXPECT_THAT(algoParameter, ElementsAre(1, 2, 3, 4, 5, 6));
+        .WillOnce([&testParam](const InputerGetDataParam &getDataParam) {
+            EXPECT_EQ(getDataParam.mode, testParam.mode);
+            EXPECT_EQ(getDataParam.authSubType, testParam.authSubType);
+            EXPECT_EQ(getDataParam.algoVersion, testParam.algoVersion);
+            EXPECT_THAT(getDataParam.algoParameter, ElementsAre(1, 2, 3, 4, 5, 6));
+            EXPECT_THAT(getDataParam.challenge, ElementsAre(2, 3, 4, 5, 6, 7));
             return;
         });
     EXPECT_CALL(*obj, SendRequest(_, _, _, _)).Times(1);
@@ -76,22 +77,26 @@ HWTEST_F(InputerGetDataProxyTest, InputerGetDataProxyTest001, TestSize.Level0)
         .WillByDefault([&service](uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option) {
             return service->OnRemoteRequest(code, data, reply, option);
         });
-    proxy->OnGetData(testAuthSubType, testSalt, testInputerSetData, testAlgoVersion, testIsEnroll);
+    proxy->OnGetData(testParam);
 }
 
 HWTEST_F(InputerGetDataProxyTest, InputerGetDataProxyTest002, TestSize.Level0)
 {
-    int32_t testAuthSubType = 10000;
-    uint32_t testAlgoVersion = 0;
-    bool testIsEnroll = false;
-    std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5, 6};
-    sptr<InputerSetData> testInputerSetData(nullptr);
-    sptr<MockRemoteObject> obj(new (std::nothrow) MockRemoteObject());
-    EXPECT_NE(obj, nullptr);
-    auto proxy = Common::MakeShared<InputerGetDataProxy>(obj);
-    EXPECT_NE(proxy, nullptr);
+    InputerGetDataParam testParam = {
+        .mode = GET_DATA_MODE_ALL_IN_ONE_AUTH,
+        .authSubType = 10000,
+        .algoVersion = 0,
+        .algoParameter = {1, 2, 3, 4, 5, 6},
+        .challenge = {2, 3, 4, 5, 6, 7},
+        .inputerSetData = new (std::nothrow) MockInputerSetData(),
+    };
 
-    proxy->OnGetData(testAuthSubType, testSalt, testInputerSetData, testAlgoVersion, testIsEnroll);
+    sptr<MockRemoteObject> obj(new (std::nothrow) MockRemoteObject());
+    ASSERT_NE(obj, nullptr);
+    auto proxy = Common::MakeShared<InputerGetDataProxy>(obj);
+    ASSERT_NE(proxy, nullptr);
+
+    proxy->OnGetData(testParam);
 }
 } // namespace PinAuth
 } // namespace UserIam

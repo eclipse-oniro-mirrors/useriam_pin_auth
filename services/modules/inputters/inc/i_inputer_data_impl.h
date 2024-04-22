@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -21,21 +21,24 @@
 #include <vector>
 
 #include "inputer_set_data_stub.h"
-#include "pin_auth_executor_hdi.h"
+#include "pin_auth_all_in_one_hdi.h"
+#include "pin_auth_collector_hdi.h"
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
 class IInputerDataImpl : public InputerSetDataStub {
 public:
-    IInputerDataImpl(uint64_t scheduleId, std::shared_ptr<PinAuthExecutorHdi> hdi);
+    IInputerDataImpl(uint64_t scheduleId, std::shared_ptr<PinAuthAllInOneHdi> hdi);
+    IInputerDataImpl(uint64_t scheduleId, std::shared_ptr<PinAuthCollectorHdi> hdi);
     ~IInputerDataImpl() override;
     void OnSetData(int32_t authSubType, std::vector<uint8_t> data, int32_t errorCode) override;
 
 private:
     std::mutex mutex_;
     uint64_t scheduleId_ {0};
-    std::shared_ptr<PinAuthExecutorHdi> hdi_ {nullptr};
+    std::shared_ptr<PinAuthAllInOneHdi> allInOneHdi_ {nullptr};
+    std::shared_ptr<PinAuthCollectorHdi> collectorHdi_ {nullptr};
 };
 } // namespace PinAuth
 } // namespace UserIam

@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -71,18 +71,21 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnResult_00
         ASSERT_TRUE(executeCallback != nullptr);
         std::vector<uint8_t> testExtraInfo = {1, 2, 3, 4, 5, 6};
         EXPECT_CALL(*executeCallback, OnResult(_, _))
-            .Times(Exactly(2))
+            .Times(Exactly(3))
             .WillRepeatedly([&pair, &testExtraInfo](int32_t result, const std::vector<uint8_t> &extraInfo) {
                 EXPECT_TRUE(result == pair.second);
                 EXPECT_TRUE(testExtraInfo.size() == extraInfo.size());
                 EXPECT_TRUE(std::equal(extraInfo.begin(), extraInfo.end(), testExtraInfo.begin()));
             });
-        std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi = MakeShared<PinAuthExecutorHdi>(nullptr);
+        std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi = MakeShared<PinAuthAllInOneHdi>(nullptr);
         const uint32_t tokenId = 123;
         const uint64_t scheduleId = 1;
-        PinAuthExecutorCallbackHdi callbackHdi1(executeCallback, pinAuthExecutorHdi, tokenId, false, scheduleId);
+        PinAuthExecutorCallbackHdi callbackHdi1(executeCallback, pinAuthAllInOneHdi, tokenId, false, scheduleId);
         callbackHdi1.OnResult(pair.first, testExtraInfo);
-        PinAuthExecutorCallbackHdi callbackHdi2(executeCallback, pinAuthExecutorHdi, tokenId, true, scheduleId);
+        PinAuthExecutorCallbackHdi callbackHdi2(executeCallback, pinAuthAllInOneHdi, tokenId, true, scheduleId);
+        callbackHdi2.OnResult(pair.first, testExtraInfo);
+        std::shared_ptr<PinAuthCollectorHdi> pinAuthCollectorHdi = MakeShared<PinAuthCollectorHdi>(nullptr);
+        PinAuthExecutorCallbackHdi callbackHdi3(executeCallback, pinAuthCollectorHdi, tokenId, true, scheduleId);
         callbackHdi2.OnResult(pair.first, testExtraInfo);
     }
 }

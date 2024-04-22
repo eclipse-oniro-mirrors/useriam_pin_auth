@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -39,14 +39,9 @@ namespace PinAuth {
 namespace {
 class DummyRemoteInputer : public InputerGetData {
 public:
-    void OnGetData(int32_t authSubType, const std::vector<uint8_t> &algoParameter,
-        const sptr<InputerSetData> &inputerSetData, uint32_t algoVersion, bool isEnroll)
+    void OnGetData(const InputerGetDataParam &getDataParam)
     {
-        static_cast<void>(authSubType);
-        static_cast<void>(algoParameter);
-        static_cast<void>(inputerSetData);
-        static_cast<void>(algoVersion);
-        static_cast<void>(isEnroll);
+        static_cast<void>(getDataParam);
     }
     sptr<IRemoteObject> AsObject()
     {

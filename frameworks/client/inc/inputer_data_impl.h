@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -25,6 +25,7 @@
 
 #include "iam_common_defines.h"
 #include "i_inputer_data.h"
+#include "inputer_get_data.h"
 #include "inputer_set_data.h"
 
 namespace OHOS {
@@ -32,19 +33,22 @@ namespace UserIam {
 namespace PinAuth {
 class InputerDataImpl : public IInputerData {
 public:
-    InputerDataImpl(const std::vector<uint8_t> &algoParameter, const sptr<InputerSetData> &inputerSetData,
-        uint32_t algoVersion, bool isEnroll);
+    InputerDataImpl(GetDataMode mode, uint32_t algoVersion, const std::vector<uint8_t> &algoParameter,
+        const sptr<InputerSetData> &inputerSetData);
     ~InputerDataImpl() override = default;
     void OnSetData(int32_t authSubType, std::vector<uint8_t> data) override;
 
 private:
-    bool GetSha256(std::vector<uint8_t> &data, std::vector<uint8_t> &out);
+    bool GetSha256(const std::vector<uint8_t> &data, std::vector<uint8_t> &out);
+    void GetPinData(
+        int32_t authSubType, const std::vector<uint8_t> &dataIn, std::vector<uint8_t> &dataOut, int32_t &errorCode);
     void OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &setData, int32_t errorCode);
-    std::vector<uint8_t> algoParameter_ = {};
-    sptr<InputerSetData> inputerSetData_ {nullptr};
+    int32_t CheckPinComplexity(int32_t authSubType, const std::vector<uint8_t> &data);
+
+    GetDataMode mode_ = GET_DATA_MODE_NONE;
     uint32_t algoVersion_ = 0;
-    bool isEnroll_ = false;
-    int32_t CheckPinComplexity (int32_t authSubType, std::vector<uint8_t> data);
+    std::vector<uint8_t> algoParameter_;
+    sptr<InputerSetData> inputerSetData_;
 };
 } // namespace PinAuth
 } // namespace UserIam

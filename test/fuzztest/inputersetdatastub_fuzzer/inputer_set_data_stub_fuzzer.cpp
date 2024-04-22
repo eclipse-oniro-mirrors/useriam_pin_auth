@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2023 Huawei Device Co., Ltd.
+ * Copyright (c) 2023-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -51,8 +51,8 @@ bool InputerSetDataStubFuzzTest(const uint8_t *rawData, size_t size)
         return false;
     }
 
-    sptr<IExecutor> executorProxy(nullptr);
-    std::shared_ptr<PinAuthExecutorHdi> pinAuthExecutorHdi_ = Common::MakeShared<PinAuthExecutorHdi>(executorProxy);
+    sptr<IAllInOneExecutor> executorProxy(nullptr);
+    std::shared_ptr<PinAuthAllInOneHdi> pinAuthExecutorHdi_ = Common::MakeShared<PinAuthAllInOneHdi>(executorProxy);
     IInputerDataImpl iInputerDataImpl(SCHEDULE_ID, pinAuthExecutorHdi_);
     for (uint32_t code = INPUTER_SET_DATA_CODE_MIN; code <= INPUTER_SET_DATA_CODE_MAX; code++) {
         MessageParcel data;

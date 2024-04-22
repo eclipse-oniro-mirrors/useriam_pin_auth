@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,11 +13,10 @@
  * limitations under the License.
  */
 
-#ifndef PIN_AUTH_EXECUTOR_HDI_H
-#define PIN_AUTH_EXECUTOR_HDI_H
+#ifndef PIN_AUTH_ALL_IN_ONE_HDI_H
+#define PIN_AUTH_ALL_IN_ONE_HDI_H
 
 #include <cstdint>
-#include <map>
 #include <vector>
 
 #include "iam_executor_framework_types.h"
@@ -29,11 +28,11 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class PinAuthExecutorHdi : public std::enable_shared_from_this<PinAuthExecutorHdi>,
+class PinAuthAllInOneHdi : public std::enable_shared_from_this<PinAuthAllInOneHdi>,
     public UserAuth::IAuthExecutorHdi, public NoCopyable {
 public:
-    explicit PinAuthExecutorHdi(const sptr<IExecutor> &executorProxy);
-    ~PinAuthExecutorHdi() override = default;
+    explicit PinAuthAllInOneHdi(const sptr<IAllInOneExecutor> &allInOneProxy);
+    ~PinAuthAllInOneHdi() override = default;
 
     UserAuth::ResultCode GetExecutorInfo(UserAuth::ExecutorInfo &info) override;
     UserAuth::ResultCode OnRegisterFinish(const std::vector<uint64_t> &templateIdList,
@@ -45,32 +44,22 @@ public:
         const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj) override;
     UserAuth::ResultCode OnSetData(uint64_t scheduleId, uint64_t authSubType, const std::vector<uint8_t> &data,
         int32_t errorCode);
-    UserAuth::ResultCode Identify(uint64_t scheduleId, const UserAuth::IdentifyParam &param,
-        const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj) override;
     UserAuth::ResultCode Delete(const std::vector<uint64_t> &templateIdList) override;
     UserAuth::ResultCode Cancel(uint64_t scheduleId) override;
-    UserAuth::ResultCode SendCommand(UserAuth::PropertyMode commandId, const std::vector<uint8_t> &extraInfo,
-        const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj) override;
     UserAuth::ResultCode GetProperty(const std::vector<uint64_t> &templateIdList,
         const std::vector<UserAuth::Attributes::AttributeKey> &keys, UserAuth::Property &property) override;
-    UserAuth::ResultCode SetCachedTemplates(const std::vector<uint64_t> &templateIdList) override;
 
 private:
-    UserAuth::ResultCode MoveHdiExecutorInfo(ExecutorInfo &in, UserAuth::ExecutorInfo &out);
     void MoveHdiProperty(Property &in, UserAuth::Property &out);
-    UserAuth::ResultCode ConvertAuthType(const AuthType in, UserAuth::AuthType &out);
-    UserAuth::ResultCode ConvertExecutorRole(const ExecutorRole in, UserAuth::ExecutorRole &out);
-    UserAuth::ResultCode ConvertExecutorSecureLevel(const ExecutorSecureLevel in, UserAuth::ExecutorSecureLevel &out);
-    UserAuth::ResultCode ConvertResultCode(const int32_t in);
     UserAuth::ResultCode ConvertAttributeKeyToPropertyType(const UserAuth::Attributes::AttributeKey in, int32_t &out);
     UserAuth::ResultCode ConvertAttributeKeyVectorToPropertyType(
         const std::vector<UserAuth::Attributes::AttributeKey> inVector,
         std::vector<int32_t> &outVector);
 
-    sptr<IExecutor> executorProxy_ { nullptr };
+    sptr<IAllInOneExecutor> allInOneProxy_ {nullptr};
 };
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS
 
-#endif // PIN_AUTH_EXECUTOR_HDI_H
+#endif // PIN_AUTH_ALL_IN_ONE_HDI_H

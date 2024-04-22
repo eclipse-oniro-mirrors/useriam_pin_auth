@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -22,7 +22,9 @@
 #include "iam_logger.h"
 #include "iam_ptr.h"
 
-#include "pin_auth_executor_hdi.h"
+#include "pin_auth_all_in_one_hdi.h"
+#include "pin_auth_collector_hdi.h"
+#include "pin_auth_verifier_hdi.h"
 
 #define LOG_TAG "PIN_AUTH_SA"
 
@@ -32,6 +34,60 @@ namespace PinAuth {
 PinAuthDriverHdi::PinAuthDriverHdi(const std::shared_ptr<PinAuthInterfaceAdapter> &pinAuthInterfaceAdapter)
     : pinAuthInterfaceAdapter_(pinAuthInterfaceAdapter)
 {
+}
+
+void PinAuthDriverHdi::GetAllInOneExecutorList(std::vector<std::shared_ptr<UserAuth::IAuthExecutorHdi>> &executorList,
+    std::vector<sptr<IAllInOneExecutor>> &iAllInOneExecutorList)
+{
+    IAM_LOGI("get all in one size %{public}zu", iAllInOneExecutorList.size());
+    for (const auto &iAllInOne : iAllInOneExecutorList) {
+        if (iAllInOne == nullptr) {
+            IAM_LOGE("iAllInOne is nullptr");
+            continue;
+        }
+        auto executor = Common::MakeShared<PinAuthAllInOneHdi>(iAllInOne);
+        if (executor == nullptr) {
+            IAM_LOGE("make share failed");
+            continue;
+        }
+        executorList.push_back(executor);
+    }
+}
+
+void PinAuthDriverHdi::GetCollectorExecutorList(std::vector<std::shared_ptr<UserAuth::IAuthExecutorHdi>> &executorList,
+    std::vector<sptr<ICollector>> &iCollectorList)
+{
+    IAM_LOGI("get collector size %{public}zu", iCollectorList.size());
+    for (const auto &iCollector : iCollectorList) {
+        if (iCollector == nullptr) {
+            IAM_LOGE("iCollector is nullptr");
+            continue;
+        }
+        auto executor = Common::MakeShared<PinAuthCollectorHdi>(iCollector);
+        if (executor == nullptr) {
+            IAM_LOGE("make share failed");
+            continue;
+        }
+        executorList.push_back(executor);
+    }
+}
+
+void PinAuthDriverHdi::GetVerifierExecutorList(std::vector<std::shared_ptr<UserAuth::IAuthExecutorHdi>> &executorList,
+    std::vector<sptr<IVerifier>> &iVerifierList)
+{
+    IAM_LOGI("get verifier size %{public}zu", iVerifierList.size());
+    for (const auto &iVerifier : iVerifierList) {
+        if (iVerifier == nullptr) {
+            IAM_LOGE("iVerifier is nullptr");
+            continue;
+        }
+        auto executor = Common::MakeShared<PinAuthVerifierHdi>(iVerifier);
+        if (executor == nullptr) {
+            IAM_LOGE("make share failed");
+            continue;
+        }
+        executorList.push_back(executor);
+    }
 }
 
 void PinAuthDriverHdi::GetExecutorList(std::vector<std::shared_ptr<UserAuth::IAuthExecutorHdi>> &executorList)
@@ -49,24 +105,16 @@ void PinAuthDriverHdi::GetExecutorList(std::vector<std::shared_ptr<UserAuth::IAu
 
     std::vector<sptr<ICollector>> iCollectorList;
     std::vector<sptr<IVerifier>> iVerifierList;
-    std::vector<sptr<IExecutor>> iExecutorList;
-    auto ret = pinInterface->GetExecutorList(iExecutorList, iVerifierList, iCollectorList);
+    std::vector<sptr<IAllInOneExecutor>> iAllInOneExecutorList;
+    auto ret = pinInterface->GetExecutorList(iAllInOneExecutorList, iVerifierList, iCollectorList);
     if (ret != HDF_SUCCESS) {
         IAM_LOGE("GetExecutorList fail");
         return;
     }
-    for (const auto &iExecutor : iExecutorList) {
-        if (iExecutor == nullptr) {
-            IAM_LOGE("iExecutor is nullptr");
-            continue;
-        }
-        auto executor = Common::MakeShared<PinAuthExecutorHdi>(iExecutor);
-        if (executor == nullptr) {
-            IAM_LOGE("make share failed");
-            continue;
-        }
-        executorList.push_back(executor);
-    }
+    GetAllInOneExecutorList(executorList, iAllInOneExecutorList);
+    GetCollectorExecutorList(executorList, iCollectorList);
+    GetVerifierExecutorList(executorList, iVerifierList);
+    IAM_LOGI("get executor size %{public}zu", executorList.size());
 }
 
 void PinAuthDriverHdi::OnHdiDisconnect()

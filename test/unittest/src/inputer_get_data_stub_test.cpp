@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022-2023 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -47,23 +47,25 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData001, TestSize.Le
 {
     int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
+    std::vector<uint8_t> testChallenge = {2, 3, 4, 5, 6};
     uint32_t testAlgoVersion = 0;
-    bool testIsEnroll = false;
+    GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_AUTH;
     int32_t testErrorCode = 0;
 
     MockInputerGetDataService service;
-    EXPECT_CALL(service, OnGetData(_, _, _, _, _)).Times(1);
+    EXPECT_CALL(service, OnGetData(_)).Times(1);
     ON_CALL(service, OnGetData)
         .WillByDefault(
-            [&testAuthSubType, &testAlgoVersion, &testIsEnroll, &testErrorCode](int32_t authSubType,
-                const std::vector<uint8_t> &algoParameter, const sptr<InputerSetData> &inputerSetData,
-                    uint32_t algoVersion, bool isEnroll) {
-                    EXPECT_EQ(authSubType, testAuthSubType);
-                    EXPECT_THAT(algoParameter, ElementsAre(1, 2, 3, 4, 5));
-                    EXPECT_EQ(algoVersion, testAlgoVersion);
-                    EXPECT_EQ(isEnroll, testIsEnroll);
-                    if (inputerSetData != nullptr) {
-                        inputerSetData->OnSetData(authSubType, algoParameter, testErrorCode);
+            [&testAuthSubType, &testAlgoVersion, &testMode, &testErrorCode](
+                const InputerGetDataParam &getDataParam) {
+                    EXPECT_EQ(getDataParam.authSubType, testAuthSubType);
+                    EXPECT_THAT(getDataParam.algoParameter, ElementsAre(1, 2, 3, 4, 5));
+                    EXPECT_THAT(getDataParam.challenge, ElementsAre(2, 3, 4, 5, 6));
+                    EXPECT_EQ(getDataParam.algoVersion, testAlgoVersion);
+                    EXPECT_EQ(getDataParam.mode, testMode);
+                    if (getDataParam.inputerSetData != nullptr) {
+                        getDataParam.inputerSetData->OnSetData(
+                            getDataParam.authSubType, getDataParam.algoParameter, testErrorCode);
                     }
             }
         );
@@ -76,12 +78,13 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData001, TestSize.Le
     MessageParcel reply;
 
     EXPECT_TRUE(data.WriteInterfaceToken(InputerGetData::GetDescriptor()));
+    EXPECT_TRUE(data.WriteInt32(testMode));
     EXPECT_TRUE(data.WriteInt32(testAuthSubType));
-    EXPECT_TRUE(data.WriteUInt8Vector(testSalt));
-    EXPECT_NE(tempInputerSetData->AsObject(), nullptr);
-    EXPECT_TRUE(data.WriteRemoteObject(tempInputerSetData->AsObject()));
     EXPECT_TRUE(data.WriteUint32(testAlgoVersion));
-    EXPECT_TRUE(data.WriteBool(testIsEnroll));
+    EXPECT_TRUE(data.WriteUInt8Vector(testSalt));
+    EXPECT_TRUE(data.WriteUInt8Vector(testChallenge));
+    ASSERT_NE(tempInputerSetData->AsObject(), nullptr);
+    EXPECT_TRUE(data.WriteRemoteObject(tempInputerSetData->AsObject()));
 
     uint32_t code = InputerGetDataInterfaceCode::ON_GET_DATA;
     MessageOption option(MessageOption::TF_SYNC);

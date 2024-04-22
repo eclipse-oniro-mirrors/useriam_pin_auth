@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2021-2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2021-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -20,7 +20,7 @@
 
 #include "pin_auth_driver_hdi.h"
 #include "mock_pin_auth_interface_adapter.h"
-#include "mock_iexecutor.h"
+#include "mock_iall_in_one_executor.h"
 #include "mock_ipin_auth_interface.h"
 
 #define LOG_TAG "PIN_AUTH_SA"
@@ -97,7 +97,7 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_004, Tes
     sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
     ASSERT_TRUE(interface != nullptr);
     EXPECT_CALL(*interface, GetExecutorList(_, _, _)).Times(Exactly(1)).WillOnce(
-        [](std::vector<sptr<IExecutor>>& allInOneExecutors,
+        [](std::vector<sptr<IAllInOneExecutor>>& allInOneExecutors,
             std::vector<sptr<IVerifier>>& verifiers, std::vector<sptr<ICollector>>& collectors) {
             return static_cast<int32_t>(HDF_FAILURE);
         });
@@ -117,7 +117,7 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_005, Tes
     sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
     ASSERT_TRUE(interface != nullptr);
     EXPECT_CALL(*interface, GetExecutorList(_, _, _)).Times(Exactly(1)).WillOnce(
-        [](std::vector<sptr<IExecutor>>& allInOneExecutors,
+        [](std::vector<sptr<IAllInOneExecutor>>& allInOneExecutors,
             std::vector<sptr<IVerifier>>& verifiers, std::vector<sptr<ICollector>>& collectors) {
             return static_cast<int32_t>(HDF_SUCCESS);
         });
@@ -137,9 +137,9 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_006, Tes
     sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
     ASSERT_TRUE(interface != nullptr);
     EXPECT_CALL(*interface, GetExecutorList(_, _, _)).Times(Exactly(1)).WillOnce(
-        [](std::vector<sptr<IExecutor>>& allInOneExecutors,
+        [](std::vector<sptr<IAllInOneExecutor>>& allInOneExecutors,
             std::vector<sptr<IVerifier>>& verifiers, std::vector<sptr<ICollector>>& collectors) {
-            auto executor = sptr<IExecutor>(new (std::nothrow) MockIExecutor());
+            auto executor = sptr<IAllInOneExecutor>(new (std::nothrow) MockIAllInOneExecutor());
             EXPECT_TRUE(executor != nullptr);
             allInOneExecutors.push_back(executor);
             return static_cast<int32_t>(HDF_SUCCESS);
@@ -160,14 +160,14 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_007, Tes
     sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
     ASSERT_TRUE(interface != nullptr);
     EXPECT_CALL(*interface, GetExecutorList(_, _, _)).Times(Exactly(1)).WillOnce(
-        [](std::vector<sptr<IExecutor>>& allInOneExecutors,
+        [](std::vector<sptr<IAllInOneExecutor>>& allInOneExecutors,
             std::vector<sptr<IVerifier>>& verifiers, std::vector<sptr<ICollector>>& collectors) {
-            allInOneExecutors.push_back(sptr<IExecutor>(nullptr));
-            auto executor = sptr<IExecutor>(new (std::nothrow) MockIExecutor());
+            allInOneExecutors.push_back(sptr<IAllInOneExecutor>(nullptr));
+            auto executor = sptr<IAllInOneExecutor>(new (std::nothrow) MockIAllInOneExecutor());
             EXPECT_TRUE(executor != nullptr);
             allInOneExecutors.push_back(executor);
-            allInOneExecutors.push_back(sptr<IExecutor>(nullptr));
-            executor = sptr<IExecutor>(new (std::nothrow) MockIExecutor());
+            allInOneExecutors.push_back(sptr<IAllInOneExecutor>(nullptr));
+            executor = sptr<IAllInOneExecutor>(new (std::nothrow) MockIAllInOneExecutor());
             EXPECT_TRUE(executor != nullptr);
             allInOneExecutors.push_back(executor);
             return static_cast<int32_t>(HDF_SUCCESS);
@@ -188,9 +188,9 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetExecutorListTest_008, Tes
     sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
     ASSERT_TRUE(interface != nullptr);
     EXPECT_CALL(*interface, GetExecutorList(_, _, _)).Times(Exactly(1)).WillOnce(
-        [](std::vector<sptr<IExecutor>>& allInOneExecutors,
+        [](std::vector<sptr<IAllInOneExecutor>>& allInOneExecutors,
             std::vector<sptr<IVerifier>>& verifiers, std::vector<sptr<ICollector>>& collectors) {
-            auto executor = sptr<IExecutor>(new (std::nothrow) MockIExecutor());
+            auto executor = sptr<IAllInOneExecutor>(new (std::nothrow) MockIAllInOneExecutor());
             EXPECT_TRUE(executor != nullptr);
             allInOneExecutors.push_back(executor);
             return static_cast<int32_t>(HDF_FAILURE);

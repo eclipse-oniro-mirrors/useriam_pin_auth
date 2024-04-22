@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -28,17 +28,16 @@ InputerGetDataService::InputerGetDataService(const std::shared_ptr<IInputer> &in
 {
 }
 
-void InputerGetDataService::OnGetData(int32_t authSubType, const std::vector<uint8_t> &algoParameter,
-    const sptr<InputerSetData> &inputerSetData, uint32_t algoVersion, bool isEnroll)
+void InputerGetDataService::OnGetData(const InputerGetDataParam &getDataParam)
 {
     IAM_LOGI("start");
-    if (inputerSetData == nullptr) {
+    if (getDataParam.inputerSetData == nullptr) {
         IAM_LOGE("inputerSetData is nullptr");
         return;
     }
-    
-    std::shared_ptr<IInputerData> sharedInputerData =
-        Common::MakeShared<InputerDataImpl>(algoParameter, inputerSetData, algoVersion, isEnroll);
+
+    std::shared_ptr<IInputerData> sharedInputerData = Common::MakeShared<InputerDataImpl>(
+        getDataParam.mode, getDataParam.algoVersion, getDataParam.algoParameter, getDataParam.inputerSetData);
     if (sharedInputerData == nullptr) {
         IAM_LOGE("sharedInputerData is nullptr");
         return;
@@ -47,7 +46,7 @@ void InputerGetDataService::OnGetData(int32_t authSubType, const std::vector<uin
         IAM_LOGE("inputer is nullptr");
         return;
     }
-    inputer_->OnGetData(authSubType, sharedInputerData);
+    inputer_->OnGetData(getDataParam.authSubType, sharedInputerData);
 }
 } // namespace PinAuth
 } // namespace UserIam

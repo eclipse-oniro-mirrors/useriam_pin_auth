@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2022-2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -47,7 +47,7 @@ HWTEST_F(InputerGetDataServiceTest, InputerGetDataServiceTest001, TestSize.Level
     int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
     uint32_t testAlgoVersion = 0;
-    bool testIsEnroll = false;
+    GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_AUTH;
     sptr<InputerSetData> testInputerSetData(new (std::nothrow) MockInputerSetData());
     EXPECT_NE(testInputerSetData, nullptr);
 
@@ -64,7 +64,15 @@ HWTEST_F(InputerGetDataServiceTest, InputerGetDataServiceTest001, TestSize.Level
     auto service = Common::MakeShared<InputerGetDataService>(testInputer);
     EXPECT_NE(service, nullptr);
 
-    service->OnGetData(testAuthSubType, testSalt, testInputerSetData, testAlgoVersion, testIsEnroll);
+    InputerGetDataParam getDataParam = {
+        .mode = testMode,
+        .authSubType = testAuthSubType,
+        .algoVersion = testAlgoVersion,
+        .algoParameter = testSalt,
+        .challenge = {},
+        .inputerSetData = testInputerSetData,
+    };
+    service->OnGetData(getDataParam);
 }
 } // namespace PinAuth
 } // namespace UserIam

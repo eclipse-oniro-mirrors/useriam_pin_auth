@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Huawei Device Co., Ltd.
+# Copyright (c) 2023-2024 Huawei Device Co., Ltd.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -49,8 +49,11 @@ ohos_source_set("pinauthservice_source_set_fuzzer") {
   sources = [
     "../../../services/modules/driver/src/pin_auth_driver_hdi.cpp",
     "../../../services/modules/driver/src/pin_auth_interface_adapter.cpp",
+    "../../../services/modules/executors/src/pin_auth_all_in_one_hdi.cpp",
+    "../../../services/modules/executors/src/pin_auth_collector_hdi.cpp",
     "../../../services/modules/executors/src/pin_auth_executor_callback_hdi.cpp",
-    "../../../services/modules/executors/src/pin_auth_executor_hdi.cpp",
+    "../../../services/modules/executors/src/pin_auth_executor_hdi_common.cpp",
+    "../../../services/modules/executors/src/pin_auth_verifier_hdi.cpp",
     "../../../services/modules/inputters/src/i_inputer_data_impl.cpp",
     "../../../services/modules/inputters/src/pin_auth_manager.cpp",
     "../../../services/sa/src/pin_auth_service.cpp",
