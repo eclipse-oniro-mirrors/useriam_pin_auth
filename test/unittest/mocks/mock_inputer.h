@@ -25,7 +25,8 @@ namespace UserIam {
 namespace PinAuth {
 class MockInputer final : public IInputer {
 public:
-    MOCK_METHOD2(OnGetData, void(int32_t authSubType, std::shared_ptr<IInputerData> inputerData));
+    MOCK_METHOD3(OnGetData,
+        void(int32_t authSubType, std::vector<uint8_t> challenge, std::shared_ptr<IInputerData> inputerData));
 };
 } // namespace PinAuth
 } // namespace UserIam

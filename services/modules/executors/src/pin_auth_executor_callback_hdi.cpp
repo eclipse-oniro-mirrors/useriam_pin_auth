@@ -41,20 +41,20 @@ constexpr int32_t TIP_AUTH_PASS_NOTICE = 1;
 
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(
     std::shared_ptr<UserIam::UserAuth::IExecuteCallback> frameworkCallback,
-    std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi, uint32_t tokenId, bool isEnroll, uint64_t scheduleId)
+    std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi, uint32_t tokenId, GetDataMode mode, uint64_t scheduleId)
     : frameworkCallback_(frameworkCallback), pinAuthAllInOneHdi_(pinAuthAllInOneHdi), pinAuthCollectorHdi_(nullptr),
-      tokenId_(tokenId), isEnroll_(isEnroll), scheduleId_(scheduleId) {}
+      tokenId_(tokenId), mode_(mode), scheduleId_(scheduleId) {}
 
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(
     std::shared_ptr<UserAuth::IExecuteCallback> frameworkCallback,
-    std::shared_ptr<PinAuthCollectorHdi> pinAuthCollectorHdi, uint32_t tokenId, bool isEnroll, uint64_t scheduleId)
+    std::shared_ptr<PinAuthCollectorHdi> pinAuthCollectorHdi, uint32_t tokenId, GetDataMode mode, uint64_t scheduleId)
     : frameworkCallback_(frameworkCallback), pinAuthAllInOneHdi_(nullptr), pinAuthCollectorHdi_(pinAuthCollectorHdi),
-      tokenId_(tokenId), isEnroll_(isEnroll), scheduleId_(scheduleId) {}
+      tokenId_(tokenId), mode_(mode), scheduleId_(scheduleId) {}
 
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserAuth::IExecuteCallback> frameworkCallback,
-    uint32_t tokenId, bool isEnroll, uint64_t scheduleId)
+    uint32_t tokenId, GetDataMode mode, uint64_t scheduleId)
     : frameworkCallback_(frameworkCallback), pinAuthAllInOneHdi_(nullptr), pinAuthCollectorHdi_(nullptr),
-      tokenId_(tokenId), isEnroll_(isEnroll), scheduleId_(scheduleId) {}
+      tokenId_(tokenId), mode_(mode), scheduleId_(scheduleId) {}
 
 void PinAuthExecutorCallbackHdi::DoVibrator()
 {
@@ -91,14 +91,14 @@ int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uin
     IAM_LOGI("OnResult %{public}d", code);
 
     UserAuth::ResultCode retCode = ConvertResultCode(code);
-    if ((!isEnroll_) && (retCode == UserAuth::FAIL)) {
+    if ((mode_ == GET_DATA_MODE_ALL_IN_ONE_AUTH) && (retCode == UserAuth::FAIL)) {
         DoVibrator();
     }
 
     IF_FALSE_LOGE_AND_RETURN_VAL(frameworkCallback_ != nullptr, HDF_FAILURE);
 
     /* OnAcquireInfo api is used to return auth result in advance */
-    if ((!isEnroll_) && (retCode == UserAuth::SUCCESS)) {
+    if ((mode_ == GET_DATA_MODE_ALL_IN_ONE_AUTH) && (retCode == UserAuth::SUCCESS)) {
         IAM_LOGI("use OnAcquireInfo to return auth succ");
         frameworkCallback_->OnAcquireInfo(TIP_AUTH_PASS_NOTICE, extraInfo);
     }
@@ -126,7 +126,7 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t>& algoPa
         }
 
         InputerGetDataParam param = {
-            .mode = isEnroll_ ? GET_DATA_MODE_ALL_IN_ONE_ENROLL : GET_DATA_MODE_ALL_IN_ONE_AUTH,
+            .mode = mode_,
             .authSubType = authSubType,
             .algoVersion = algoVersion,
             .algoParameter = algoParameter,
@@ -143,7 +143,7 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t>& algoPa
         }
 
         InputerGetDataParam param = {
-            .mode = GET_DATA_MODE_COLLECTOR,
+            .mode = mode_,
             .authSubType = authSubType,
             .algoVersion = algoVersion,
             .algoParameter = algoParameter,

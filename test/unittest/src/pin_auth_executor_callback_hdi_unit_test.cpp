@@ -80,12 +80,15 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnResult_00
         std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi = MakeShared<PinAuthAllInOneHdi>(nullptr);
         const uint32_t tokenId = 123;
         const uint64_t scheduleId = 1;
-        PinAuthExecutorCallbackHdi callbackHdi1(executeCallback, pinAuthAllInOneHdi, tokenId, false, scheduleId);
+        PinAuthExecutorCallbackHdi callbackHdi1(
+            executeCallback, pinAuthAllInOneHdi, tokenId, GET_DATA_MODE_ALL_IN_ONE_AUTH, scheduleId);
         callbackHdi1.OnResult(pair.first, testExtraInfo);
-        PinAuthExecutorCallbackHdi callbackHdi2(executeCallback, pinAuthAllInOneHdi, tokenId, true, scheduleId);
+        PinAuthExecutorCallbackHdi callbackHdi2(
+            executeCallback, pinAuthAllInOneHdi, tokenId, GET_DATA_MODE_ALL_IN_ONE_ENROLL, scheduleId);
         callbackHdi2.OnResult(pair.first, testExtraInfo);
         std::shared_ptr<PinAuthCollectorHdi> pinAuthCollectorHdi = MakeShared<PinAuthCollectorHdi>(nullptr);
-        PinAuthExecutorCallbackHdi callbackHdi3(executeCallback, pinAuthCollectorHdi, tokenId, true, scheduleId);
+        PinAuthExecutorCallbackHdi callbackHdi3(
+            executeCallback, pinAuthCollectorHdi, tokenId, GET_DATA_MODE_COLLECTOR, scheduleId);
         callbackHdi2.OnResult(pair.first, testExtraInfo);
     }
 }

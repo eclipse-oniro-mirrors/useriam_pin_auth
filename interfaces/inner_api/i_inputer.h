@@ -36,9 +36,11 @@ public:
      * @brief Obtains the pin data.
      *
      * @param authSubType PinAuth sub type.
+     * @param challenge   PinAuth challenge.
      * @param inputerData PinAuth's inputer data.
      */
-    virtual void OnGetData(int32_t authSubType, std::shared_ptr<IInputerData> inputerData) = 0;
+    virtual void OnGetData(
+        int32_t authSubType, std::vector<uint8_t> challenge, std::shared_ptr<IInputerData> inputerData) = 0;
 };
 } // namespace PinAuth
 } // namespace UserIam

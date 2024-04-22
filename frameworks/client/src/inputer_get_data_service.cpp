@@ -46,7 +46,7 @@ void InputerGetDataService::OnGetData(const InputerGetDataParam &getDataParam)
         IAM_LOGE("inputer is nullptr");
         return;
     }
-    inputer_->OnGetData(getDataParam.authSubType, sharedInputerData);
+    inputer_->OnGetData(getDataParam.authSubType, getDataParam.challenge, sharedInputerData);
 }
 } // namespace PinAuth
 } // namespace UserIam

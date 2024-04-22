@@ -113,7 +113,7 @@ UserAuth::ResultCode PinAuthVerifierHdi::Authenticate(uint64_t scheduleId, const
         return UserAuth::ResultCode::GENERAL_ERROR;
     }
     auto callback = sptr<IExecutorCallback>(
-        new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj, param.tokenId, false, scheduleId));
+        new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj, param.tokenId, GET_DATA_MODE_NONE, scheduleId));
     if (callback == nullptr) {
         IAM_LOGE("get verifier callback null");
         return UserAuth::ResultCode::GENERAL_ERROR;
