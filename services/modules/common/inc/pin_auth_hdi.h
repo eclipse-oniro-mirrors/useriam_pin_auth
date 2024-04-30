@@ -23,8 +23,8 @@
 #include "v2_0/icollector.h"
 #include "v2_0/iexecutor_callback.h"
 #include "v2_0/ipin_auth_interface.h"
-#include "v2_0/pin_auth_interface_service.h"
 #include "v2_0/iverifier.h"
+#include "v2_0/pin_auth_interface_service.h"
 
 namespace OHOS {
 namespace UserIam {
