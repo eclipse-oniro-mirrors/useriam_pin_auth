@@ -38,7 +38,8 @@ public:
 };
 class InputerUT : public IInputer {
 public:
-    void OnGetData(int32_t authSubType, std::shared_ptr<IInputerData> inputerData)override {}
+    void OnGetData(
+        int32_t authSubType, std::vector<uint8_t> challenge, std::shared_ptr<IInputerData> inputerData) override {}
     virtual ~InputerUT() = default;
 };
 

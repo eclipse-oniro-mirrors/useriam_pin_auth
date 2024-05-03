@@ -122,7 +122,7 @@ UserAuth::ResultCode PinAuthAllInOneHdi::Enroll(uint64_t scheduleId, const UserA
         return UserAuth::ResultCode::GENERAL_ERROR;
     }
     auto callback = sptr<IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
-        shared_from_this(), param.tokenId, true, scheduleId));
+        shared_from_this(), param.tokenId, GET_DATA_MODE_ALL_IN_ONE_ENROLL, scheduleId));
     if (callback == nullptr) {
         IAM_LOGE("callback is null");
         return UserAuth::ResultCode::GENERAL_ERROR;
@@ -149,7 +149,7 @@ UserAuth::ResultCode PinAuthAllInOneHdi::Authenticate(
         return UserAuth::ResultCode::GENERAL_ERROR;
     }
     auto callback = sptr<IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
-        shared_from_this(), param.tokenId, false, scheduleId));
+        shared_from_this(), param.tokenId, GET_DATA_MODE_ALL_IN_ONE_AUTH, scheduleId));
     if (callback == nullptr) {
         IAM_LOGE("callback is null");
         return UserAuth::ResultCode::GENERAL_ERROR;

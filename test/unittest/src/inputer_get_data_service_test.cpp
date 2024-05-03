@@ -54,10 +54,12 @@ HWTEST_F(InputerGetDataServiceTest, InputerGetDataServiceTest001, TestSize.Level
     auto testInputer = Common::MakeShared<MockInputer>();
     EXPECT_NE(testInputer, nullptr);
 
-    EXPECT_CALL(*testInputer, OnGetData(_, _))
+    EXPECT_CALL(*testInputer, OnGetData(_, _, _))
         .Times(Exactly(1))
-        .WillOnce([&testAuthSubType](int32_t authSubType, std::shared_ptr<IInputerData> inputerData) {
+        .WillOnce([&testAuthSubType](
+            int32_t authSubType, std::vector<uint8_t> challenge, std::shared_ptr<IInputerData> inputerData) {
             EXPECT_EQ(authSubType, testAuthSubType);
+            EXPECT_EQ(challenge.empty(), true);
             return;
         });
 
