@@ -223,6 +223,7 @@ void PinAuthAllInOneHdi::MoveHdiProperty(Property &in, UserAuth::Property &out)
     out.authSubType = in.authSubType;
     out.lockoutDuration = in.lockoutDuration;
     out.remainAttempts = in.remainAttempts;
+    out.nextFailLockoutDuration = in.nextFailLockoutDuration;
 }
 
 UserAuth::ResultCode PinAuthAllInOneHdi::ConvertAttributeKeyVectorToPropertyType(
@@ -250,6 +251,7 @@ UserAuth::ResultCode PinAuthAllInOneHdi::ConvertAttributeKeyToPropertyType(const
         { UserAuth::Attributes::ATTR_PIN_SUB_TYPE, GetPropertyType::AUTH_SUB_TYPE },
         { UserAuth::Attributes::ATTR_FREEZING_TIME, GetPropertyType::LOCKOUT_DURATION },
         { UserAuth::Attributes::ATTR_REMAIN_TIMES, GetPropertyType::REMAIN_ATTEMPTS },
+        { UserAuth::Attributes::ATTR_NEXT_FAIL_LOCKOUT_DURATION, GetPropertyType::NEXT_FAIL_LOCKOUT_DURATION },
     };
 
     auto iter = data.find(in);

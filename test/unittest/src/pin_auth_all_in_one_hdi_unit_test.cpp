@@ -448,6 +448,18 @@ HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_GetProperty_003, TestSiz
         EXPECT_TRUE(ret == pair.second);
     }
 }
+
+HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_GetProperty_004, TestSize.Level0)
+{
+    auto executorProxy = new (std::nothrow) MockIAllInOneExecutor();
+    ASSERT_TRUE(executorProxy != nullptr);
+        PinAuthAllInOneHdi allInOneHdi(executorProxy);
+    std::vector<uint64_t> templateIdList;
+    std::vector<UserAuth::Attributes::AttributeKey> keys = { UserAuth::Attributes::ATTR_NEXT_FAIL_LOCKOUT_DURATION };
+    UserAuth::Property property = {};
+    auto ret = allInOneHdi.GetProperty(templateIdList, keys, property);
+    EXPECT_EQ(ret, IamResultCode::SUCCESS);
+}
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS
