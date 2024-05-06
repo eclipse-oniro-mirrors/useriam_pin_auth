@@ -326,7 +326,7 @@ HWTEST_F(PinAuthCollectorHdiUnitTest, PinAuthCollectorExecutorHdi_Collect_001, T
         ASSERT_TRUE(collectorHdi != nullptr);
         auto executeCallback = MakeShared<UserIam::UserAuth::MockIExecuteCallback>();
         ASSERT_TRUE(executeCallback != nullptr);
-        auto ret = collectorHdi->Collect(0, UserAuth::CollectParam{0, std::vector<uint8_t>()}, executeCallback);
+        auto ret = collectorHdi->Collect(0, UserAuth::CollectParam{0, 0, std::vector<uint8_t>()}, executeCallback);
         EXPECT_TRUE(ret == pair.second);
     }
 }
@@ -337,7 +337,7 @@ HWTEST_F(PinAuthCollectorHdiUnitTest, PinAuthCollectorExecutorHdi_Collect_002, T
     ASSERT_TRUE(executorProxy != nullptr);
     auto collectorHdi = MakeShared<PinAuthCollectorHdi>(executorProxy);
     ASSERT_TRUE(collectorHdi != nullptr);
-    auto ret = collectorHdi->Collect(0, UserAuth::CollectParam{0, std::vector<uint8_t>()}, nullptr);
+    auto ret = collectorHdi->Collect(0, UserAuth::CollectParam{0, 0, std::vector<uint8_t>()}, nullptr);
     EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
 }
 
@@ -347,14 +347,14 @@ HWTEST_F(PinAuthCollectorHdiUnitTest, PinAuthCollectorExecutorHdi_Collect_003, T
     ASSERT_TRUE(collectorHdi != nullptr);
     auto executeCallback = MakeShared<UserIam::UserAuth::MockIExecuteCallback>();
     ASSERT_TRUE(executeCallback != nullptr);
-    auto ret = collectorHdi->Collect(0, UserAuth::CollectParam{0, std::vector<uint8_t>()}, executeCallback);
+    auto ret = collectorHdi->Collect(0, UserAuth::CollectParam{0, 0, std::vector<uint8_t>()}, executeCallback);
     EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
 }
 
 HWTEST_F(PinAuthCollectorHdiUnitTest, PinAuthCollectorExecutorHdi_Collect_004, TestSize.Level0)
 {
     PinAuthCollectorHdi collectorHdi(nullptr);
-    auto ret = collectorHdi.Collect(0, UserAuth::CollectParam{0, std::vector<uint8_t>()}, nullptr);
+    auto ret = collectorHdi.Collect(0, UserAuth::CollectParam{0, 0, std::vector<uint8_t>()}, nullptr);
     EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
 }
 } // namespace PinAuth
