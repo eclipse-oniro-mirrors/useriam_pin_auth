@@ -37,12 +37,14 @@ ohos_unittest("PinAuth_UT_test") {
     "src/inputer_set_data_proxy_test.cpp",
     "src/inputer_set_data_stub_test.cpp",
     "src/pin_auth_all_in_one_hdi_unit_test.cpp",
+    "src/pin_auth_collector_hdi_unit_test.cpp",
     "src/pin_auth_driver_hdi_unit_test.cpp",
     "src/pin_auth_executor_callback_hdi_unit_test.cpp",
     "src/pin_auth_proxy_test.cpp",
     "src/pin_auth_register_test.cpp",
     "src/pin_auth_service_test.cpp",
     "src/pin_auth_stub_test.cpp",
+    "src/pin_auth_verifier_hdi_unit_test.cpp",
   ]
 
   include_dirs = [

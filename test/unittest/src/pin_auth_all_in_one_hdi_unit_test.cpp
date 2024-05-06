@@ -312,6 +312,13 @@ HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_Enroll_003, TestSize.Lev
     EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
 }
 
+HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_Enroll_004, TestSize.Level0)
+{
+    PinAuthAllInOneHdi allInOneHdi(nullptr);
+    auto ret = allInOneHdi.Enroll(0, UserAuth::EnrollParam{0, std::vector<uint8_t>()}, nullptr);
+    EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
+}
+
 HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_Authenticate_001, TestSize.Level0)
 {
     for (const auto &pair : RESULT_CODE_MAP) {
@@ -348,6 +355,14 @@ HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_Authenticate_003, TestSi
     ASSERT_TRUE(executeCallback != nullptr);
     auto ret = allInOneHdi->Authenticate(0,
         UserAuth::AuthenticateParam{0, std::vector<uint64_t>(), std::vector<uint8_t>()}, executeCallback);
+    EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
+}
+
+HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_Authenticate_004, TestSize.Level0)
+{
+    PinAuthAllInOneHdi allInOneHdi(nullptr);
+    auto ret = allInOneHdi.Authenticate(0,
+        UserAuth::AuthenticateParam{0, std::vector<uint64_t>(), std::vector<uint8_t>()}, nullptr);
     EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
 }
 
@@ -403,6 +418,14 @@ HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_SendMessage_001, TestSiz
     std::vector<uint8_t> data;
     auto ret = allInOneHdi.SendMessage(1, 1, data);
     EXPECT_TRUE(ret == IamResultCode::SUCCESS);
+}
+
+HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_SendMessage_002, TestSize.Level0)
+{
+    PinAuthAllInOneHdi allInOneHdi(nullptr);
+    std::vector<uint8_t> data;
+    auto ret = allInOneHdi.SendMessage(1, 1, data);
+    EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
 }
 
 HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_GetProperty_001, TestSize.Level0)
