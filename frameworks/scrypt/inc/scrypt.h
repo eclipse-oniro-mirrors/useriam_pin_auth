@@ -27,7 +27,8 @@ namespace PinAuth {
 enum AuthType : uint32_t {
     ALGO_VERSION_V0 = 0,
     ALGO_VERSION_V1 = 1,
-    ALGO_VERSION_V2 = 2
+    ALGO_VERSION_V2 = 2,
+    ALGO_VERSION_V3 = 3
 };
 
 class Scrypt : public NoCopyable {
