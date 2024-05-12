@@ -31,6 +31,7 @@ constexpr uint32_t SCRYPT_N_V0 = 32768;
 constexpr uint32_t SCRYPT_N_V1 = 2048;
 constexpr uint32_t SCRYPT_R = 8;
 constexpr uint32_t SCRYPT_P = 1;
+constexpr uint32_t SCRYPT_P_V3 = 2;
 
 struct ScryptParameters {
     int32_t scryptN;
@@ -41,7 +42,8 @@ struct ScryptParameters {
 std::unordered_map<uint32_t, ScryptParameters> g_version2Param_ = {
     { ALGO_VERSION_V0, { SCRYPT_N_V0, SCRYPT_R, SCRYPT_P } },
     { ALGO_VERSION_V1, { SCRYPT_N_V1, SCRYPT_R, SCRYPT_P } },
-    { ALGO_VERSION_V2, { SCRYPT_N_V1, SCRYPT_R, SCRYPT_P } }
+    { ALGO_VERSION_V2, { SCRYPT_N_V1, SCRYPT_R, SCRYPT_P } },
+    { ALGO_VERSION_V3, { SCRYPT_N_V1, SCRYPT_R, SCRYPT_P_V3 } }
 };
 }
 
