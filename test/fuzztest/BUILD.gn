@@ -14,9 +14,16 @@
 group("pin_auth_fuzz_test") {
   testonly = true
   deps = [
-    "inputerdata_fuzzer:InputerDataFuzzTest",
-    "inputersetdatastub_fuzzer:InputerSetDataStubFuzzTest",
-    "pinauthservice_fuzzer:PinAuthServiceFuzzTest",
-    "pinauthstub_fuzzer:PinAuthStubFuzzTest",
+    "frameworks/ipc/inputergetdataproxy_fuzzer:InputerGetDataProxyFuzzTest",
+    "frameworks/ipc/inputersetdatastub_fuzzer:InputerSetDataStubFuzzTest",
+    "frameworks/ipc/pinauthstub_fuzzer:PinAuthStubFuzzTest",
+    "services/modules/driver/pinauthdriverhdi_fuzzer:PinAuthDriverHdiFuzzTest",
+    "services/modules/executors/pinauthallinonehdi_fuzzer:PinAuthAllInOneHdiFuzzTest",
+    "services/modules/executors/pinauthcollectorhdi_fuzzer:PinAuthCollectorHdiFuzzTest",
+    "services/modules/executors/pinauthexecutorcallbackhdi_fuzzer:PinAuthExecutorCallbackHdiFuzzTest",
+    "services/modules/executors/pinauthverifierhdi_fuzzer:PinAuthVerifierHdiFuzzTest",
+    "services/modules/inputters/inputerdata_fuzzer:InputerDataFuzzTest",
+    "services/modules/inputters/pinauthmanager_fuzzer:PinAuthManagerFuzzTest",
+    "services/sa/pinauthservice_fuzzer:PinAuthServiceFuzzTest",
   ]
 }
