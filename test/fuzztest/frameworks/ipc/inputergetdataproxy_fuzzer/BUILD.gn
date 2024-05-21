@@ -14,10 +14,10 @@
 import("//build/config/features.gni")
 import("//build/test.gni")
 
-ohos_fuzztest("InputerDataFuzzTest") {
+ohos_fuzztest("InputerGetDataProxyFuzzTest") {
   branch_protector_ret = "pac_ret"
   module_out_path = "pin_auth/pin_auth"
-  fuzz_config_file = "../inputerdata_fuzzer"
+  fuzz_config_file = "../inputergetdataproxy_fuzzer"
 
   cflags = [
     "-g",
@@ -26,16 +26,19 @@ ohos_fuzztest("InputerDataFuzzTest") {
     "-fno-omit-frame-pointer",
   ]
 
-  include_dirs = [ "../utils_fuzz" ]
+  include_dirs = [
+    "../../../utils_fuzz",
+    "../../../mocks/inc",
+  ]
 
   sources = [
-    "../utils_fuzz/iam_fuzz_test.cpp",
-    "inputer_data_fuzzer.cpp",
+    "../../../utils_fuzz/iam_fuzz_test.cpp",
+    "inputer_get_data_proxy_fuzzer.cpp",
   ]
 
   deps = [
-    "../common_fuzzer:pinauth_ipc_fuzzer",
-    "../common_fuzzer:pinauthservice_source_set_fuzzer",
+    "../../../common_fuzzer:pinauth_ipc_fuzzer",
+    "../../../common_fuzzer:pinauthservice_source_set_fuzzer",
   ]
 
   external_deps = [
@@ -48,9 +51,9 @@ ohos_fuzztest("InputerDataFuzzTest") {
   remove_configs = [ "//build/config/compiler:no_exceptions" ]
 
   configs = [
-    "../../../frameworks:pinauth_ipc_config",
-    "../../../common:iam_log_config",
-    "../../../common:iam_utils_config",
+    "../../../../../frameworks:pinauth_ipc_config",
+    "../../../../../common:iam_log_config",
+    "../../../../../common:iam_utils_config",
   ]
 
   subsystem_name = "useriam"

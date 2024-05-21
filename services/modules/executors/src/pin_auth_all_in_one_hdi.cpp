@@ -174,6 +174,10 @@ UserAuth::ResultCode PinAuthAllInOneHdi::Delete(const std::vector<uint64_t> &tem
         IAM_LOGE("allInOneProxy is null");
         return UserAuth::ResultCode::GENERAL_ERROR;
     }
+    if (templateIdList.empty()) {
+        IAM_LOGE("templateIdList is empty");
+        return UserAuth::ResultCode::GENERAL_ERROR;
+    }
     int32_t status = allInOneProxy_->Delete(templateIdList[0]);
     UserAuth::ResultCode result = ConvertHdiResultCode(status);
     if (result != UserAuth::ResultCode::SUCCESS) {

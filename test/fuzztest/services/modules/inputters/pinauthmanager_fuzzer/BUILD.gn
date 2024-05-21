@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Huawei Device Co., Ltd.
+# Copyright (c) 2022-2023 Huawei Device Co., Ltd.
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
@@ -14,10 +14,10 @@
 import("//build/config/features.gni")
 import("//build/test.gni")
 
-ohos_fuzztest("InputerSetDataStubFuzzTest") {
+ohos_fuzztest("PinAuthManagerFuzzTest") {
   branch_protector_ret = "pac_ret"
   module_out_path = "pin_auth/pin_auth"
-  fuzz_config_file = "../inputersetdatastub_fuzzer"
+  fuzz_config_file = "../pinauthmanager_fuzzer"
 
   cflags = [
     "-g",
@@ -26,31 +26,40 @@ ohos_fuzztest("InputerSetDataStubFuzzTest") {
     "-fno-omit-frame-pointer",
   ]
 
-  include_dirs = [ "../utils_fuzz" ]
+  include_dirs = [
+    "../../../../utils_fuzz",
+    "../../../../mocks/inc",
+  ]
 
   sources = [
-    "../utils_fuzz/iam_fuzz_test.cpp",
-    "inputer_set_data_stub_fuzzer.cpp",
+    "../../../../utils_fuzz/iam_fuzz_test.cpp",
+    "pin_auth_manager_fuzzer.cpp",
   ]
 
   deps = [
-    "../common_fuzzer:pinauth_ipc_fuzzer",
-    "../common_fuzzer:pinauthservice_source_set_fuzzer",
+    "../../../../common_fuzzer:pinauth_ipc_fuzzer",
+    "../../../../common_fuzzer:pinauthservice_source_set_fuzzer",
+    "//third_party/openssl:libcrypto_shared",
   ]
 
   external_deps = [
+    "access_token:libaccesstoken_sdk",
+    "c_utils:utils",
     "drivers_interface_pin_auth:libpin_auth_proxy_2.0",
     "hilog:libhilog",
     "hisysevent:libhisysevent",
+    "ipc:ipc_single",
+    "safwk:system_ability_fwk",
+    "samgr:samgr_proxy",
     "user_auth_framework:userauth_executors",
   ]
 
   remove_configs = [ "//build/config/compiler:no_exceptions" ]
 
   configs = [
-    "../../../frameworks:pinauth_ipc_config",
-    "../../../common:iam_log_config",
-    "../../../common:iam_utils_config",
+    "../../../../../../frameworks:pinauth_ipc_config",
+    "../../../../../../common:iam_log_config",
+    "../../../../../../common:iam_utils_config",
   ]
 
   subsystem_name = "useriam"

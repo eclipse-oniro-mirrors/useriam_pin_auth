@@ -1,0 +1,64 @@
+# Copyright (c) 2023 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/config/features.gni")
+import("//build/test.gni")
+
+ohos_fuzztest("PinAuthStubFuzzTest") {
+  branch_protector_ret = "pac_ret"
+  module_out_path = "pin_auth/pin_auth"
+  fuzz_config_file = "../pinauthstub_fuzzer"
+
+  cflags = [
+    "-g",
+    "-O0",
+    "-Wno-unused-variable",
+    "-fno-omit-frame-pointer",
+  ]
+
+  include_dirs = [ "../../../utils_fuzz" ]
+
+  sources = [
+    "../../../utils_fuzz/iam_fuzz_test.cpp",
+    "pin_auth_stub_fuzzer.cpp",
+  ]
+
+  deps = [
+    "../../../common_fuzzer:pinauth_ipc_fuzzer",
+    "../../../common_fuzzer:pinauthservice_source_set_fuzzer",
+    "//third_party/openssl:libcrypto_shared",
+  ]
+
+  external_deps = [
+    "access_token:libaccesstoken_sdk",
+    "c_utils:utils",
+    "drivers_interface_pin_auth:libpin_auth_proxy_2.0",
+    "hilog:libhilog",
+    "hisysevent:libhisysevent",
+    "ipc:ipc_single",
+    "safwk:system_ability_fwk",
+    "samgr:samgr_proxy",
+    "user_auth_framework:userauth_executors",
+  ]
+
+  remove_configs = [ "//build/config/compiler:no_exceptions" ]
+
+  configs = [
+    "../../../../../frameworks:pinauth_ipc_config",
+    "../../../../../common:iam_log_config",
+    "../../../../../common:iam_utils_config",
+  ]
+
+  subsystem_name = "useriam"
+  part_name = "pin_auth"
+}

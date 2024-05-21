@@ -24,6 +24,9 @@
 #include "iam_logger.h"
 #include "iam_ptr.h"
 
+#include "mock_iall_in_one_executor_fuzzer.h"
+#include "mock_icollector_executor_fuzzer.h"
+
 #include "i_inputer_data_impl.h"
 #include "pin_auth_hdi.h"
 
@@ -39,9 +42,9 @@ namespace UserIam {
 namespace PinAuth {
 namespace {
 const uint32_t SCHEDULE_ID = 123;
-sptr<IAllInOneExecutor> executorProxy(nullptr);
-std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi_ = Common::MakeShared<PinAuthAllInOneHdi>(executorProxy);
-auto g_service = new (std::nothrow) IInputerDataImpl(SCHEDULE_ID, pinAuthAllInOneHdi_);
+auto executorProxy_ = sptr<IAllInOneExecutor>(new (std::nothrow) MockIAllInOneExecutorFuzzer());
+auto hdi_ = Common::MakeShared<PinAuthAllInOneHdi>(executorProxy_);
+auto g_service = new (std::nothrow) IInputerDataImpl(SCHEDULE_ID, hdi_);
 
 void FuzzRegisterInputer(Parcel &parcel)
 {
