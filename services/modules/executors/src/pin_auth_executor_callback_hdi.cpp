@@ -34,10 +34,6 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-namespace {
-/* tip indicates that the password authentication result is returned */
-constexpr int32_t TIP_AUTH_PASS_NOTICE = 1;
-};
 
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(
     std::shared_ptr<UserIam::UserAuth::IExecuteCallback> frameworkCallback,
@@ -94,14 +90,8 @@ int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uin
     if ((mode_ == GET_DATA_MODE_ALL_IN_ONE_AUTH) && (retCode == UserAuth::FAIL)) {
         DoVibrator();
     }
-
     IF_FALSE_LOGE_AND_RETURN_VAL(frameworkCallback_ != nullptr, HDF_FAILURE);
 
-    /* OnAcquireInfo api is used to return auth result in advance */
-    if ((mode_ == GET_DATA_MODE_ALL_IN_ONE_AUTH) && (retCode == UserAuth::SUCCESS)) {
-        IAM_LOGI("use OnAcquireInfo to return auth succ");
-        frameworkCallback_->OnAcquireInfo(TIP_AUTH_PASS_NOTICE, extraInfo);
-    }
     frameworkCallback_->OnResult(retCode, extraInfo);
     return HDF_SUCCESS;
 }
