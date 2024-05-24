@@ -56,7 +56,7 @@ void PinAuthExecutorCallbackHdi::DoVibrator()
 {
 #ifdef SENSORS_MISCDEVICE_ENABLE
     IAM_LOGI("begin");
-    static const char *pinAuthEffect = "haptic.fail";
+    static const char *pinAuthEffect = "haptic.notice.fail";
     bool pinEffectState = false;
     int32_t ret = Sensors::IsSupportEffect(pinAuthEffect, &pinEffectState);
     if (ret != 0) {
