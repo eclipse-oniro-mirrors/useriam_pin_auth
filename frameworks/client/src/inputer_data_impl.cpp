@@ -133,13 +133,22 @@ int32_t InputerDataImpl::CheckPinComplexity(int32_t authSubType, const std::vect
         IAM_LOGE("GetPasswordPolicy success, authSubType can only be PIN_MIXED");
         return UserAuth::COMPLEXITY_CHECK_FAILED;
     }
-    std::string dataRegex(reinterpret_cast<const char *>(data.data()), data.size());
-    std::regex regex(policy.complexityReg);
-    bool checkRet = std::regex_match(dataRegex.c_str(), regex);
-    if (!checkRet) {
-        IAM_LOGE("PIN_MIXED does not pass complexity check");
+    std::vector<uint8_t> input = data;
+    input.emplace_back('\0');
+    try {
+        std::regex regex(policy.complexityReg);
+        bool checkRet = std::regex_match(reinterpret_cast<char*>(input.data()), regex);
+        if (!checkRet) {
+            IAM_LOGE("PIN_MIXED does not pass complexity check");
+            (void)memset_s(input.data(), input.size(), 0, input.size());
+            return UserAuth::COMPLEXITY_CHECK_FAILED;
+        }
+    } catch (const std::regex_error &e) {
+        IAM_LOGE("create regex failed");
+        (void)memset_s(input.data(), input.size(), 0, input.size());
         return UserAuth::COMPLEXITY_CHECK_FAILED;
     }
+    (void)memset_s(input.data(), input.size(), 0, input.size());
     return UserAuth::SUCCESS;
 #else
     IAM_LOGI("This device not support edm, subType:%{public}d", authSubType);
