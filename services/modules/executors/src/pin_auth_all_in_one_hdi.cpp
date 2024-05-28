@@ -121,8 +121,12 @@ UserAuth::ResultCode PinAuthAllInOneHdi::Enroll(uint64_t scheduleId, const UserA
         IAM_LOGE("callbackObj is null");
         return UserAuth::ResultCode::GENERAL_ERROR;
     }
+    UserAuth::ExecutorParam executorParam = {
+        .tokenId = param.tokenId,
+        .scheduleId = scheduleId,
+    };
     auto callback = sptr<IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
-        shared_from_this(), param.tokenId, GET_DATA_MODE_ALL_IN_ONE_ENROLL, scheduleId));
+        shared_from_this(), executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL));
     if (callback == nullptr) {
         IAM_LOGE("callback is null");
         return UserAuth::ResultCode::GENERAL_ERROR;
@@ -148,8 +152,13 @@ UserAuth::ResultCode PinAuthAllInOneHdi::Authenticate(
         IAM_LOGE("callbackObj is null");
         return UserAuth::ResultCode::GENERAL_ERROR;
     }
+    UserAuth::ExecutorParam executorParam = {
+        .tokenId = param.tokenId,
+        .authIntent = param.authIntent,
+        .scheduleId = scheduleId,
+    };
     auto callback = sptr<IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
-        shared_from_this(), param.tokenId, GET_DATA_MODE_ALL_IN_ONE_AUTH, scheduleId));
+        shared_from_this(), executorParam, GET_DATA_MODE_ALL_IN_ONE_AUTH));
     if (callback == nullptr) {
         IAM_LOGE("callback is null");
         return UserAuth::ResultCode::GENERAL_ERROR;

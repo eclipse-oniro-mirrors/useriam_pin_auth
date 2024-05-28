@@ -37,20 +37,22 @@ namespace PinAuth {
 
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(
     std::shared_ptr<UserIam::UserAuth::IExecuteCallback> frameworkCallback,
-    std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi, uint32_t tokenId, GetDataMode mode, uint64_t scheduleId)
+    std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi, const UserAuth::ExecutorParam &param,
+    GetDataMode mode)
     : frameworkCallback_(frameworkCallback), pinAuthAllInOneHdi_(pinAuthAllInOneHdi), pinAuthCollectorHdi_(nullptr),
-      tokenId_(tokenId), mode_(mode), scheduleId_(scheduleId) {}
+      tokenId_(param.tokenId), mode_(mode), scheduleId_(param.scheduleId), authIntent_(param.authIntent) {}
 
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(
     std::shared_ptr<UserAuth::IExecuteCallback> frameworkCallback,
-    std::shared_ptr<PinAuthCollectorHdi> pinAuthCollectorHdi, uint32_t tokenId, GetDataMode mode, uint64_t scheduleId)
+    std::shared_ptr<PinAuthCollectorHdi> pinAuthCollectorHdi, const UserAuth::ExecutorParam &param,
+    GetDataMode mode)
     : frameworkCallback_(frameworkCallback), pinAuthAllInOneHdi_(nullptr), pinAuthCollectorHdi_(pinAuthCollectorHdi),
-      tokenId_(tokenId), mode_(mode), scheduleId_(scheduleId) {}
+      tokenId_(param.tokenId), mode_(mode), scheduleId_(param.scheduleId), authIntent_(param.authIntent) {}
 
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserAuth::IExecuteCallback> frameworkCallback,
-    uint32_t tokenId, GetDataMode mode, uint64_t scheduleId)
+    const UserAuth::ExecutorParam &param, GetDataMode mode)
     : frameworkCallback_(frameworkCallback), pinAuthAllInOneHdi_(nullptr), pinAuthCollectorHdi_(nullptr),
-      tokenId_(tokenId), mode_(mode), scheduleId_(scheduleId) {}
+      tokenId_(param.tokenId), mode_(mode), scheduleId_(param.scheduleId), authIntent_(param.authIntent) {}
 
 void PinAuthExecutorCallbackHdi::DoVibrator()
 {
@@ -88,7 +90,9 @@ int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uin
 
     UserAuth::ResultCode retCode = ConvertResultCode(code);
     if ((mode_ == GET_DATA_MODE_ALL_IN_ONE_AUTH) && (retCode == UserAuth::FAIL)) {
-        DoVibrator();
+        if (authIntent_ != UserAuth::SILENT_AUTH) {
+            DoVibrator();
+        }
     }
     IF_FALSE_LOGE_AND_RETURN_VAL(frameworkCallback_ != nullptr, HDF_FAILURE);
 

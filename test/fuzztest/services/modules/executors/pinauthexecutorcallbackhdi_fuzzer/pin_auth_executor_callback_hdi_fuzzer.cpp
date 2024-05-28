@@ -57,13 +57,18 @@ std::shared_ptr<PinAuthExecutorCallbackHdi> pinAuthExecutorCallbackHdi_(nullptr)
 
 void InitPinAuthExecutorCallbackHdi(Parcel &parcel)
 {
+    const UserAuth::ExecutorParam executorParam = {
+        .tokenId = TOKEN_ID,
+        .authIntent = 0,
+        .scheduleId = SCHEDULE_ID,
+    };
     GetDataMode mode = static_cast<GetDataMode>(parcel.ReadInt32());
     if (g_index % FUZZ_NUM == 0) {
         pinAuthExecutorCallbackHdi_ = Common::MakeShared<PinAuthExecutorCallbackHdi>(
-            frameWorkCallback_, allInOneHdi_, TOKEN_ID, mode, SCHEDULE_ID);
+            frameWorkCallback_, allInOneHdi_, executorParam, mode);
     } else {
         pinAuthExecutorCallbackHdi_ = Common::MakeShared<PinAuthExecutorCallbackHdi>(
-            frameWorkCallback_, collectorHdi_, TOKEN_ID, mode, SCHEDULE_ID);
+            frameWorkCallback_, collectorHdi_, executorParam, mode);
     }
 }
 
@@ -74,8 +79,13 @@ void FuzzDoVibrator(Parcel &parcel)
     int32_t code = UserAuth::FAIL;
     std::vector<uint8_t> extraInfo;
     FillFuzzUint8Vector(parcel, extraInfo);
+    const UserAuth::ExecutorParam executorParam = {
+        .tokenId = TOKEN_ID,
+        .authIntent = 0,
+        .scheduleId = SCHEDULE_ID,
+    };
     pinAuthExecutorCallbackHdi_ = Common::MakeShared<PinAuthExecutorCallbackHdi>(
-        frameWorkCallback_, allInOneHdi_, TOKEN_ID, mode, SCHEDULE_ID);
+        frameWorkCallback_, allInOneHdi_, executorParam, mode);
     UserAuth::ExecutorInfo info;
     if (pinAuthExecutorCallbackHdi_ != nullptr) {
         pinAuthExecutorCallbackHdi_->OnResult(code, extraInfo);
