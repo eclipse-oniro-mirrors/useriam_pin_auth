@@ -33,13 +33,13 @@ namespace PinAuth {
 class PinAuthExecutorCallbackHdi : public IExecutorCallback, public NoCopyable {
 public:
     PinAuthExecutorCallbackHdi(std::shared_ptr<UserAuth::IExecuteCallback> frameworkCallback,
-        std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi, uint32_t tokenId, GetDataMode mode,
-        uint64_t scheduleId);
+        std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi, const UserAuth::ExecutorParam &param,
+        GetDataMode mode);
     PinAuthExecutorCallbackHdi(std::shared_ptr<UserAuth::IExecuteCallback> frameworkCallback,
-        std::shared_ptr<PinAuthCollectorHdi> pinAuthCollectorHdi, uint32_t tokenId, GetDataMode mode,
-        uint64_t scheduleId);
+        std::shared_ptr<PinAuthCollectorHdi> pinAuthCollectorHdi, const UserAuth::ExecutorParam &param,
+        GetDataMode mode);
     PinAuthExecutorCallbackHdi(std::shared_ptr<UserAuth::IExecuteCallback> frameworkCallback,
-        uint32_t tokenId, GetDataMode mode, uint64_t scheduleId);
+        const UserAuth::ExecutorParam &param, GetDataMode mode);
     ~PinAuthExecutorCallbackHdi() override = default;
     int32_t OnResult(int32_t code, const std::vector<uint8_t> &extraInfo) override;
     int32_t OnGetData(const std::vector<uint8_t>& algoParameter, uint64_t authSubType, uint32_t algoVersion,
@@ -56,6 +56,7 @@ private:
     uint32_t tokenId_;
     GetDataMode mode_;
     uint64_t scheduleId_;
+    int32_t authIntent_;
 };
 } // PinAuth
 } // UserIam

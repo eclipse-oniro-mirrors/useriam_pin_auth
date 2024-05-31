@@ -112,8 +112,13 @@ UserAuth::ResultCode PinAuthVerifierHdi::Authenticate(uint64_t scheduleId, const
         IAM_LOGE("get bad param is null");
         return UserAuth::ResultCode::GENERAL_ERROR;
     }
+    UserAuth::ExecutorParam executorParam = {
+        .tokenId = param.tokenId,
+        .scheduleId = scheduleId,
+        .authIntent = param.authIntent,
+    };
     auto callback = sptr<IExecutorCallback>(
-        new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj, param.tokenId, GET_DATA_MODE_NONE, scheduleId));
+        new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj, executorParam, GET_DATA_MODE_NONE));
     if (callback == nullptr) {
         IAM_LOGE("get verifier callback null");
         return UserAuth::ResultCode::GENERAL_ERROR;

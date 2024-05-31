@@ -112,8 +112,12 @@ UserAuth::ResultCode PinAuthCollectorHdi::Collect(uint64_t scheduleId, const Use
         IAM_LOGE("callbackObj is null");
         return UserAuth::ResultCode::GENERAL_ERROR;
     }
+    UserAuth::ExecutorParam executorParam = {
+        .tokenId = param.tokenId,
+        .scheduleId = scheduleId,
+    };
     auto callback = sptr<IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(
-        callbackObj, shared_from_this(), param.collectorTokenId, GET_DATA_MODE_COLLECTOR, scheduleId));
+        callbackObj, shared_from_this(), executorParam, GET_DATA_MODE_COLLECTOR));
     if (callback == nullptr) {
         IAM_LOGE("get collector callback null");
         return UserAuth::ResultCode::GENERAL_ERROR;
