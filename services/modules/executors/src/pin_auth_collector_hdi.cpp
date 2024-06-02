@@ -113,7 +113,7 @@ UserAuth::ResultCode PinAuthCollectorHdi::Collect(uint64_t scheduleId, const Use
         return UserAuth::ResultCode::GENERAL_ERROR;
     }
     UserAuth::ExecutorParam executorParam = {
-        .tokenId = param.tokenId,
+        .tokenId = param.collectorTokenId,
         .scheduleId = scheduleId,
     };
     auto callback = sptr<IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(
