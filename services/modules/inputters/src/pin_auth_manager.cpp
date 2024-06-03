@@ -16,6 +16,7 @@
 #include "pin_auth_manager.h"
 #include "iam_logger.h"
 #include "iam_para2str.h"
+
 #define LOG_TAG "PIN_AUTH_SA"
 
 namespace OHOS {
