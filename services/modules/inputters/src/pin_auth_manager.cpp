@@ -15,7 +15,7 @@
 
 #include "pin_auth_manager.h"
 #include "iam_logger.h"
-
+#include "iam_para2str.h"
 #define LOG_TAG "PIN_AUTH_SA"
 
 namespace OHOS {
@@ -26,7 +26,7 @@ PinAuthManager::~PinAuthManager() = default;
 bool PinAuthManager::RegisterInputer(uint32_t tokenId, const sptr<InputerGetData> &inputer)
 {
     std::lock_guard<std::mutex> guard(mutex_);
-    IAM_LOGI("start, tokenId = %{public}u", tokenId);
+    IAM_LOGI("start, tokenId = %{public}s", GET_MASKED_STRING(tokenId).c_str());
     if (pinAuthInputerMap_.find(tokenId) != pinAuthInputerMap_.end()) {
         IAM_LOGE("inputer is already register, do not repeat");
         return false;
@@ -52,7 +52,7 @@ bool PinAuthManager::RegisterInputer(uint32_t tokenId, const sptr<InputerGetData
 void PinAuthManager::UnRegisterInputer(uint32_t tokenId)
 {
     std::lock_guard<std::mutex> guard(mutex_);
-    IAM_LOGI("start, tokenId = %{public}u", tokenId);
+    IAM_LOGI("start, tokenId = %{public}s", GET_MASKED_STRING(tokenId).c_str());
     if (pinAuthInputerMap_.find(tokenId) != pinAuthInputerMap_.end()) {
         if (pinAuthDeathMap_.find(tokenId) != pinAuthDeathMap_.end()) {
             auto inputer = pinAuthInputerMap_[tokenId];
