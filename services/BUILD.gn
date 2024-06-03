@@ -15,7 +15,7 @@ import("//build/ohos.gni")
 import("../pin_auth.gni")
 
 declare_args() {
-  pinauth_fwk_enabled = true
+  pin_auth_enabled = true
 }
 
 config("pin_auth_services_config") {
