@@ -28,7 +28,14 @@ ohos_unittest("PinAuth_UT_test") {
   }
   branch_protector_ret = "pac_ret"
   module_out_path = module_output_path
-
+  cflags = [
+    "-g",
+    "-O0",
+    "-fno-omit-frame-pointer",
+    "-Dprivate=public",
+    "-Dprotected=public",
+    "-fno-access-control",
+  ]
   sources = [
     "src/inputer_data_impl_test.cpp",
     "src/inputer_get_data_proxy_test.cpp",
@@ -47,6 +54,8 @@ ohos_unittest("PinAuth_UT_test") {
     "src/pin_auth_verifier_hdi_unit_test.cpp",
     "src/services_inputer_data_impl_test.cpp",
     "src/services_pin_auth_manager_test.cpp",
+    "src/framework_scrypt_scrypt_test.cpp",
+    "src/framework_client_pinauth_register_impl_test.cpp",
   ]
 
   include_dirs = [
