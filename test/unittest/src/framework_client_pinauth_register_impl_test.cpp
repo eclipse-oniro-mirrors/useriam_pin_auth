@@ -1,0 +1,60 @@
+/*
+ * Copyright (c) 2024-2024 Huawei Device Co., Ltd.
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#include "framework_client_pinauth_register_impl_test.h"
+#include "pinauth_register_impl.h"
+#include "mock_remote_object.h"
+
+#include <openssl/sha.h>
+
+namespace OHOS {
+namespace UserIam {
+namespace PinAuth {
+using namespace testing;
+using namespace testing::ext;
+
+void FrameworkClientPinAuthRegisterImplTest::SetUpTestCase()
+{
+}
+
+void FrameworkClientPinAuthRegisterImplTest::TearDownTestCase()
+{
+}
+
+void FrameworkClientPinAuthRegisterImplTest::SetUp()
+{
+}
+
+void FrameworkClientPinAuthRegisterImplTest::TearDown()
+{
+}
+
+HWTEST_F(FrameworkClientPinAuthRegisterImplTest, ResetProxyTest001, TestSize.Level0)
+{
+    sptr<MockRemoteObject> obj(new (std::nothrow) MockRemoteObject());
+    EXPECT_NO_THROW(PinAuthRegisterImpl::Instance().ResetProxy(obj));
+}
+
+HWTEST_F(FrameworkClientPinAuthRegisterImplTest, OnRemoteDied001, TestSize.Level0)
+{
+    sptr<IRemoteObject::DeathRecipient> dr(new (std::nothrow) PinAuthRegisterImpl::PinAuthDeathRecipient());
+    dr->OnRemoteDied(nullptr);
+
+    sptr<MockRemoteObject> obj(new (std::nothrow) MockRemoteObject());
+    dr->OnRemoteDied(obj);
+}
+} // namespace PinAuth
+} // namespace UserIam
+} // namespace OHOS

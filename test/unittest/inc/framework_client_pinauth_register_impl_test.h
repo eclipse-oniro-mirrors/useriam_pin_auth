@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,15 +13,15 @@
  * limitations under the License.
  */
 
-#ifndef PIN_AUTH_SERVICE_TEST_H
-#define PIN_AUTH_SERVICE_TEST_H
+#ifndef FRAMEWORK_CLIENT_PINAUTH_REGISTER_IMPL_TEST_H
+#define FRAMEWORK_CLIENT_PINAUTH_REGISTER_IMPL_TEST_H
 
 #include <gtest/gtest.h>
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class PinAuthServiceTest : public testing::Test {
+class FrameworkClientPinAuthRegisterImplTest : public testing::Test {
 public:
     static void SetUpTestCase();
 
@@ -30,11 +30,8 @@ public:
     void SetUp() override;
 
     void TearDown() override;
-
-private:
-    void setTokenId();
 };
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS
-#endif // PIN_AUTH_SERVICE_TEST_H
+#endif // FRAMEWORK_CLIENT_PINAUTH_REGISTER_IMPL_TEST_H

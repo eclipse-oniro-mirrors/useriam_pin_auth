@@ -22,6 +22,7 @@
 #include "mock_pin_auth_interface_adapter.h"
 #include "mock_iall_in_one_executor.h"
 #include "mock_ipin_auth_interface.h"
+#include "mock_iverifier_executor.h"
 
 #define LOG_TAG "PIN_AUTH_SA"
 
@@ -211,6 +212,35 @@ HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_OnHdiDisconnectTest_001, Tes
     auto driverHdi = MakeShared<PinAuthDriverHdi>(nullptr);
     ASSERT_TRUE(driverHdi != nullptr);
     driverHdi->OnHdiDisconnect();
+}
+
+HWTEST_F(PinAuthDriverHdiUnitTest, PinAuthDriverHdi_GetVerifierExecutorList_001, TestSize.Level0)
+{
+    sptr<MockIPinAuthInterface> interface(new (std::nothrow) MockIPinAuthInterface());
+    ASSERT_TRUE(interface != nullptr);
+    EXPECT_CALL(*interface, GetExecutorList(_, _, _)).Times(Exactly(1)).WillOnce(
+        [](std::vector<sptr<IAllInOneExecutor>>& allInOneExecutors,
+            std::vector<sptr<IVerifier>>& verifiers, std::vector<sptr<ICollector>>& collectors) {
+            allInOneExecutors.push_back(sptr<IAllInOneExecutor>(nullptr));
+            auto executor = sptr<IAllInOneExecutor>(new (std::nothrow) MockIAllInOneExecutor());
+            EXPECT_TRUE(executor != nullptr);
+            allInOneExecutors.push_back(executor);
+            allInOneExecutors.push_back(sptr<IAllInOneExecutor>(nullptr));
+            executor = sptr<IAllInOneExecutor>(new (std::nothrow) MockIAllInOneExecutor());
+            EXPECT_TRUE(executor != nullptr);
+            allInOneExecutors.push_back(executor);
+            return static_cast<int32_t>(HDF_SUCCESS);
+        });
+
+    auto adapter = MakeShared<MockPinAuthInterfaceAdapter>();
+    ASSERT_TRUE(adapter != nullptr);
+    EXPECT_CALL(*adapter, Get()).Times(Exactly(1)).WillOnce(Return(interface));
+
+    PinAuthDriverHdi driverHdi(adapter);
+    std::vector<std::shared_ptr<UserAuth::IAuthExecutorHdi>> executorList;
+    std::vector<sptr<IVerifier>> iVerifierList = {sptr<IVerifier>(new MockIVerifyExecutor()), nullptr};
+    driverHdi.GetVerifierExecutorList(executorList, iVerifierList);
+    EXPECT_TRUE(executorList.size() == 1);
 }
 } // namespace PinAuth
 } // namespace UserIam
