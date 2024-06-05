@@ -30,9 +30,6 @@ public:
     void SetUp() override;
 
     void TearDown() override;
-
-private:
-    void setTokenId();
 };
 } // namespace PinAuth
 } // namespace UserIam

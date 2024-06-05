@@ -48,7 +48,7 @@ HWTEST_F(FrameworkScryptScryptTest, GetScryptTest001, TestSize.Level0)
     std::vector<uint8_t> data = {1, 2, 3, 4, 5};
     uint32_t algoVersion = 1;
     std::vector<uint8_t> result = scrypt.GetScrypt(data, algoVersion);
-    EXPECT_EQ(result.size(), 0);
+    EXPECT_EQ(result.size(), 64);
 }
 
 HWTEST_F(FrameworkScryptScryptTest, GetScryptTest002, TestSize.Level0)

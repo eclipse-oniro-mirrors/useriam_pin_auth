@@ -13,12 +13,13 @@
  * limitations under the License.
  */
 
+#define private public
+#include "inputer_data_impl.h"
 #include "inputer_data_impl_test.h"
 
 #include <openssl/sha.h>
 
 #include "iam_ptr.h"
-#include "inputer_data_impl.h"
 #include "mock_inputer_set_data.h"
 #include "scrypt.h"
 
@@ -67,6 +68,76 @@ sptr<MockInputerSetData> GetMockInputerSetData(int32_t testAuthSubType,
 }
 }
 
+HWTEST_F(InputerDataImplTest, CheckPinComplexity001, TestSize.Level0)
+{
+    constexpr int32_t testAuthSubType = 10000;
+    constexpr uint32_t testAlgoVersion = ALGO_VERSION_V2;
+    std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
+    constexpr GetDataMode testMode = GET_DATA_MODE_NONE;
+    #define CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
+    InputerDataImpl inputerDataImpl(testMode, testAlgoVersion, testSalt, nullptr);
+    int32_t result = inputerDataImpl.CheckPinComplexity(testAuthSubType, testSalt);
+    EXPECT_EQ(result, UserAuth::COMPLEXITY_CHECK_FAILED);
+}
+
+HWTEST_F(InputerDataImplTest, CheckPinComplexity002, TestSize.Level0)
+{
+    constexpr int32_t testAuthSubType = 10000;
+    constexpr uint32_t testAlgoVersion = ALGO_VERSION_V2;
+    std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
+    constexpr GetDataMode testMode = GET_DATA_MODE_NONE;
+    #define CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
+    InputerDataImpl inputerDataImpl(testMode, testAlgoVersion, testSalt, nullptr);
+    int32_t result = inputerDataImpl.CheckPinComplexity(testAuthSubType, testSalt);
+    EXPECT_EQ(result, UserAuth::COMPLEXITY_CHECK_FAILED);
+}
+
+HWTEST_F(InputerDataImplTest, OnSetDataInner001, TestSize.Level0)
+{
+    constexpr int32_t testAuthSubType = 10000;
+    constexpr uint32_t testAlgoVersion = ALGO_VERSION_V2;
+    constexpr GetDataMode testMode = GET_DATA_MODE_NONE;
+    std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
+    std::vector<uint8_t> testSetData;
+    constexpr int32_t testErrorCode = 14;
+    InputerDataImpl inputerDataImpl(testMode, testAlgoVersion, testSalt, nullptr);
+    EXPECT_NO_THROW(inputerDataImpl.OnSetDataInner(testAuthSubType, testSetData, testErrorCode));
+}
+
+HWTEST_F(InputerDataImplTest, GetPinDataTest001, TestSize.Level0)
+{
+    constexpr int32_t testAuthSubType = 10000;
+    constexpr uint32_t testAlgoVersion = ALGO_VERSION_V2;
+    constexpr GetDataMode testMode = GET_DATA_MODE_NONE;
+    std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
+    std::vector<uint8_t> testData = {6, 7};
+    std::vector<uint8_t> testSetData;
+    int32_t testErrorCode = 14;
+
+    auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
+    ASSERT_NE(mockInputerSetData, nullptr);
+
+    InputerDataImpl inputerDataImpl(testMode, testAlgoVersion, testSalt, mockInputerSetData);
+    EXPECT_NO_THROW(inputerDataImpl.GetPinData(testAuthSubType, testData, testSetData, testErrorCode));
+}
+
+HWTEST_F(InputerDataImplTest, GetPinDataTest002, TestSize.Level0)
+{
+    constexpr int32_t testAuthSubType = 10000;
+    constexpr uint32_t testAlgoVersion = ALGO_VERSION_V2;
+    constexpr GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_ENROLL;
+    std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
+    std::vector<uint8_t> testData = {1, 2, 3, 4, 6};
+    std::vector<uint8_t> testSetData;
+    int32_t testErrorCode = 14;
+
+    auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
+    ASSERT_NE(mockInputerSetData, nullptr);
+
+    InputerDataImpl inputerDataImpl(testMode, testAlgoVersion, testSalt, mockInputerSetData);
+    EXPECT_NO_THROW(inputerDataImpl.GetPinData(testAuthSubType, testData, testSetData, testErrorCode));
+}
+
 HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest001, TestSize.Level0)
 {
     constexpr int32_t testAuthSubType = 10000;
@@ -75,7 +146,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest001, TestSize.Level0)
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
     std::vector<uint8_t> testData;
     std::vector<uint8_t> testSetData;
-    constexpr int32_t testErrorCode = 14;
+    int32_t testErrorCode = 14;
 
     auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
     ASSERT_NE(mockInputerSetData, nullptr);
