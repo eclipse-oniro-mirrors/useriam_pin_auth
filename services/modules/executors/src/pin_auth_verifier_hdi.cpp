@@ -114,8 +114,8 @@ UserAuth::ResultCode PinAuthVerifierHdi::Authenticate(uint64_t scheduleId, const
     }
     UserAuth::ExecutorParam executorParam = {
         .tokenId = param.tokenId,
-        .scheduleId = scheduleId,
         .authIntent = param.authIntent,
+        .scheduleId = scheduleId,
     };
     auto callback = sptr<IExecutorCallback>(
         new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj, executorParam, GET_DATA_MODE_NONE));
