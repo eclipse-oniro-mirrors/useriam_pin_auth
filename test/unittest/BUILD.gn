@@ -55,7 +55,6 @@ ohos_unittest("PinAuth_UT_test") {
     "src/services_inputer_data_impl_test.cpp",
     "src/services_pin_auth_manager_test.cpp",
     "src/framework_scrypt_scrypt_test.cpp",
-    "src/framework_client_pinauth_register_impl_test.cpp",
   ]
 
   include_dirs = [

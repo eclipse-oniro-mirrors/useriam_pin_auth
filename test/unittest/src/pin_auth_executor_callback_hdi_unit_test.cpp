@@ -18,9 +18,11 @@
 #include "iam_logger.h"
 #include "iam_ptr.h"
 
+#define private public
 #include "pin_auth_executor_callback_hdi.h"
 #include "iam_common_defines.h"
 #include "mock_iexecute_callback.h"
+#include "mock_iall_in_one_executor.h"
 
 #define LOG_TAG "PIN_AUTH_SA"
 
@@ -55,6 +57,85 @@ void PinAuthExecutorCallbackHdiUnitTest ::SetUp()
 
 void PinAuthExecutorCallbackHdiUnitTest ::TearDown()
 {
+}
+
+HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_ConvertResultCode_001, TestSize.Level0)
+{
+    auto executorProxy = new (std::nothrow) MockIAllInOneExecutor();
+    std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi = MakeShared<PinAuthAllInOneHdi>(executorProxy);
+    const uint32_t tokenId = 123;
+    const uint64_t scheduleId = 1;
+    const UserAuth::ExecutorParam executorParam = {
+        .tokenId = tokenId,
+        .authIntent = 0,
+        .scheduleId = scheduleId,
+    };
+    auto executeCallback = MakeShared<MockIExecuteCallback>();
+    PinAuthExecutorCallbackHdi callbackHdi(
+        executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL);
+    callbackHdi.frameworkCallback_ = Common::MakeShared<MockIExecuteCallback>();
+    EXPECT_EQ(callbackHdi.ConvertResultCode(SYSTEM_ERROR_CODE_BEGIN), GENERAL_ERROR);
+}
+
+HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnMessage_001, TestSize.Level0)
+{
+    auto executeCallback = MakeShared<MockIExecuteCallback>();
+    auto executorProxy = new (std::nothrow) MockIAllInOneExecutor();
+    std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi = MakeShared<PinAuthAllInOneHdi>(executorProxy);
+    const uint32_t tokenId = 123;
+    const uint64_t scheduleId = 1;
+    const UserAuth::ExecutorParam executorParam = {
+        .tokenId = tokenId,
+        .authIntent = 0,
+        .scheduleId = scheduleId,
+    };
+    PinAuthExecutorCallbackHdi callbackHdi(
+        executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL);
+    std::vector<uint8_t> msg = {1, 2, 3, 4, 5};
+    int32_t tip = 0;
+    callbackHdi.frameworkCallback_ = Common::MakeShared<MockIExecuteCallback>();
+    EXPECT_EQ(callbackHdi.OnMessage(tip, msg), HDF_SUCCESS);
+}
+
+HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnTip_001, TestSize.Level0)
+{
+    auto executeCallback = MakeShared<MockIExecuteCallback>();
+    auto executorProxy = new (std::nothrow) MockIAllInOneExecutor();
+    std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi = MakeShared<PinAuthAllInOneHdi>(executorProxy);
+    const uint32_t tokenId = 123;
+    const uint64_t scheduleId = 1;
+    const UserAuth::ExecutorParam executorParam = {
+        .tokenId = tokenId,
+        .authIntent = 0,
+        .scheduleId = scheduleId,
+    };
+    PinAuthExecutorCallbackHdi callbackHdi(
+        executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL);
+    std::vector<uint8_t> extraInfo = {1, 2, 3, 4, 5};
+    int32_t tip = 0;
+    callbackHdi.frameworkCallback_ = Common::MakeShared<MockIExecuteCallback>();
+    EXPECT_EQ(callbackHdi.OnTip(tip, extraInfo), HDF_SUCCESS);
+}
+
+HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnGetData_001, TestSize.Level0)
+{
+    auto executeCallback = MakeShared<UserIam::UserAuth::MockIExecuteCallback>();
+    auto executorProxy = new (std::nothrow) MockIAllInOneExecutor();
+    std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi = MakeShared<PinAuthAllInOneHdi>(executorProxy);
+    const uint32_t tokenId = 123;
+    const uint64_t scheduleId = 1;
+    const UserAuth::ExecutorParam executorParam = {
+        .tokenId = tokenId,
+        .authIntent = 0,
+        .scheduleId = scheduleId,
+    };
+    PinAuthExecutorCallbackHdi callbackHdi(
+        executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL);
+    std::vector<uint8_t> algoParameter = {1, 2, 3, 4, 5};
+    uint64_t authSubType = 0;
+    uint32_t algoVersion = 0;
+    std::vector<uint8_t> challenge = {1, 2, 3, 4, 5};
+    EXPECT_EQ(callbackHdi.OnGetData(algoParameter, authSubType, algoVersion, challenge), HDF_FAILURE);
 }
 
 HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnResult_001, TestSize.Level0)

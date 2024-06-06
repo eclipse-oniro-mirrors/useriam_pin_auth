@@ -68,21 +68,27 @@ sptr<PinAuthInterface> PinAuthRegisterImpl::GetProxy()
     if (proxy_ != nullptr) {
         return proxy_;
     }
+    IAM_LOGI("cjy GetProxy 111");
     sptr<ISystemAbilityManager> sam = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
+    IAM_LOGI("cjy GetProxy 222");
     if (sam == nullptr) {
         IAM_LOGE("get system ability manager fail");
         return nullptr;
     }
+    IAM_LOGI("cjy GetProxy 333");
     sptr<IRemoteObject> obj = sam->CheckSystemAbility(SUBSYS_USERIAM_SYS_ABILITY_PINAUTH);
+    IAM_LOGI("cjy GetProxy 555");
     if (obj == nullptr) {
         IAM_LOGE("get distributed gallery manager service fail");
         return nullptr;
     }
+    IAM_LOGI("cjy GetProxy 444");
     sptr<IRemoteObject::DeathRecipient> dr(new (std::nothrow) PinAuthDeathRecipient());
     if ((obj->IsProxyObject()) && (!obj->AddDeathRecipient(dr))) {
         IAM_LOGE("add death recipient fail");
         return nullptr;
     }
+    IAM_LOGI("cjy GetProxy 555");
 
     proxy_ = iface_cast<PinAuthInterface>(obj);
     deathRecipient_ = dr;
@@ -94,9 +100,14 @@ void PinAuthRegisterImpl::ResetProxy(const wptr<IRemoteObject>& remote)
 {
     IAM_LOGI("start");
     std::lock_guard<std::mutex> lock(mutex_);
+    IAM_LOGI("cjy 111");
     auto serviceRemote = proxy_->AsObject();
+    IAM_LOGI("cjy 2222");
+    IAM_LOGI("cjy 4444 %d,  %d", (serviceRemote != nullptr), (serviceRemote == remote.promote()));
     if ((serviceRemote != nullptr) && (serviceRemote == remote.promote())) {
+        IAM_LOGI("cjy 3333");
         serviceRemote->RemoveDeathRecipient(deathRecipient_);
+        IAM_LOGI("cjy 5555");
         proxy_ = nullptr;
     }
 }

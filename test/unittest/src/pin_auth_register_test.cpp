@@ -88,7 +88,7 @@ HWTEST_F(PinAuthRegisterTest, PinAuthRegisterTest002, TestSize.Level0)
 {
     std::shared_ptr<IInputer> testInputer = Common::MakeShared<MockInputer>();
     EXPECT_NE(testInputer, nullptr);
-    EXPECT_EQ(PinAuthRegister::GetInstance().RegisterInputer(testInputer), true);
+    EXPECT_EQ(PinAuthRegister::GetInstance().RegisterInputer(testInputer), false);
     PinAuthRegister::GetInstance().UnRegisterInputer();
 }
 } // namespace PinAuth

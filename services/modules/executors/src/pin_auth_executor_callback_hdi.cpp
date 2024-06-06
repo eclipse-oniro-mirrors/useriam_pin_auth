@@ -108,10 +108,12 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t>& algoPa
 
     IAM_LOGI("Start tokenId_ is %{public}s", GET_MASKED_STRING(tokenId_).c_str());
     sptr<InputerGetData> inputer = PinAuthManager::GetInstance().GetInputerLock(tokenId_);
+    IAM_LOGI("OnGetData 1111");
     if (inputer == nullptr) {
         IAM_LOGE("inputer is nullptr");
         return HDF_FAILURE;
     }
+    IAM_LOGI("OnGetData 2222");
 
     if (pinAuthAllInOneHdi_ != nullptr) {
         sptr<IInputerDataImpl> iInputerDataImpl(new (std::nothrow) IInputerDataImpl(scheduleId_, pinAuthAllInOneHdi_));

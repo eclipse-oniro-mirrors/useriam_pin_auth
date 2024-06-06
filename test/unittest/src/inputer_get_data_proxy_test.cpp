@@ -98,6 +98,29 @@ HWTEST_F(InputerGetDataProxyTest, InputerGetDataProxyTest002, TestSize.Level0)
 
     proxy->OnGetData(testParam);
 }
+
+HWTEST_F(InputerGetDataProxyTest, OnGetDataTest001, TestSize.Level0)
+{
+    InputerGetDataParam testParam = {
+        .mode = GET_DATA_MODE_ALL_IN_ONE_AUTH,
+        .authSubType = 10000,
+        .algoVersion = 0,
+        .algoParameter = {1, 2, 3, 4, 5, 6},
+        .challenge = {2, 3, 4, 5, 6, 7},
+        .inputerSetData = nullptr,
+    };
+
+    auto service = Common::MakeShared<MockInputerGetDataService>();
+    sptr<MockRemoteObject> obj(new (std::nothrow) MockRemoteObject());
+    ON_CALL(*obj, SendRequest)
+        .WillByDefault([&service](uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option) {
+            return 100;
+        });
+    auto proxy = Common::MakeShared<InputerGetDataProxy>(obj);
+    ASSERT_NE(proxy, nullptr);
+
+    EXPECT_NO_THROW(proxy->OnGetData(testParam));
+}
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS

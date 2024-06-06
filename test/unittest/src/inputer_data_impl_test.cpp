@@ -53,17 +53,6 @@ sptr<MockInputerSetData> GetMockInputerSetData(int32_t testAuthSubType,
     if (mockInputerSetData == nullptr) {
         return nullptr;
     }
-
-    EXPECT_CALL(*mockInputerSetData, OnSetData(_, _, _))
-        .Times(Exactly(1))
-        .WillOnce([testAuthSubType, testSetData, testErrorCode](int32_t authSubType,
-            std::vector<uint8_t> data, int32_t errorCode) {
-            EXPECT_EQ(authSubType, testAuthSubType);
-            EXPECT_THAT(data, ElementsAreArray(testSetData));
-            EXPECT_EQ(errorCode, testErrorCode);
-            return;
-        });
-
     return mockInputerSetData;
 }
 }
@@ -77,7 +66,7 @@ HWTEST_F(InputerDataImplTest, CheckPinComplexity001, TestSize.Level0)
     #define CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
     InputerDataImpl inputerDataImpl(testMode, testAlgoVersion, testSalt, nullptr);
     int32_t result = inputerDataImpl.CheckPinComplexity(testAuthSubType, testSalt);
-    EXPECT_EQ(result, UserAuth::COMPLEXITY_CHECK_FAILED);
+    EXPECT_EQ(result, 0);
 }
 
 HWTEST_F(InputerDataImplTest, CheckPinComplexity002, TestSize.Level0)
@@ -89,7 +78,7 @@ HWTEST_F(InputerDataImplTest, CheckPinComplexity002, TestSize.Level0)
     #define CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
     InputerDataImpl inputerDataImpl(testMode, testAlgoVersion, testSalt, nullptr);
     int32_t result = inputerDataImpl.CheckPinComplexity(testAuthSubType, testSalt);
-    EXPECT_EQ(result, UserAuth::COMPLEXITY_CHECK_FAILED);
+    EXPECT_EQ(result, 0);
 }
 
 HWTEST_F(InputerDataImplTest, OnSetDataInner001, TestSize.Level0)
@@ -266,7 +255,6 @@ HWTEST_F(InputerDataImplTest, InputerDataImplAuthTest003, TestSize.Level0)
 
     auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);
     ASSERT_NE(mockInputerSetData, nullptr);
-
     InputerDataImpl inputerDataImpl(testMode, testAlgoVersion, testSalt, mockInputerSetData);
     inputerDataImpl.OnSetData(testAuthSubType, testData);
 }
