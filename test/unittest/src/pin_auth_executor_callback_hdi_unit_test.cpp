@@ -20,9 +20,12 @@
 
 #define private public
 #include "pin_auth_executor_callback_hdi.h"
+#include "pin_auth_manager.h"
 #include "iam_common_defines.h"
-#include "mock_iexecute_callback.h"
 #include "mock_iall_in_one_executor.h"
+#include "mock_icollector_executor.h"
+#include "mock_iexecute_callback.h"
+#include "mock_inputer_get_data.h"
 
 #define LOG_TAG "PIN_AUTH_SA"
 
@@ -59,16 +62,61 @@ void PinAuthExecutorCallbackHdiUnitTest ::TearDown()
 {
 }
 
+HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnGetData_003, TestSize.Level0)
+{
+    uint32_t tokenId = 1;
+    sptr<InputerGetData> inputer(new (std::nothrow) MockInputerGetData());
+    PinAuthManager::GetInstance().RegisterInputer(tokenId, inputer);
+
+    auto executorProxy = new (std::nothrow) MockICollectorExecutor();
+    auto collectorHdi = MakeShared<PinAuthCollectorHdi>(executorProxy);
+    const uint32_t tempTokenId = 123;
+    const uint64_t tempScheduleId = 1;
+    const UserAuth::ExecutorParam executorParam = {
+        .tokenId = tempTokenId,
+        .authIntent = 0,
+        .scheduleId = tempScheduleId,
+    };
+    auto executeCallback = MakeShared<MockIExecuteCallback>();
+    PinAuthExecutorCallbackHdi callbackHdi(
+        executeCallback, collectorHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL);
+    callbackHdi.frameworkCallback_ = Common::MakeShared<MockIExecuteCallback>();
+    EXPECT_EQ(callbackHdi.ConvertResultCode(SYSTEM_ERROR_CODE_BEGIN), GENERAL_ERROR);
+}
+
+
+HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnGetData_002, TestSize.Level0)
+{
+    uint32_t tokenId = 1;
+    sptr<InputerGetData> inputer(new (std::nothrow) MockInputerGetData());
+    PinAuthManager::GetInstance().RegisterInputer(tokenId, inputer);
+
+    auto executorProxy = new (std::nothrow) MockIAllInOneExecutor();
+    std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi = MakeShared<PinAuthAllInOneHdi>(executorProxy);
+    const uint32_t tempTokenId = 123;
+    const uint64_t tempScheduleId = 1;
+    const UserAuth::ExecutorParam executorParam = {
+        .tokenId = tempTokenId,
+        .authIntent = 0,
+        .scheduleId = tempScheduleId,
+    };
+    auto executeCallback = MakeShared<MockIExecuteCallback>();
+    PinAuthExecutorCallbackHdi callbackHdi(
+        executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL);
+    callbackHdi.frameworkCallback_ = Common::MakeShared<MockIExecuteCallback>();
+    EXPECT_EQ(callbackHdi.ConvertResultCode(SYSTEM_ERROR_CODE_BEGIN), GENERAL_ERROR);
+}
+
 HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_ConvertResultCode_001, TestSize.Level0)
 {
     auto executorProxy = new (std::nothrow) MockIAllInOneExecutor();
     std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi = MakeShared<PinAuthAllInOneHdi>(executorProxy);
-    const uint32_t tokenId = 123;
-    const uint64_t scheduleId = 1;
+    const uint32_t tempTokenId = 123;
+    const uint64_t tempScheduleId = 1;
     const UserAuth::ExecutorParam executorParam = {
-        .tokenId = tokenId,
+        .tokenId = tempTokenId,
         .authIntent = 0,
-        .scheduleId = scheduleId,
+        .scheduleId = tempScheduleId,
     };
     auto executeCallback = MakeShared<MockIExecuteCallback>();
     PinAuthExecutorCallbackHdi callbackHdi(
@@ -82,12 +130,12 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnMessage_0
     auto executeCallback = MakeShared<MockIExecuteCallback>();
     auto executorProxy = new (std::nothrow) MockIAllInOneExecutor();
     std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi = MakeShared<PinAuthAllInOneHdi>(executorProxy);
-    const uint32_t tokenId = 123;
-    const uint64_t scheduleId = 1;
+    const uint32_t tempTokenId = 123;
+    const uint64_t tempScheduleId = 1;
     const UserAuth::ExecutorParam executorParam = {
-        .tokenId = tokenId,
+        .tokenId = tempTokenId,
         .authIntent = 0,
-        .scheduleId = scheduleId,
+        .scheduleId = tempScheduleId,
     };
     PinAuthExecutorCallbackHdi callbackHdi(
         executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL);
@@ -102,12 +150,12 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnTip_001, 
     auto executeCallback = MakeShared<MockIExecuteCallback>();
     auto executorProxy = new (std::nothrow) MockIAllInOneExecutor();
     std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi = MakeShared<PinAuthAllInOneHdi>(executorProxy);
-    const uint32_t tokenId = 123;
-    const uint64_t scheduleId = 1;
+    const uint32_t tempTokenId = 123;
+    const uint64_t tempScheduleId = 1;
     const UserAuth::ExecutorParam executorParam = {
-        .tokenId = tokenId,
+        .tokenId = tempTokenId,
         .authIntent = 0,
-        .scheduleId = scheduleId,
+        .scheduleId = tempScheduleId,
     };
     PinAuthExecutorCallbackHdi callbackHdi(
         executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL);
@@ -122,12 +170,12 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnGetData_0
     auto executeCallback = MakeShared<UserIam::UserAuth::MockIExecuteCallback>();
     auto executorProxy = new (std::nothrow) MockIAllInOneExecutor();
     std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi = MakeShared<PinAuthAllInOneHdi>(executorProxy);
-    const uint32_t tokenId = 123;
-    const uint64_t scheduleId = 1;
+    const uint32_t tempTokenId = 123;
+    const uint64_t tempScheduleId = 1;
     const UserAuth::ExecutorParam executorParam = {
-        .tokenId = tokenId,
+        .tokenId = tempTokenId,
         .authIntent = 0,
-        .scheduleId = scheduleId,
+        .scheduleId = tempScheduleId,
     };
     PinAuthExecutorCallbackHdi callbackHdi(
         executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL);

@@ -94,11 +94,15 @@ void PinAuthRegisterImpl::ResetProxy(const wptr<IRemoteObject>& remote)
 {
     IAM_LOGI("start");
     std::lock_guard<std::mutex> lock(mutex_);
+    IAM_LOGI("111");
     auto serviceRemote = proxy_->AsObject();
+    IAM_LOGI("222");
     if ((serviceRemote != nullptr) && (serviceRemote == remote.promote())) {
+        IAM_LOGI("333");
         serviceRemote->RemoveDeathRecipient(deathRecipient_);
         proxy_ = nullptr;
     }
+    IAM_LOGI("444");
 }
 
 PinAuthRegisterImpl &PinAuthRegisterImpl::Instance()
