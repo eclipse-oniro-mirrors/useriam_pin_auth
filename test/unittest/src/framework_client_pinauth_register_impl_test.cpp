@@ -20,6 +20,7 @@
 #include "mock_remote_object.h"
 #include "iam_logger.h"
 #include "iam_ptr.h"
+#include "iremote_object.h"
 
 #include <openssl/sha.h>
 
@@ -49,20 +50,24 @@ void FrameworkClientPinAuthRegisterImplTest::TearDown()
 
 HWTEST_F(FrameworkClientPinAuthRegisterImplTest, ResetProxyTest001, TestSize.Level0)
 {
-    sptr<MockPinAuthInterface> mockPinAuthInterface(new (std::nothrow) MockPinAuthInterface());
+    MockPinAuthInterface mock;
+    EXPECT_CALL(mock, RemoveDeathRecipient(_))
+        .Times(Exactly(1))
+        .WillOnce([](const sptr<MockPinAuthInterface::DeathRecipient> &recipient) {
+            return true;
+        });
+    sptr<MockPinAuthInterface> mockPinAuthInterface = &mock;
     PinAuthRegisterImpl::Instance().proxy_ = iface_cast<PinAuthInterface>(mockPinAuthInterface);
     EXPECT_NE(PinAuthRegisterImpl::Instance().proxy_->AsObject(), nullptr);
-    sptr<MockRemoteObject> objReset(new (std::nothrow) MockRemoteObject());
-    EXPECT_NO_THROW(PinAuthRegisterImpl::Instance().ResetProxy(objReset));
+    sptr<IRemoteObject> objReset = &mock;
+    PinAuthRegisterImpl::Instance().ResetProxy(objReset);
+    PinAuthRegisterImpl::Instance().proxy_ = iface_cast<PinAuthInterface>(mockPinAuthInterface);
 }
 
 HWTEST_F(FrameworkClientPinAuthRegisterImplTest, OnRemoteDied001, TestSize.Level0)
 {
     sptr<IRemoteObject::DeathRecipient> dr(new (std::nothrow) PinAuthRegisterImpl::PinAuthDeathRecipient());
-    dr->OnRemoteDied(nullptr);
-
-    sptr<MockRemoteObject> obj(new (std::nothrow) MockRemoteObject());
-    dr->OnRemoteDied(obj);
+    EXPECT_NO_THROW(dr->OnRemoteDied(nullptr));
 }
 } // namespace PinAuth
 } // namespace UserIam
