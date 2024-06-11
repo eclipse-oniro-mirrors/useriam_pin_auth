@@ -14,13 +14,24 @@
  */
 #define private public
 #include "framework_client_pinauth_register_impl_test.h"
+#include "inputer_get_data_service.h"
 #include "pin_auth_hdi.h"
+#include "pin_auth_proxy.h"
+#include "pin_auth_proxy_test.h"
 #include "pinauth_register_impl.h"
+#include "mock_inputer.h"
+#include "mock_inputer_get_data_service.h"
 #include "mock_pin_auth_interface.h"
+#include "mock_pin_auth_service.h"
 #include "mock_remote_object.h"
+#include "iam_common_defines.h"
 #include "iam_logger.h"
 #include "iam_ptr.h"
 #include "iremote_object.h"
+#include "file_ex.h"
+#include "accesstoken_kit.h"
+#include "nativetoken_kit.h"
+#include "token_setproc.h"
 
 #include <openssl/sha.h>
 
@@ -50,18 +61,33 @@ void FrameworkClientPinAuthRegisterImplTest::TearDown()
 
 HWTEST_F(FrameworkClientPinAuthRegisterImplTest, ResetProxyTest001, TestSize.Level0)
 {
-    MockPinAuthInterface mock;
-    EXPECT_CALL(mock, RemoveDeathRecipient(_))
+    IAM_LOGI("ResetProxyTest001 request permission");
+    static const char *PERMS[] = {
+        "ohos.permission.ACCESS_PIN_AUTH"
+    };
+    NativeTokenInfoParams infoInstance = {
+        .dcapsNum = 0,
+        .permsNum = 1,
+        .aclsNum = 0,
+        .dcaps = nullptr,
+        .perms = PERMS,
+        .acls = nullptr,
+        .processName = "pin_auth_service_test",
+        .aplStr = "system_core",
+    };
+    uint64_t tokenId = GetAccessTokenId(&infoInstance);
+    SetSelfTokenID(tokenId);
+    Security::AccessToken::AccessTokenKit::ReloadNativeTokenInfo();
+
+    sptr<MockPinAuthInterface> mock(new (std::nothrow) MockPinAuthInterface());
+    EXPECT_CALL(*mock, RemoveDeathRecipient(_))
         .Times(Exactly(1))
         .WillOnce([](const sptr<MockPinAuthInterface::DeathRecipient> &recipient) {
             return true;
         });
-    sptr<MockPinAuthInterface> mockPinAuthInterface = &mock;
-    PinAuthRegisterImpl::Instance().proxy_ = iface_cast<PinAuthInterface>(mockPinAuthInterface);
+    PinAuthRegisterImpl::Instance().proxy_ = iface_cast<PinAuthInterface>(mock);
     EXPECT_NE(PinAuthRegisterImpl::Instance().proxy_->AsObject(), nullptr);
-    sptr<IRemoteObject> objReset = &mock;
-    PinAuthRegisterImpl::Instance().ResetProxy(objReset);
-    PinAuthRegisterImpl::Instance().proxy_ = iface_cast<PinAuthInterface>(mockPinAuthInterface);
+    PinAuthRegisterImpl::Instance().ResetProxy(mock);
 }
 
 HWTEST_F(FrameworkClientPinAuthRegisterImplTest, OnRemoteDied001, TestSize.Level0)

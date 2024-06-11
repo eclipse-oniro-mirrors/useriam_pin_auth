@@ -31,6 +31,7 @@ public:
     }
     virtual ~MockPinAuthInterface() = default;
     MOCK_METHOD0(AsObject, sptr<IRemoteObject>());
+    MOCK_METHOD1(RegisterInputer, bool(sptr<InputerGetData> &callback));
     MOCK_METHOD0(GetObjectRefCount, int32_t());
     MOCK_METHOD4(SendRequest, int(uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option));
     MOCK_METHOD1(AddDeathRecipient, bool(const sptr<DeathRecipient> &recipient));
