@@ -23,6 +23,7 @@
 #endif
 
 #include "iam_logger.h"
+#include "iam_para2str.h"
 #include "iam_common_defines.h"
 #include "i_inputer_data_impl.h"
 #include "inputer_get_data_proxy.h"
@@ -106,7 +107,7 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(uint64_t scheduleId, const std::ve
 int32_t PinAuthExecutorCallbackHdi::OnGetDataV1_1(uint64_t scheduleId, const std::vector<uint8_t> &algoParameter,
     uint64_t authSubType, uint32_t algoVersion)
 {
-    IAM_LOGI("Start tokenId_ is %{public}u", tokenId_);
+    IAM_LOGI("Start tokenId_ is %{public}s", GET_MASKED_STRING(tokenId_).c_str());
     sptr<InputerGetData> inputer = PinAuthManager::GetInstance().GetInputerLock(tokenId_);
     if (inputer == nullptr) {
         IAM_LOGE("inputer is nullptr");
