@@ -19,6 +19,7 @@
 #include <hdf_base.h>
 
 #include "iam_logger.h"
+#include "iam_para2str.h"
 #include "iam_common_defines.h"
 #include "i_inputer_data_impl.h"
 #include "inputer_get_data_proxy.h"
@@ -44,7 +45,7 @@ int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uin
 int32_t PinAuthExecutorCallbackHdi::OnGetData(uint64_t scheduleId, const std::vector<uint8_t>& salt,
     uint64_t authSubType)
 {
-    IAM_LOGI("Start tokenId_ is %{public}u", tokenId_);
+    IAM_LOGI("Start tokenId_ is %{public}s", GET_MASKED_STRING(tokenId_).c_str());
     sptr<InputerGetData> inputer = PinAuthManager::GetInstance().GetInputerLock(tokenId_);
     if (inputer == nullptr) {
         IAM_LOGE("inputer is nullptr");
