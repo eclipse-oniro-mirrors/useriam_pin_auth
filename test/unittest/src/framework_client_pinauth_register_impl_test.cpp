@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#define private public
+
 #include "framework_client_pinauth_register_impl_test.h"
 #include "inputer_get_data_service.h"
 #include "pin_auth_hdi.h"

@@ -17,6 +17,9 @@
 #define MOCK_PIN_AUTH_INTERFACE_H
 
 #include "gmock/gmock.h"
+#include "iremote_object.h"
+#include "inputer_get_data.h"
+#include "pin_auth_hdi.h"
 
 namespace OHOS {
 namespace UserIam {

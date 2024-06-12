@@ -13,7 +13,6 @@
  * limitations under the License.
  */
 
-#define private public
 #include "inputer_data_impl.h"
 #include "inputer_data_impl_test.h"
 

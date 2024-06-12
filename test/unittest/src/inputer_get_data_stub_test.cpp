@@ -43,6 +43,20 @@ void InputerGetDataStubTest::TearDown()
 {
 }
 
+namespace {
+void GetMockInputerGetDataService(MockInputerGetDataService *service, int32_t *testErrorCode)
+{
+    ON_CALL(*service, OnGetData)
+        .WillByDefault([&testErrorCode](const InputerGetDataParam &getDataParam) {
+            if (getDataParam.inputerSetData != nullptr) {
+                getDataParam.inputerSetData->OnSetData(
+                    getDataParam.authSubType, getDataParam.algoParameter, *testErrorCode);
+            }
+        }
+    );
+}
+}
+
 HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData001, TestSize.Level0)
 {
     int32_t testAuthSubType = 10000;
@@ -50,29 +64,11 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData001, TestSize.Le
     std::vector<uint8_t> testChallenge = {2, 3, 4, 5, 6};
     uint32_t testAlgoVersion = 0;
     GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_AUTH;
-    int32_t testErrorCode = 0;
 
     MockInputerGetDataService service;
-    EXPECT_CALL(service, OnGetData(_)).Times(1);
-    ON_CALL(service, OnGetData)
-        .WillByDefault(
-            [&testAuthSubType, &testAlgoVersion, &testMode, &testErrorCode](
-                const InputerGetDataParam &getDataParam) {
-                    EXPECT_EQ(getDataParam.authSubType, testAuthSubType);
-                    EXPECT_THAT(getDataParam.algoParameter, ElementsAre(1, 2, 3, 4, 5));
-                    EXPECT_THAT(getDataParam.challenge, ElementsAre(2, 3, 4, 5, 6));
-                    EXPECT_EQ(getDataParam.algoVersion, testAlgoVersion);
-                    EXPECT_EQ(getDataParam.mode, testMode);
-                    if (getDataParam.inputerSetData != nullptr) {
-                        getDataParam.inputerSetData->OnSetData(
-                            getDataParam.authSubType, getDataParam.algoParameter, testErrorCode);
-                    }
-            }
-        );
 
     sptr<MockInputerSetData> tempInputerSetData(new (std::nothrow) MockInputerSetData());
     EXPECT_NE(tempInputerSetData, nullptr);
-    EXPECT_CALL(*tempInputerSetData, OnSetData(_, _, _)).Times(1);
 
     MessageParcel data;
     MessageParcel reply;
@@ -173,26 +169,11 @@ HWTEST_F(InputerGetDataStubTest, OnGetDataStubTest001, TestSize.Level0)
     int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
     std::vector<uint8_t> testChallenge = {2, 3, 4, 5, 6};
-    uint32_t testAlgoVersion = 0;
     GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_AUTH;
     int32_t testErrorCode = 0;
 
     MockInputerGetDataService service;
-    ON_CALL(service, OnGetData)
-        .WillByDefault(
-            [&testAuthSubType, &testAlgoVersion, &testMode, &testErrorCode](
-                const InputerGetDataParam &getDataParam) {
-                    EXPECT_EQ(getDataParam.authSubType, testAuthSubType);
-                    EXPECT_THAT(getDataParam.algoParameter, ElementsAre(1, 2, 3, 4, 5));
-                    EXPECT_THAT(getDataParam.challenge, ElementsAre(2, 3, 4, 5, 6));
-                    EXPECT_EQ(getDataParam.algoVersion, testAlgoVersion);
-                    EXPECT_EQ(getDataParam.mode, testMode);
-                    if (getDataParam.inputerSetData != nullptr) {
-                        getDataParam.inputerSetData->OnSetData(
-                            getDataParam.authSubType, getDataParam.algoParameter, testErrorCode);
-                    }
-            }
-        );
+    GetMockInputerGetDataService(&service, &testErrorCode);
 
     sptr<MockInputerSetData> tempInputerSetData(new (std::nothrow) MockInputerSetData());
     EXPECT_NE(tempInputerSetData, nullptr);

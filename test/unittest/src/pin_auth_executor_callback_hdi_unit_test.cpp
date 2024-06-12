@@ -18,7 +18,6 @@
 #include "iam_logger.h"
 #include "iam_ptr.h"
 
-#define private public
 #include "pin_auth_executor_callback_hdi.h"
 #include "pin_auth_manager.h"
 #include "iam_common_defines.h"
@@ -77,7 +76,6 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnGetData_0
     uint64_t authSubType = 0;
     uint32_t algoVersion = 0;
     std::vector<uint8_t> challenge = {1, 2, 3, 4, 5};
-
     
     PinAuthExecutorCallbackHdi callbackHdi(
         executeCallback, pinAuthCollectorHdi, executorParam, GET_DATA_MODE_COLLECTOR);
@@ -103,7 +101,8 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnGetData_0
     std::vector<uint8_t> algoParameter = {1, 2, 3, 4, 5};
     uint64_t authSubType = 0;
     uint32_t algoVersion = 0;
-    std::vector<uint8_t> challenge = {1, 2, 3, 4, 5};   
+    std::vector<uint8_t> challenge = {1, 2, 3, 4, 5};
+
     PinAuthExecutorCallbackHdi callbackHdi(
         executeCallback, pinAuthCollectorHdi, executorParam, GET_DATA_MODE_COLLECTOR);
     sptr<InputerGetData> inputer(new (std::nothrow) MockInputerGetData());
