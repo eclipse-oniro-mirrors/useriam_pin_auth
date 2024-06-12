@@ -61,6 +61,22 @@ HWTEST_F(ServicesPinAuthManagerTest, GetInputerLockTest001, TestSize.Level0)
     EXPECT_NE(PinAuthManager::GetInstance().GetInputerLock(tokenId), nullptr);
     PinAuthManager::GetInstance().UnRegisterInputer(tokenId);
 }
+
+HWTEST_F(ServicesPinAuthManagerTest, OnRemoteDiedTest001, TestSize.Level0)
+{
+    uint32_t tokenId = 1;
+    sptr<InputerGetData> inputer(new (std::nothrow) MockInputerGetData());
+    PinAuthManager::GetInstance().RegisterInputer(tokenId, inputer);
+    EXPECT_NO_THROW(PinAuthManager::GetInstance().pinAuthDeathMap_[tokenId]->OnRemoteDied(nullptr));
+}
+
+HWTEST_F(ServicesPinAuthManagerTest, OnRemoteDiedTest002, TestSize.Level0)
+{
+    uint32_t tokenId = 1;
+    sptr<InputerGetData> inputer(new (std::nothrow) MockInputerGetData());
+    PinAuthManager::GetInstance().RegisterInputer(tokenId, inputer);
+    EXPECT_NO_THROW(PinAuthManager::GetInstance().pinAuthDeathMap_[tokenId]->OnRemoteDied(inputer));
+}
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS

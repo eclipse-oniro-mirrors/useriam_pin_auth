@@ -45,23 +45,6 @@ using namespace testing::ext;
 
 void FrameworkClientPinAuthRegisterImplTest::SetUpTestCase()
 {
-}
-
-void FrameworkClientPinAuthRegisterImplTest::TearDownTestCase()
-{
-}
-
-void FrameworkClientPinAuthRegisterImplTest::SetUp()
-{
-}
-
-void FrameworkClientPinAuthRegisterImplTest::TearDown()
-{
-}
-
-HWTEST_F(FrameworkClientPinAuthRegisterImplTest, ResetProxyTest001, TestSize.Level0)
-{
-    IAM_LOGI("ResetProxyTest001 request permission");
     static const char *PERMS[] = {
         "ohos.permission.ACCESS_PIN_AUTH"
     };
@@ -78,7 +61,22 @@ HWTEST_F(FrameworkClientPinAuthRegisterImplTest, ResetProxyTest001, TestSize.Lev
     uint64_t tokenId = GetAccessTokenId(&infoInstance);
     SetSelfTokenID(tokenId);
     Security::AccessToken::AccessTokenKit::ReloadNativeTokenInfo();
+}
 
+void FrameworkClientPinAuthRegisterImplTest::TearDownTestCase()
+{
+}
+
+void FrameworkClientPinAuthRegisterImplTest::SetUp()
+{
+}
+
+void FrameworkClientPinAuthRegisterImplTest::TearDown()
+{
+}
+
+HWTEST_F(FrameworkClientPinAuthRegisterImplTest, ResetProxyTest001, TestSize.Level0)
+{
     sptr<MockPinAuthInterface> mock(new (std::nothrow) MockPinAuthInterface());
     EXPECT_CALL(*mock, RemoveDeathRecipient(_))
         .Times(Exactly(1))
@@ -94,6 +92,19 @@ HWTEST_F(FrameworkClientPinAuthRegisterImplTest, OnRemoteDied001, TestSize.Level
 {
     sptr<IRemoteObject::DeathRecipient> dr(new (std::nothrow) PinAuthRegisterImpl::PinAuthDeathRecipient());
     EXPECT_NO_THROW(dr->OnRemoteDied(nullptr));
+}
+
+HWTEST_F(FrameworkClientPinAuthRegisterImplTest, OnRemoteDied002, TestSize.Level0)
+{
+    sptr<IRemoteObject::DeathRecipient> dr(new (std::nothrow) PinAuthRegisterImpl::PinAuthDeathRecipient());
+    sptr<MockPinAuthInterface> mock(new (std::nothrow) MockPinAuthInterface());
+    EXPECT_CALL(*mock, RemoveDeathRecipient(_))
+        .Times(Exactly(1))
+        .WillOnce([](const sptr<MockPinAuthInterface::DeathRecipient> &recipient) {
+            return true;
+        });
+    PinAuthRegisterImpl::Instance().proxy_ = iface_cast<PinAuthInterface>(mock);
+    EXPECT_NO_THROW(dr->OnRemoteDied(mock));
 }
 } // namespace PinAuth
 } // namespace UserIam
