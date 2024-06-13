@@ -31,6 +31,51 @@ using namespace testing::ext;
 
 void PinAuthServiceTest::SetUpTestCase()
 {
+}
+
+void PinAuthServiceTest::TearDownTestCase()
+{
+}
+
+void PinAuthServiceTest::SetUp()
+{
+}
+
+void PinAuthServiceTest::TearDown()
+{
+}
+
+HWTEST_F(PinAuthServiceTest, RegisterInputerTest001, TestSize.Level0)
+{
+    auto service = Common::MakeShared<PinAuthService>();
+    EXPECT_NE(service, nullptr);
+    EXPECT_EQ(service->RegisterInputer(nullptr), false);
+}
+
+HWTEST_F(PinAuthServiceTest, UnRegisterInputerTest001, TestSize.Level0)
+{
+    auto service = Common::MakeShared<PinAuthService>();
+    EXPECT_NE(service, nullptr);
+    EXPECT_NO_THROW(service->UnRegisterInputer());
+}
+
+HWTEST_F(PinAuthServiceTest, OnStartTest001, TestSize.Level0)
+{
+    auto service = Common::MakeShared<PinAuthService>();
+    EXPECT_NE(service, nullptr);
+    EXPECT_NO_THROW(service->OnStart());
+    EXPECT_NO_THROW(service->OnStart());
+}
+
+HWTEST_F(PinAuthServiceTest, OnStopTest001, TestSize.Level0)
+{
+    auto service = Common::MakeShared<PinAuthService>();
+    EXPECT_NE(service, nullptr);
+    EXPECT_NO_THROW(service->OnStop());
+}
+
+HWTEST_F(PinAuthServiceTest, PinAuthServiceTest001, TestSize.Level0)
+{
     static const char *PERMS[] = {
         "ohos.permission.ACCESS_PIN_AUTH"
     };
@@ -47,22 +92,6 @@ void PinAuthServiceTest::SetUpTestCase()
     uint64_t tokenId = GetAccessTokenId(&infoInstance);
     SetSelfTokenID(tokenId);
     Security::AccessToken::AccessTokenKit::ReloadNativeTokenInfo();
-}
-
-void PinAuthServiceTest::TearDownTestCase()
-{
-}
-
-void PinAuthServiceTest::SetUp()
-{
-}
-
-void PinAuthServiceTest::TearDown()
-{
-}
-
-HWTEST_F(PinAuthServiceTest, PinAuthServiceTest001, TestSize.Level0)
-{
     auto service = Common::MakeShared<PinAuthService>();
     EXPECT_NE(service, nullptr);
     sptr<InputerGetData> testInputerGetData(nullptr);
@@ -72,6 +101,22 @@ HWTEST_F(PinAuthServiceTest, PinAuthServiceTest001, TestSize.Level0)
 
 HWTEST_F(PinAuthServiceTest, PinAuthServiceTest002, TestSize.Level0)
 {
+    static const char *PERMS[] = {
+        "ohos.permission.ACCESS_PIN_AUTH"
+    };
+    NativeTokenInfoParams infoInstance = {
+        .dcapsNum = 0,
+        .permsNum = 1,
+        .aclsNum = 0,
+        .dcaps = nullptr,
+        .perms = PERMS,
+        .acls = nullptr,
+        .processName = "pin_auth_service_test",
+        .aplStr = "system_core",
+    };
+    uint64_t tokenId = GetAccessTokenId(&infoInstance);
+    SetSelfTokenID(tokenId);
+    Security::AccessToken::AccessTokenKit::ReloadNativeTokenInfo();
     auto service = Common::MakeShared<PinAuthService>();
     EXPECT_NE(service, nullptr);
     sptr<InputerGetData> testInputerGetData(new (std::nothrow) MockInputerGetData());

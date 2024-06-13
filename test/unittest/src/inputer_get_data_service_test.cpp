@@ -109,6 +109,7 @@ HWTEST_F(InputerGetDataServiceTest, InputerGetDataServiceTest003, TestSize.Level
     GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_AUTH;
     auto service = Common::MakeShared<InputerGetDataService>(nullptr);
     EXPECT_NE(service, nullptr);
+    sptr<InputerSetData> testInputerSetData(new (std::nothrow) MockInputerSetData());
 
     InputerGetDataParam getDataParam = {
         .mode = testMode,
@@ -116,9 +117,9 @@ HWTEST_F(InputerGetDataServiceTest, InputerGetDataServiceTest003, TestSize.Level
         .algoVersion = testAlgoVersion,
         .algoParameter = testSalt,
         .challenge = {},
-        .inputerSetData = nullptr,
+        .inputerSetData = testInputerSetData,
     };
-    service->OnGetData(getDataParam);
+    EXPECT_NO_THROW(service->OnGetData(getDataParam));
 }
 } // namespace PinAuth
 } // namespace UserIam

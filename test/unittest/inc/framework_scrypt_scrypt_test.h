@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2022 Huawei Device Co., Ltd.
+ * Copyright (c) 2024 Huawei Device Co., Ltd.
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
@@ -13,23 +13,25 @@
  * limitations under the License.
  */
 
-#ifndef MOCK_INPUTER_H
-#define MOCK_INPUTER_H
+#ifndef FRAMEWORK_SCRYPT_SCRYPT_TEST_H
+#define FRAMEWORK_SCRYPT_SCRYPT_TEST_H
 
-#include <gmock/gmock.h>
-
-#include "i_inputer.h"
+#include <gtest/gtest.h>
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-class MockInputer final : public IInputer {
+class FrameworkScryptScryptTest : public testing::Test {
 public:
-    virtual ~MockInputer() = default;
-    MOCK_METHOD3(OnGetData,
-        void(int32_t authSubType, std::vector<uint8_t> challenge, std::shared_ptr<IInputerData> inputerData));
+    static void SetUpTestCase();
+
+    static void TearDownTestCase();
+
+    void SetUp() override;
+
+    void TearDown() override;
 };
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS
-#endif // MOCK_INPUTER_H
+#endif // FRAMEWORK_SCRYPT_SCRYPT_TEST_H

@@ -20,9 +20,13 @@
 #include "nativetoken_kit.h"
 #include "token_setproc.h"
 
+#include "iam_logger.h"
 #include "iam_ptr.h"
 #include "mock_inputer.h"
+#include "mock_pin_auth_interface.h"
+#include "mock_inputer_get_data.h"
 #include "pinauth_register.h"
+#include "pinauth_register_impl.h"
 
 namespace OHOS {
 namespace UserIam {
@@ -81,14 +85,6 @@ HWTEST_F(PinAuthRegisterTest, PinAuthRegisterTest001, TestSize.Level0)
 {
     std::shared_ptr<IInputer> testInputer = nullptr;
     EXPECT_EQ(PinAuthRegister::GetInstance().RegisterInputer(testInputer), false);
-    PinAuthRegister::GetInstance().UnRegisterInputer();
-}
-
-HWTEST_F(PinAuthRegisterTest, PinAuthRegisterTest002, TestSize.Level0)
-{
-    std::shared_ptr<IInputer> testInputer = Common::MakeShared<MockInputer>();
-    EXPECT_NE(testInputer, nullptr);
-    EXPECT_EQ(PinAuthRegister::GetInstance().RegisterInputer(testInputer), true);
     PinAuthRegister::GetInstance().UnRegisterInputer();
 }
 } // namespace PinAuth

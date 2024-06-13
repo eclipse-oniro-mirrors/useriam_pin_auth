@@ -30,6 +30,7 @@ class MockIPinAuthInterface : public IPinAuthInterface {
 public:
     virtual ~MockIPinAuthInterface() = default;
 
+    MOCK_METHOD0(AsObject, sptr<IRemoteObject>());
     MOCK_METHOD3(GetExecutorList, int32_t(std::vector<sptr<IAllInOneExecutor>>& allInOneExecutors,
         std::vector<sptr<IVerifier>>& verifiers, std::vector<sptr<ICollector>>& collectors));
 };

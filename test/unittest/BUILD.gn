@@ -29,7 +29,14 @@ ohos_unittest("PinAuth_UT_test") {
   branch_protector_ret = "pac_ret"
   module_out_path = module_output_path
 
+  cflags = [
+    "-Dprivate=public",
+    "-Dprotected=public",
+  ]
+
   sources = [
+    "src/framework_client_pinauth_register_impl_test.cpp",
+    "src/framework_scrypt_scrypt_test.cpp",
     "src/inputer_data_impl_test.cpp",
     "src/inputer_get_data_proxy_test.cpp",
     "src/inputer_get_data_service_test.cpp",
