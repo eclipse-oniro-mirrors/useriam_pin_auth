@@ -72,9 +72,6 @@ UserAuth::ResultCode PinAuthAllInOneHdi::OnRegisterFinish(const std::vector<uint
         return result;
     }
 
-    HiSysEventWrite(OHOS::HiviewDFX::HiSysEvent::Domain::USERIAM_PIN, "USERIAM_TEMPLATE_CHANGE",
-        OHOS::HiviewDFX::HiSysEvent::EventType::SECURITY, "EXECUTOR_TYPE", UserAuth::PIN,
-        "CHANGE_TYPE", UserAuth::TRACE_DELETE_CREDENTIAL, "TRIGGER_REASON", "Reconciliation");
     return UserAuth::ResultCode::SUCCESS;
 }
 
