@@ -1,5 +1,5 @@
 {
-    "name": "@openharmony/pin_auth",
+    "name": "@ohos/pin_auth",
     "version": "4.0",
     "description": "PIN Authentication capability",
     "homePage": "https://gitee.com/openharmony",
