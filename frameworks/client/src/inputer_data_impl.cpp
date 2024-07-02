@@ -36,7 +36,7 @@ namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
 namespace {
-constexpr uint32_t MIN_PIN_LENGTH = 6;
+constexpr uint32_t MIN_PIN_LENGTH = 4;
 }
 
 InputerDataImpl::InputerDataImpl(GetDataMode mode, uint32_t algoVersion, const std::vector<uint8_t> &algoParameter,
@@ -54,12 +54,28 @@ void InputerDataImpl::GetPinData(
         return;
     }
 
+    if (mode_ == GET_DATA_MODE_ALL_IN_ONE_ENROLL && authSubType == UserAuth::PIN_PATTERN) {
+        IAM_LOGE("GetPinData Enroll Unsupport Type Pattern");
+        return;
+    }
+
     auto scryptPointer = Common::MakeUnique<Scrypt>(algoParameter_);
     if (scryptPointer == nullptr) {
         IAM_LOGE("scryptPointer is nullptr");
         return;
     }
-    scryptPointer->GetScrypt(dataIn, algoVersion_).swap(dataOut);
+
+    if (authSubType == UserAuth::PIN_PATTERN) {
+        std::vector<uint8_t> patternDataIn(dataIn);
+        for (uint8_t &data : patternDataIn) {
+            data += 1;
+        }
+        scryptPointer->GetScrypt(patternDataIn, algoVersion_).swap(dataOut);
+        (void)memset_s(patternDataIn.data(), patternDataIn.size(), 0, patternDataIn.size());
+    } else {
+        scryptPointer->GetScrypt(dataIn, algoVersion_).swap(dataOut);
+    }
+
     if (dataOut.empty()) {
         IAM_LOGE("get scrypt fail");
         return;
