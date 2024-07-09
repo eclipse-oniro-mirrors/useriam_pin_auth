@@ -27,14 +27,16 @@ PINs are core assets in the system. The following security measures are taken in
 
 ```undefined
 //base/useriam/pin_auth
-├── frameworks		    # Framework code
-├── interfaces		    # APIs exposed externally
-│   └── inner_api		# Header file exposed to internal subsystems for system abilities
-├── sa_profile		    # Service ability profile (configuration)
-├── services		    # Implementation fo the Service ability
-├── unittest		    # Directory for storing test code
-├── bundle.json			# Component description file
-└── pinauth.gni			# Build configuration
+├── common                  # Common code
+├── figures                 # Figures for README.md
+├── frameworks              # Framework code
+├── interfaces              # APIs exposed externally
+│   └── inner_api           # Header file exposed to internal subsystems for system abilities
+├── sa_profile              # Service ability profile (configuration)
+├── services                # Implementation for the Service ability
+├── test                    # Directory for storing test code
+├── bundle.json             # Component description file
+└── pinauth.gni             # Build configuration
 ```
 
 

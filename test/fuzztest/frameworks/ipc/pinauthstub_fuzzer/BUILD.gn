@@ -44,7 +44,6 @@ ohos_fuzztest("PinAuthStubFuzzTest") {
     "c_utils:utils",
     "drivers_interface_pin_auth:libpin_auth_proxy_2.0",
     "hilog:libhilog",
-    "hisysevent:libhisysevent",
     "ipc:ipc_single",
     "safwk:system_ability_fwk",
     "samgr:samgr_proxy",

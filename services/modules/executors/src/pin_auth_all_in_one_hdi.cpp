@@ -18,7 +18,6 @@
 #include <map>
 
 #include "hdf_base.h"
-#include "hisysevent.h"
 
 #include "iam_check.h"
 #include "iam_defines.h"
