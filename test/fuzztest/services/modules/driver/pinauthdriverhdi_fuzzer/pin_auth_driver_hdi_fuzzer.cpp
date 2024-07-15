@@ -41,7 +41,6 @@ namespace UserIam {
 namespace PinAuth {
 namespace {
 
-static uint64_t g_index = 0;
 std::shared_ptr<PinAuthDriverHdi> pinAuthDriverHdi_(nullptr);
 
 void InitPinAuthDriverHdi(Parcel &parcel)
@@ -82,7 +81,7 @@ void PinAuthDriverHdiFuzzTest(const uint8_t *data, size_t size)
     parcel.WriteBuffer(data, size);
     parcel.RewindRead(0);
     InitPinAuthDriverHdi(parcel);
-    uint32_t index = g_index++ % (sizeof(g_fuzzFuncs) / sizeof(FuzzFunc *));
+    uint32_t index = parcel.ReadUint32() % (sizeof(g_fuzzFuncs) / sizeof(FuzzFunc *));
     auto fuzzFunc = g_fuzzFuncs[index];
     fuzzFunc(parcel);
     return;
