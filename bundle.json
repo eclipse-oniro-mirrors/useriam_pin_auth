@@ -36,7 +36,8 @@
             "drivers_interface_pin_auth",
             "c_utils",
             "enterprise_device_management",
-            "openssl"
+            "openssl",
+            "data_share"
         ]
       },
       "build": {
