@@ -33,8 +33,7 @@ namespace UserIam {
 namespace PinAuth {
 class InputerDataImpl : public IInputerData {
 public:
-    InputerDataImpl(GetDataMode mode, uint32_t algoVersion, const std::vector<uint8_t> &algoParameter,
-        const sptr<InputerSetData> &inputerSetData);
+    InputerDataImpl(InputerGetDataParam param);
     ~InputerDataImpl() override = default;
     void OnSetData(int32_t authSubType, std::vector<uint8_t> data) override;
 
@@ -49,6 +48,8 @@ private:
     uint32_t algoVersion_ = 0;
     std::vector<uint8_t> algoParameter_;
     sptr<InputerSetData> inputerSetData_;
+    std::string pinComplexity_;
+    int32_t userId_;
 };
 } // namespace PinAuth
 } // namespace UserIam

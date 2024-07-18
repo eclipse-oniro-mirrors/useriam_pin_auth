@@ -41,19 +41,22 @@ PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(
     std::shared_ptr<PinAuthAllInOneHdi> pinAuthAllInOneHdi, const UserAuth::ExecutorParam &param,
     GetDataMode mode)
     : frameworkCallback_(frameworkCallback), pinAuthAllInOneHdi_(pinAuthAllInOneHdi), pinAuthCollectorHdi_(nullptr),
-      tokenId_(param.tokenId), mode_(mode), scheduleId_(param.scheduleId), authIntent_(param.authIntent) {}
+      tokenId_(param.tokenId), mode_(mode), scheduleId_(param.scheduleId), authIntent_(param.authIntent),
+      userId_(param.userId) {}
 
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(
     std::shared_ptr<UserAuth::IExecuteCallback> frameworkCallback,
     std::shared_ptr<PinAuthCollectorHdi> pinAuthCollectorHdi, const UserAuth::ExecutorParam &param,
     GetDataMode mode)
     : frameworkCallback_(frameworkCallback), pinAuthAllInOneHdi_(nullptr), pinAuthCollectorHdi_(pinAuthCollectorHdi),
-      tokenId_(param.tokenId), mode_(mode), scheduleId_(param.scheduleId), authIntent_(param.authIntent) {}
+      tokenId_(param.tokenId), mode_(mode), scheduleId_(param.scheduleId), authIntent_(param.authIntent),
+      userId_(param.userId) {}
 
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(std::shared_ptr<UserAuth::IExecuteCallback> frameworkCallback,
     const UserAuth::ExecutorParam &param, GetDataMode mode)
     : frameworkCallback_(frameworkCallback), pinAuthAllInOneHdi_(nullptr), pinAuthCollectorHdi_(nullptr),
-      tokenId_(param.tokenId), mode_(mode), scheduleId_(param.scheduleId), authIntent_(param.authIntent) {}
+      tokenId_(param.tokenId), mode_(mode), scheduleId_(param.scheduleId), authIntent_(param.authIntent),
+      userId_(param.userId) {}
 
 void PinAuthExecutorCallbackHdi::DoVibrator()
 {
@@ -102,7 +105,7 @@ int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uin
 }
 
 int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t>& algoParameter, uint64_t authSubType,
-    uint32_t algoVersion, const std::vector<uint8_t>& challenge)
+    uint32_t algoVersion, const std::vector<uint8_t>& challenge, const std::vector<uint8_t>& pinComplexity) 
 {
     static_cast<void>(challenge);
 
@@ -119,7 +122,12 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t>& algoPa
             IAM_LOGE("iInputerDataImpl is nullptr");
             return HDF_FAILURE;
         }
-
+        std::string pinComplexityStr = "";
+        IAM_LOGE("liuziwei authIntent %{public}d", authIntent_);
+        //liuziwei
+        if (authIntent_ == 10002) {
+            pinComplexityStr.assign(pinComplexity.begin(), pinComplexity.end());
+        }
         InputerGetDataParam param = {
             .mode = mode_,
             .authSubType = authSubType,
@@ -127,6 +135,8 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t>& algoPa
             .algoParameter = algoParameter,
             .challenge = challenge,
             .inputerSetData = iInputerDataImpl,
+            .userId = userId_,
+            .pinComplexity = pinComplexityStr,
         };
         inputer->OnGetData(param);
         return HDF_SUCCESS;

@@ -26,6 +26,7 @@
 #include "iam_logger.h"
 #include "iam_ptr.h"
 #include "scrypt.h"
+#include "settings_data_manager.h"
 #ifdef CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
 #include "security_manager_proxy.h"
 #endif
@@ -39,9 +40,9 @@ namespace {
 constexpr uint32_t MIN_PIN_LENGTH = 4;
 }
 
-InputerDataImpl::InputerDataImpl(GetDataMode mode, uint32_t algoVersion, const std::vector<uint8_t> &algoParameter,
-    const sptr<InputerSetData> &inputerSetData)
-    : mode_(mode), algoVersion_(algoVersion), algoParameter_(algoParameter), inputerSetData_(inputerSetData)
+InputerDataImpl::InputerDataImpl(InputerGetDataParam param)
+    : mode_(param.mode), algoVersion_(param.algoVersion), algoParameter_(param.algoParameter), inputerSetData_(param.inputerSetData),
+      pinComplexity_(param.pinComplexity), userId_(param.userId)
 {
 }
 
@@ -131,6 +132,12 @@ void InputerDataImpl::OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &
 
 int32_t InputerDataImpl::CheckPinComplexity(int32_t authSubType, const std::vector<uint8_t> &data)
 {
+    //liuziwei
+    const std::string key = "";
+    std::string isCheckPinComplexity;
+    SettingsDataManager::GetInstance().GetStringValue(userId_, key, isCheckPinComplexity);
+    IAM_LOGE("liuziwei userId %{public}d", userId_);
+    IAM_LOGE("liuziwei pinComplexity_ %{public}s", pinComplexity_.c_str());
     if (data.empty()) {
         IAM_LOGE("get empty data");
         return UserAuth::COMPLEXITY_CHECK_FAILED;

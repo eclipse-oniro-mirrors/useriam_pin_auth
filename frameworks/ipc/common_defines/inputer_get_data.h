@@ -39,6 +39,8 @@ struct InputerGetDataParam {
     std::vector<uint8_t> algoParameter;
     std::vector<uint8_t> challenge;
     sptr<InputerSetData> inputerSetData;
+    int32_t userId;
+    std::string pinComplexity;
 };
 
 class InputerGetData : public IRemoteBroker {

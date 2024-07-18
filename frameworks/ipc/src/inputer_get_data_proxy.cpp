@@ -61,6 +61,14 @@ void InputerGetDataProxy::OnGetData(const InputerGetDataParam &getDataParam)
         IAM_LOGE("write inputerData fail");
         return;
     }
+    if (!data.WriteInt32(getDataParam.userId)) {
+        IAM_LOGE("write userId fail");
+        return;
+    }
+    if (!data.WriteString(getDataParam.pinComplexity)) {
+        IAM_LOGE("write userId fail");
+        return;
+    }
     bool ret = SendRequest(InputerGetDataInterfaceCode::ON_GET_DATA, data, reply);
     if (ret) {
         int32_t result = reply.ReadInt32();
