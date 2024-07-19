@@ -59,6 +59,18 @@ void SettingsDataManager::Initialize()
     remoteObj_ = remoteObj;
 }
 
+bool SettingsDataManager::GetIntValue(int32_t userId, const std::string& key, int32_t &value)
+{
+    std::string valueStr = "";
+    if (!GetStringValue(userId, key, valueStr)) {
+        IAM_LOGE("GetStringValue failed");
+        return false;
+    }
+    const int32_t DECIMAL = 10;
+    value = static_cast<int32_t>(strtoll(valueStr.c_str(), nullptr, DECIMAL));
+    return true;
+}
+
 bool SettingsDataManager::GetStringValue(int32_t userId, const std::string& key, std::string& value)
 {
     auto helper = CreateDataShareHelper(userId);

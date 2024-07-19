@@ -35,6 +35,7 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
+const uint32_t SPECIFY_PIN_COMPLEXITY = 10002;
 
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(
     std::shared_ptr<UserIam::UserAuth::IExecuteCallback> frameworkCallback,
@@ -105,39 +106,41 @@ int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uin
 }
 
 int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t>& algoParameter, uint64_t authSubType,
-    uint32_t algoVersion, const std::vector<uint8_t>& challenge, const std::vector<uint8_t>& pinComplexity) 
+    uint32_t algoVersion, const std::vector<uint8_t>& challenge, const std::vector<unsigned char>& pinComplexityReg)
 {
     static_cast<void>(challenge);
 
-    IAM_LOGI("Start tokenId_ is %{public}s", GET_MASKED_STRING(tokenId_).c_str());
+    IAM_LOGI("Start, userId:%{public}d, tokenId_:%{public}s, authIntent:%{public}d, pinComplexityReg size %{public}zu",
+        userId_, GET_MASKED_STRING(tokenId_).c_str(), authIntent_, pinComplexityReg.size());
     sptr<InputerGetData> inputer = PinAuthManager::GetInstance().GetInputerLock(tokenId_);
     if (inputer == nullptr) {
         IAM_LOGE("inputer is nullptr");
         return HDF_FAILURE;
     }
-
+    std::string pinComplexityRegStr = "";
+    if (mode_ == GET_DATA_MODE_ALL_IN_ONE_ENROLL ||
+        (authIntent_ == SPECIFY_PIN_COMPLEXITY && mode_ == GET_DATA_MODE_ALL_IN_ONE_AUTH)) {
+        for (unsigned char reg : pinComplexityReg) {
+            pinComplexityRegStr += reg;
+        }
+    }
+    IAM_LOGE("liuziwei authIntent %{public}d, pinComplexityStr %{public}s", authIntent_, pinComplexityRegStr.c_str());
+    InputerGetDataParam param = {
+        .mode = mode_,
+        .authSubType = authSubType,
+        .algoVersion = algoVersion,
+        .algoParameter = algoParameter,
+        .challenge = challenge,
+        .userId = userId_,
+        .pinComplexityReg = pinComplexityRegStr,
+    };
     if (pinAuthAllInOneHdi_ != nullptr) {
         sptr<IInputerDataImpl> iInputerDataImpl(new (std::nothrow) IInputerDataImpl(scheduleId_, pinAuthAllInOneHdi_));
         if (iInputerDataImpl == nullptr) {
             IAM_LOGE("iInputerDataImpl is nullptr");
             return HDF_FAILURE;
         }
-        std::string pinComplexityStr = "";
-        IAM_LOGE("liuziwei authIntent %{public}d", authIntent_);
-        //liuziwei
-        if (authIntent_ == 10002) {
-            pinComplexityStr.assign(pinComplexity.begin(), pinComplexity.end());
-        }
-        InputerGetDataParam param = {
-            .mode = mode_,
-            .authSubType = authSubType,
-            .algoVersion = algoVersion,
-            .algoParameter = algoParameter,
-            .challenge = challenge,
-            .inputerSetData = iInputerDataImpl,
-            .userId = userId_,
-            .pinComplexity = pinComplexityStr,
-        };
+        param.inputerSetData = iInputerDataImpl;
         inputer->OnGetData(param);
         return HDF_SUCCESS;
     } else if (pinAuthCollectorHdi_ != nullptr) {
@@ -146,15 +149,7 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t>& algoPa
             IAM_LOGE("iInputerDataImpl is nullptr");
             return HDF_FAILURE;
         }
-
-        InputerGetDataParam param = {
-            .mode = mode_,
-            .authSubType = authSubType,
-            .algoVersion = algoVersion,
-            .algoParameter = algoParameter,
-            .challenge = challenge,
-            .inputerSetData = iInputerDataImpl,
-        };
+        param.inputerSetData = iInputerDataImpl;
         inputer->OnGetData(param);
         return HDF_SUCCESS;
     }

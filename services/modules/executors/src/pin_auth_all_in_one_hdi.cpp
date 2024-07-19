@@ -121,6 +121,7 @@ UserAuth::ResultCode PinAuthAllInOneHdi::Enroll(uint64_t scheduleId, const UserA
     UserAuth::ExecutorParam executorParam = {
         .tokenId = param.tokenId,
         .scheduleId = scheduleId,
+        .userId = param.userId,
     };
     auto callback = sptr<IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
         shared_from_this(), executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL));
@@ -213,13 +214,15 @@ UserAuth::ResultCode PinAuthAllInOneHdi::GetProperty(const std::vector<uint64_t>
     const std::vector<UserAuth::Attributes::AttributeKey> &keys, UserAuth::Property &property)
 {
     IF_FALSE_LOGE_AND_RETURN_VAL(allInOneProxy_ != nullptr, UserAuth::ResultCode::GENERAL_ERROR);
-
+    IF_FALSE_LOGE_AND_RETURN_VAL(templateIdList.size() != 0, UserAuth::ResultCode::GENERAL_ERROR);
+    //userAuth will return current userId templateId first.
+    std::vector<uint64_t> pinTemplateIdList = {templateIdList[0]};
     std::vector<int32_t> propertyTypes;
     UserAuth::ResultCode result = ConvertAttributeKeyVectorToPropertyType(keys, propertyTypes);
     IF_FALSE_LOGE_AND_RETURN_VAL(result == UserAuth::ResultCode::SUCCESS, UserAuth::ResultCode::GENERAL_ERROR);
 
     Property hdiProperty;
-    int32_t status = allInOneProxy_->GetProperty(templateIdList, propertyTypes, hdiProperty);
+    int32_t status = allInOneProxy_->GetProperty(pinTemplateIdList, propertyTypes, hdiProperty);
     result = ConvertHdiResultCode(status);
     if (result != UserAuth::ResultCode::SUCCESS) {
         IAM_LOGE("SendCommand fail result %{public}d", result);
