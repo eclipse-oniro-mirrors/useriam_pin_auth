@@ -41,15 +41,12 @@ namespace UserIam {
 namespace PinAuth {
 namespace {
 
-static uint64_t g_index = 0;
-const uint32_t FUZZ_NUM = 2;
-
 void FuzzRegisterInputer(Parcel &parcel)
 {
     IAM_LOGI("begin");
     uint32_t tokenId = parcel.ReadUint32();
     sptr<InputerGetData> inputer(nullptr);
-    if (g_index % FUZZ_NUM == 0) {
+    if (parcel.ReadBool()) {
         inputer = sptr<InputerGetData>(new (std::nothrow) MockInputerGetDataFuzzer());
     }
     PinAuthManager::GetInstance().RegisterInputer(tokenId, inputer);
@@ -64,7 +61,7 @@ void FuzzUnRegisterInputer(Parcel &parcel)
     IAM_LOGI("begin");
     uint32_t tokenId = parcel.ReadUint32();
     sptr<InputerGetData> inputer(nullptr);
-    if (g_index % FUZZ_NUM == 0) {
+    if (parcel.ReadBool()) {
         inputer = sptr<InputerGetData>(new (std::nothrow) MockInputerGetDataFuzzer());
     }
     PinAuthManager::GetInstance().UnRegisterInputer(tokenId);
@@ -93,7 +90,7 @@ void PinAuthManagerFuzzTest(const uint8_t *data, size_t size)
     Parcel parcel;
     parcel.WriteBuffer(data, size);
     parcel.RewindRead(0);
-    uint32_t index = g_index++ % (sizeof(g_fuzzFuncs) / sizeof(FuzzFunc *));
+    uint32_t index = parcel.ReadUint32() % (sizeof(g_fuzzFuncs) / sizeof(FuzzFunc *));
     auto fuzzFunc = g_fuzzFuncs[index];
     fuzzFunc(parcel);
     return;

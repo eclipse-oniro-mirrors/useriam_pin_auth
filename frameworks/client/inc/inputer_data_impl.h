@@ -46,6 +46,7 @@ private:
     bool CheckSpecialPinComplexity(std::vector<uint8_t> &input);
     bool CheckEdmPinComplexity(int32_t authSubType, std::vector<uint8_t> &input);
     bool CheckPinComplexityByReg(std::vector<uint8_t> &input, const std::string &pinComplexityReg);
+
     GetDataMode mode_ = GET_DATA_MODE_NONE;
     uint32_t algoVersion_ = 0;
     std::vector<uint8_t> algoParameter_;

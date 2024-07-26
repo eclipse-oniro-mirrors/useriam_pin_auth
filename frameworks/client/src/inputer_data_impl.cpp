@@ -174,7 +174,7 @@ bool InputerDataImpl::CheckSpecialPinComplexity(std::vector<uint8_t> &input)
     int32_t isCheckPinComplexity = 0;
     if (!SettingsDataManager::GetInstance().GetIntValue(userId_, key, isCheckPinComplexity)) {
         IAM_LOGI("no exist isCheckPinComplexity");
-        return false;
+        return true;
     }
     if (isCheckPinComplexity == 0) {
         IAM_LOGI("no need check special pin complexity");

@@ -35,7 +35,7 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-const uint32_t SPECIFY_PIN_COMPLEXITY = 10002;
+static const uint32_t SPECIFY_PIN_COMPLEXITY = 10002;
 
 PinAuthExecutorCallbackHdi::PinAuthExecutorCallbackHdi(
     std::shared_ptr<UserIam::UserAuth::IExecuteCallback> frameworkCallback,

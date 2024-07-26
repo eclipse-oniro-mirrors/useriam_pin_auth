@@ -60,14 +60,9 @@ ohos_source_set("pinauth_framework_source_set") {
     "user_auth_framework:userauth_client",
   ]
 
-  defines = [
-    "PINAUTH_LOG_TAG = \"PinAuth\"",
-    "LOG_DOMAIN = 0xD002422",
-  ]
-
   if (customization_enterprise_device_management_enable) {
     external_deps += [ "enterprise_device_management:edmservice_kits" ]
-    defines += [ "CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE" ]
+    defines = [ "CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE" ]
   }
 
   configs = [

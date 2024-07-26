@@ -43,16 +43,14 @@ namespace UserIam {
 namespace PinAuth {
 namespace {
 
-static uint64_t g_index = 0;
 const uint64_t SCHEDULE_ID = 123;
-const uint32_t FUZZ_NUM = 2;
 auto executorProxy_ = sptr<ICollector>(new (std::nothrow) MockICollectorExecutorFuzzer);
 std::shared_ptr<PinAuthCollectorHdi> hdi_(nullptr);
 std::shared_ptr<UserAuth::IExecuteCallback> iExecutorCallback_ = Common::MakeShared<MockIExecutorCallbackFuzzer>();
 
 void InitPinAuthCollectorHdi(Parcel &parcel)
 {
-    hdi_ = Common::MakeShared<PinAuthCollectorHdi>((g_index % FUZZ_NUM) == 0 ? nullptr : executorProxy_);
+    hdi_ = Common::MakeShared<PinAuthCollectorHdi>(parcel.ReadBool() ? nullptr : executorProxy_);
 }
 
 void FuzzGetExecutorInfo(Parcel &parcel)
@@ -140,7 +138,7 @@ void PinAuthCollectorHdiFuzzTest(const uint8_t *data, size_t size)
     parcel.WriteBuffer(data, size);
     parcel.RewindRead(0);
     InitPinAuthCollectorHdi(parcel);
-    uint32_t index = g_index++ % (sizeof(g_fuzzFuncs) / sizeof(FuzzFunc *));
+    uint32_t index = parcel.ReadUint32() % (sizeof(g_fuzzFuncs) / sizeof(FuzzFunc *));
     auto fuzzFunc = g_fuzzFuncs[index];
     fuzzFunc(parcel);
     return;
