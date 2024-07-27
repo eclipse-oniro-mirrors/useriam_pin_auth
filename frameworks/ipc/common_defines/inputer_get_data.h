@@ -40,7 +40,7 @@ struct InputerGetDataParam {
     std::vector<uint8_t> challenge;
     sptr<InputerSetData> inputerSetData;
     int32_t userId;
-    std::string pinComplexityReg;
+    std::string complexityReg;
 };
 
 class InputerGetData : public IRemoteBroker {

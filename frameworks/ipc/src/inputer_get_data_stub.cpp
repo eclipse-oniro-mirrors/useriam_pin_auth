@@ -80,8 +80,8 @@ void InputerGetDataStub::OnGetDataStub(MessageParcel &data, MessageParcel &reply
         IAM_LOGE("failed to read userId");
         return;
     }
-    if (!data.ReadString(getDataParam.pinComplexityReg)) {
-        IAM_LOGE("failed to read pinComplexityReg");
+    if (!data.ReadString(getDataParam.complexityReg)) {
+        IAM_LOGE("failed to read complexityReg");
         return;
     }
     OnGetData(getDataParam);

@@ -45,13 +45,13 @@ private:
     int32_t CheckPinComplexity(int32_t authSubType, const std::vector<uint8_t> &data);
     bool CheckSpecialPinComplexity(std::vector<uint8_t> &input);
     bool CheckEdmPinComplexity(int32_t authSubType, std::vector<uint8_t> &input);
-    bool CheckPinComplexityByReg(std::vector<uint8_t> &input, const std::string &pinComplexityReg);
+    bool CheckPinComplexityByReg(std::vector<uint8_t> &input, const std::string &complexityReg);
 
     GetDataMode mode_ = GET_DATA_MODE_NONE;
     uint32_t algoVersion_ = 0;
     std::vector<uint8_t> algoParameter_;
     sptr<InputerSetData> inputerSetData_;
-    std::string pinComplexityReg_;
+    std::string complexityReg_;
     int32_t userId_;
 };
 } // namespace PinAuth

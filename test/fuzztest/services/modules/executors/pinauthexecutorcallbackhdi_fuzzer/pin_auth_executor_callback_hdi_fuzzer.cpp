@@ -110,7 +110,7 @@ void FuzzOnGetData(Parcel &parcel)
     uint64_t authSubType = static_cast<uint64_t>(parcel.ReadUint32());
     uint32_t algoVersion = parcel.ReadUint32();
     std::vector<uint8_t> challenge;
-    std::vector<uint8_t> pinComplexityReg;
+    std::string pinComplexityReg;
     FillFuzzUint8Vector(parcel, algoParameter);
     FillFuzzUint8Vector(parcel, challenge);
     if (pinAuthExecutorCallbackHdi_ != nullptr) {

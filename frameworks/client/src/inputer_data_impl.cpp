@@ -42,7 +42,7 @@ constexpr uint32_t MIN_PIN_LENGTH = 4;
 
 InputerDataImpl::InputerDataImpl(const InputerGetDataParam &param)
     : mode_(param.mode), algoVersion_(param.algoVersion), algoParameter_(param.algoParameter),
-      inputerSetData_(param.inputerSetData), pinComplexityReg_(param.pinComplexityReg), userId_(param.userId)
+      inputerSetData_(param.inputerSetData), complexityReg_(param.complexityReg), userId_(param.userId)
 {
 }
 
@@ -50,8 +50,8 @@ void InputerDataImpl::GetPinData(
     int32_t authSubType, const std::vector<uint8_t> &dataIn, std::vector<uint8_t> &dataOut, int32_t &errorCode)
 {
     errorCode = CheckPinComplexity(authSubType, dataIn);
-    if (errorCode != UserAuth::SUCCESS) {
-        IAM_LOGE("CheckPinComplexity failed");
+    if (errorCode != UserAuth::SUCCESS && mode_ == GET_DATA_MODE_ALL_IN_ONE_ENROLL) {
+        IAM_LOGE("CheckPinComplexity enroll failed");
         return;
     }
 
@@ -95,7 +95,7 @@ void InputerDataImpl::GetPinData(
 void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
     IAM_LOGI("start userId:%{public}d, data size:%{public}zu, algo version:%{public}u, complexityReg size:%{public}zu",
-        userId_, data.size(), algoVersion_, pinComplexityReg_.size());
+        userId_, data.size(), algoVersion_, complexityReg_.size());
     std::vector<uint8_t> setData;
     int32_t errorCode = UserAuth::GENERAL_ERROR;
     GetPinData(authSubType, data, setData, errorCode);
@@ -162,17 +162,16 @@ int32_t InputerDataImpl::CheckPinComplexity(int32_t authSubType, const std::vect
 
 bool InputerDataImpl::CheckSpecialPinComplexity(std::vector<uint8_t> &input)
 {
-    if (mode_ != GET_DATA_MODE_ALL_IN_ONE_ENROLL && mode_ != GET_DATA_MODE_ALL_IN_ONE_AUTH &&
-        mode_ != GET_DATA_MODE_COLLECTOR) {
+    if (mode_ != GET_DATA_MODE_ALL_IN_ONE_ENROLL && mode_ != GET_DATA_MODE_ALL_IN_ONE_AUTH) {
         return true;
     }
-    if (pinComplexityReg_.empty()) {
-        IAM_LOGI("not exist pin complexity reg");
+    if (complexityReg_.empty()) {
+        IAM_LOGI("complexityReg is empty");
         return true;
     }
     const std::string key = "payment_security_level";
     int32_t isCheckPinComplexity = 0;
-    if (!SettingsDataManager::GetInstance().GetIntValue(userId_, key, isCheckPinComplexity)) {
+    if (!SettingsDataManager::GetIntValue(userId_, key, isCheckPinComplexity)) {
         IAM_LOGI("no exist isCheckPinComplexity");
         return true;
     }
@@ -180,7 +179,7 @@ bool InputerDataImpl::CheckSpecialPinComplexity(std::vector<uint8_t> &input)
         IAM_LOGI("no need check special pin complexity");
         return true;
     }
-    if (!CheckPinComplexityByReg(input, pinComplexityReg_)) {
+    if (!CheckPinComplexityByReg(input, complexityReg_)) {
         IAM_LOGE("CheckPinComplexityByReg failed");
         return false;
     }
@@ -192,31 +191,31 @@ bool InputerDataImpl::CheckEdmPinComplexity(int32_t authSubType, std::vector<uin
     if (mode_ != GET_DATA_MODE_ALL_IN_ONE_ENROLL) {
         return true;
     }
-    #ifdef CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
-        EDM::PasswordPolicy policy;
-        int32_t ret = EDM::SecurityManagerProxy::GetSecurityManagerProxy()->GetPasswordPolicy(policy);
-        if (ret != ERR_OK || policy.complexityReg.empty()) {
-            IAM_LOGE("GetPasswordPolicy failed, use default policy");
-            return true;
-        }
-        if (authSubType != UserAuth::PIN_MIXED) {
-            IAM_LOGE("GetPasswordPolicy success, authSubType can only be PIN_MIXED");
-            return false;
-        }
-        if (!CheckPinComplexityByReg(input, policy.complexityReg)) {
-            IAM_LOGE("CheckPinComplexityByReg failed");
-            return false;
-        }
-    #else
-        IAM_LOGI("This device not support edm, subType:%{public}d", authSubType);
-    #endif
-    return UserAuth::SUCCESS;
+#ifdef CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
+    EDM::PasswordPolicy policy;
+    int32_t ret = EDM::SecurityManagerProxy::GetSecurityManagerProxy()->GetPasswordPolicy(policy);
+    if (ret != ERR_OK || policy.complexityReg.empty()) {
+        IAM_LOGE("GetPasswordPolicy failed, use default policy");
+        return true;
+    }
+    if (authSubType != UserAuth::PIN_MIXED) {
+        IAM_LOGE("GetPasswordPolicy success, authSubType can only be PIN_MIXED");
+        return false;
+    }
+    if (!CheckPinComplexityByReg(input, policy.complexityReg)) {
+        IAM_LOGE("CheckPinComplexityByReg failed");
+        return false;
+    }
+#else
+    IAM_LOGI("This device not support edm, subType:%{public}d", authSubType);
+#endif
+    return true;
 }
 
-bool InputerDataImpl::CheckPinComplexityByReg(std::vector<uint8_t> &input, const std::string &pinComplexityReg)
+bool InputerDataImpl::CheckPinComplexityByReg(std::vector<uint8_t> &input, const std::string &complexityReg)
 {
     try {
-        std::regex regex(pinComplexityReg);
+        std::regex regex(complexityReg);
         bool checkRet = std::regex_match(reinterpret_cast<char*>(input.data()), regex);
         if (!checkRet) {
             IAM_LOGE("PIN_MIXED does not pass complexity check");

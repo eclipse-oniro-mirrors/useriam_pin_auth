@@ -89,7 +89,7 @@ void PinAuthExecutorCallbackHdi::DoVibrator()
 #endif
 }
 
-int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uint8_t>& extraInfo)
+int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uint8_t> &extraInfo)
 {
     IAM_LOGI("OnResult %{public}d", code);
 
@@ -105,26 +105,18 @@ int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uin
     return HDF_SUCCESS;
 }
 
-int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t>& algoParameter, uint64_t authSubType,
-    uint32_t algoVersion, const std::vector<uint8_t>& challenge, const std::vector<unsigned char>& pinComplexityReg)
+int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t> &algoParameter, uint64_t authSubType,
+    uint32_t algoVersion, const std::vector<uint8_t> &challenge, const std::string &complexityReg)
 {
     static_cast<void>(challenge);
 
-    IAM_LOGI("Start, userId:%{public}d, tokenId_:%{public}s, authIntent:%{public}d, pinComplexityReg size %{public}zu",
-        userId_, GET_MASKED_STRING(tokenId_).c_str(), authIntent_, pinComplexityReg.size());
+    IAM_LOGI("Start, userId:%{public}d, tokenId_:%{public}s, authIntent:%{public}d, complexityReg size %{public}zu",
+        userId_, GET_MASKED_STRING(tokenId_).c_str(), authIntent_, complexityReg.size());
     sptr<InputerGetData> inputer = PinAuthManager::GetInstance().GetInputerLock(tokenId_);
     if (inputer == nullptr) {
         IAM_LOGE("inputer is nullptr");
         return HDF_FAILURE;
     }
-    std::string pinComplexityRegStr = "";
-    if (mode_ == GET_DATA_MODE_ALL_IN_ONE_ENROLL ||
-        (authIntent_ == SPECIFY_PIN_COMPLEXITY && mode_ == GET_DATA_MODE_ALL_IN_ONE_AUTH)) {
-        for (unsigned char reg : pinComplexityReg) {
-            pinComplexityRegStr += reg;
-        }
-    }
-    IAM_LOGE("liuziwei authIntent %{public}d, pinComplexityStr %{public}s", authIntent_, pinComplexityRegStr.c_str());
     InputerGetDataParam param = {
         .mode = mode_,
         .authSubType = authSubType,
@@ -132,8 +124,11 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t>& algoPa
         .algoParameter = algoParameter,
         .challenge = challenge,
         .userId = userId_,
-        .pinComplexityReg = pinComplexityRegStr,
     };
+    if (mode_ == GET_DATA_MODE_ALL_IN_ONE_ENROLL ||
+        (authIntent_ == SPECIFY_PIN_COMPLEXITY && mode_ == GET_DATA_MODE_ALL_IN_ONE_AUTH)) {
+        param.complexityReg = complexityReg;
+    }
     if (pinAuthAllInOneHdi_ != nullptr) {
         sptr<IInputerDataImpl> iInputerDataImpl(new (std::nothrow) IInputerDataImpl(scheduleId_, pinAuthAllInOneHdi_));
         if (iInputerDataImpl == nullptr) {
@@ -156,14 +151,14 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t>& algoPa
     return HDF_FAILURE;
 }
 
-int32_t PinAuthExecutorCallbackHdi::OnTip(int32_t tip, const std::vector<uint8_t>& extraInfo)
+int32_t PinAuthExecutorCallbackHdi::OnTip(int32_t tip, const std::vector<uint8_t> &extraInfo)
 {
     IF_FALSE_LOGE_AND_RETURN_VAL(frameworkCallback_ != nullptr, HDF_FAILURE);
     frameworkCallback_->OnAcquireInfo(tip, extraInfo);
     return HDF_SUCCESS;
 }
 
-int32_t PinAuthExecutorCallbackHdi::OnMessage(int32_t destRole, const std::vector<uint8_t>& msg)
+int32_t PinAuthExecutorCallbackHdi::OnMessage(int32_t destRole, const std::vector<uint8_t> &msg)
 {
     IF_FALSE_LOGE_AND_RETURN_VAL(frameworkCallback_ != nullptr, HDF_FAILURE);
     frameworkCallback_->OnMessage(destRole, msg);

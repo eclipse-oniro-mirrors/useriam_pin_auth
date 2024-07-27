@@ -65,8 +65,8 @@ void InputerGetDataProxy::OnGetData(const InputerGetDataParam &getDataParam)
         IAM_LOGE("write userId fail");
         return;
     }
-    if (!data.WriteString(getDataParam.pinComplexityReg)) {
-        IAM_LOGE("write pinComplexityReg fail");
+    if (!data.WriteString(getDataParam.complexityReg)) {
+        IAM_LOGE("write complexityReg fail");
         return;
     }
     if (SendRequest(InputerGetDataInterfaceCode::ON_GET_DATA, data, reply)) {

@@ -23,18 +23,15 @@ namespace UserIam {
 namespace PinAuth {
 class SettingsDataManager : public NoCopyable {
 public:
-    static SettingsDataManager& GetInstance();
-    ~SettingsDataManager() override;
-    bool GetIntValue(int32_t userId, const std::string& key, int32_t &value);
+    SettingsDataManager() = default;
+    ~SettingsDataManager() override = default;
+    static bool GetIntValue(int32_t userId, const std::string &key, int32_t &value);
 
 private:
-    sptr<IRemoteObject> remoteObj_;
-
-    void Initialize();
     std::shared_ptr<DataShare::DataShareHelper> CreateDataShareHelper(int32_t userId);
-    bool ReleaseDataShareHelper(std::shared_ptr<DataShare::DataShareHelper>& helper);
-    Uri AssembleUri(int32_t userId, const std::string& key);
-    bool GetStringValue(int32_t userId, const std::string& key, std::string& value);
+    void ReleaseDataShareHelper(std::shared_ptr<DataShare::DataShareHelper> &helper);
+    Uri AssembleUri(int32_t userId, const std::string &key);
+    bool GetStringValue(int32_t userId, const std::string &key, std::string &value);
 };
 } // namespace PinAuth
 } // namespace UserIam

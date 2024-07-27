@@ -213,8 +213,8 @@ UserAuth::ResultCode PinAuthAllInOneHdi::GetProperty(const std::vector<uint64_t>
     const std::vector<UserAuth::Attributes::AttributeKey> &keys, UserAuth::Property &property)
 {
     IF_FALSE_LOGE_AND_RETURN_VAL(allInOneProxy_ != nullptr, UserAuth::ResultCode::GENERAL_ERROR);
-    IF_FALSE_LOGE_AND_RETURN_VAL(templateIdList.size() != 0, UserAuth::ResultCode::GENERAL_ERROR);
 
+    std::vector<int32_t> propertyTypes;
     UserAuth::ResultCode result = ConvertAttributeKeyVectorToPropertyType(keys, propertyTypes);
     IF_FALSE_LOGE_AND_RETURN_VAL(result == UserAuth::ResultCode::SUCCESS, UserAuth::ResultCode::GENERAL_ERROR);
 

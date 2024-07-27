@@ -76,7 +76,7 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnGetData_0
     uint64_t authSubType = 0;
     uint32_t algoVersion = 0;
     std::vector<uint8_t> challenge = {1, 2, 3, 4, 5};
-    std::vector<uint8_t> pinComplexityReg = {};
+    std::string pinComplexityReg = {};
 
     PinAuthExecutorCallbackHdi callbackHdi(
         executeCallback, pinAuthCollectorHdi, executorParam, GET_DATA_MODE_COLLECTOR);
@@ -103,7 +103,7 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnGetData_0
     uint64_t authSubType = 0;
     uint32_t algoVersion = 0;
     std::vector<uint8_t> challenge = {1, 2, 3, 4, 5};
-    std::vector<uint8_t> pinComplexityReg = {};
+    std::string pinComplexityReg = {};
 
     PinAuthExecutorCallbackHdi callbackHdi(
         executeCallback, pinAuthCollectorHdi, executorParam, GET_DATA_MODE_COLLECTOR);
@@ -131,7 +131,7 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnGetData_0
     uint64_t authSubType = 0;
     uint32_t algoVersion = 0;
     std::vector<uint8_t> challenge = {1, 2, 3, 4, 5};
-    std::vector<uint8_t> pinComplexityReg = {};
+    std::string pinComplexityReg = {};
 
     sptr<InputerGetData> inputer(new (std::nothrow) MockInputerGetData());
     callbackHdi.tokenId_ = tempTokenId;
@@ -239,7 +239,7 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnGetData_0
     uint64_t authSubType = 0;
     uint32_t algoVersion = 0;
     std::vector<uint8_t> challenge = {1, 2, 3, 4, 5};
-    std::vector<uint8_t> pinComplexityReg = {};
+    std::string pinComplexityReg = {};
     EXPECT_EQ(callbackHdi.OnGetData(algoParameter, authSubType, algoVersion, challenge, pinComplexityReg),
         HDF_SUCCESS);
 }

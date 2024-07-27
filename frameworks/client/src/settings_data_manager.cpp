@@ -32,37 +32,11 @@ const char *PIN_SETTING_URI_PROXY = "datashare:///com.ohos.settingsdata/entry/se
 const char *SETTINGS_DATA_EXT_URI = "datashare:///com.ohos.settingsdata.DataAbility";
 } // namespace
 
-SettingsDataManager::~SettingsDataManager()
-{
-    remoteObj_ = nullptr;
-}
-
-SettingsDataManager& SettingsDataManager::GetInstance()
-{
-    static SettingsDataManager settingsDataManager;
-    settingsDataManager.Initialize();
-    return settingsDataManager;
-}
-
-void SettingsDataManager::Initialize()
-{
-    sptr<ISystemAbilityManager> sam = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
-    if (sam == nullptr) {
-        IAM_LOGE("GetSystemAbilityManager return nullptr");
-        return;
-    }
-    auto remoteObj = sam->GetSystemAbility(SUBSYS_USERIAM_SYS_ABILITY_PINAUTH);
-    if (remoteObj == nullptr) {
-        IAM_LOGE("GetSystemAbility return nullptr");
-        return;
-    }
-    remoteObj_ = remoteObj;
-}
-
-bool SettingsDataManager::GetIntValue(int32_t userId, const std::string& key, int32_t &value)
+bool SettingsDataManager::GetIntValue(int32_t userId, const std::string &key, int32_t &value)
 {
     std::string valueStr = "";
-    if (!GetStringValue(userId, key, valueStr)) {
+    SettingsDataManager settingsDataManager;
+    if (!settingsDataManager.GetStringValue(userId, key, valueStr)) {
         IAM_LOGE("GetStringValue failed");
         return false;
     }
@@ -71,7 +45,7 @@ bool SettingsDataManager::GetIntValue(int32_t userId, const std::string& key, in
     return true;
 }
 
-bool SettingsDataManager::GetStringValue(int32_t userId, const std::string& key, std::string& value)
+bool SettingsDataManager::GetStringValue(int32_t userId, const std::string &key, std::string &value)
 {
     auto helper = CreateDataShareHelper(userId);
     if (helper == nullptr) {
@@ -107,9 +81,20 @@ bool SettingsDataManager::GetStringValue(int32_t userId, const std::string& key,
 
 std::shared_ptr<DataShare::DataShareHelper> SettingsDataManager::CreateDataShareHelper(int32_t userId)
 {
+    sptr<ISystemAbilityManager> sam = SystemAbilityManagerClient::GetInstance().GetSystemAbilityManager();
+    if (sam == nullptr) {
+        IAM_LOGE("GetSystemAbilityManager return nullptr");
+        return nullptr;
+    }
+    auto remoteObj = sam->GetSystemAbility(SUBSYS_USERIAM_SYS_ABILITY_PINAUTH);
+    if (remoteObj == nullptr) {
+        IAM_LOGE("GetSystemAbility return nullptr");
+        return nullptr;
+    }
+
     std::string uriStr = std::string(PIN_SETTING_URI_PROXY) + std::to_string(userId) + "?Proxy=true";
     std::string extUriStr(SETTINGS_DATA_EXT_URI);
-    auto helper = DataShare::DataShareHelper::Creator(remoteObj_, uriStr, extUriStr);
+    auto helper = DataShare::DataShareHelper::Creator(remoteObj, uriStr, extUriStr);
     if (helper == nullptr) {
         IAM_LOGE("helper is nullptr, uri=%{public}s", uriStr.c_str());
         return nullptr;
@@ -117,16 +102,14 @@ std::shared_ptr<DataShare::DataShareHelper> SettingsDataManager::CreateDataShare
     return helper;
 }
 
-bool SettingsDataManager::ReleaseDataShareHelper(std::shared_ptr<DataShare::DataShareHelper>& helper)
+void SettingsDataManager::ReleaseDataShareHelper(std::shared_ptr<DataShare::DataShareHelper> &helper)
 {
     if (!helper->Release()) {
         IAM_LOGE("release helper fail");
-        return false;
     }
-    return true;
 }
 
-Uri SettingsDataManager::AssembleUri(int32_t userId, const std::string& key)
+Uri SettingsDataManager::AssembleUri(int32_t userId, const std::string &key)
 {
     std::string uriStr = std::string(PIN_SETTING_URI_PROXY) + std::to_string(userId) + "?Proxy=true";
     Uri uri(uriStr + "&key=" + key);
