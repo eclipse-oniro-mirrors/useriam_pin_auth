@@ -284,6 +284,7 @@ HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_Enroll_001, TestSize.Lev
             .WillOnce([&pair](uint64_t scheduleId, const std::vector<uint8_t> &extraInfo,
                           const sptr<IExecutorCallback> &callbackObj) { return pair.first; });
         auto allInOneHdi = MakeShared<PinAuthAllInOneHdi>(executorProxy);
+        allInOneHdi->authType_ = AuthType::PIN;
         ASSERT_TRUE(allInOneHdi != nullptr);
         auto executeCallback = MakeShared<UserIam::UserAuth::MockIExecuteCallback>();
         ASSERT_TRUE(executeCallback != nullptr);
@@ -329,6 +330,7 @@ HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_Authenticate_001, TestSi
             const sptr<IExecutorCallback> &callbackObj) { return pair.first; });
         auto allInOneHdi = MakeShared<PinAuthAllInOneHdi>(executorProxy);
         ASSERT_TRUE(allInOneHdi != nullptr);
+        allInOneHdi->authType_ = AuthType::PIN;
         auto executeCallback = MakeShared<UserIam::UserAuth::MockIExecuteCallback>();
         ASSERT_TRUE(executeCallback != nullptr);
         const std::vector<uint64_t> templateIdList = {1, 2};

@@ -90,7 +90,7 @@ int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uin
     IAM_LOGI("OnResult %{public}d", code);
 
     UserAuth::ResultCode retCode = ConvertResultCode(code);
-    if ((mode_ == GET_DATA_MODE_ALL_IN_ONE_AUTH) && (retCode == UserAuth::FAIL)) {
+    if ((mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH) && (retCode == UserAuth::FAIL)) {
         if (authIntent_ != UserAuth::SILENT_AUTH) {
             DoVibrator();
         }
@@ -104,21 +104,13 @@ int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uin
 int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t>& algoParameter, uint64_t authSubType,
     uint32_t algoVersion, const std::vector<uint8_t>& challenge)
 {
-    static_cast<void>(challenge);
-
     IAM_LOGI("Start tokenId_ is %{public}s", GET_MASKED_STRING(tokenId_).c_str());
     sptr<InputerGetData> inputer = PinAuthManager::GetInstance().GetInputerLock(tokenId_);
-    if (inputer == nullptr) {
-        IAM_LOGE("inputer is nullptr");
-        return HDF_FAILURE;
-    }
+    IF_FALSE_LOGE_AND_RETURN_VAL(inputer != nullptr, HDF_FAILURE);
 
     if (pinAuthAllInOneHdi_ != nullptr) {
         sptr<IInputerDataImpl> iInputerDataImpl(new (std::nothrow) IInputerDataImpl(scheduleId_, pinAuthAllInOneHdi_));
-        if (iInputerDataImpl == nullptr) {
-            IAM_LOGE("iInputerDataImpl is nullptr");
-            return HDF_FAILURE;
-        }
+        IF_FALSE_LOGE_AND_RETURN_VAL(iInputerDataImpl != nullptr, HDF_FAILURE);
 
         InputerGetDataParam param = {
             .mode = mode_,
@@ -132,10 +124,7 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t>& algoPa
         return HDF_SUCCESS;
     } else if (pinAuthCollectorHdi_ != nullptr) {
         sptr<IInputerDataImpl> iInputerDataImpl(new (std::nothrow) IInputerDataImpl(scheduleId_, pinAuthCollectorHdi_));
-        if (iInputerDataImpl == nullptr) {
-            IAM_LOGE("iInputerDataImpl is nullptr");
-            return HDF_FAILURE;
-        }
+        IF_FALSE_LOGE_AND_RETURN_VAL(iInputerDataImpl != nullptr, HDF_FAILURE);
 
         InputerGetDataParam param = {
             .mode = mode_,

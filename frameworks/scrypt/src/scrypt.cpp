@@ -40,10 +40,10 @@ struct ScryptParameters {
 };
 
 std::unordered_map<uint32_t, ScryptParameters> g_version2Param_ = {
-    { ALGO_VERSION_V0, { SCRYPT_N_V0, SCRYPT_R, SCRYPT_P } },
-    { ALGO_VERSION_V1, { SCRYPT_N_V1, SCRYPT_R, SCRYPT_P } },
-    { ALGO_VERSION_V2, { SCRYPT_N_V1, SCRYPT_R, SCRYPT_P } },
-    { ALGO_VERSION_V3, { SCRYPT_N_V1, SCRYPT_R, SCRYPT_P_V3 } }
+    { PIN_ALGO_VERSION_V0, { SCRYPT_N_V0, SCRYPT_R, SCRYPT_P } },
+    { PIN_ALGO_VERSION_V1, { SCRYPT_N_V1, SCRYPT_R, SCRYPT_P } },
+    { PIN_ALGO_VERSION_V2, { SCRYPT_N_V1, SCRYPT_R, SCRYPT_P } },
+    { PIN_ALGO_VERSION_V3, { SCRYPT_N_V1, SCRYPT_R, SCRYPT_P_V3 } }
 };
 }
 

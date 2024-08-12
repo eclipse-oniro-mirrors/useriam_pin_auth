@@ -46,7 +46,7 @@ void InputerGetDataProxyTest::TearDown()
 HWTEST_F(InputerGetDataProxyTest, InputerGetDataProxyTest001, TestSize.Level0)
 {
     InputerGetDataParam testParam = {
-        .mode = GET_DATA_MODE_ALL_IN_ONE_AUTH,
+        .mode = GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH,
         .authSubType = 10000,
         .algoVersion = 0,
         .algoParameter = {1, 2, 3, 4, 5, 6},
@@ -83,7 +83,7 @@ HWTEST_F(InputerGetDataProxyTest, InputerGetDataProxyTest001, TestSize.Level0)
 HWTEST_F(InputerGetDataProxyTest, InputerGetDataProxyTest002, TestSize.Level0)
 {
     InputerGetDataParam testParam = {
-        .mode = GET_DATA_MODE_ALL_IN_ONE_AUTH,
+        .mode = GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH,
         .authSubType = 10000,
         .algoVersion = 0,
         .algoParameter = {1, 2, 3, 4, 5, 6},
@@ -102,7 +102,7 @@ HWTEST_F(InputerGetDataProxyTest, InputerGetDataProxyTest002, TestSize.Level0)
 HWTEST_F(InputerGetDataProxyTest, OnGetDataTest001, TestSize.Level0)
 {
     InputerGetDataParam testParam = {
-        .mode = GET_DATA_MODE_ALL_IN_ONE_AUTH,
+        .mode = GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH,
         .authSubType = 10000,
         .algoVersion = 0,
         .algoParameter = {1, 2, 3, 4, 5, 6},
