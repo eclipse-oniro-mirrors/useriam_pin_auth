@@ -54,7 +54,7 @@ HWTEST_F(PinAuthStubTest, PinAuthStubTestRegisterInputer, TestSize.Level0)
             [](const sptr<InputerGetData> &inputer) {
                 if (inputer != nullptr) {
                     InputerGetDataParam getDataParam = {
-                        .mode = GET_DATA_MODE_ALL_IN_ONE_AUTH,
+                        .mode = GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH,
                         .authSubType = 10000,
                         .algoVersion = 0,
                         .algoParameter = {1, 2, 3, 4},

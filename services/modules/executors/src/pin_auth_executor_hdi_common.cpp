@@ -28,6 +28,7 @@ UserAuth::ResultCode ConvertAuthType(AuthType in, UserAuth::AuthType &out)
 {
     static const std::map<AuthType, UserAuth::AuthType> data = {
         {AuthType::PIN, UserAuth::AuthType::PIN},
+        {AuthType::RECOVERY_KEY, UserAuth::AuthType::RECOVERY_KEY},
     };
     auto it = data.find(in);
     if (it == data.end()) {

@@ -78,7 +78,7 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnGetData_0
     std::vector<uint8_t> challenge = {1, 2, 3, 4, 5};
     
     PinAuthExecutorCallbackHdi callbackHdi(
-        executeCallback, pinAuthCollectorHdi, executorParam, GET_DATA_MODE_COLLECTOR);
+        executeCallback, pinAuthCollectorHdi, executorParam, GET_DATA_MODE_COLLECTOR_PIN_AUTH);
     sptr<InputerGetData> inputer(new (std::nothrow) MockInputerGetData());
     callbackHdi.tokenId_ = tempTokenId;
     PinAuthManager::GetInstance().pinAuthInputerMap_.emplace(tempTokenId, inputer);
@@ -104,7 +104,7 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnGetData_0
     std::vector<uint8_t> challenge = {1, 2, 3, 4, 5};
 
     PinAuthExecutorCallbackHdi callbackHdi(
-        executeCallback, pinAuthCollectorHdi, executorParam, GET_DATA_MODE_COLLECTOR);
+        executeCallback, pinAuthCollectorHdi, executorParam, GET_DATA_MODE_COLLECTOR_PIN_AUTH);
     sptr<InputerGetData> inputer(new (std::nothrow) MockInputerGetData());
     callbackHdi.tokenId_ = tempTokenId;
     PinAuthManager::GetInstance().pinAuthInputerMap_.emplace(tempTokenId, inputer);
@@ -124,7 +124,7 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnGetData_0
         .scheduleId = tempScheduleId,
     };
     PinAuthExecutorCallbackHdi callbackHdi(
-        executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL);
+        executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL);
     std::vector<uint8_t> algoParameter = {1, 2, 3, 4, 5};
     uint64_t authSubType = 0;
     uint32_t algoVersion = 0;
@@ -155,7 +155,7 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnGetData_0
     };
     auto executeCallback = MakeShared<MockIExecuteCallback>();
     PinAuthExecutorCallbackHdi callbackHdi(
-        executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL);
+        executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL);
     callbackHdi.frameworkCallback_ = Common::MakeShared<MockIExecuteCallback>();
     EXPECT_EQ(callbackHdi.ConvertResultCode(SYSTEM_ERROR_CODE_BEGIN), GENERAL_ERROR);
 }
@@ -173,7 +173,7 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_ConvertResu
     };
     auto executeCallback = MakeShared<MockIExecuteCallback>();
     PinAuthExecutorCallbackHdi callbackHdi(
-        executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL);
+        executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL);
     callbackHdi.frameworkCallback_ = Common::MakeShared<MockIExecuteCallback>();
     EXPECT_EQ(callbackHdi.ConvertResultCode(SYSTEM_ERROR_CODE_BEGIN), GENERAL_ERROR);
 }
@@ -191,7 +191,7 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnMessage_0
         .scheduleId = tempScheduleId,
     };
     PinAuthExecutorCallbackHdi callbackHdi(
-        executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL);
+        executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL);
     std::vector<uint8_t> msg = {1, 2, 3, 4, 5};
     int32_t tip = 0;
     callbackHdi.frameworkCallback_ = Common::MakeShared<MockIExecuteCallback>();
@@ -211,7 +211,7 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnTip_001, 
         .scheduleId = tempScheduleId,
     };
     PinAuthExecutorCallbackHdi callbackHdi(
-        executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL);
+        executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL);
     std::vector<uint8_t> extraInfo = {1, 2, 3, 4, 5};
     int32_t tip = 0;
     callbackHdi.frameworkCallback_ = Common::MakeShared<MockIExecuteCallback>();
@@ -231,7 +231,7 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnGetData_0
         .scheduleId = tempScheduleId,
     };
     PinAuthExecutorCallbackHdi callbackHdi(
-        executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL);
+        executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL);
     std::vector<uint8_t> algoParameter = {1, 2, 3, 4, 5};
     uint64_t authSubType = 0;
     uint32_t algoVersion = 0;
@@ -268,14 +268,14 @@ HWTEST_F(PinAuthExecutorCallbackHdiUnitTest, PinAuthExecutorCallback_OnResult_00
             .scheduleId = scheduleId,
         };
         PinAuthExecutorCallbackHdi callbackHdi1(
-            executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_AUTH);
+            executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH);
         callbackHdi1.OnResult(pair.first, testExtraInfo);
         PinAuthExecutorCallbackHdi callbackHdi2(
-            executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL);
+            executeCallback, pinAuthAllInOneHdi, executorParam, GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL);
         callbackHdi2.OnResult(pair.first, testExtraInfo);
         std::shared_ptr<PinAuthCollectorHdi> pinAuthCollectorHdi = MakeShared<PinAuthCollectorHdi>(nullptr);
         PinAuthExecutorCallbackHdi callbackHdi3(
-            executeCallback, pinAuthCollectorHdi, executorParam, GET_DATA_MODE_COLLECTOR);
+            executeCallback, pinAuthCollectorHdi, executorParam, GET_DATA_MODE_COLLECTOR_PIN_AUTH);
         callbackHdi2.OnResult(pair.first, testExtraInfo);
     }
 }

@@ -24,11 +24,12 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-enum AuthType : uint32_t {
-    ALGO_VERSION_V0 = 0,
-    ALGO_VERSION_V1 = 1,
-    ALGO_VERSION_V2 = 2,
-    ALGO_VERSION_V3 = 3
+enum AlgoVersion : uint32_t {
+    PIN_ALGO_VERSION_V0 = 0,
+    PIN_ALGO_VERSION_V1 = 1,
+    PIN_ALGO_VERSION_V2 = 2,
+    PIN_ALGO_VERSION_V3 = 3,
+    RECOVERY_KEY_ALGO_VERSION_V0 = 0,
 };
 
 class Scrypt : public NoCopyable {
