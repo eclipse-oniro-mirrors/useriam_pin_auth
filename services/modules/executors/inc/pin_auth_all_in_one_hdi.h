@@ -17,6 +17,8 @@
 #define PIN_AUTH_ALL_IN_ONE_HDI_H
 
 #include <cstdint>
+#include <mutex>
+#include <optional>
 #include <vector>
 
 #include "iam_executor_framework_types.h"
@@ -55,8 +57,12 @@ private:
     UserAuth::ResultCode ConvertAttributeKeyVectorToPropertyType(
         const std::vector<UserAuth::Attributes::AttributeKey> inVector,
         std::vector<int32_t> &outVector);
+    void SetAuthType(int32_t authType);
+    std::optional<int32_t> GetAuthType();
 
     sptr<IAllInOneExecutor> allInOneProxy_ {nullptr};
+    std::optional<int32_t> authType_ {std::nullopt};
+    std::mutex mutex_;
 };
 } // namespace PinAuth
 } // namespace UserIam

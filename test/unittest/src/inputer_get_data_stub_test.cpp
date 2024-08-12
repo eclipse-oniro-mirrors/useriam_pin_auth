@@ -63,7 +63,7 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData001, TestSize.Le
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
     std::vector<uint8_t> testChallenge = {2, 3, 4, 5, 6};
     uint32_t testAlgoVersion = 0;
-    GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_AUTH;
+    GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH;
 
     MockInputerGetDataService service;
 
@@ -117,11 +117,13 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData002, TestSize.Le
 
 HWTEST_F(InputerGetDataStubTest, OnRemoteRequestTest001, TestSize.Level0)
 {
+    int32_t userId = 1;
+    std::string complexityReg = "";
     int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
     std::vector<uint8_t> testChallenge = {2, 3, 4, 5, 6};
     uint32_t testAlgoVersion = 0;
-    GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_AUTH;
+    GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH;
     int32_t testErrorCode = 0;
 
     MockInputerGetDataService service;
@@ -157,6 +159,8 @@ HWTEST_F(InputerGetDataStubTest, OnRemoteRequestTest001, TestSize.Level0)
     EXPECT_TRUE(data.WriteUInt8Vector(testChallenge));
     ASSERT_NE(tempInputerSetData->AsObject(), nullptr);
     EXPECT_TRUE(data.WriteRemoteObject(tempInputerSetData->AsObject()));
+    EXPECT_TRUE(data.WriteInt32(userId));
+    EXPECT_TRUE(data.WriteString(complexityReg));
 
     uint32_t code = 1;
     MessageOption option(MessageOption::TF_SYNC);
@@ -169,7 +173,7 @@ HWTEST_F(InputerGetDataStubTest, OnGetDataStubTest001, TestSize.Level0)
     int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
     std::vector<uint8_t> testChallenge = {2, 3, 4, 5, 6};
-    GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_AUTH;
+    GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH;
     int32_t testErrorCode = 0;
 
     MockInputerGetDataService service;

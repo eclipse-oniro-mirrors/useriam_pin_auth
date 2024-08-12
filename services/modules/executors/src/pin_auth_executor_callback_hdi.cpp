@@ -94,7 +94,7 @@ int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uin
     IAM_LOGI("OnResult %{public}d", code);
 
     UserAuth::ResultCode retCode = ConvertResultCode(code);
-    if ((mode_ == GET_DATA_MODE_ALL_IN_ONE_AUTH) && (retCode == UserAuth::FAIL)) {
+    if ((mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH) && (retCode == UserAuth::FAIL)) {
         if (authIntent_ != UserAuth::SILENT_AUTH) {
             DoVibrator();
         }
@@ -108,8 +108,6 @@ int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uin
 int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t> &algoParameter, uint64_t authSubType,
     uint32_t algoVersion, const std::vector<uint8_t> &challenge, const std::string &complexityReg)
 {
-    static_cast<void>(challenge);
-
     IAM_LOGI("Start, userId:%{public}d, tokenId_:%{public}s, authIntent:%{public}d, complexityReg size %{public}zu",
         userId_, GET_MASKED_STRING(tokenId_).c_str(), authIntent_, complexityReg.size());
     sptr<InputerGetData> inputer = PinAuthManager::GetInstance().GetInputerLock(tokenId_);
@@ -125,25 +123,19 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t> &algoPa
         .challenge = challenge,
         .userId = userId_,
     };
-    if (mode_ == GET_DATA_MODE_ALL_IN_ONE_ENROLL ||
-        (authIntent_ == SPECIFY_PIN_COMPLEXITY && mode_ == GET_DATA_MODE_ALL_IN_ONE_AUTH)) {
+    if (mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL ||
+        (authIntent_ == SPECIFY_PIN_COMPLEXITY && mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH)) {
         param.complexityReg = complexityReg;
     }
     if (pinAuthAllInOneHdi_ != nullptr) {
         sptr<IInputerDataImpl> iInputerDataImpl(new (std::nothrow) IInputerDataImpl(scheduleId_, pinAuthAllInOneHdi_));
-        if (iInputerDataImpl == nullptr) {
-            IAM_LOGE("iInputerDataImpl is nullptr");
-            return HDF_FAILURE;
-        }
+        IF_FALSE_LOGE_AND_RETURN_VAL(iInputerDataImpl != nullptr, HDF_FAILURE);
         param.inputerSetData = iInputerDataImpl;
         inputer->OnGetData(param);
         return HDF_SUCCESS;
     } else if (pinAuthCollectorHdi_ != nullptr) {
         sptr<IInputerDataImpl> iInputerDataImpl(new (std::nothrow) IInputerDataImpl(scheduleId_, pinAuthCollectorHdi_));
-        if (iInputerDataImpl == nullptr) {
-            IAM_LOGE("iInputerDataImpl is nullptr");
-            return HDF_FAILURE;
-        }
+        IF_FALSE_LOGE_AND_RETURN_VAL(iInputerDataImpl != nullptr, HDF_FAILURE);
         param.inputerSetData = iInputerDataImpl;
         inputer->OnGetData(param);
         return HDF_SUCCESS;
