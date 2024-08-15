@@ -111,10 +111,7 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t> &algoPa
     IAM_LOGI("Start, userId:%{public}d, tokenId_:%{public}s, authIntent:%{public}d, complexityReg size %{public}zu",
         userId_, GET_MASKED_STRING(tokenId_).c_str(), authIntent_, complexityReg.size());
     sptr<InputerGetData> inputer = PinAuthManager::GetInstance().GetInputerLock(tokenId_);
-    if (inputer == nullptr) {
-        IAM_LOGE("inputer is nullptr");
-        return HDF_FAILURE;
-    }
+    IF_FALSE_LOGE_AND_RETURN_VAL(inputer != nullptr, HDF_FAILURE);
     InputerGetDataParam param = {
         .mode = mode_,
         .authSubType = authSubType,
