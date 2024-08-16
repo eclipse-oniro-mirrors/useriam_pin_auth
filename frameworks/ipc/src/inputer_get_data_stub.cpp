@@ -76,7 +76,14 @@ void InputerGetDataStub::OnGetDataStub(MessageParcel &data, MessageParcel &reply
         IAM_LOGE("inputerSetData is nullptr");
         return;
     }
-
+    if (!data.ReadInt32(getDataParam.userId)) {
+        IAM_LOGE("failed to read userId");
+        return;
+    }
+    if (!data.ReadString(getDataParam.complexityReg)) {
+        IAM_LOGE("failed to read complexityReg");
+        return;
+    }
     OnGetData(getDataParam);
 }
 } // namespace PinAuth

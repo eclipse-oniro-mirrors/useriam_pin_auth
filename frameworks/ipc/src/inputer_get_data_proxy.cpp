@@ -61,8 +61,15 @@ void InputerGetDataProxy::OnGetData(const InputerGetDataParam &getDataParam)
         IAM_LOGE("write inputerData fail");
         return;
     }
-    bool ret = SendRequest(InputerGetDataInterfaceCode::ON_GET_DATA, data, reply);
-    if (ret) {
+    if (!data.WriteInt32(getDataParam.userId)) {
+        IAM_LOGE("write userId fail");
+        return;
+    }
+    if (!data.WriteString(getDataParam.complexityReg)) {
+        IAM_LOGE("write complexityReg fail");
+        return;
+    }
+    if (SendRequest(InputerGetDataInterfaceCode::ON_GET_DATA, data, reply)) {
         int32_t result = reply.ReadInt32();
         IAM_LOGI("result = %{public}d", result);
     }

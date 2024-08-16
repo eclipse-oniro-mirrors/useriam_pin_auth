@@ -26,6 +26,7 @@
 #include "iam_logger.h"
 #include "iam_ptr.h"
 #include "scrypt.h"
+#include "settings_data_manager.h"
 #ifdef CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
 #include "security_manager_proxy.h"
 #endif
@@ -39,9 +40,9 @@ namespace {
 constexpr uint32_t MIN_PIN_LENGTH = 4;
 }
 
-InputerDataImpl::InputerDataImpl(GetDataMode mode, uint32_t algoVersion, const std::vector<uint8_t> &algoParameter,
-    const sptr<InputerSetData> &inputerSetData)
-    : mode_(mode), algoVersion_(algoVersion), algoParameter_(algoParameter), inputerSetData_(inputerSetData)
+InputerDataImpl::InputerDataImpl(const InputerGetDataParam &param)
+    : mode_(param.mode), algoVersion_(param.algoVersion), algoParameter_(param.algoParameter),
+      inputerSetData_(param.inputerSetData), complexityReg_(param.complexityReg), userId_(param.userId)
 {
 }
 
@@ -62,8 +63,8 @@ void InputerDataImpl::GetPinData(
     int32_t authSubType, const std::vector<uint8_t> &dataIn, std::vector<uint8_t> &dataOut, int32_t &errorCode)
 {
     errorCode = CheckPinComplexity(authSubType, dataIn);
-    if (errorCode != UserAuth::SUCCESS) {
-        IAM_LOGE("CheckPinComplexity failed");
+    if (errorCode != UserAuth::SUCCESS && mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL) {
+        IAM_LOGE("CheckPinComplexity enroll failed");
         return;
     }
 
@@ -102,7 +103,8 @@ void InputerDataImpl::GetPinData(
 
 void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
-    IAM_LOGI("start and data size:%{public}zu algo version:%{public}u", data.size(), algoVersion_);
+    IAM_LOGI("start userId:%{public}d, data size:%{public}zu, algo version:%{public}u, complexityReg size:%{public}zu",
+        userId_, data.size(), algoVersion_, complexityReg_.size());
     std::vector<uint8_t> setData;
     int32_t errorCode = UserAuth::GENERAL_ERROR;
     if (mode_ == GET_DATA_MODE_ALL_IN_ONE_RECOVERY_KEY_AUTH) {
@@ -148,41 +150,94 @@ int32_t InputerDataImpl::CheckPinComplexity(int32_t authSubType, const std::vect
         IAM_LOGE("get empty data");
         return UserAuth::COMPLEXITY_CHECK_FAILED;
     }
+    std::vector<uint8_t> input = data;
+    input.emplace_back('\0');
+    if (!CheckEdmPinComplexity(authSubType, input)) {
+        IAM_LOGE("CheckEdmPinComplexity failed");
+        (void)memset_s(input.data(), input.size(), 0, input.size());
+        return UserAuth::COMPLEXITY_CHECK_FAILED;
+    }
+    if (!CheckSpecialPinComplexity(input)) {
+        IAM_LOGE("CheckSpecialPinComplexity failed");
+        (void)memset_s(input.data(), input.size(), 0, input.size());
+        return UserAuth::COMPLEXITY_CHECK_FAILED;
+    }
+    if (data.size() < MIN_PIN_LENGTH) {
+        IAM_LOGE("check data size failed");
+        (void)memset_s(input.data(), input.size(), 0, input.size());
+        return UserAuth::COMPLEXITY_CHECK_FAILED;
+    }
+    (void)memset_s(input.data(), input.size(), 0, input.size());
+
+    return UserAuth::SUCCESS;
+}
+
+bool InputerDataImpl::CheckSpecialPinComplexity(std::vector<uint8_t> &input)
+{
+    if (mode_ != GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL && mode_ != GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH) {
+        return true;
+    }
+    if (complexityReg_.empty()) {
+        IAM_LOGI("complexityReg is empty");
+        return true;
+    }
+    const std::string key = "payment_security_level";
+    int32_t isCheckPinComplexity = 0;
+    if (!SettingsDataManager::GetIntValue(userId_, key, isCheckPinComplexity)) {
+        IAM_LOGI("no exist isCheckPinComplexity");
+        return true;
+    }
+    if (isCheckPinComplexity == 0) {
+        IAM_LOGI("no need check special pin complexity");
+        return true;
+    }
+    if (!CheckPinComplexityByReg(input, complexityReg_)) {
+        IAM_LOGE("CheckPinComplexityByReg failed");
+        return false;
+    }
+    return true;
+}
+
+bool InputerDataImpl::CheckEdmPinComplexity(int32_t authSubType, std::vector<uint8_t> &input)
+{
     if (mode_ != GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL) {
-        return UserAuth::SUCCESS;
+        return true;
     }
 #ifdef CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
     EDM::PasswordPolicy policy;
     int32_t ret = EDM::SecurityManagerProxy::GetSecurityManagerProxy()->GetPasswordPolicy(policy);
     if (ret != ERR_OK || policy.complexityReg.empty()) {
         IAM_LOGE("GetPasswordPolicy failed, use default policy");
-        return (data.size() >= MIN_PIN_LENGTH ? UserAuth::SUCCESS : UserAuth::COMPLEXITY_CHECK_FAILED);
+        return true;
     }
     if (authSubType != UserAuth::PIN_MIXED) {
         IAM_LOGE("GetPasswordPolicy success, authSubType can only be PIN_MIXED");
-        return UserAuth::COMPLEXITY_CHECK_FAILED;
+        return false;
     }
-    std::vector<uint8_t> input = data;
-    input.emplace_back('\0');
+    if (!CheckPinComplexityByReg(input, policy.complexityReg)) {
+        IAM_LOGE("CheckPinComplexityByReg failed");
+        return false;
+    }
+#else
+    IAM_LOGI("This device not support edm, subType:%{public}d", authSubType);
+#endif
+    return true;
+}
+
+bool InputerDataImpl::CheckPinComplexityByReg(std::vector<uint8_t> &input, const std::string &complexityReg)
+{
     try {
-        std::regex regex(policy.complexityReg);
+        std::regex regex(complexityReg);
         bool checkRet = std::regex_match(reinterpret_cast<char*>(input.data()), regex);
         if (!checkRet) {
             IAM_LOGE("PIN_MIXED does not pass complexity check");
-            (void)memset_s(input.data(), input.size(), 0, input.size());
-            return UserAuth::COMPLEXITY_CHECK_FAILED;
+            return false;
         }
     } catch (const std::regex_error &e) {
         IAM_LOGE("create regex failed");
-        (void)memset_s(input.data(), input.size(), 0, input.size());
-        return UserAuth::COMPLEXITY_CHECK_FAILED;
+        return false;
     }
-    (void)memset_s(input.data(), input.size(), 0, input.size());
-    return UserAuth::SUCCESS;
-#else
-    IAM_LOGI("This device not support edm, subType:%{public}d", authSubType);
-    return (data.size() >= MIN_PIN_LENGTH ? UserAuth::SUCCESS : UserAuth::COMPLEXITY_CHECK_FAILED);
-#endif
+    return true;
 }
 } // namespace PinAuth
 } // namespace UserIam
