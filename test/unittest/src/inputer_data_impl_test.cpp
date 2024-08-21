@@ -65,7 +65,7 @@ HWTEST_F(InputerDataImplTest, CheckPinComplexity001, TestSize.Level0)
     constexpr int32_t testAuthSubType = 10000;
     #define CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
     InputerDataImpl inputerDataImpl(param);
-    std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
+    std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5, 6};
     int32_t result = inputerDataImpl.CheckPinComplexity(testAuthSubType, testSalt);
     EXPECT_EQ(result, 0);
 }
@@ -79,7 +79,7 @@ HWTEST_F(InputerDataImplTest, CheckPinComplexity002, TestSize.Level0)
     param.mode = GET_DATA_MODE_NONE;
     #define CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
     InputerDataImpl inputerDataImpl(param);
-    std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
+    std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5, 6};
     int32_t result = inputerDataImpl.CheckPinComplexity(testAuthSubType, testSalt);
     EXPECT_EQ(result, 0);
 }

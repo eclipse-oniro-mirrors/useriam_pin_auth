@@ -119,6 +119,7 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t> &algoPa
         .algoParameter = algoParameter,
         .challenge = challenge,
         .userId = userId_,
+        .authIntent = authIntent_,
     };
     if (mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL ||
         (authIntent_ == SPECIFY_PIN_COMPLEXITY && mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH)) {

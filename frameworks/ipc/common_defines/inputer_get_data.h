@@ -43,6 +43,7 @@ struct InputerGetDataParam {
     sptr<InputerSetData> inputerSetData;
     int32_t userId;
     std::string complexityReg;
+    int32_t authIntent;
 };
 
 class InputerGetData : public IRemoteBroker {
