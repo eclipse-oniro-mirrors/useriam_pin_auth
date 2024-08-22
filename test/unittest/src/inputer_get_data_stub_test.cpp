@@ -118,6 +118,7 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData002, TestSize.Le
 HWTEST_F(InputerGetDataStubTest, OnRemoteRequestTest001, TestSize.Level0)
 {
     int32_t userId = 1;
+    int32_t authIntent = 1;
     std::string complexityReg = "";
     int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
@@ -125,7 +126,6 @@ HWTEST_F(InputerGetDataStubTest, OnRemoteRequestTest001, TestSize.Level0)
     uint32_t testAlgoVersion = 0;
     GetDataMode testMode = GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH;
     int32_t testErrorCode = 0;
-
     MockInputerGetDataService service;
     EXPECT_CALL(service, OnGetData(_)).Times(1);
     ON_CALL(service, OnGetData)
@@ -143,28 +143,24 @@ HWTEST_F(InputerGetDataStubTest, OnRemoteRequestTest001, TestSize.Level0)
                     }
             }
         );
-
     sptr<MockInputerSetData> tempInputerSetData(new (std::nothrow) MockInputerSetData());
     EXPECT_NE(tempInputerSetData, nullptr);
     EXPECT_CALL(*tempInputerSetData, OnSetData(_, _, _)).Times(1);
-
     MessageParcel data;
     MessageParcel reply;
-
     EXPECT_TRUE(data.WriteInterfaceToken(InputerGetData::GetDescriptor()));
     EXPECT_TRUE(data.WriteInt32(testMode));
     EXPECT_TRUE(data.WriteInt32(testAuthSubType));
     EXPECT_TRUE(data.WriteUint32(testAlgoVersion));
     EXPECT_TRUE(data.WriteUInt8Vector(testSalt));
     EXPECT_TRUE(data.WriteUInt8Vector(testChallenge));
-    ASSERT_NE(tempInputerSetData->AsObject(), nullptr);
-    EXPECT_TRUE(data.WriteRemoteObject(tempInputerSetData->AsObject()));
     EXPECT_TRUE(data.WriteInt32(userId));
     EXPECT_TRUE(data.WriteString(complexityReg));
-
+    EXPECT_TRUE(data.WriteInt32(authIntent));
+    ASSERT_NE(tempInputerSetData->AsObject(), nullptr);
+    EXPECT_TRUE(data.WriteRemoteObject(tempInputerSetData->AsObject()));
     uint32_t code = 1;
     MessageOption option(MessageOption::TF_SYNC);
-
     EXPECT_EQ(service.OnRemoteRequest(code, data, reply, option), 0);
 }
 

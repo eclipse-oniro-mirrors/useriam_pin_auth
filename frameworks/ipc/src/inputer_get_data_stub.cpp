@@ -40,48 +40,60 @@ int32_t InputerGetDataStub::OnRemoteRequest(uint32_t code, MessageParcel &data, 
     }
 }
 
-void InputerGetDataStub::OnGetDataStub(MessageParcel &data, MessageParcel &reply)
+bool InputerGetDataStub::ReadInputerGetDataParam(MessageParcel &data, InputerGetDataParam &getDataParam)
 {
-    InputerGetDataParam getDataParam;
-
     int32_t mode;
     if (!data.ReadInt32(mode)) {
         IAM_LOGE("failed to read mode");
-        return;
+        return false;
     }
     getDataParam.mode = static_cast<GetDataMode>(mode);
     if (!data.ReadInt32(getDataParam.authSubType)) {
         IAM_LOGE("failed to read authSubType");
-        return;
+        return false;
     }
     if (!data.ReadUint32(getDataParam.algoVersion)) {
         IAM_LOGE("failed to read algoVersion");
-        return;
+        return false;
     }
     if (!data.ReadUInt8Vector(&(getDataParam.algoParameter))) {
         IAM_LOGE("failed to read algoParameter");
-        return;
+        return false;
     }
     if (!data.ReadUInt8Vector(&(getDataParam.challenge))) {
         IAM_LOGE("failed to read challenge");
-        return;
+        return false;
+    }
+    if (!data.ReadInt32(getDataParam.userId)) {
+        IAM_LOGE("failed to read userId");
+        return false;
+    }
+    if (!data.ReadString(getDataParam.complexityReg)) {
+        IAM_LOGE("failed to read complexityReg");
+        return false;
+    }
+    if (!data.ReadInt32(getDataParam.authIntent)) {
+        IAM_LOGE("failed to read authIntent");
+        return false;
     }
     sptr<IRemoteObject> obj = data.ReadRemoteObject();
     if (obj == nullptr) {
         IAM_LOGE("failed to read remote object");
-        return;
+        return false;
     }
     getDataParam.inputerSetData = iface_cast<InputerSetData>(obj);
     if (getDataParam.inputerSetData == nullptr) {
         IAM_LOGE("inputerSetData is nullptr");
-        return;
+        return false;
     }
-    if (!data.ReadInt32(getDataParam.userId)) {
-        IAM_LOGE("failed to read userId");
-        return;
-    }
-    if (!data.ReadString(getDataParam.complexityReg)) {
-        IAM_LOGE("failed to read complexityReg");
+    return true;
+}
+
+void InputerGetDataStub::OnGetDataStub(MessageParcel &data, MessageParcel &reply)
+{
+    InputerGetDataParam getDataParam;
+    if (!ReadInputerGetDataParam(data, getDataParam)) {
+        IAM_LOGE("ReadInputerGetDataParam failed");
         return;
     }
     OnGetData(getDataParam);
