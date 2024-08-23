@@ -191,7 +191,8 @@ int32_t InputerDataImpl::CheckPinComplexity(int32_t authSubType, const std::vect
 bool InputerDataImpl::CheckSpecialPinComplexity(std::vector<uint8_t> &input)
 {
     IAM_LOGI("start");
-    if (mode_ != GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL && mode_ != GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH) {
+    if (mode_ != GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL &&
+        !(mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH && authIntent_ == SPECIFY_PIN_COMPLEXITY)) {
         return true;
     }
     if (complexityReg_.empty()) {
@@ -214,7 +215,7 @@ bool InputerDataImpl::CheckSpecialPinComplexity(std::vector<uint8_t> &input)
 bool InputerDataImpl::CheckEdmPinComplexity(int32_t authSubType, std::vector<uint8_t> &input)
 {
     IAM_LOGI("start");
-    if (mode_ != GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL && authIntent_ != SPECIFY_PIN_COMPLEXITY) {
+    if (mode_ != GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL) {
         return true;
     }
 #ifdef CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
