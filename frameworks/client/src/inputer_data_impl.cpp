@@ -209,12 +209,11 @@ bool InputerDataImpl::CheckSpecialPinComplexity(std::vector<uint8_t> &input, int
         IAM_LOGI("no need check special pin complexity");
         return true;
     }
-    if (authSubType == UserAuth::PIN_FOUR || authSubType == UserAuth::PIN_PATTERN ||
-        !CheckPinComplexityByReg(input, complexityReg_)) {
-        IAM_LOGE("CheckPinComplexityByReg failed");
+    if (authSubType == UserAuth::PIN_FOUR || authSubType == UserAuth::PIN_PATTERN) {
+        IAM_LOGE("subAuthType is PIN_FOUR or PIN_PATTERN");
         return false;
     }
-    return true;
+    return CheckPinComplexityByReg(input, complexityReg_);
 }
 
 bool InputerDataImpl::CheckEdmPinComplexity(int32_t authSubType, std::vector<uint8_t> &input)
