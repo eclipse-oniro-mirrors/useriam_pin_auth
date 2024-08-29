@@ -44,7 +44,7 @@ private:
     void GetRecoveryKeyData(const std::vector<uint8_t> &dataIn, std::vector<uint8_t> &dataOut, int32_t &errorCode);
     void OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &setData, int32_t errorCode);
     int32_t CheckPinComplexity(int32_t authSubType, const std::vector<uint8_t> &data);
-    bool CheckSpecialPinComplexity(std::vector<uint8_t> &input);
+    bool CheckSpecialPinComplexity(std::vector<uint8_t> &input, int32_t authSubType);
     bool CheckEdmPinComplexity(int32_t authSubType, std::vector<uint8_t> &input);
     bool CheckPinComplexityByReg(std::vector<uint8_t> &input, const std::string &complexityReg);
 
