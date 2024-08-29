@@ -33,6 +33,7 @@ public:
 
 private:
     void OnGetDataStub(MessageParcel &data, MessageParcel &reply);
+    bool ReadInputerGetDataParam(MessageParcel &data, InputerGetDataParam &getDataParam);
 };
 } // namespace PinAuth
 } // namespace UserIam

@@ -36,6 +36,7 @@ public:
 private:
     static inline BrokerDelegator<InputerGetDataProxy> delegator_;
     bool SendRequest(uint32_t code, MessageParcel &data, MessageParcel &reply);
+    bool WriteInputerGetDataParam(MessageParcel &data, const InputerGetDataParam &getDataParam);
 };
 } // namespace PinAuth
 } // namespace UserIam

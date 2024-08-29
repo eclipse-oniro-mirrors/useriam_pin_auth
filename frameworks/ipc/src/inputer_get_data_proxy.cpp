@@ -22,6 +22,47 @@
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
+bool InputerGetDataProxy::WriteInputerGetDataParam(MessageParcel &data, const InputerGetDataParam &getDataParam)
+{
+    if (!data.WriteInt32(getDataParam.mode)) {
+        IAM_LOGE("write mode fail");
+        return false;
+    }
+    if (!data.WriteInt32(getDataParam.authSubType)) {
+        IAM_LOGE("write authSubType fail");
+        return false;
+    }
+    if (!data.WriteUint32(getDataParam.algoVersion)) {
+        IAM_LOGE("write algoVersion fail");
+        return false;
+    }
+    if (!data.WriteUInt8Vector(getDataParam.algoParameter)) {
+        IAM_LOGE("write algoParameter fail");
+        return false;
+    }
+    if (!data.WriteUInt8Vector(getDataParam.challenge)) {
+        IAM_LOGE("write challenge fail");
+        return false;
+    }
+    if (!data.WriteInt32(getDataParam.userId)) {
+        IAM_LOGE("write userId fail");
+        return false;
+    }
+    if (!data.WriteString(getDataParam.complexityReg)) {
+        IAM_LOGE("write complexityReg fail");
+        return false;
+    }
+    if (!data.WriteInt32(getDataParam.authIntent)) {
+        IAM_LOGE("write authIntent fail");
+        return false;
+    }
+    if (!data.WriteRemoteObject(getDataParam.inputerSetData->AsObject())) {
+        IAM_LOGE("write inputerData fail");
+        return false;
+    }
+    return true;
+}
+
 void InputerGetDataProxy::OnGetData(const InputerGetDataParam &getDataParam)
 {
     IAM_LOGI("start");
@@ -29,44 +70,14 @@ void InputerGetDataProxy::OnGetData(const InputerGetDataParam &getDataParam)
         IAM_LOGE("inputerSetData is nullptr");
         return;
     }
-    
     MessageParcel data;
     MessageParcel reply;
-    
     if (!data.WriteInterfaceToken(InputerGetDataProxy::GetDescriptor())) {
         IAM_LOGE("write descriptor fail");
         return;
     }
-    if (!data.WriteInt32(getDataParam.mode)) {
-        IAM_LOGE("write mode fail");
-        return;
-    }
-    if (!data.WriteInt32(getDataParam.authSubType)) {
-        IAM_LOGE("write authSubType fail");
-        return;
-    }
-    if (!data.WriteUint32(getDataParam.algoVersion)) {
-        IAM_LOGE("write algoVersion fail");
-        return;
-    }
-    if (!data.WriteUInt8Vector(getDataParam.algoParameter)) {
-        IAM_LOGE("write algoParameter fail");
-        return;
-    }
-    if (!data.WriteUInt8Vector(getDataParam.challenge)) {
-        IAM_LOGE("write challenge fail");
-        return;
-    }
-    if (!data.WriteRemoteObject(getDataParam.inputerSetData->AsObject())) {
-        IAM_LOGE("write inputerData fail");
-        return;
-    }
-    if (!data.WriteInt32(getDataParam.userId)) {
-        IAM_LOGE("write userId fail");
-        return;
-    }
-    if (!data.WriteString(getDataParam.complexityReg)) {
-        IAM_LOGE("write complexityReg fail");
+    if (!WriteInputerGetDataParam(data, getDataParam)) {
+        IAM_LOGE("WriteInputerGetDataParam fail");
         return;
     }
     if (SendRequest(InputerGetDataInterfaceCode::ON_GET_DATA, data, reply)) {
