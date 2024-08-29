@@ -210,7 +210,7 @@ bool InputerDataImpl::CheckSpecialPinComplexity(std::vector<uint8_t> &input, int
         return true;
     }
     if (authSubType == UserAuth::PIN_FOUR || authSubType == UserAuth::PIN_PATTERN) {
-        IAM_LOGE("subAuthType is PIN_FOUR or PIN_PATTERN");
+        IAM_LOGE("authSubType is PIN_FOUR or PIN_PATTERN");
         return false;
     }
     return CheckPinComplexityByReg(input, complexityReg_);
