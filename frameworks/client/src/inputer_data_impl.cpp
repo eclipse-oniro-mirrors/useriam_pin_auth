@@ -179,7 +179,7 @@ int32_t InputerDataImpl::CheckPinComplexity(int32_t authSubType, const std::vect
         (void)memset_s(input.data(), input.size(), 0, input.size());
         return UserAuth::COMPLEXITY_CHECK_FAILED;
     }
-    if (!CheckSpecialPinComplexity(input)) {
+    if (!CheckSpecialPinComplexity(input, authSubType)) {
         IAM_LOGE("CheckSpecialPinComplexity failed");
         (void)memset_s(input.data(), input.size(), 0, input.size());
         return UserAuth::COMPLEXITY_CHECK_FAILED;
@@ -188,7 +188,7 @@ int32_t InputerDataImpl::CheckPinComplexity(int32_t authSubType, const std::vect
     return UserAuth::SUCCESS;
 }
 
-bool InputerDataImpl::CheckSpecialPinComplexity(std::vector<uint8_t> &input)
+bool InputerDataImpl::CheckSpecialPinComplexity(std::vector<uint8_t> &input, int32_t authSubType)
 {
     IAM_LOGI("start");
     if (mode_ != GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL &&
@@ -208,6 +208,10 @@ bool InputerDataImpl::CheckSpecialPinComplexity(std::vector<uint8_t> &input)
     if (isCheckPinComplexity == 0) {
         IAM_LOGI("no need check special pin complexity");
         return true;
+    }
+    if (authSubType == UserAuth::PIN_FOUR || authSubType == UserAuth::PIN_PATTERN) {
+        IAM_LOGE("authSubType is PIN_FOUR or PIN_PATTERN");
+        return false;
     }
     return CheckPinComplexityByReg(input, complexityReg_);
 }

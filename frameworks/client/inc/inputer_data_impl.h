@@ -45,7 +45,7 @@ private:
     void OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &setData, int32_t errorCode);
     int32_t CheckPinComplexity(int32_t authSubType, const std::vector<uint8_t> &data);
     bool CheckEdmPinComplexity(int32_t authSubType, std::vector<uint8_t> &input);
-    bool CheckSpecialPinComplexity(std::vector<uint8_t> &input);
+    bool CheckSpecialPinComplexity(std::vector<uint8_t> &input, int32_t authSubType);
     bool CheckPinSizeBySubType(int32_t authSubType, size_t size);
     bool CheckPinComplexityByReg(std::vector<uint8_t> &input, const std::string &complexityReg);
 
