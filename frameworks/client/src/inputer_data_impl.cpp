@@ -149,6 +149,9 @@ void InputerDataImpl::OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &
 
 bool InputerDataImpl::CheckPinSizeBySubType(int32_t authSubType, size_t size)
 {
+    if (mode_ != GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL) {
+        return true;
+    }
     if (size < PIN_LEN_FOUR) {
         return false;
     }
