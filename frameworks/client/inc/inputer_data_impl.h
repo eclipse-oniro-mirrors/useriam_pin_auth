@@ -41,7 +41,6 @@ private:
     bool GetSha256(const std::vector<uint8_t> &data, std::vector<uint8_t> &out);
     void GetPinData(
         int32_t authSubType, const std::vector<uint8_t> &dataIn, std::vector<uint8_t> &dataOut, int32_t &errorCode);
-    void GetRecoveryKeyData(const std::vector<uint8_t> &dataIn, std::vector<uint8_t> &dataOut, int32_t &errorCode);
     void OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &setData, int32_t errorCode);
     int32_t CheckPinComplexity(int32_t authSubType, const std::vector<uint8_t> &data);
     bool CheckEdmPinComplexity(int32_t authSubType, std::vector<uint8_t> &input);

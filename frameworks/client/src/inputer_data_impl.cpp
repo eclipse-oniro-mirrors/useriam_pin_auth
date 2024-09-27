@@ -39,6 +39,7 @@ namespace PinAuth {
 namespace {
 constexpr uint32_t PIN_LEN_FOUR = 4;
 constexpr uint32_t PIN_LEN_SIX = 6;
+constexpr uint32_t PIN_LEN_SEVEN = 7;
 constexpr uint32_t PIN_LEN_NINE = 9;
 constexpr uint32_t SPECIFY_PIN_COMPLEXITY = 10002;
 }
@@ -50,37 +51,27 @@ InputerDataImpl::InputerDataImpl(const InputerGetDataParam &param)
 {
 }
 
-void InputerDataImpl::GetRecoveryKeyData(
-    const std::vector<uint8_t> &dataIn, std::vector<uint8_t> &dataOut, int32_t &errorCode)
-{
-    if (algoVersion_ == RECOVERY_KEY_ALGO_VERSION_V0) {
-        if (GetSha256(dataIn, dataOut)) {
-            IAM_LOGI("recovery key data sha256 succeed");
-            errorCode = UserAuth::SUCCESS;
-            return;
-        }
-    }
-    IAM_LOGE("recovery key data sha256 failed");
-}
-
 void InputerDataImpl::GetPinData(
     int32_t authSubType, const std::vector<uint8_t> &dataIn, std::vector<uint8_t> &dataOut, int32_t &errorCode)
 {
     IAM_LOGI("start authSubType: %{public}d", authSubType);
     errorCode = CheckPinComplexity(authSubType, dataIn);
-    if (errorCode != UserAuth::SUCCESS && mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL) {
+    if (errorCode != UserAuth::SUCCESS && mode_ == GET_DATA_MODE_ALL_IN_ONE_ENROLL) {
         IAM_LOGE("CheckPinComplexity enroll failed");
         return;
     }
-    if (mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL && authSubType == UserAuth::PIN_PATTERN) {
+
+    if (mode_ == GET_DATA_MODE_ALL_IN_ONE_ENROLL && authSubType == UserAuth::PIN_PATTERN) {
         IAM_LOGE("GetPinData Enroll Unsupport Type Pattern");
         return;
     }
+
     auto scryptPointer = Common::MakeUnique<Scrypt>(algoParameter_);
     if (scryptPointer == nullptr) {
         IAM_LOGE("scryptPointer is nullptr");
         return;
     }
+
     if (authSubType == UserAuth::PIN_PATTERN) {
         std::vector<uint8_t> patternDataIn(dataIn);
         for (uint8_t &data : patternDataIn) {
@@ -91,11 +82,13 @@ void InputerDataImpl::GetPinData(
     } else {
         scryptPointer->GetScrypt(dataIn, algoVersion_).swap(dataOut);
     }
+
     if (dataOut.empty()) {
         IAM_LOGE("get scrypt fail");
         return;
     }
-    if ((algoVersion_ > PIN_ALGO_VERSION_V1) && (mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL) &&
+    if ((algoVersion_ > ALGO_VERSION_V1) &&
+        (mode_ == GET_DATA_MODE_ALL_IN_ONE_ENROLL) &&
         (!GetSha256(dataIn, dataOut))) {
         IAM_LOGE("get sha256 fail");
         if (!dataOut.empty()) {
@@ -111,11 +104,7 @@ void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
         userId_, data.size(), algoVersion_, complexityReg_.size());
     std::vector<uint8_t> setData;
     int32_t errorCode = UserAuth::GENERAL_ERROR;
-    if (mode_ == GET_DATA_MODE_ALL_IN_ONE_RECOVERY_KEY_AUTH) {
-        GetRecoveryKeyData(data, setData, errorCode);
-    } else {
-        GetPinData(authSubType, data, setData, errorCode);
-    }
+    GetPinData(authSubType, data, setData, errorCode);
     OnSetDataInner(authSubType, setData, errorCode);
     if (!data.empty()) {
         (void)memset_s(data.data(), data.size(), 0, data.size());
@@ -149,7 +138,7 @@ void InputerDataImpl::OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &
 
 bool InputerDataImpl::CheckPinSizeBySubType(int32_t authSubType, size_t size)
 {
-    if (mode_ != GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL) {
+    if (mode_ != GET_DATA_MODE_ALL_IN_ONE_ENROLL) {
         return true;
     }
     if (size < PIN_LEN_FOUR) {
@@ -194,8 +183,8 @@ int32_t InputerDataImpl::CheckPinComplexity(int32_t authSubType, const std::vect
 bool InputerDataImpl::CheckSpecialPinComplexity(std::vector<uint8_t> &input, int32_t authSubType)
 {
     IAM_LOGI("start");
-    if (mode_ != GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL &&
-        !(mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH && authIntent_ == SPECIFY_PIN_COMPLEXITY)) {
+    if (mode_ != GET_DATA_MODE_ALL_IN_ONE_ENROLL &&
+        !(mode_ == GET_DATA_MODE_ALL_IN_ONE_AUTH && authIntent_ == SPECIFY_PIN_COMPLEXITY)) {
         return true;
     }
     if (complexityReg_.empty()) {
@@ -216,8 +205,9 @@ bool InputerDataImpl::CheckSpecialPinComplexity(std::vector<uint8_t> &input, int
         IAM_LOGE("authSubType is PIN_FOUR or PIN_PATTERN");
         return false;
     }
-    if (input.size() <= PIN_LEN_SIX) {
+    if (input.size() < PIN_LEN_SEVEN) {
         IAM_LOGE("check data size failed");
+        return false;
     }
     return CheckPinComplexityByReg(input, complexityReg_);
 }
@@ -225,7 +215,7 @@ bool InputerDataImpl::CheckSpecialPinComplexity(std::vector<uint8_t> &input, int
 bool InputerDataImpl::CheckEdmPinComplexity(int32_t authSubType, std::vector<uint8_t> &input)
 {
     IAM_LOGI("start");
-    if (mode_ != GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL) {
+    if (mode_ != GET_DATA_MODE_ALL_IN_ONE_ENROLL) {
         return true;
     }
 #ifdef CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE
