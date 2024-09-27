@@ -120,6 +120,7 @@ UserAuth::ResultCode PinAuthAllInOneHdi::Enroll(uint64_t scheduleId, const UserA
     UserAuth::ExecutorParam executorParam = {
         .tokenId = param.tokenId,
         .scheduleId = scheduleId,
+        .userId = param.userId,
     };
     auto callback = sptr<IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
         shared_from_this(), executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL));
@@ -152,6 +153,7 @@ UserAuth::ResultCode PinAuthAllInOneHdi::Authenticate(
         .tokenId = param.tokenId,
         .authIntent = param.authIntent,
         .scheduleId = scheduleId,
+        .userId = param.userId,
     };
     auto callback = sptr<IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
         shared_from_this(), executorParam, GET_DATA_MODE_ALL_IN_ONE_AUTH));

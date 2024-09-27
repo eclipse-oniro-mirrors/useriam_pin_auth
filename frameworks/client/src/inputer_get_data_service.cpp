@@ -36,8 +36,7 @@ void InputerGetDataService::OnGetData(const InputerGetDataParam &getDataParam)
         return;
     }
 
-    std::shared_ptr<IInputerData> sharedInputerData = Common::MakeShared<InputerDataImpl>(
-        getDataParam.mode, getDataParam.algoVersion, getDataParam.algoParameter, getDataParam.inputerSetData);
+    std::shared_ptr<IInputerData> sharedInputerData = Common::MakeShared<InputerDataImpl>(getDataParam);
     if (sharedInputerData == nullptr) {
         IAM_LOGE("sharedInputerData is nullptr");
         return;
