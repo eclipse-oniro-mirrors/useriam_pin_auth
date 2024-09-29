@@ -93,7 +93,7 @@ HWTEST_F(UseriamUtTest, UseriamUtTest002, TestSize.Level1)
 HWTEST_F(UseriamUtTest, UseriamUtTest003, TestSize.Level1)
 {
     IAM_LOGI("**********UseriamUtTest***003***in**********");
-    PinAuthRegister::GetInstance().UnRegisterInputer();
+    EXPECT_NO_THROW(PinAuthRegister::GetInstance().UnRegisterInputer());
     IAM_LOGI("**********UseriamUtTest***003***out**********");
 }
 } // namespace PinAuth
