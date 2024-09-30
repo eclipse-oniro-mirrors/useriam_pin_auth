@@ -117,6 +117,9 @@ HWTEST_F(InputerGetDataStubTest, InputerGetDataStubTestOnGetData002, TestSize.Le
 
 HWTEST_F(InputerGetDataStubTest, OnRemoteRequestTest001, TestSize.Level0)
 {
+    int32_t userId = 1;
+    int32_t authIntent = 1;
+    std::string complexityReg = "";
     int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testSalt = {1, 2, 3, 4, 5};
     std::vector<uint8_t> testChallenge = {2, 3, 4, 5, 6};
@@ -155,6 +158,9 @@ HWTEST_F(InputerGetDataStubTest, OnRemoteRequestTest001, TestSize.Level0)
     EXPECT_TRUE(data.WriteUint32(testAlgoVersion));
     EXPECT_TRUE(data.WriteUInt8Vector(testSalt));
     EXPECT_TRUE(data.WriteUInt8Vector(testChallenge));
+    EXPECT_TRUE(data.WriteInt32(userId));
+    EXPECT_TRUE(data.WriteString(complexityReg));
+    EXPECT_TRUE(data.WriteInt32(authIntent));
     ASSERT_NE(tempInputerSetData->AsObject(), nullptr);
     EXPECT_TRUE(data.WriteRemoteObject(tempInputerSetData->AsObject()));
 
