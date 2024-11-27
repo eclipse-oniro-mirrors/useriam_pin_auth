@@ -42,6 +42,8 @@ public:
     MOCK_METHOD1(Delete, int32_t(uint64_t templateId));
     MOCK_METHOD3(GetProperty, int32_t(const std::vector<uint64_t>& templateIdList,
         const std::vector<int32_t>& propertyTypes, Property& property));
+    MOCK_METHOD3(SendCommand, int32_t(int32_t commandId, const std::vector<uint8_t> &extraInfo,
+        const sptr<IExecutorCallback> &callbackObj));
 };
 } // namespace PinAuth
 } // namespace UserIam
