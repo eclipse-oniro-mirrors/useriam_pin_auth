@@ -41,6 +41,7 @@ constexpr uint32_t PIN_LEN_FOUR = 4;
 constexpr uint32_t PIN_LEN_SIX = 6;
 constexpr uint32_t PIN_LEN_NINE = 9;
 constexpr uint32_t SPECIFY_PIN_COMPLEXITY = 10002;
+constexpr uint32_t PIN_QUESTION_MIN_LEN = 2;
 }
 
 InputerDataImpl::InputerDataImpl(const InputerGetDataParam &param)
@@ -105,16 +106,59 @@ void InputerDataImpl::GetPinData(
     }
 }
 
+void InputerDataImpl::GetPrivatePinData(
+    int32_t authSubType, const std::vector<uint8_t> &dataIn, std::vector<uint8_t> &dataOut, int32_t &errorCode)
+{
+    IAM_LOGI("start authSubType: %{public}d", authSubType);
+    errorCode = UserAuth::SUCCESS;
+    if (mode_ == GET_DATA_MODE_ALL_IN_ONE_PRIVATE_PIN_ENROLL) {
+        if (authSubType == UserAuth::PIN_PATTERN || authSubType == UserAuth::PIN_FOUR) {
+            IAM_LOGE("unsupport type");
+            return;
+        }
+        if (authSubType == UserAuth::PIN_QUESTION) {
+            if (dataIn.size() < PIN_QUESTION_MIN_LEN) {
+                IAM_LOGE("check question size fail:%{public}zu", dataIn.size());
+                return;
+            }
+        } else {
+            if (dataIn.size() < PIN_LEN_SIX) {
+                IAM_LOGE("check size fail:%{public}zu", dataIn.size());
+                return;
+            }
+        }
+    }
+
+    auto scryptPointer = Common::MakeUnique<Scrypt>(algoParameter_);
+    if (scryptPointer == nullptr) {
+        IAM_LOGE("scryptPointer is nullptr");
+        return;
+    }
+    scryptPointer->GetScrypt(dataIn, algoVersion_).swap(dataOut);
+    if (dataOut.empty()) {
+        IAM_LOGE("get scrypt fail");
+        return;
+    }
+}
+
 void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 {
     IAM_LOGI("start userId:%{public}d, data size:%{public}zu, algo version:%{public}u, complexityReg size:%{public}zu",
         userId_, data.size(), algoVersion_, complexityReg_.size());
     std::vector<uint8_t> setData;
     int32_t errorCode = UserAuth::GENERAL_ERROR;
-    if (mode_ == GET_DATA_MODE_ALL_IN_ONE_RECOVERY_KEY_AUTH) {
-        GetRecoveryKeyData(data, setData, errorCode);
-    } else {
-        GetPinData(authSubType, data, setData, errorCode);
+    switch (mode_) {
+        case GET_DATA_MODE_ALL_IN_ONE_RECOVERY_KEY_ENROLL:
+        case GET_DATA_MODE_ALL_IN_ONE_RECOVERY_KEY_AUTH:
+            GetRecoveryKeyData(data, setData, errorCode);
+            break;
+        case GET_DATA_MODE_ALL_IN_ONE_PRIVATE_PIN_ENROLL:
+        case GET_DATA_MODE_ALL_IN_ONE_PRIVATE_PIN_AUTH:
+            GetPrivatePinData(authSubType, data, setData, errorCode);
+            break;
+        default:
+            GetPinData(authSubType, data, setData, errorCode);
+            break;
     }
     OnSetDataInner(authSubType, setData, errorCode);
     if (!data.empty()) {

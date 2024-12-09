@@ -125,6 +125,8 @@ UserAuth::ResultCode PinAuthAllInOneHdi::Enroll(uint64_t scheduleId, const UserA
     GetDataMode mode = GET_DATA_MODE_NONE;
     if (GetAuthType().value() == AuthType::PIN) {
         mode = GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL;
+    } else if (GetAuthType().value() == AuthType::PRIVATE_PIN) {
+        mode = GET_DATA_MODE_ALL_IN_ONE_PRIVATE_PIN_ENROLL;
     } else {
         mode = GET_DATA_MODE_ALL_IN_ONE_RECOVERY_KEY_ENROLL;
     }
@@ -167,6 +169,8 @@ UserAuth::ResultCode PinAuthAllInOneHdi::Authenticate(
     GetDataMode mode = GET_DATA_MODE_NONE;
     if (GetAuthType().value() == AuthType::PIN) {
         mode = GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH;
+    } else if (GetAuthType().value() == AuthType::PRIVATE_PIN) {
+        mode = GET_DATA_MODE_ALL_IN_ONE_PRIVATE_PIN_AUTH;
     } else {
         mode = GET_DATA_MODE_ALL_IN_ONE_RECOVERY_KEY_AUTH;
     }
@@ -307,6 +311,10 @@ void PinAuthAllInOneHdi::SetAuthType(int32_t authType)
             break;
         case AuthType::RECOVERY_KEY:
             IAM_LOGI("set authType is recovery key");
+            authType_ = authType;
+            break;
+        case AuthType::PRIVATE_PIN:
+            IAM_LOGI("set authType is private pin");
             authType_ = authType;
             break;
         default:
