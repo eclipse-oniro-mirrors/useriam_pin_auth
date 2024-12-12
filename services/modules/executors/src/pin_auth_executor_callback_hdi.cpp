@@ -94,7 +94,8 @@ int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uin
     IAM_LOGI("OnResult %{public}d", code);
 
     UserAuth::ResultCode retCode = ConvertResultCode(code);
-    if ((mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH) && (retCode == UserAuth::FAIL)) {
+    if (((mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH) || (mode_ == GET_DATA_MODE_ALL_IN_ONE_PRIVATE_PIN_AUTH)) &&
+        (retCode == UserAuth::FAIL)) {
         if (authIntent_ != UserAuth::SILENT_AUTH) {
             DoVibrator();
         }
