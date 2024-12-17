@@ -136,7 +136,7 @@ UserAuth::ResultCode PinAuthAllInOneHdi::Enroll(uint64_t scheduleId, const UserA
         .userId = param.userId,
     };
     auto callback = sptr<IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
-            shared_from_this(), executorParam, mode));
+        shared_from_this(), executorParam, mode));
     if (callback == nullptr) {
         IAM_LOGE("callback is null");
         return UserAuth::ResultCode::GENERAL_ERROR;
