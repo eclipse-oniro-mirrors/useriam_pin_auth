@@ -74,7 +74,7 @@ ohos_unittest("PinAuth_UT_test") {
     "access_token:libnativetoken",
     "access_token:libtoken_setproc",
     "c_utils:utils",
-    "drivers_interface_pin_auth:libpin_auth_proxy_2.0",
+    "drivers_interface_pin_auth:libpin_auth_proxy_2.1",
     "hilog:libhilog",
     "ipc:ipc_single",
     "safwk:system_ability_fwk",

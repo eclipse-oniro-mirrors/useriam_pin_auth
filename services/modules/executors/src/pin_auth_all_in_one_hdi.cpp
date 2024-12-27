@@ -49,6 +49,7 @@ UserAuth::ResultCode PinAuthAllInOneHdi::GetExecutorInfo(UserAuth::ExecutorInfo 
         IAM_LOGE("GetExecutorInfo fail ret=%{public}d", result);
         return result;
     }
+    SetAuthType(localInfo.authType);
     int32_t ret = MoveHdiExecutorInfo(localInfo, info);
     if (ret != UserAuth::ResultCode::SUCCESS) {
         IAM_LOGE("MoveHdiExecutorInfo fail ret=%{public}d", ret);
@@ -117,13 +118,23 @@ UserAuth::ResultCode PinAuthAllInOneHdi::Enroll(uint64_t scheduleId, const UserA
         IAM_LOGE("callbackObj is null");
         return UserAuth::ResultCode::GENERAL_ERROR;
     }
+    if (!GetAuthType().has_value()) {
+        IAM_LOGE("authType is error");
+        return UserAuth::ResultCode::GENERAL_ERROR;
+    }
+    GetDataMode mode = GET_DATA_MODE_NONE;
+    if (GetAuthType().value() == AuthType::PIN) {
+        mode = GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL;
+    } else {
+        mode = GET_DATA_MODE_ALL_IN_ONE_PRIVATE_PIN_ENROLL;
+    }
     UserAuth::ExecutorParam executorParam = {
         .tokenId = param.tokenId,
         .scheduleId = scheduleId,
         .userId = param.userId,
     };
     auto callback = sptr<IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
-        shared_from_this(), executorParam, GET_DATA_MODE_ALL_IN_ONE_ENROLL));
+        shared_from_this(), executorParam, mode));
     if (callback == nullptr) {
         IAM_LOGE("callback is null");
         return UserAuth::ResultCode::GENERAL_ERROR;
@@ -149,6 +160,16 @@ UserAuth::ResultCode PinAuthAllInOneHdi::Authenticate(
         IAM_LOGE("callbackObj is null");
         return UserAuth::ResultCode::GENERAL_ERROR;
     }
+    if (!GetAuthType().has_value()) {
+        IAM_LOGE("authType is error");
+        return UserAuth::ResultCode::GENERAL_ERROR;
+    }
+    GetDataMode mode = GET_DATA_MODE_NONE;
+    if (GetAuthType().value() == AuthType::PIN) {
+        mode = GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH;
+    } else {
+        mode = GET_DATA_MODE_ALL_IN_ONE_PRIVATE_PIN_AUTH;
+    }
     UserAuth::ExecutorParam executorParam = {
         .tokenId = param.tokenId,
         .authIntent = param.authIntent,
@@ -156,7 +177,7 @@ UserAuth::ResultCode PinAuthAllInOneHdi::Authenticate(
         .userId = param.userId,
     };
     auto callback = sptr<IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
-        shared_from_this(), executorParam, GET_DATA_MODE_ALL_IN_ONE_AUTH));
+            shared_from_this(), executorParam, mode));
     if (callback == nullptr) {
         IAM_LOGE("callback is null");
         return UserAuth::ResultCode::GENERAL_ERROR;
@@ -275,6 +296,35 @@ UserAuth::ResultCode PinAuthAllInOneHdi::ConvertAttributeKeyToPropertyType(const
     IAM_LOGI("covert hdi result code %{public}d to framework result code %{public}d", in, out);
     return UserAuth::ResultCode::SUCCESS;
 }
+
+void PinAuthAllInOneHdi::SetAuthType(int32_t authType)
+{
+    std::lock_guard<std::mutex> lock(mutex_);
+    switch (authType) {
+        case AuthType::PIN:
+            IAM_LOGI("set authType is pin");
+            authType_ = authType;
+            break;
+        case AuthType::PRIVATE_PIN:
+            IAM_LOGI("set authType is private pin");
+            authType_ = authType;
+            break;
+        default:
+            IAM_LOGE("authType value is error, set failed");
+    }
+}
+
+std::optional<int32_t> PinAuthAllInOneHdi::GetAuthType()
+{
+    std::lock_guard<std::mutex> lock(mutex_);
+    if (!authType_.has_value()) {
+        IAM_LOGE("authType_ not assigned a value");
+        return std::nullopt;
+    }
+
+    return authType_;
+}
+
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS
