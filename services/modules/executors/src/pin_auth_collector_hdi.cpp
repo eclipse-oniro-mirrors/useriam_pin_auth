@@ -117,7 +117,7 @@ UserAuth::ResultCode PinAuthCollectorHdi::Collect(uint64_t scheduleId, const Use
         .scheduleId = scheduleId,
     };
     auto callback = sptr<IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(
-        callbackObj, shared_from_this(), executorParam, GET_DATA_MODE_COLLECTOR));
+        callbackObj, shared_from_this(), executorParam, GET_DATA_MODE_COLLECTOR_PIN_AUTH));
     if (callback == nullptr) {
         IAM_LOGE("get collector callback null");
         return UserAuth::ResultCode::GENERAL_ERROR;

@@ -122,7 +122,7 @@ HWTEST_F(InputerDataImplTest, GetPinDataTest002, TestSize.Level0)
     InputerGetDataParam param = {};
     param.algoVersion = ALGO_VERSION_V2;
     param.algoParameter = {1, 2, 3, 4, 5};
-    param.mode = GET_DATA_MODE_ALL_IN_ONE_ENROLL;
+    param.mode = GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL;
     std::vector<uint8_t> testData = {1, 2, 3, 4, 6};
     std::vector<uint8_t> testSetData;
     int32_t testErrorCode = 14;
@@ -140,7 +140,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest001, TestSize.Level0)
     InputerGetDataParam param = {};
     param.algoVersion = ALGO_VERSION_V0;
     param.algoParameter = {1, 2, 3, 4, 5};
-    param.mode = GET_DATA_MODE_ALL_IN_ONE_ENROLL;
+    param.mode = GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL;
     std::vector<uint8_t> testData;
     std::vector<uint8_t> testSetData;
     int32_t testErrorCode = 14;
@@ -158,7 +158,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest002, TestSize.Level0)
     InputerGetDataParam param = {};
     param.algoVersion = ALGO_VERSION_V0;
     param.algoParameter = {2, 3, 4, 5, 6, 7};
-    param.mode = GET_DATA_MODE_ALL_IN_ONE_ENROLL;
+    param.mode = GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL;
     std::vector<uint8_t> testData = {1, 2, 3, 4, 5, 6};
     constexpr int32_t testErrorCode = 0;
 
@@ -179,7 +179,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest003, TestSize.Level0)
     InputerGetDataParam param = {};
     param.algoVersion = ALGO_VERSION_V1;
     param.algoParameter = {3, 4, 5, 6, 7, 8};
-    param.mode = GET_DATA_MODE_ALL_IN_ONE_ENROLL;
+    param.mode = GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL;
     std::vector<uint8_t> testData = {2, 3, 4, 5, 6, 7};
     constexpr int32_t testErrorCode = 0;
 
@@ -200,7 +200,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest004, TestSize.Level0)
     InputerGetDataParam param = {};
     param.algoVersion = ALGO_VERSION_V2;
     param.algoParameter = {4, 5, 6, 7, 8, 9};
-    param.mode = GET_DATA_MODE_ALL_IN_ONE_ENROLL;
+    param.mode = GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL;
     std::vector<uint8_t> testData = {3, 4, 5, 6, 7, 8};
     constexpr int32_t testErrorCode = 0;
 
@@ -224,7 +224,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplAuthTest001, TestSize.Level0)
     constexpr int32_t testAuthSubType = 10000;
     InputerGetDataParam param = {};
     param.algoVersion = ALGO_VERSION_V0;
-    param.mode = GET_DATA_MODE_ALL_IN_ONE_AUTH;
+    param.mode = GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH;
     std::vector<uint8_t> testData;
     std::vector<uint8_t> testSetData;
     constexpr int32_t testErrorCode = 14;
@@ -242,7 +242,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplAuthTest002, TestSize.Level0)
     InputerGetDataParam param = {};
     param.algoVersion = ALGO_VERSION_V0;
     param.algoParameter = {5, 6, 7, 8, 9, 10};
-    param.mode = GET_DATA_MODE_ALL_IN_ONE_AUTH;
+    param.mode = GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH;
     std::vector<uint8_t> testData = {5, 6, 7, 8, 9, 10};
     constexpr int32_t testErrorCode = 0;
 
@@ -263,7 +263,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplAuthTest003, TestSize.Level0)
     InputerGetDataParam param = {};
     param.algoVersion = ALGO_VERSION_V1;
     param.algoParameter = {6, 7, 8, 9, 10, 11};
-    param.mode = GET_DATA_MODE_ALL_IN_ONE_AUTH;
+    param.mode = GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH;
     std::vector<uint8_t> testData = {6, 7, 8, 9, 10, 11};
     constexpr int32_t testErrorCode = 0;
 

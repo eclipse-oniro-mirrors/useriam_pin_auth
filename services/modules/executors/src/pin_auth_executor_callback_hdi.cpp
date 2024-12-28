@@ -89,12 +89,13 @@ void PinAuthExecutorCallbackHdi::DoVibrator()
 #endif
 }
 
-int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uint8_t>& extraInfo)
+int32_t PinAuthExecutorCallbackHdi::OnResult(int32_t code, const std::vector<uint8_t> &extraInfo)
 {
     IAM_LOGI("OnResult %{public}d", code);
 
     UserAuth::ResultCode retCode = ConvertResultCode(code);
-    if ((mode_ == GET_DATA_MODE_ALL_IN_ONE_AUTH) && (retCode == UserAuth::FAIL)) {
+    if (((mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH) || (mode_ == GET_DATA_MODE_ALL_IN_ONE_PRIVATE_PIN_AUTH)) &&
+        (retCode == UserAuth::FAIL)) {
         if (authIntent_ != UserAuth::SILENT_AUTH) {
             DoVibrator();
         }
@@ -121,8 +122,8 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t> &algoPa
         .userId = userId_,
         .authIntent = authIntent_,
     };
-    if (mode_ == GET_DATA_MODE_ALL_IN_ONE_ENROLL ||
-        (authIntent_ == SPECIFY_PIN_COMPLEXITY && mode_ == GET_DATA_MODE_ALL_IN_ONE_AUTH)) {
+    if (mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL ||
+        (authIntent_ == SPECIFY_PIN_COMPLEXITY && mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH)) {
         param.complexityReg = complexityReg;
     }
     if (pinAuthAllInOneHdi_ != nullptr) {
@@ -141,14 +142,14 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t> &algoPa
     return HDF_FAILURE;
 }
 
-int32_t PinAuthExecutorCallbackHdi::OnTip(int32_t tip, const std::vector<uint8_t>& extraInfo)
+int32_t PinAuthExecutorCallbackHdi::OnTip(int32_t tip, const std::vector<uint8_t> &extraInfo)
 {
     IF_FALSE_LOGE_AND_RETURN_VAL(frameworkCallback_ != nullptr, HDF_FAILURE);
     frameworkCallback_->OnAcquireInfo(tip, extraInfo);
     return HDF_SUCCESS;
 }
 
-int32_t PinAuthExecutorCallbackHdi::OnMessage(int32_t destRole, const std::vector<uint8_t>& msg)
+int32_t PinAuthExecutorCallbackHdi::OnMessage(int32_t destRole, const std::vector<uint8_t> &msg)
 {
     IF_FALSE_LOGE_AND_RETURN_VAL(frameworkCallback_ != nullptr, HDF_FAILURE);
     frameworkCallback_->OnMessage(destRole, msg);
