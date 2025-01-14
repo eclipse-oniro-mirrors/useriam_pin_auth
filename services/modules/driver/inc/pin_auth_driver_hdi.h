@@ -36,6 +36,7 @@ public:
     ~PinAuthDriverHdi() override = default;
     void GetExecutorList(std::vector<std::shared_ptr<UserAuth::IAuthExecutorHdi>> &executorList) override;
     void OnHdiDisconnect() override;
+    void OnFrameworkDown() override;
 
 private:
     void GetAllInOneExecutorList(std::vector<std::shared_ptr<UserAuth::IAuthExecutorHdi>> &executorList,

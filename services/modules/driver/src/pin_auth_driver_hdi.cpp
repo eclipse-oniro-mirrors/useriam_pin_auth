@@ -19,9 +19,11 @@
 
 #include "refbase.h"
 
+#include "iam_check.h"
 #include "iam_logger.h"
 #include "iam_ptr.h"
 
+#include "load_mode_handler.h"
 #include "pin_auth_all_in_one_hdi.h"
 #include "pin_auth_collector_hdi.h"
 #include "pin_auth_verifier_hdi.h"
@@ -120,6 +122,12 @@ void PinAuthDriverHdi::GetExecutorList(std::vector<std::shared_ptr<UserAuth::IAu
 void PinAuthDriverHdi::OnHdiDisconnect()
 {
     IAM_LOGI("start");
+}
+
+void PinAuthDriverHdi::OnFrameworkDown()
+{
+    IAM_LOGI("start");
+    LoadModeHandler::GetInstance().OnFrameworkDown();
 }
 } // namespace PinAuth
 } // namespace UserIam

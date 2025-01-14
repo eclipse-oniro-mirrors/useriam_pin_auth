@@ -16,14 +16,19 @@ import("//build/ohos/sa_profile/sa_profile.gni")
 import("../pin_auth.gni")
 
 ohos_sa_profile("pinauth_sa_profile") {
-  sources = [ "941.json" ]
+  sources = []
+  if (pin_auth_enable_dynamic_load) {
+    sources += [ "dynamic_load/941.json" ]
+  } else {
+    sources += [ "default/941.json" ]
+  }
 
   part_name = "pin_auth"
 }
 
 ohos_prebuilt_etc("pinauth_sa_profile.init") {
   if (pin_auth_enable_dynamic_load) {
-    source = "wearable/pinauth_sa_profile.cfg"
+    source = "dynamic_load/pinauth_sa_profile.cfg"
   } else {
     source = "default/pinauth_sa_profile.cfg"
   }
