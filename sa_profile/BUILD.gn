@@ -13,6 +13,7 @@
 
 import("//build/ohos.gni")
 import("//build/ohos/sa_profile/sa_profile.gni")
+import("../pin_auth.gni")
 
 ohos_sa_profile("pinauth_sa_profile") {
   sources = [ "941.json" ]
@@ -21,7 +22,11 @@ ohos_sa_profile("pinauth_sa_profile") {
 }
 
 ohos_prebuilt_etc("pinauth_sa_profile.init") {
-  source = "pinauth_sa_profile.cfg"
+  if (pin_auth_enable_dynamic_load) {
+    source = "wearable/pinauth_sa_profile.cfg"
+  } else {
+    source = "default/pinauth_sa_profile.cfg"
+  }
   relative_install_dir = "init"
   subsystem_name = "useriam"
   part_name = "pin_auth"
