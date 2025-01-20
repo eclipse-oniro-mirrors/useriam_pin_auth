@@ -18,6 +18,7 @@
 #include <cinttypes>
 
 #include "accesstoken_kit.h"
+#include "load_mode_handler.h"
 #include "i_inputer_data_impl.h"
 #include "iam_check.h"
 #include "iam_common_defines.h"
@@ -61,17 +62,19 @@ std::shared_ptr<PinAuthService> PinAuthService::GetInstance()
 
 void PinAuthService::OnStart()
 {
-    IAM_LOGI("start");
-    StartDriverManager();
+    IAM_LOGI("Sa start PinAuthService");
     if (!Publish(this)) {
         IAM_LOGE("failed to publish pin auth service");
         return;
     }
+    StartDriverManager();
+    const auto &loadModeHandler = LoadModeHandler::GetInstance();
+    (void)loadModeHandler;
 }
 
 void PinAuthService::OnStop()
 {
-    IAM_LOGE("service is persistent, OnStop is not implemented");
+    IAM_LOGI("Sa stop PinAuthService");
 }
 
 inline uint32_t PinAuthService::GetTokenId()

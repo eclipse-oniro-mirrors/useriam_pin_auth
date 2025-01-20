@@ -25,6 +25,7 @@ config("pin_auth_services_config") {
     "modules/driver/inc",
     "modules/executors/inc",
     "modules/inputters/inc",
+    "modules/load_mode/inc",
   ]
 }
 
@@ -49,8 +50,24 @@ ohos_source_set("pinauthservice_source_set") {
     "modules/executors/src/pin_auth_verifier_hdi.cpp",
     "modules/inputters/src/i_inputer_data_impl.cpp",
     "modules/inputters/src/pin_auth_manager.cpp",
+    "modules/load_mode/src/load_mode_handler.cpp",
+    "modules/load_mode/src/system_param_manager.cpp",
     "sa/src/pin_auth_service.cpp",
   ]
+
+  defines = []
+
+  if (pin_auth_enable_dynamic_load) {
+    sources += [
+      "modules/load_mode/src/driver_load_manager.cpp",
+      "modules/load_mode/src/load_mode_handler_dynamic.cpp",
+      "modules/load_mode/src/relative_timer.cpp",
+      "modules/load_mode/src/system_ability_listener.cpp",
+    ]
+    defines += [ "ENABLE_DYNAMIC_LOAD" ]
+  } else {
+    sources += [ "modules/load_mode/src/load_mode_handler_default.cpp" ]
+  }
 
   configs = [
     ":pin_auth_services_config",
@@ -65,8 +82,12 @@ ohos_source_set("pinauthservice_source_set") {
   external_deps = [
     "access_token:libaccesstoken_sdk",
     "c_utils:utils",
+    "device_manager:devicemanagersdk",
     "drivers_interface_pin_auth:libpin_auth_proxy_2.1",
+    "hdf_core:libhdi",
     "hilog:libhilog",
+    "init:libbeget_proxy",
+    "init:libbegetutil",
     "ipc:ipc_single",
     "openssl:libcrypto_shared",
     "safwk:system_ability_fwk",
@@ -74,7 +95,6 @@ ohos_source_set("pinauthservice_source_set") {
     "user_auth_framework:userauth_executors",
   ]
 
-  defines = []
   if (sensors_miscdevice_enable) {
     external_deps += [ "miscdevice:vibrator_interface_native" ]
     defines += [ "SENSORS_MISCDEVICE_ENABLE" ]

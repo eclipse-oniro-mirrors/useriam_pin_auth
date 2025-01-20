@@ -36,7 +36,10 @@
             "c_utils",
             "enterprise_device_management",
             "openssl",
-            "data_share"
+            "data_share",
+            "init",
+            "device_manager",
+            "hdf_core"
         ]
       },
       "build": {
