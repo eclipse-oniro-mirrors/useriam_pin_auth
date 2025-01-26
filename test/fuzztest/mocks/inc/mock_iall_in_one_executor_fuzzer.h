@@ -29,6 +29,9 @@ public:
     virtual ~MockIAllInOneExecutorFuzzer() = default;
     int32_t GetExecutorInfo(ExecutorInfo& executorInfo) override
     {
+        executorInfo.executorRole = ExecutorRole::ALL_IN_ONE;
+        executorInfo.authType = AuthType::PIN;
+        executorInfo.esl = ExecutorSecureLevel::ESL3;
         return isTrueTest();
     }
 

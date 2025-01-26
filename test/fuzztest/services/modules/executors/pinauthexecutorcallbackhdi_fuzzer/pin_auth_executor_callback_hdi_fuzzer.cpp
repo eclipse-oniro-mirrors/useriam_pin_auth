@@ -28,6 +28,7 @@
 #include "mock_iall_in_one_executor_fuzzer.h"
 #include "mock_icollector_executor_fuzzer.h"
 #include "mock_iexecutor_callback_fuzzer.h"
+#include "mock_inputer_get_data_fuzzer.h"
 
 #include "pin_auth_executor_callback_hdi.h"
 #include "pin_auth_hdi.h"
@@ -73,20 +74,8 @@ void InitPinAuthExecutorCallbackHdi(Parcel &parcel)
 void FuzzDoVibrator(Parcel &parcel)
 {
     IAM_LOGI("begin");
-    GetDataMode mode = static_cast<GetDataMode>(parcel.ReadInt32());
-    int32_t code = UserAuth::FAIL;
-    std::vector<uint8_t> extraInfo;
-    FillFuzzUint8Vector(parcel, extraInfo);
-    const UserAuth::ExecutorParam executorParam = {
-        .tokenId = TOKEN_ID,
-        .authIntent = 0,
-        .scheduleId = SCHEDULE_ID,
-    };
-    pinAuthExecutorCallbackHdi_ = Common::MakeShared<PinAuthExecutorCallbackHdi>(
-        frameWorkCallback_, allInOneHdi_, executorParam, mode);
-    UserAuth::ExecutorInfo info;
     if (pinAuthExecutorCallbackHdi_ != nullptr) {
-        pinAuthExecutorCallbackHdi_->OnResult(code, extraInfo);
+        pinAuthExecutorCallbackHdi_->DoVibrator();
     }
     IAM_LOGI("end");
 }
@@ -113,6 +102,10 @@ void FuzzOnGetData(Parcel &parcel)
     std::string pinComplexityReg;
     FillFuzzUint8Vector(parcel, algoParameter);
     FillFuzzUint8Vector(parcel, challenge);
+    uint32_t tokenId = 1;
+    auto inputer = sptr<InputerGetData>(new (std::nothrow) MockInputerGetDataFuzzer());
+    pinAuthExecutorCallbackHdi_->tokenId_ = tokenId;
+    PinAuthManager::GetInstance().RegisterInputer(tokenId, inputer);
     if (pinAuthExecutorCallbackHdi_ != nullptr) {
         pinAuthExecutorCallbackHdi_->OnGetData(algoParameter, authSubType, algoVersion, challenge,
             pinComplexityReg);

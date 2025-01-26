@@ -85,8 +85,29 @@ void FuzzCheckPermission(Parcel &parcel)
     IAM_LOGI("end");
 }
 
+void FuzzStartDriverManager(Parcel &parcel)
+{
+    IAM_LOGI("begin");
+    static_cast<void>(parcel);
+    if (g_service != nullptr) {
+        g_service->StartDriverManager();
+    }
+    IAM_LOGI("end");
+}
+
+void FuzzOnStop(Parcel &parcel)
+{
+    IAM_LOGI("begin");
+    static_cast<void>(parcel);
+    if (g_service != nullptr) {
+        g_service->OnStop();
+    }
+    IAM_LOGI("end");
+}
+
 using FuzzFunc = decltype(FuzzRegisterInputer);
-FuzzFunc *g_fuzzFuncs[] = {FuzzRegisterInputer, FuzzUnRegisterInputer, FuzzCheckPermission};
+FuzzFunc *g_fuzzFuncs[] = {FuzzRegisterInputer, FuzzUnRegisterInputer, FuzzCheckPermission, FuzzStartDriverManager,
+    FuzzOnStop};
 
 void PinAuthServiceFuzzTest(const uint8_t *data, size_t size)
 {

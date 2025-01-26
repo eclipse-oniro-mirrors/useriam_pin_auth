@@ -50,7 +50,8 @@ std::shared_ptr<UserAuth::IExecuteCallback> iExecutorCallback_ = Common::MakeSha
 
 void InitPinAuthAllInOneHdi(Parcel &parcel)
 {
-    hdi_ = Common::MakeShared<PinAuthAllInOneHdi>(parcel.ReadBool() ? nullptr : executorProxy_);
+    static_cast<void>(parcel);
+    hdi_ = Common::MakeShared<PinAuthAllInOneHdi>(executorProxy_);
 }
 
 void FuzzGetExecutorInfo(Parcel &parcel)
@@ -99,6 +100,7 @@ void FuzzEnroll(Parcel &parcel)
         .tokenId = parcel.ReadUint32(),
         .extraInfo = extraInfo,
     };
+    hdi_->SetAuthType(AuthType::PIN);
     if (hdi_ != nullptr) {
         hdi_->Enroll(SCHEDULE_ID, parm, iExecutorCallback_);
     }
@@ -118,6 +120,7 @@ void FuzzAuthenticate(Parcel &parcel)
         .extraInfo = extraInfo,
         .endAfterFirstFail = parcel.ReadBool(),
     };
+    hdi_->SetAuthType(AuthType::PIN);
     if (hdi_ != nullptr) {
         hdi_->Authenticate(SCHEDULE_ID, parm, iExecutorCallback_);
     }
@@ -182,9 +185,30 @@ void FuzzGetProperty(Parcel &parcel)
     IAM_LOGI("end");
 }
 
+void FuzzConvertAttributeKeyToPropertyType(Parcel &parcel)
+{
+    IAM_LOGI("begin");
+    const UserAuth::Attributes::AttributeKey in = static_cast<UserAuth::Attributes::AttributeKey>(parcel.ReadUint32());
+    int32_t out;
+    if (hdi_ != nullptr) {
+        hdi_->ConvertAttributeKeyToPropertyType(in, out);
+    }
+    IAM_LOGI("end");
+}
+
+void FuzzSetAuthType(Parcel &parcel)
+{
+    IAM_LOGI("begin");
+    int32_t authType = parcel.ReadInt32();
+    if (hdi_ != nullptr) {
+        hdi_->SetAuthType(authType);
+    }
+    IAM_LOGI("end");
+}
+
 using FuzzFunc = decltype(FuzzGetExecutorInfo);
 FuzzFunc *g_fuzzFuncs[] = {FuzzGetExecutorInfo, FuzzOnRegisterFinish, FuzzSendMessage, FuzzEnroll, FuzzAuthenticate,
-    FuzzOnSetData, FuzzDelete, FuzzCancel, FuzzGetProperty};
+    FuzzOnSetData, FuzzDelete, FuzzCancel, FuzzGetProperty, FuzzConvertAttributeKeyToPropertyType, FuzzSetAuthType};
 
 void PinAuthAllInOneHdiFuzzTest(const uint8_t *data, size_t size)
 {
