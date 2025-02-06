@@ -37,7 +37,7 @@ void LoadModeHandlerDynamic::Init()
     }
 
     const auto &driverLoadManager = DriverLoadManager::GetInstance();
-    (void)driverLoadManager;
+    static_cast<void>(driverLoadManager);
 
     isInit_ = true;
 }
