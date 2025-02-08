@@ -44,7 +44,7 @@ void PinAuthLoadModeTest::TearDown()
 HWTEST_F(PinAuthLoadModeTest, SystemParamManagerTest001, TestSize.Level0)
 {
     SystemParamManager::GetInstance().SetParam("useriam.pinAuthLoadModeTestParam001", "true");
-    EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam001",""), "true");
+    EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam001", ""), "true");
 
     SystemParamManager::GetInstance().SetParam("useriam.pinAuthLoadModeTestParam002", "true");
     SystemParamManager::GetInstance().SetParam("useriam.pinAuthLoadModeTestParam002", "true");
@@ -53,48 +53,48 @@ HWTEST_F(PinAuthLoadModeTest, SystemParamManagerTest001, TestSize.Level0)
 HWTEST_F(PinAuthLoadModeTest, SystemParamManagerTest002, TestSize.Level0)
 {
     SystemParamManager::GetInstance().SetParamTwice("useriam.pinAuthLoadModeTestParam003", "true", "true");
-    EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam003",""), "true");
+    EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam003", ""), "true");
 
     SystemParamManager::GetInstance().SetParamTwice("useriam.pinAuthLoadModeTestParam004", "true", "false");
-    EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam004",""), "false");
+    EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam004", ""), "false");
 
     SystemParamManager::GetInstance().SetParam("useriam.pinAuthLoadModeTestParam005", "true");
     SystemParamManager::GetInstance().SetParamTwice("useriam.pinAuthLoadModeTestParam005", "true", "false");
-    EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam005",""), "false");
+    EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam005", ""), "false");
 
     SystemParamManager::GetInstance().SetParam("useriam.pinAuthLoadModeTestParam006", "true");
     SystemParamManager::GetInstance().SetParamTwice("useriam.pinAuthLoadModeTestParam006", "true", "true");
-    EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam006",""), "true");
+    EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam006", ""), "true");
 }
 
 HWTEST_F(PinAuthLoadModeTest, SystemParamManagerTest003, TestSize.Level0)
 {
     SystemParamManager::GetInstance().SetParam("useriam.pinAuthLoadModeTestParam007", "true");
-    EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam007",""), "true");
+    EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam007", ""), "true");
 
     SystemParamManager::GetInstance().WatchParam("useriam.pinAuthLoadModeTestParam007", [](const std::string &value) {
-        if (value == "true"){
-            EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam007",""), "true");
+        if (value == "true") {
+            EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam007", ""), "true");
         }
     });
-    
+
     SystemParamManager::GetInstance().SetParam("useriam.pinAuthLoadModeTestParam007", "true");
 }
 
 HWTEST_F(PinAuthLoadModeTest, SystemParamManagerTest004, TestSize.Level0)
 {
     SystemParamManager::GetInstance().SetParam("useriam.pinAuthLoadModeTestParam008", "true");
-    EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam008",""), "true");
+    EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam008", ""), "true");
 
     SystemParamManager::GetInstance().WatchParam("useriam.pinAuthLoadModeTestParam008", [](const std::string &value) {
-        if (value == "true"){
-            EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam008",""), "true");
+        if (value == "true") {
+            EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam008", ""), "true");
         }
     });
 
     SystemParamManager::GetInstance().WatchParam("useriam.pinAuthLoadModeTestParam008", [](const std::string &value) {
-        if (value == "true"){
-            EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam008",""), "true");
+        if (value == "true") {
+            EXPECT_EQ(SystemParamManager::GetInstance().GetParam("useriam.pinAuthLoadModeTestParam008", ""), "true");
         }
     });
 
@@ -105,7 +105,7 @@ HWTEST_F(PinAuthLoadModeTest, LoadModeHandlerDefaultTest001, TestSize.Level0)
 {
     SystemParamManager::GetInstance().SetParam("bootevent.useriam.fwkready", "true");
     LoadModeHandlerDefault::GetInstance().OnFrameworkDown();
-    EXPECT_EQ(SystemParamManager::GetInstance().GetParam("bootevent.useriam.fwkready",""), "false");
+    EXPECT_EQ(SystemParamManager::GetInstance().GetParam("bootevent.useriam.fwkready", ""), "false");
 }
 } // namespace PinAuth
 } // namespace UserIam
