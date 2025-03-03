@@ -29,14 +29,14 @@ public:
     LoadModeHandlerDynamic();
     ~LoadModeHandlerDynamic() override = default;
 
-    void Init() override;
+    void StartSubscribe() override;
     void OnFrameworkDown() override;
 
 private:
     bool AnyUserHasPinCredential();
     void RefreshIsPinEnrolled();
 
-    bool isInit_ = false;
+    bool isSubscribed_ = false;
     std::recursive_mutex mutex_;
     bool isPinEnrolled_;
 };
