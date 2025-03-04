@@ -29,17 +29,16 @@ LoadModeHandlerDynamic::LoadModeHandlerDynamic()
     IAM_LOGI("sa load mode is dynamic");
 }
 
-void LoadModeHandlerDynamic::Init()
+void LoadModeHandlerDynamic::StartSubscribe()
 {
     std::lock_guard<std::recursive_mutex> lock(mutex_);
-    if (isInit_) {
+    if (isSubscribed_) {
         return;
     }
 
-    const auto &driverLoadManager = DriverLoadManager::GetInstance();
-    static_cast<void>(driverLoadManager);
+    DriverLoadManager::GetInstance().StartSubscribe();
 
-    isInit_ = true;
+    isSubscribed_ = true;
 }
 
 void LoadModeHandlerDynamic::OnFrameworkDown()

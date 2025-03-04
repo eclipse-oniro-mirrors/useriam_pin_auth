@@ -68,8 +68,7 @@ void PinAuthService::OnStart()
         return;
     }
     StartDriverManager();
-    const auto &loadModeHandler = LoadModeHandler::GetInstance();
-    (void)loadModeHandler;
+    LoadModeHandler::GetInstance().StartSubscribe();
 }
 
 void PinAuthService::OnStop()

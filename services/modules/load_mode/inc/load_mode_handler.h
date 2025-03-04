@@ -25,7 +25,7 @@ class LoadModeHandler {
 public:
     static LoadModeHandler &GetInstance();
 
-    virtual void Init() = 0;
+    virtual void StartSubscribe() = 0;
 
     virtual void OnFrameworkDown() = 0;
 
