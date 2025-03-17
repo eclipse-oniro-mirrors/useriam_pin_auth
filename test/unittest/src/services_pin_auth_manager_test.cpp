@@ -46,14 +46,14 @@ void ServicesPinAuthManagerTest::TearDown()
 {
 }
 
-HWTEST_F(ServicesPinAuthManagerTest, ServicesPinAuthManagerTest001, TestSize.Level0)
+HWTEST_F(ServicesPinAuthManagerTest, ServicesPinAuthManagerTest001, TestSize.Level3)
 {
     uint32_t tokenId = 1;
     sptr<InputerGetData> inputer(nullptr);
     EXPECT_NO_THROW(PinAuthManager::GetInstance().RegisterInputer(tokenId, inputer));
 }
 
-HWTEST_F(ServicesPinAuthManagerTest, GetInputerLockTest001, TestSize.Level0)
+HWTEST_F(ServicesPinAuthManagerTest, GetInputerLockTest001, TestSize.Level3)
 {
     uint32_t tokenId = 1;
     sptr<InputerGetData> inputer(new (std::nothrow) MockInputerGetData());
@@ -62,7 +62,7 @@ HWTEST_F(ServicesPinAuthManagerTest, GetInputerLockTest001, TestSize.Level0)
     PinAuthManager::GetInstance().UnRegisterInputer(tokenId);
 }
 
-HWTEST_F(ServicesPinAuthManagerTest, OnRemoteDiedTest001, TestSize.Level0)
+HWTEST_F(ServicesPinAuthManagerTest, OnRemoteDiedTest001, TestSize.Level3)
 {
     uint32_t tokenId = 1;
     sptr<InputerGetData> inputer(new (std::nothrow) MockInputerGetData());
@@ -70,7 +70,7 @@ HWTEST_F(ServicesPinAuthManagerTest, OnRemoteDiedTest001, TestSize.Level0)
     EXPECT_NO_THROW(PinAuthManager::GetInstance().pinAuthDeathMap_[tokenId]->OnRemoteDied(nullptr));
 }
 
-HWTEST_F(ServicesPinAuthManagerTest, OnRemoteDiedTest002, TestSize.Level0)
+HWTEST_F(ServicesPinAuthManagerTest, OnRemoteDiedTest002, TestSize.Level3)
 {
     uint32_t tokenId = 1;
     sptr<InputerGetData> inputer(new (std::nothrow) MockInputerGetData());

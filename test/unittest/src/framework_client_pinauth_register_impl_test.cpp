@@ -75,7 +75,7 @@ void FrameworkClientPinAuthRegisterImplTest::TearDown()
 {
 }
 
-HWTEST_F(FrameworkClientPinAuthRegisterImplTest, ResetProxyTest001, TestSize.Level0)
+HWTEST_F(FrameworkClientPinAuthRegisterImplTest, ResetProxyTest001, TestSize.Level2)
 {
     sptr<MockPinAuthInterface> mock(new (std::nothrow) MockPinAuthInterface());
     EXPECT_CALL(*mock, RemoveDeathRecipient(_))
@@ -88,13 +88,13 @@ HWTEST_F(FrameworkClientPinAuthRegisterImplTest, ResetProxyTest001, TestSize.Lev
     PinAuthRegisterImpl::Instance().ResetProxy(mock);
 }
 
-HWTEST_F(FrameworkClientPinAuthRegisterImplTest, OnRemoteDied001, TestSize.Level0)
+HWTEST_F(FrameworkClientPinAuthRegisterImplTest, OnRemoteDied001, TestSize.Level2)
 {
     sptr<IRemoteObject::DeathRecipient> dr(new (std::nothrow) PinAuthRegisterImpl::PinAuthDeathRecipient());
     EXPECT_NO_THROW(dr->OnRemoteDied(nullptr));
 }
 
-HWTEST_F(FrameworkClientPinAuthRegisterImplTest, OnRemoteDied002, TestSize.Level0)
+HWTEST_F(FrameworkClientPinAuthRegisterImplTest, OnRemoteDied002, TestSize.Level2)
 {
     sptr<IRemoteObject::DeathRecipient> dr(new (std::nothrow) PinAuthRegisterImpl::PinAuthDeathRecipient());
     sptr<MockPinAuthInterface> mock(new (std::nothrow) MockPinAuthInterface());
