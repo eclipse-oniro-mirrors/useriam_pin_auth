@@ -45,21 +45,21 @@ void PinAuthServiceTest::TearDown()
 {
 }
 
-HWTEST_F(PinAuthServiceTest, RegisterInputerTest001, TestSize.Level0)
+HWTEST_F(PinAuthServiceTest, RegisterInputerTest001, TestSize.Level1)
 {
     auto service = Common::MakeShared<PinAuthService>();
     EXPECT_NE(service, nullptr);
     EXPECT_EQ(service->RegisterInputer(nullptr), false);
 }
 
-HWTEST_F(PinAuthServiceTest, UnRegisterInputerTest001, TestSize.Level0)
+HWTEST_F(PinAuthServiceTest, UnRegisterInputerTest001, TestSize.Level1)
 {
     auto service = Common::MakeShared<PinAuthService>();
     EXPECT_NE(service, nullptr);
     EXPECT_NO_THROW(service->UnRegisterInputer());
 }
 
-HWTEST_F(PinAuthServiceTest, OnStartTest001, TestSize.Level0)
+HWTEST_F(PinAuthServiceTest, OnStartTest001, TestSize.Level1)
 {
     auto service = Common::MakeShared<PinAuthService>();
     EXPECT_NE(service, nullptr);
@@ -67,14 +67,14 @@ HWTEST_F(PinAuthServiceTest, OnStartTest001, TestSize.Level0)
     EXPECT_NO_THROW(service->OnStart());
 }
 
-HWTEST_F(PinAuthServiceTest, OnStopTest001, TestSize.Level0)
+HWTEST_F(PinAuthServiceTest, OnStopTest001, TestSize.Level3)
 {
     auto service = Common::MakeShared<PinAuthService>();
     EXPECT_NE(service, nullptr);
     EXPECT_NO_THROW(service->OnStop());
 }
 
-HWTEST_F(PinAuthServiceTest, PinAuthServiceTest001, TestSize.Level0)
+HWTEST_F(PinAuthServiceTest, PinAuthServiceTest001, TestSize.Level3)
 {
     static const char *PERMS[] = {
         "ohos.permission.ACCESS_PIN_AUTH"
@@ -99,7 +99,7 @@ HWTEST_F(PinAuthServiceTest, PinAuthServiceTest001, TestSize.Level0)
     service->UnRegisterInputer();
 }
 
-HWTEST_F(PinAuthServiceTest, PinAuthServiceTest002, TestSize.Level0)
+HWTEST_F(PinAuthServiceTest, PinAuthServiceTest002, TestSize.Level3)
 {
     static const char *PERMS[] = {
         "ohos.permission.ACCESS_PIN_AUTH"

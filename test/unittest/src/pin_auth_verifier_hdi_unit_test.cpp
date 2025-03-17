@@ -74,7 +74,7 @@ void PinAuthVerifierHdiUnitTest::TearDown()
 {
 }
 
-HWTEST_F(PinAuthVerifierHdiUnitTest, PinAuthVerifierExecutorHdi_GetExecutorInfo_001, TestSize.Level0)
+HWTEST_F(PinAuthVerifierHdiUnitTest, PinAuthVerifierExecutorHdi_GetExecutorInfo_001, TestSize.Level4)
 {
     auto executorProxy = new (std::nothrow) MockIVerifyExecutor();
     ASSERT_TRUE(executorProxy != nullptr);
@@ -95,7 +95,7 @@ HWTEST_F(PinAuthVerifierHdiUnitTest, PinAuthVerifierExecutorHdi_GetExecutorInfo_
     EXPECT_TRUE(ret == IamResultCode::SUCCESS);
 }
 
-HWTEST_F(PinAuthVerifierHdiUnitTest, PinAuthVerifierExecutorHdi_GetExecutorInfo_002, TestSize.Level0)
+HWTEST_F(PinAuthVerifierHdiUnitTest, PinAuthVerifierExecutorHdi_GetExecutorInfo_002, TestSize.Level4)
 {
     for (const auto &pair : RESULT_CODE_MAP) {
         auto executorProxy = new (std::nothrow) MockIVerifyExecutor();
@@ -117,7 +117,7 @@ HWTEST_F(PinAuthVerifierHdiUnitTest, PinAuthVerifierExecutorHdi_GetExecutorInfo_
     }
 }
 
-HWTEST_F(PinAuthVerifierHdiUnitTest, PinAuthVerifierExecutorHdi_GetExecutorInfo_003, TestSize.Level0)
+HWTEST_F(PinAuthVerifierHdiUnitTest, PinAuthVerifierExecutorHdi_GetExecutorInfo_003, TestSize.Level4)
 {
     static const std::map<AuthType, pair<IamAuthType, IamResultCode>> data = {
         {AuthType::PIN, {IamAuthType::PIN, IamResultCode::SUCCESS}},
@@ -149,7 +149,7 @@ HWTEST_F(PinAuthVerifierHdiUnitTest, PinAuthVerifierExecutorHdi_GetExecutorInfo_
     }
 }
 
-HWTEST_F(PinAuthVerifierHdiUnitTest, PinAuthVerifierExecutorHdi_GetExecutorInfo_004, TestSize.Level0)
+HWTEST_F(PinAuthVerifierHdiUnitTest, PinAuthVerifierExecutorHdi_GetExecutorInfo_004, TestSize.Level4)
 {
     static const std::map<ExecutorRole, pair<IamExecutorRole, IamResultCode>> data = {
         {ExecutorRole::COLLECTOR, {IamExecutorRole::COLLECTOR, IamResultCode::SUCCESS}},

@@ -14,7 +14,7 @@
 import("//build/ohos.gni")
 import("//build/test.gni")
 
-module_output_path = "pin_auth/PinAuth_UT_test"
+module_output_path = "pin_auth/pin_auth"
 
 ohos_unittest("PinAuth_UT_test") {
   sanitize = {

@@ -56,7 +56,7 @@ sptr<MockInputerSetData> GetMockInputerSetData(int32_t testAuthSubType,
 }
 }
 
-HWTEST_F(InputerDataImplTest, CheckPinComplexity001, TestSize.Level0)
+HWTEST_F(InputerDataImplTest, CheckPinComplexity001, TestSize.Level1)
 {
     InputerGetDataParam param = {};
     param.algoVersion = PIN_ALGO_VERSION_V2;
@@ -70,7 +70,7 @@ HWTEST_F(InputerDataImplTest, CheckPinComplexity001, TestSize.Level0)
     EXPECT_EQ(result, 0);
 }
 
-HWTEST_F(InputerDataImplTest, CheckPinComplexity002, TestSize.Level0)
+HWTEST_F(InputerDataImplTest, CheckPinComplexity002, TestSize.Level1)
 {
     constexpr int32_t testAuthSubType = 10000;
     InputerGetDataParam param = {};
@@ -84,7 +84,7 @@ HWTEST_F(InputerDataImplTest, CheckPinComplexity002, TestSize.Level0)
     EXPECT_EQ(result, 0);
 }
 
-HWTEST_F(InputerDataImplTest, OnSetDataInner001, TestSize.Level0)
+HWTEST_F(InputerDataImplTest, OnSetDataInner001, TestSize.Level1)
 {
     constexpr int32_t testAuthSubType = 10000;
     InputerGetDataParam param = {};
@@ -97,7 +97,7 @@ HWTEST_F(InputerDataImplTest, OnSetDataInner001, TestSize.Level0)
     EXPECT_NO_THROW(inputerDataImpl.OnSetDataInner(testAuthSubType, testSetData, testErrorCode));
 }
 
-HWTEST_F(InputerDataImplTest, GetRecoveryKeyDataTest001, TestSize.Level0)
+HWTEST_F(InputerDataImplTest, GetRecoveryKeyDataTest001, TestSize.Level1)
 {
     constexpr int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testData = {6, 7};
@@ -119,7 +119,7 @@ HWTEST_F(InputerDataImplTest, GetRecoveryKeyDataTest001, TestSize.Level0)
 }
 
 
-HWTEST_F(InputerDataImplTest, GetPinDataTest001, TestSize.Level0)
+HWTEST_F(InputerDataImplTest, GetPinDataTest001, TestSize.Level1)
 {
     InputerGetDataParam param = {};
     param.mode = GET_DATA_MODE_NONE;
@@ -138,7 +138,7 @@ HWTEST_F(InputerDataImplTest, GetPinDataTest001, TestSize.Level0)
     EXPECT_NO_THROW(inputerDataImpl.GetPinData(param.authSubType, testData, testSetData, testErrorCode));
 }
 
-HWTEST_F(InputerDataImplTest, GetPinDataTest002, TestSize.Level0)
+HWTEST_F(InputerDataImplTest, GetPinDataTest002, TestSize.Level1)
 {
     constexpr int32_t testAuthSubType = 10000;
     InputerGetDataParam param = {};
@@ -156,7 +156,7 @@ HWTEST_F(InputerDataImplTest, GetPinDataTest002, TestSize.Level0)
     EXPECT_NO_THROW(inputerDataImpl.GetPinData(testAuthSubType, testData, testSetData, testErrorCode));
 }
 
-HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest001, TestSize.Level0)
+HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest001, TestSize.Level1)
 {
     constexpr int32_t testAuthSubType = 10000;
     InputerGetDataParam param = {};
@@ -174,7 +174,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest001, TestSize.Level0)
     inputerDataImpl.OnSetData(testAuthSubType, testData);
 }
 
-HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest002, TestSize.Level0)
+HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest002, TestSize.Level1)
 {
     constexpr int32_t testAuthSubType = 10000;
     InputerGetDataParam param = {};
@@ -195,7 +195,7 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest002, TestSize.Level0)
     inputerDataImpl.OnSetData(testAuthSubType, testData);
 }
 
-HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest003, TestSize.Level0)
+HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest003, TestSize.Level1)
 {
     constexpr int32_t testAuthSubType = 10000;
     InputerGetDataParam param = {};
