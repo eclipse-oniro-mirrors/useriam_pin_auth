@@ -15,6 +15,7 @@
 
 #include "driver_load_manager.h"
 
+#include "hisysevent_adapter.h"
 #include "iam_check.h"
 #include "iam_logger.h"
 
@@ -150,6 +151,9 @@ bool DriverLoadManager::LoadDriver()
     int32_t loadDriverRet = devMgr->LoadDevice(SERVICE_NAME);
     if (loadDriverRet != 0) {
         IAM_LOGE("load %{public}s service failed, ret:%{public}d", SERVICE_NAME, loadDriverRet);
+        SaLoadDriverFailureTrace saLoadDriverFailureTraceInfo = {};
+        saLoadDriverFailureTraceInfo.errCode = loadDriverRet;
+        UserIam::PinAuth::ReportSaLoadDriverFailure(saLoadDriverFailureTraceInfo);
         return false;
     }
     return true;

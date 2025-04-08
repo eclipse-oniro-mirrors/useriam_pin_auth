@@ -21,6 +21,9 @@
         "pin_auth_enabled",
         "pin_auth_enable_dynamic_load"
       ],
+      "hisysevent_config": [
+        "//base/useriam/pin_auth/hisysevent.yaml"
+      ],
       "rom": "1024KB",
       "ram": "6072KB",
       "deps": {
@@ -39,7 +42,8 @@
             "data_share",
             "init",
             "device_manager",
-            "hdf_core"
+            "hdf_core",
+            "hisysevent"
         ]
       },
       "build": {
