@@ -19,14 +19,16 @@
 #include "iam_logger.h"
  
 #define LOG_TAG "PIN_AUTH_SA"
- 
+
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
+namespace {
+    constexpr char STR_ERROR_CODE[] = "ERROR_CODE";
+}
+
 using HiSysEvent = OHOS::HiviewDFX::HiSysEvent;
- 
-constexpr char STR_ERROR_CODE[] = "ERROR_CODE";
- 
+
 void ReportSaLoadDriverFailure(const SaLoadDriverFailureTrace &info)
 {
     int32_t ret = HiSysEventWrite(HiSysEvent::Domain::PIN_AUTH_SA, "SA_LOAD_DRIVER_FAILURE",
