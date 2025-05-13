@@ -73,10 +73,6 @@ void InputerDataImpl::GetPinData(
         IAM_LOGE("CheckPinComplexity enroll failed");
         return;
     }
-    if (mode_ == GET_DATA_MODE_ALL_IN_ONE_PIN_ENROLL && authSubType == UserAuth::PIN_PATTERN) {
-        IAM_LOGE("GetPinData Enroll Unsupport Type Pattern");
-        return;
-    }
     auto scryptPointer = Common::MakeUnique<Scrypt>(algoParameter_);
     if (scryptPointer == nullptr) {
         IAM_LOGE("scryptPointer is nullptr");
