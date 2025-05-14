@@ -44,6 +44,8 @@ public:
         const std::vector<int32_t>& propertyTypes, Property& property));
     MOCK_METHOD3(SendCommand, int32_t(int32_t commandId, const std::vector<uint8_t> &extraInfo,
         const sptr<IExecutorCallback> &callbackObj));
+    MOCK_METHOD4(Abandon, int32_t(uint64_t scheduleId, uint64_t templateId, const std::vector<uint8_t>& extraInfo,
+        const sptr<IExecutorCallback>& callbackObj));
 };
 } // namespace PinAuth
 } // namespace UserIam

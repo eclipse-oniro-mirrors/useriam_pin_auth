@@ -485,6 +485,52 @@ HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_GetProperty_004, TestSiz
     auto ret = allInOneHdi.GetProperty(templateIdList, keys, property);
     EXPECT_EQ(ret, IamResultCode::SUCCESS);
 }
+
+HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_Abandon_001, TestSize.Level0)
+{
+    for (const auto &pair : RESULT_CODE_MAP) {
+        auto executorProxy = new (std::nothrow) MockIAllInOneExecutor();
+        ASSERT_TRUE(executorProxy != nullptr);
+        EXPECT_CALL(*executorProxy, Abandon(_, _, _, _))
+            .Times(Exactly(1))
+            .WillOnce([&pair](uint64_t scheduleId, uint64_t tempalteId, const std::vector<uint8_t> &extraInfo,
+                          const sptr<IExecutorCallback> &callbackObj) { return pair.first; });
+        auto allInOneHdi = MakeShared<PinAuthAllInOneHdi>(executorProxy);
+        allInOneHdi->authType_ = AuthType::PIN;
+        ASSERT_TRUE(allInOneHdi != nullptr);
+        auto executeCallback = MakeShared<UserIam::UserAuth::MockIExecuteCallback>();
+        ASSERT_TRUE(executeCallback != nullptr);
+        auto ret = allInOneHdi->Abandon(0, UserAuth::DeleteParam{0, 1, 1, std::vector<uint8_t>()}, executeCallback);
+        EXPECT_TRUE(ret == pair.second);
+    }
+}
+
+HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_Abandon_002, TestSize.Level0)
+{
+    auto executorProxy = new (std::nothrow) MockIAllInOneExecutor();
+    ASSERT_TRUE(executorProxy != nullptr);
+    auto allInOneHdi = MakeShared<PinAuthAllInOneHdi>(executorProxy);
+    ASSERT_TRUE(allInOneHdi != nullptr);
+    auto ret = allInOneHdi->Abandon(0, UserAuth::DeleteParam{0, 1, 1, std::vector<uint8_t>()}, nullptr);
+    EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
+}
+
+HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_Abandon_003, TestSize.Level0)
+{
+    auto allInOneHdi = MakeShared<PinAuthAllInOneHdi>(nullptr);
+    ASSERT_TRUE(allInOneHdi != nullptr);
+    auto executeCallback = MakeShared<UserIam::UserAuth::MockIExecuteCallback>();
+    ASSERT_TRUE(executeCallback != nullptr);
+    auto ret = allInOneHdi->Abandon(0, UserAuth::DeleteParam{0, 1, 1, std::vector<uint8_t>()}, executeCallback);
+    EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
+}
+
+HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_Abandon_004, TestSize.Level0)
+{
+    PinAuthAllInOneHdi allInOneHdi(nullptr);
+    auto ret = allInOneHdi.Abandon(0, UserAuth::DeleteParam{0, 1, 1, std::vector<uint8_t>()}, nullptr);
+    EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
+}
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS

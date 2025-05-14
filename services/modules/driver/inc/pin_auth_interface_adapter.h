@@ -16,13 +16,13 @@
 #ifndef PIN_AUTH_INTERFACE_ADAPTER
 #define PIN_AUTH_INTERFACE_ADAPTER
 
-#include "v2_1/ipin_auth_interface.h"
+#include "v3_0/ipin_auth_interface.h"
 
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
-using namespace OHOS::HDI::PinAuth::V2_1;
-using IPinAuthInterface = OHOS::HDI::PinAuth::V2_1::IPinAuthInterface;
+using namespace OHOS::HDI::PinAuth::V3_0;
+using IPinAuthInterface = OHOS::HDI::PinAuth::V3_0::IPinAuthInterface;
 class PinAuthInterfaceAdapter {
 public:
     explicit PinAuthInterfaceAdapter() = default;

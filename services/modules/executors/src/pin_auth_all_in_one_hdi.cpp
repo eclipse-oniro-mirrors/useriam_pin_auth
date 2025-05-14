@@ -333,6 +333,37 @@ std::optional<int32_t> PinAuthAllInOneHdi::GetAuthType()
     return authType_;
 }
 
+UserAuth::ResultCode PinAuthAllInOneHdi::Abandon(uint64_t scheduleId, const UserAuth::DeleteParam &param,
+    const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj)
+{
+    if (allInOneProxy_ == nullptr) {
+        IAM_LOGE("allInOneProxy is null");
+        return UserAuth::ResultCode::GENERAL_ERROR;
+    }
+    if (callbackObj == nullptr) {
+        IAM_LOGE("callbackObj is null");
+        return UserAuth::ResultCode::GENERAL_ERROR;
+    }
+
+    UserAuth::ExecutorParam executorParam = {
+        .tokenId = param.tokenId,
+        .scheduleId = scheduleId,
+        .userId = param.userId,
+    };
+    auto callback = sptr<IExecutorCallback>(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
+        shared_from_this(), executorParam, GET_DATA_MODE_NONE));
+    if (callback == nullptr) {
+        IAM_LOGE("callback is null");
+        return UserAuth::ResultCode::GENERAL_ERROR;
+    }
+    int32_t status = allInOneProxy_->Abandon(scheduleId, param.templateId, param.extraInfo, callback);
+    UserAuth::ResultCode result = ConvertHdiResultCode(status);
+    if (result != UserAuth::ResultCode::SUCCESS) {
+        IAM_LOGE("Abandon fail ret=%{public}d", result);
+        return result;
+    }
+    return UserAuth::ResultCode::SUCCESS;
+}
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS

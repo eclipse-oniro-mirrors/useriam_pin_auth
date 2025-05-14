@@ -22,7 +22,7 @@ namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
 using namespace OHOS;
-using namespace OHOS::HDI::PinAuth::V2_1;
+using namespace OHOS::HDI::PinAuth::V3_0;
 class MockIVerifierExecutorFuzzer : public IVerifier {
 public:
     virtual ~MockIVerifierExecutorFuzzer() = default;
