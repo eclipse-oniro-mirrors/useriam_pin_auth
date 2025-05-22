@@ -61,7 +61,10 @@ ohos_source_set("pinauth_framework_source_set") {
   ]
 
   if (customization_enterprise_device_management_enable) {
-    external_deps += [ "enterprise_device_management:edmservice_kits" ]
+    external_deps += [
+      "ability_base:want",
+      "enterprise_device_management:edmservice_kits",
+    ]
     defines = [ "CUSTOMIZATION_ENTERPRISE_DEVICE_MANAGEMENT_ENABLE" ]
   }
 
