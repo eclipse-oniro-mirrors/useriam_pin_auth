@@ -28,6 +28,7 @@
       "ram": "6072KB",
       "deps": {
         "components": [
+            "ability_base",
             "hilog",
             "ipc",
             "safwk",
