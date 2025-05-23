@@ -17,7 +17,7 @@
 
 #include "refbase.h"
 
-#include "v2_1/ipin_auth_interface.h"
+#include "v3_0/ipin_auth_interface.h"
 
 namespace OHOS {
 namespace UserIam {

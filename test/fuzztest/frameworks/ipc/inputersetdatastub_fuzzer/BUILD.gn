@@ -42,7 +42,7 @@ ohos_fuzztest("InputerSetDataStubFuzzTest") {
 
   external_deps = [
     "c_utils:utils",
-    "drivers_interface_pin_auth:libpin_auth_proxy_2.1",
+    "drivers_interface_pin_auth:libpin_auth_proxy_3.0",
     "hdf_core:libhdf_utils",
     "hilog:libhilog",
     "ipc:ipc_single",

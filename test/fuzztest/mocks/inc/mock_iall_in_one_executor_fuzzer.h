@@ -23,7 +23,7 @@ namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
 using namespace OHOS;
-using namespace OHOS::HDI::PinAuth::V2_1;
+using namespace OHOS::HDI::PinAuth::V3_0;
 class MockIAllInOneExecutorFuzzer : public IAllInOneExecutor {
 public:
     virtual ~MockIAllInOneExecutorFuzzer() = default;
@@ -81,6 +81,11 @@ public:
     }
     int32_t SendCommand(int32_t commandId, const std::vector<uint8_t> &extraInfo,
         const sptr<IExecutorCallback> &callbackObj) override
+    {
+        return isTrueTest();
+    }
+    int32_t Abandon(uint64_t scheduleId, uint64_t templateId, const std::vector<uint8_t>& extraInfo,
+        const sptr<IExecutorCallback>& callbackObj) override
     {
         return isTrueTest();
     }

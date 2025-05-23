@@ -206,9 +206,28 @@ void FuzzSetAuthType(Parcel &parcel)
     IAM_LOGI("end");
 }
 
+void FuzzAbandon(Parcel &parcel)
+{
+    IAM_LOGI("begin");
+    std::vector<uint8_t> extraInfo;
+    FillFuzzUint8Vector(parcel, extraInfo);
+    UserAuth::DeleteParam parm = {
+        .tokenId = parcel.ReadUint32(),
+        .userId = parcel.ReadInt32(),
+        .templateId = parcel.ReadUint64(),
+        .extraInfo = extraInfo,
+    };
+    hdi_->SetAuthType(AuthType::PIN);
+    if (hdi_ != nullptr) {
+        hdi_->Abandon(SCHEDULE_ID, parm, iExecutorCallback_);
+    }
+    IAM_LOGI("end");
+}
+
 using FuzzFunc = decltype(FuzzGetExecutorInfo);
 FuzzFunc *g_fuzzFuncs[] = {FuzzGetExecutorInfo, FuzzOnRegisterFinish, FuzzSendMessage, FuzzEnroll, FuzzAuthenticate,
-    FuzzOnSetData, FuzzDelete, FuzzCancel, FuzzGetProperty, FuzzConvertAttributeKeyToPropertyType, FuzzSetAuthType};
+    FuzzOnSetData, FuzzDelete, FuzzCancel, FuzzGetProperty, FuzzConvertAttributeKeyToPropertyType, FuzzSetAuthType,
+    FuzzAbandon};
 
 void PinAuthAllInOneHdiFuzzTest(const uint8_t *data, size_t size)
 {

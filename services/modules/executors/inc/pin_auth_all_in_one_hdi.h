@@ -50,7 +50,8 @@ public:
     UserAuth::ResultCode Cancel(uint64_t scheduleId) override;
     UserAuth::ResultCode GetProperty(const std::vector<uint64_t> &templateIdList,
         const std::vector<UserAuth::Attributes::AttributeKey> &keys, UserAuth::Property &property) override;
-
+    UserAuth::ResultCode Abandon(uint64_t scheduleId, const UserAuth::DeleteParam &param,
+            const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj) override;
 private:
     void MoveHdiProperty(Property &in, UserAuth::Property &out);
     UserAuth::ResultCode ConvertAttributeKeyToPropertyType(const UserAuth::Attributes::AttributeKey in, int32_t &out);
