@@ -33,13 +33,13 @@ IInputerDataImpl::IInputerDataImpl(uint64_t scheduleId, std::shared_ptr<PinAuthC
 
 IInputerDataImpl::~IInputerDataImpl() {}
 
-void IInputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data, int32_t errorCode)
+void IInputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data, uint32_t pinLength, int32_t errorCode)
 {
     IAM_LOGI("start");
     std::lock_guard<std::mutex> guard(mutex_);
     if (allInOneHdi_ != nullptr) {
         IAM_LOGI("all in one set data");
-        if (allInOneHdi_->OnSetData(scheduleId_, authSubType, data, errorCode) != SUCCESS) {
+        if (allInOneHdi_->OnSetData(scheduleId_, authSubType, data, pinLength, errorCode) != SUCCESS) {
             IAM_LOGE("event has canceled");
             return;
         }

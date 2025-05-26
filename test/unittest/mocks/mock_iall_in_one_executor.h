@@ -33,8 +33,8 @@ public:
         const std::vector<uint8_t> &frameworkPublicKey, const std::vector<uint8_t> &extraInfo));
     MOCK_METHOD1(Cancel, int32_t(uint64_t scheduleId));
     MOCK_METHOD3(SendMessage, int32_t(uint64_t scheduleId, int32_t srcRole, const std::vector<uint8_t>& msg));
-    MOCK_METHOD4(SetData, int32_t(uint64_t scheduleId, uint64_t authSubType, const std::vector<uint8_t>& data,
-        int32_t resultCode));
+    MOCK_METHOD5(SetData, int32_t(uint64_t scheduleId, uint64_t authSubType, const std::vector<uint8_t>& data,
+        uint32_t pinLength, int32_t resultCode));
     MOCK_METHOD3(Enroll, int32_t(uint64_t scheduleId, const std::vector<uint8_t> &extraInfo,
         const sptr<IExecutorCallback> &callbackObj));
     MOCK_METHOD4(Authenticate, int32_t(uint64_t scheduleId, const std::vector<uint64_t>& templateIdList,

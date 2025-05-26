@@ -50,7 +50,7 @@ void GetMockInputerGetDataService(MockInputerGetDataService *service, int32_t *t
         .WillByDefault([&testErrorCode](const InputerGetDataParam &getDataParam) {
             if (getDataParam.inputerSetData != nullptr) {
                 getDataParam.inputerSetData->OnSetData(
-                    getDataParam.authSubType, getDataParam.algoParameter, *testErrorCode);
+                    getDataParam.authSubType, getDataParam.algoParameter, 0, *testErrorCode);
             }
         }
     );
@@ -139,13 +139,13 @@ HWTEST_F(InputerGetDataStubTest, OnRemoteRequestTest001, TestSize.Level0)
                     EXPECT_EQ(getDataParam.mode, testMode);
                     if (getDataParam.inputerSetData != nullptr) {
                         getDataParam.inputerSetData->OnSetData(
-                            getDataParam.authSubType, getDataParam.algoParameter, testErrorCode);
+                            getDataParam.authSubType, getDataParam.algoParameter, 0, testErrorCode);
                     }
             }
         );
     sptr<MockInputerSetData> tempInputerSetData(new (std::nothrow) MockInputerSetData());
     EXPECT_NE(tempInputerSetData, nullptr);
-    EXPECT_CALL(*tempInputerSetData, OnSetData(_, _, _)).Times(1);
+    EXPECT_CALL(*tempInputerSetData, OnSetData(_, _, _, _)).Times(1);
     MessageParcel data;
     MessageParcel reply;
     EXPECT_TRUE(data.WriteInterfaceToken(InputerGetData::GetDescriptor()));

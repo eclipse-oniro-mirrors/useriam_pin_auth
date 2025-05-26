@@ -156,7 +156,8 @@ void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
             GetPinData(authSubType, data, setData, errorCode);
             break;
     }
-    OnSetDataInner(authSubType, setData, errorCode);
+    uint32_t pinLength = data.size();
+    OnSetDataInner(authSubType, setData, pinLength, errorCode);
     if (!data.empty()) {
         (void)memset_s(data.data(), data.size(), 0, data.size());
     }
@@ -178,13 +179,14 @@ bool InputerDataImpl::GetSha256(const std::vector<uint8_t> &data, std::vector<ui
     return true;
 }
 
-void InputerDataImpl::OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &setData, int32_t errorCode)
+void InputerDataImpl::OnSetDataInner(int32_t authSubType, std::vector<uint8_t> &setData,
+    uint32_t pinLength, int32_t errorCode)
 {
     if (inputerSetData_ == nullptr) {
         IAM_LOGE("inputerSetData is nullptr");
         return;
     }
-    inputerSetData_->OnSetData(authSubType, setData, errorCode);
+    inputerSetData_->OnSetData(authSubType, setData, pinLength, errorCode);
 }
 
 bool InputerDataImpl::CheckPinSizeBySubType(int32_t authSubType, size_t size)

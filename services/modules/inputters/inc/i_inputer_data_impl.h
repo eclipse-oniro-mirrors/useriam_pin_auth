@@ -32,7 +32,7 @@ public:
     IInputerDataImpl(uint64_t scheduleId, std::shared_ptr<PinAuthAllInOneHdi> hdi);
     IInputerDataImpl(uint64_t scheduleId, std::shared_ptr<PinAuthCollectorHdi> hdi);
     ~IInputerDataImpl() override;
-    void OnSetData(int32_t authSubType, std::vector<uint8_t> data, int32_t errorCode) override;
+    void OnSetData(int32_t authSubType, std::vector<uint8_t> data, uint32_t pinLength, int32_t errorCode) override;
 
 private:
     std::mutex mutex_;

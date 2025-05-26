@@ -92,13 +92,13 @@ UserAuth::ResultCode PinAuthAllInOneHdi::SendMessage(
 }
 
 UserAuth::ResultCode PinAuthAllInOneHdi::OnSetData(uint64_t scheduleId, uint64_t authSubType,
-    const std::vector<uint8_t> &data, int32_t errorCode)
+    const std::vector<uint8_t> &data, uint32_t pinLength, int32_t errorCode)
 {
     if (allInOneProxy_ == nullptr) {
         IAM_LOGE("allInOneProxy is null");
         return UserAuth::ResultCode::GENERAL_ERROR;
     }
-    int32_t status = allInOneProxy_->SetData(scheduleId, authSubType, data, errorCode);
+    int32_t status = allInOneProxy_->SetData(scheduleId, authSubType, data, pinLength, errorCode);
     UserAuth::ResultCode result = ConvertHdiResultCode(status);
     if (result != UserAuth::ResultCode::SUCCESS) {
         IAM_LOGE("OnSetData fail ret=%{public}d", result);
@@ -260,6 +260,7 @@ void PinAuthAllInOneHdi::MoveHdiProperty(Property &in, UserAuth::Property &out)
     out.lockoutDuration = in.lockoutDuration;
     out.remainAttempts = in.remainAttempts;
     out.nextFailLockoutDuration = in.nextFailLockoutDuration;
+    out.credentialLength = in.credentialLength;
 }
 
 UserAuth::ResultCode PinAuthAllInOneHdi::ConvertAttributeKeyVectorToPropertyType(
@@ -288,6 +289,7 @@ UserAuth::ResultCode PinAuthAllInOneHdi::ConvertAttributeKeyToPropertyType(const
         { UserAuth::Attributes::ATTR_FREEZING_TIME, GetPropertyType::LOCKOUT_DURATION },
         { UserAuth::Attributes::ATTR_REMAIN_TIMES, GetPropertyType::REMAIN_ATTEMPTS },
         { UserAuth::Attributes::ATTR_NEXT_FAIL_LOCKOUT_DURATION, GetPropertyType::NEXT_FAIL_LOCKOUT_DURATION },
+        { UserAuth::Attributes::ATTR_CREDENTIAL_LENGTH, GetPropertyType::CREDENTIAL_LENGTH },
     };
 
     auto iter = data.find(in);
@@ -363,6 +365,64 @@ UserAuth::ResultCode PinAuthAllInOneHdi::Abandon(uint64_t scheduleId, const User
         return result;
     }
     return UserAuth::ResultCode::SUCCESS;
+}
+
+UserAuth::ResultCode PinAuthAllInOneHdi::SendCommand(UserAuth::PropertyMode commandId,
+    const std::vector<uint8_t> &extraInfo, const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj)
+{
+    IF_FALSE_LOGE_AND_RETURN_VAL(allInOneProxy_ != nullptr, UserAuth::ResultCode::GENERAL_ERROR);
+    IF_FALSE_LOGE_AND_RETURN_VAL(callbackObj != nullptr, UserAuth::ResultCode::GENERAL_ERROR);
+    int32_t hdiCommandId;
+    UserAuth::ResultCode result = ConvertCommandId(commandId, hdiCommandId);
+    if (result != UserAuth::ResultCode::SUCCESS) {
+        IAM_LOGE("ConvertCommandId fail result %{public}d", result);
+        return result;
+    }
+    UserAuth::ExecutorParam executorParam = {};
+    sptr<IExecutorCallback> callback(new (std::nothrow) PinAuthExecutorCallbackHdi(callbackObj,
+        shared_from_this(), executorParam, GET_DATA_MODE_NONE));
+    IF_FALSE_LOGE_AND_RETURN_VAL(callback != nullptr, UserAuth::ResultCode::GENERAL_ERROR);
+    int32_t status = allInOneProxy_->SendCommand(hdiCommandId, extraInfo, callback);
+    result = ConvertResultCode(status);
+    if (result != UserAuth::ResultCode::SUCCESS) {
+        IAM_LOGE("SendCommand fail result %{public}d", result);
+        return result;
+    }
+    return UserAuth::ResultCode::SUCCESS;
+}
+
+UserAuth::ResultCode PinAuthAllInOneHdi::ConvertCommandId(const UserAuth::PropertyMode in, int32_t &out)
+{
+    if (static_cast<CommandId>(in) > CommandId::VENDOR_COMMAND_BEGIN) {
+        out = static_cast<CommandId>(in);
+        IAM_LOGI("vendor command id %{public}d, no covert", out);
+        return UserAuth::ResultCode::SUCCESS;
+    } else {
+        IAM_LOGE("command id %{public}d is invalid", in);
+        return UserAuth::ResultCode::INVALID_PARAMETERS;
+    }
+}
+
+UserAuth::ResultCode PinAuthAllInOneHdi::ConvertResultCode(const int32_t in)
+{
+    HDF_STATUS hdfIn = static_cast<HDF_STATUS>(in);
+    static const std::map<HDF_STATUS, UserAuth::ResultCode> data = {
+        { HDF_SUCCESS, UserAuth::ResultCode::SUCCESS },
+        { HDF_FAILURE, UserAuth::ResultCode::GENERAL_ERROR },
+        { HDF_ERR_TIMEOUT, UserAuth::ResultCode::TIMEOUT },
+        { HDF_ERR_QUEUE_FULL, UserAuth::ResultCode::BUSY },
+        { HDF_ERR_DEVICE_BUSY, UserAuth::ResultCode::BUSY },
+    };
+
+    UserAuth::ResultCode out;
+    auto iter = data.find(hdfIn);
+    if (iter == data.end()) {
+        out = UserAuth::ResultCode::GENERAL_ERROR;
+    } else {
+        out = iter->second;
+    }
+    IAM_LOGI("covert hdi result code %{public}d to framework result code %{public}d", in, out);
+    return out;
 }
 } // namespace PinAuth
 } // namespace UserIam

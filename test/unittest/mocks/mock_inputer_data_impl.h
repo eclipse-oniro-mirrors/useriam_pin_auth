@@ -25,7 +25,8 @@ namespace UserIam {
 namespace PinAuth {
 class MockInputerDataImpl final : public InputerSetDataStub {
 public:
-    MOCK_METHOD3(OnSetData, void(int32_t authSubType, std::vector<uint8_t> data, int32_t errorCode));
+    MOCK_METHOD4(OnSetData, void(int32_t authSubType, std::vector<uint8_t> data, uint32_t pinLength,
+        int32_t errorCode));
 };
 } // namespace PinAuth
 } // namespace UserIam

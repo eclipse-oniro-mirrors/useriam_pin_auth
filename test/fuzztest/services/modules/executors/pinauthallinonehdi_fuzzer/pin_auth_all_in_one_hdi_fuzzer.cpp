@@ -132,10 +132,11 @@ void FuzzOnSetData(Parcel &parcel)
     IAM_LOGI("begin");
     uint64_t authSubType = parcel.ReadUint32();
     std::vector<uint8_t> data;
+    uint32_t pinLength = parcel.ReadUint32();
     int32_t errorCode = parcel.ReadInt32();
     FillFuzzUint8Vector(parcel, data);
     if (hdi_ != nullptr) {
-        hdi_->OnSetData(SCHEDULE_ID, authSubType, data, errorCode);
+        hdi_->OnSetData(SCHEDULE_ID, authSubType, data, pinLength, errorCode);
     }
     IAM_LOGI("end");
 }
