@@ -47,14 +47,16 @@ HWTEST_F(InputerSetDataStubTest, InputerSetDataStubTestOnSetData001, TestSize.Le
     int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testData = {1, 2, 3, 4, 5};
     int32_t testErrorCode = 0;
+    uint32_t testPinLength = 0;
 
     MockInputerDataImpl inputerDataImpl;
-    EXPECT_CALL(inputerDataImpl, OnSetData(_, _, _)).Times(1);
+    EXPECT_CALL(inputerDataImpl, OnSetData(_, _, _, _)).Times(1);
     ON_CALL(inputerDataImpl, OnSetData)
-        .WillByDefault([&testAuthSubType, &testErrorCode]
-            (int32_t authSubType, std::vector<uint8_t> data, int32_t errorCode) {
+        .WillByDefault([&testAuthSubType, &testErrorCode, &testPinLength]
+            (int32_t authSubType, std::vector<uint8_t> data, uint32_t pinLength, int32_t errorCode) {
                 EXPECT_EQ(authSubType, testAuthSubType);
                 EXPECT_THAT(data, ElementsAre(1, 2, 3, 4, 5));
+                EXPECT_EQ(pinLength, testPinLength);
                 EXPECT_EQ(errorCode, testErrorCode);
             }
         );
@@ -65,6 +67,7 @@ HWTEST_F(InputerSetDataStubTest, InputerSetDataStubTestOnSetData001, TestSize.Le
     EXPECT_TRUE(data.WriteInterfaceToken(InputerSetData::GetDescriptor()));
     EXPECT_TRUE(data.WriteInt32(testAuthSubType));
     EXPECT_TRUE(data.WriteUInt8Vector(testData));
+    EXPECT_TRUE(data.WriteUint32(testPinLength));
     EXPECT_TRUE(data.WriteInt32(testErrorCode));
     uint32_t code = InputerSetDataInterfaceCode::ON_SET_DATA;
     MessageOption option(MessageOption::TF_SYNC);

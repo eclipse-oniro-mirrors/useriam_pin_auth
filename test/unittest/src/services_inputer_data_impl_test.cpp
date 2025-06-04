@@ -53,7 +53,7 @@ HWTEST_F(ServicesInputerDataImplTest, ServicesInputerDataImplEnrollTest001, Test
     std::shared_ptr<PinAuthAllInOneHdi> allInOnePtr = std::make_shared<PinAuthAllInOneHdi>(nullptr);
     IInputerDataImpl inputerDataImpl(1, allInOnePtr);
     int32_t authSubType = 10000;
-    EXPECT_NO_THROW(inputerDataImpl.OnSetData(authSubType, data, 0));
+    EXPECT_NO_THROW(inputerDataImpl.OnSetData(authSubType, data, 0, 0));
 }
 
 HWTEST_F(ServicesInputerDataImplTest, ServicesInputerDataImplEnrollTest002, TestSize.Level0)
@@ -64,7 +64,7 @@ HWTEST_F(ServicesInputerDataImplTest, ServicesInputerDataImplEnrollTest002, Test
     std::shared_ptr<PinAuthAllInOneHdi> allInOnePtr = std::make_shared<PinAuthAllInOneHdi>(allInOneProxy);
     IInputerDataImpl inputerDataImpl(1, allInOnePtr);
     int32_t authSubType = 10000;
-    EXPECT_NO_THROW(inputerDataImpl.OnSetData(authSubType, data, 0));
+    EXPECT_NO_THROW(inputerDataImpl.OnSetData(authSubType, data, 0, 0));
 }
 
 HWTEST_F(ServicesInputerDataImplTest, ServicesInputerDataImplEnrollTest003, TestSize.Level0)
@@ -75,7 +75,7 @@ HWTEST_F(ServicesInputerDataImplTest, ServicesInputerDataImplEnrollTest003, Test
     std::shared_ptr<PinAuthCollectorHdi> collectorPtr = std::make_shared<PinAuthCollectorHdi>(collectProxy);
     IInputerDataImpl collectInputerDataImpl(1, collectorPtr);
     int32_t authSubType = 10000;
-    EXPECT_NO_THROW(collectInputerDataImpl.OnSetData(authSubType, data, 0));
+    EXPECT_NO_THROW(collectInputerDataImpl.OnSetData(authSubType, data, 0, 0));
 }
 
 HWTEST_F(ServicesInputerDataImplTest, ServicesInputerDataImplEnrollTest004, TestSize.Level0)

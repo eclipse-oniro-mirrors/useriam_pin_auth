@@ -48,6 +48,7 @@ HWTEST_F(InputerSetDataProxyTest, InputerSetDataProxyTest, TestSize.Level0)
     int32_t testAuthSubType = 10000;
     std::vector<uint8_t> testData = {1, 2, 3, 4, 5, 6};
     int32_t testErrorCode = 0;
+    uint32_t testPinLength = 0;
     sptr<MockRemoteObject> obj(new (std::nothrow) MockRemoteObject());
     EXPECT_NE(obj, nullptr);
     auto proxy = Common::MakeShared<InputerSetDataProxy>(obj);
@@ -55,12 +56,13 @@ HWTEST_F(InputerSetDataProxyTest, InputerSetDataProxyTest, TestSize.Level0)
 
     auto service = Common::MakeShared<MockInputerDataImpl>();
     EXPECT_NE(service, nullptr);
-    EXPECT_CALL(*service, OnSetData(_, _, _))
+    EXPECT_CALL(*service, OnSetData(_, _, _, _))
         .Times(Exactly(1))
-        .WillOnce([&testAuthSubType, &testErrorCode]
-            (int32_t authSubType, std::vector<uint8_t> data, int32_t errorCode) {
+        .WillOnce([&testAuthSubType, &testErrorCode, &testPinLength]
+            (int32_t authSubType, std::vector<uint8_t> data, uint32_t pinLength, int32_t errorCode) {
             EXPECT_EQ(authSubType, testAuthSubType);
             EXPECT_THAT(data, ElementsAre(1, 2, 3, 4, 5, 6));
+            EXPECT_EQ(pinLength, testPinLength);
             EXPECT_EQ(errorCode, testErrorCode);
             return;
         });
@@ -69,7 +71,7 @@ HWTEST_F(InputerSetDataProxyTest, InputerSetDataProxyTest, TestSize.Level0)
         .WillByDefault([&service](uint32_t code, MessageParcel &data, MessageParcel &reply, MessageOption &option) {
             return service->OnRemoteRequest(code, data, reply, option);
         });
-    proxy->OnSetData(testAuthSubType, testData, testErrorCode);
+    proxy->OnSetData(testAuthSubType, testData, testPinLength, testErrorCode);
 }
 } // namespace PinAuth
 } // namespace UserIam

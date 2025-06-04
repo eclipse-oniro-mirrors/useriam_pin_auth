@@ -92,9 +92,10 @@ HWTEST_F(InputerDataImplTest, OnSetDataInner001, TestSize.Level1)
     param.algoParameter = {1, 2, 3, 4, 5};
     param.mode = GET_DATA_MODE_NONE;
     std::vector<uint8_t> testSetData;
+    constexpr uint32_t  pinLength = 6;
     constexpr int32_t testErrorCode = 14;
     InputerDataImpl inputerDataImpl(param);
-    EXPECT_NO_THROW(inputerDataImpl.OnSetDataInner(testAuthSubType, testSetData, testErrorCode));
+    EXPECT_NO_THROW(inputerDataImpl.OnSetDataInner(testAuthSubType, testSetData, pinLength, testErrorCode));
 }
 
 HWTEST_F(InputerDataImplTest, GetRecoveryKeyDataTest001, TestSize.Level1)

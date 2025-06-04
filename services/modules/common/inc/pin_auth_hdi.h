@@ -45,6 +45,11 @@ using ExecutorInfo = OHOS::HDI::PinAuth::V3_0::ExecutorInfo;
 
 using GetPropertyType = OHOS::HDI::PinAuth::V3_0::GetPropertyType;
 using Property = OHOS::HDI::PinAuth::V3_0::Property;
+using CommandId = OHOS::HDI::PinAuth::V3_0::CommandId;
+
+enum PinAuthExtendCommandId {
+    RESTART_LOCKOUT_DURATION = 10001,
+};
 } // namespace PinAuth
 } // namespace UserIam
 } // namespace OHOS

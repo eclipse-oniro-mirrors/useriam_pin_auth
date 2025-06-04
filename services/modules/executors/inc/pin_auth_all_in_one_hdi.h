@@ -45,13 +45,15 @@ public:
     UserAuth::ResultCode Authenticate(uint64_t scheduleId, const UserAuth::AuthenticateParam &param,
         const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj) override;
     UserAuth::ResultCode OnSetData(uint64_t scheduleId, uint64_t authSubType, const std::vector<uint8_t> &data,
-        int32_t errorCode);
+        uint32_t pinLength, int32_t errorCode);
     UserAuth::ResultCode Delete(const std::vector<uint64_t> &templateIdList) override;
     UserAuth::ResultCode Cancel(uint64_t scheduleId) override;
     UserAuth::ResultCode GetProperty(const std::vector<uint64_t> &templateIdList,
         const std::vector<UserAuth::Attributes::AttributeKey> &keys, UserAuth::Property &property) override;
     UserAuth::ResultCode Abandon(uint64_t scheduleId, const UserAuth::DeleteParam &param,
             const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj) override;
+    UserAuth::ResultCode SendCommand(UserAuth::PropertyMode commandId, const std::vector<uint8_t> &extraInfo,
+        const std::shared_ptr<UserAuth::IExecuteCallback> &callbackObj) override;
 private:
     void MoveHdiProperty(Property &in, UserAuth::Property &out);
     UserAuth::ResultCode ConvertAttributeKeyToPropertyType(const UserAuth::Attributes::AttributeKey in, int32_t &out);
@@ -60,6 +62,8 @@ private:
         std::vector<int32_t> &outVector);
     void SetAuthType(int32_t authType);
     std::optional<int32_t> GetAuthType();
+    UserAuth::ResultCode ConvertCommandId(const UserAuth::PropertyMode in, int32_t &out);
+    UserAuth::ResultCode ConvertResultCode(const int32_t in);
 
     sptr<IAllInOneExecutor> allInOneProxy_ {nullptr};
     std::optional<int32_t> authType_ {std::nullopt};

@@ -33,9 +33,10 @@ public:
      *
      * param authSubType auth subType.
      * param data pin data.
+     * param pinLength pin data length.
      * param errorCode error code.
      */
-    virtual void OnSetData(int32_t authSubType, std::vector<uint8_t> data, int32_t errorCode) = 0;
+    virtual void OnSetData(int32_t authSubType, std::vector<uint8_t> data, uint32_t pinLength, int32_t errorCode) = 0;
 
     DECLARE_INTERFACE_DESCRIPTOR(u"ohos.PinAuth.InputerSetData");
 };

@@ -51,7 +51,7 @@ public:
         return isTrueTest();
     }
 
-    int32_t SetData(uint64_t scheduleId, uint64_t authSubType, const std::vector<uint8_t>& data,
+    int32_t SetData(uint64_t scheduleId, uint64_t authSubType, const std::vector<uint8_t>& data, uint32_t pinLength,
          int32_t resultCode) override
     {
         return isTrueTest();

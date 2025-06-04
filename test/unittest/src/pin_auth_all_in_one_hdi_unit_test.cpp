@@ -256,13 +256,13 @@ HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_OnSetData_001, TestSize.
     for (const auto &pair : RESULT_CODE_MAP) {
         auto executorProxy = new (std::nothrow) MockIAllInOneExecutor();
         ASSERT_TRUE(executorProxy != nullptr);
-        EXPECT_CALL(*executorProxy, SetData(_, _, _, _))
+        EXPECT_CALL(*executorProxy, SetData(_, _, _, _, _))
             .Times(Exactly(1))
             .WillOnce([&pair](uint64_t scheduleId, uint64_t authSubType, const std::vector<uint8_t>& data,
-                int32_t resultCode)
+                uint32_t pinLength, int32_t resultCode)
                     { return pair.first; });
         PinAuthAllInOneHdi allInOneHdi(executorProxy);
-        auto ret = allInOneHdi.OnSetData(0, 0, std::vector<uint8_t>(), 0);
+        auto ret = allInOneHdi.OnSetData(0, 0, std::vector<uint8_t>(), 0, 0);
         EXPECT_TRUE(ret == pair.second);
     }
 }
@@ -270,7 +270,7 @@ HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_OnSetData_001, TestSize.
 HWTEST_F(PinAuthAllInOneHdiUnitTest, PinAuthExecutorHdi_OnSetData_002, TestSize.Level0)
 {
     PinAuthAllInOneHdi allInOneHdi(nullptr);
-    auto ret = allInOneHdi.OnSetData(0, 0, std::vector<uint8_t>(), 0);
+    auto ret = allInOneHdi.OnSetData(0, 0, std::vector<uint8_t>(), 0, 0);
     EXPECT_TRUE(ret == IamResultCode::GENERAL_ERROR);
 }
 
