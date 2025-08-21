@@ -83,7 +83,6 @@ ohos_source_set("pinauthservice_source_set") {
   external_deps = [
     "access_token:libaccesstoken_sdk",
     "c_utils:utils",
-    "device_manager:devicemanagersdk",
     "drivers_interface_pin_auth:libpin_auth_proxy_3.0",
     "hdf_core:libhdf_utils",
     "hdf_core:libhdi",
