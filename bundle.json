@@ -42,7 +42,6 @@
             "openssl",
             "data_share",
             "init",
-            "device_manager",
             "hdf_core",
             "hisysevent"
         ]
