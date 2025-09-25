@@ -26,6 +26,7 @@ namespace PinAuth {
 namespace {
 void OnParamChg(const char *key, const char *value, void *context)
 {
+    static_cast<void>(context);
     IF_FALSE_LOGE_AND_RETURN(key != nullptr);
     IF_FALSE_LOGE_AND_RETURN(value != nullptr);
     SystemParamManager::GetInstance().OnParamChange(std::string(key), std::string(value));
