@@ -62,6 +62,7 @@ void InputerSetDataStub::OnSetDataStub(MessageParcel &data, MessageParcel &reply
     }
     if (!data.ReadUint32(pinLength)) {
         IAM_LOGE("failed to read pinLength");
+        return;
     }
     if (!data.ReadInt32(errorCode)) {
         IAM_LOGE("failed to read errorCode");
