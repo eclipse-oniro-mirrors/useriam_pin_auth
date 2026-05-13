@@ -258,9 +258,6 @@ bool InputerDataImpl::CheckSpecialPinComplexity(std::vector<uint8_t> &input, int
         IAM_LOGE("authSubType is PIN_FOUR or PIN_PATTERN");
         return false;
     }
-    if (input.size() <= PIN_LEN_SIX) {
-        IAM_LOGE("check data size failed");
-    }
     return CheckPinComplexityByReg(input, complexityReg_);
 }
 
