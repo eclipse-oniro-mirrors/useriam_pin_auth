@@ -17,6 +17,7 @@
 
 #include "iam_ptr.h"
 #include "inputer_get_data_proxy.h"
+#include "scrypt.h"
 #include "mock_inputer_get_data_service.h"
 #include "mock_inputer_set_data.h"
 #include "mock_remote_object.h"
@@ -48,7 +49,7 @@ HWTEST_F(InputerGetDataProxyTest, InputerGetDataProxyTest001, TestSize.Level0)
     InputerGetDataParam testParam = {
         .mode = GET_DATA_MODE_ALL_IN_ONE_PIN_AUTH,
         .authSubType = 10000,
-        .algoVersion = 0,
+        .algoVersion = PIN_ALGO_VERSION_V0,
         .algoParameter = {1, 2, 3, 4, 5, 6},
         .challenge = {2, 3, 4, 5, 6, 7},
         .inputerSetData = new (std::nothrow) MockInputerSetData(),
