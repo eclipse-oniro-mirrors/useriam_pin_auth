@@ -25,6 +25,8 @@
 #define PINAUTH_REGISTER_H
 
 #include "i_inputer.h"
+#include "pinauth_callback.h"
+#include "pinauth_defines.h"
 
 namespace OHOS {
 namespace UserIam {
@@ -55,6 +57,27 @@ public:
      * @brief UnRegister inputer that used to obtain pin data.
      */
     virtual void UnRegisterInputer() = 0;
+
+    /**
+     * @brief Register a listener for pin authentication cumulative fail count.
+     *        After registration, the callback is invoked immediately with the current fail count.
+     *        Note that you need to listen useriam process status, and if the process is restarted
+     *        abnormally, need to re-register the listener.
+     *
+     * @param listener Callback used to receive the fail count changes.
+     * @return Return register result(0:success; other:failed).
+     */
+    virtual int32_t RegisterAuthFailureCountListener(
+        const std::shared_ptr<AuthFailureCountListener> &listener) = 0;
+
+    /**
+     * @brief Unregister a specific pin authentication fail count listener.
+     *
+     * @param listener The callback to unregister.
+     * @return Return unregister result(0:success; other:failed).
+     */
+    virtual int32_t UnregisterAuthFailureCountListener(
+        const std::shared_ptr<AuthFailureCountListener> &listener) = 0;
 };
 } // namespace PinAuth
 } // namespace UserIam

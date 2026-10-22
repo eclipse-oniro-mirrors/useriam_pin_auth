@@ -67,7 +67,8 @@
               "header_files": [
                 "i_inputer_data.h",
                 "i_inputer.h",
-                "pinauth_register.h"
+                "pinauth_register.h",
+                "pinauth_callback.h"
               ],
               "header_base": "//base/useriam/pin_auth/interfaces/inner_api/"
             }
