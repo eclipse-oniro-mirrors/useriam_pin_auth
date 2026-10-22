@@ -22,6 +22,7 @@
 #include "iremote_object.h"
 #include "nocopyable.h"
 
+#include "pinauth_callback.h"
 #include "pinauth_register.h"
 #include "pin_auth_interface.h"
 
@@ -33,6 +34,8 @@ public:
     static PinAuthRegisterImpl& Instance();
     bool RegisterInputer(std::shared_ptr<IInputer> inputer) override;
     void UnRegisterInputer() override;
+    int32_t RegisterAuthFailureCountListener(const std::shared_ptr<AuthFailureCountListener> &listener) override;
+    int32_t UnregisterAuthFailureCountListener(const std::shared_ptr<AuthFailureCountListener> &listener) override;
 
 private:
     PinAuthRegisterImpl() = default;

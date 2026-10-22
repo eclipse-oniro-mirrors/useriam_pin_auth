@@ -62,6 +62,17 @@ void PinAuthRegisterImpl::UnRegisterInputer()
     proxy->UnRegisterInputer();
 }
 
+int32_t PinAuthRegisterImpl::RegisterAuthFailureCountListener(const std::shared_ptr<AuthFailureCountListener> &listener)
+{
+    return SUCCESS;
+}
+
+int32_t PinAuthRegisterImpl::UnregisterAuthFailureCountListener(
+    const std::shared_ptr<AuthFailureCountListener> &listener)
+{
+    return SUCCESS;
+}
+
 sptr<PinAuthInterface> PinAuthRegisterImpl::GetProxy()
 {
     IAM_LOGI("start");
