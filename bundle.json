@@ -31,6 +31,8 @@
             "ability_base",
             "hilog",
             "ipc",
+            "napi",
+            "node",
             "safwk",
             "samgr",
             "access_token",
@@ -43,7 +45,11 @@
             "data_share",
             "init",
             "hdf_core",
-            "hisysevent"
+            "hisysevent",
+            "bounds_checking_function",
+            "ets_frontend",
+            "runtime_core",
+            "taihe_ffi_gen"
         ]
       },
       "build": {
@@ -51,7 +57,9 @@
           "base_group": [
           ],
           "fwk_group": [
-            "//base/useriam/pin_auth/frameworks:pinauth_framework"
+            "//base/useriam/pin_auth/frameworks:pinauth_framework",
+            "//base/useriam/pin_auth/frameworks:pinauth",
+            "//base/useriam/pin_auth/frameworks/ets/ani:pin_auth_ani"
           ],
           "service_group": [
             "//base/useriam/pin_auth/sa_profile:pinauth_sa_profile",
@@ -72,6 +80,12 @@
               ],
               "header_base": "//base/useriam/pin_auth/interfaces/inner_api/"
             }
+          },
+          {
+            "name": "//base/useriam/pin_auth/frameworks/ets/ani:pinauth_ani"
+          },
+          {
+            "name": "//base/useriam/pin_auth/frameworks/ets/ani:pin_auth_copy_taihe_idl"
           }
         ],
         "test": [

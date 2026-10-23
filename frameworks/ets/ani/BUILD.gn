@@ -1,0 +1,106 @@
+# Copyright (c) 2026 Huawei Device Co., Ltd.
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+import("//build/config/components/ets_frontend/ets2abc_config.gni")
+import("//build/ohos.gni")
+import("//build/ohos/taihe_idl/taihe.gni")
+import("../../../pin_auth.gni")
+
+copy_taihe_idl("pin_auth_copy_taihe_idl") {
+  sources = [ "idl/ohos.userIAM.pinAuth.pinAuth.taihe" ]
+}
+
+subsystem_name = "useriam"
+part_name = "pin_auth"
+taihe_generated_file_path = "$taihe_file_path/out/$subsystem_name/$part_name"
+
+ohos_taihe("pin_auth_taihe") {
+  taihe_generated_file_path = "$taihe_generated_file_path"
+  deps = [ ":pin_auth_copy_taihe_idl" ]
+  outputs = [
+    "$taihe_generated_file_path/src/ohos.userIAM.pinAuth.pinAuth.ani.cpp",
+    "$taihe_generated_file_path/src/ohos.userIAM.pinAuth.pinAuth.abi.c",
+  ]
+}
+
+taihe_shared_library("pinauth_ani") {
+  include_dirs = [
+    "inc",
+    "../../common/inc",
+    "../../client/inc",
+    "../../../interfaces/inner_api",
+  ]
+  sources = get_target_outputs(":pin_auth_taihe")
+  sources += [
+    "src/ani_constructor.cpp",
+    "src/ohos.userIAM.pinAuth.pinAuth.impl.cpp",
+  ]
+  external_deps = [
+    "c_utils:utils",
+    "hilog:libhilog",
+    "ipc:ipc_single",
+    "node:node_header_notice",
+    "runtime_core:ani",
+    "runtime_core:libarkruntime",
+    "user_auth_framework:userauth_client",
+  ]
+
+  sanitize = {
+    integer_overflow = true
+    boundary_sanitize = true
+    cfi = true
+    cfi_cross_dso = true
+    debug = false
+  }
+
+  configs = [
+    "../../../common:iam_log_config",
+    "../../../common:iam_utils_config",
+  ]
+
+  deps = [
+    ":pin_auth_taihe",
+    "../..:pinauth_framework_source_set",
+  ]
+  remove_configs = [ "//build/config/compiler:no_exceptions" ]
+  shlib_type = "ani"
+  taihe_generated_file_path = "$taihe_generated_file_path"
+  output_extension = "so"
+  part_name = "$part_name"
+  subsystem_name = "$subsystem_name"
+}
+
+generate_static_abc("pin_auth_abc") {
+  base_url = "$taihe_generated_file_path"
+  files = [ "$taihe_generated_file_path/@ohos.userIAM.pinAuth.ets" ]
+  is_boot_abc = "True"
+  device_dst_file = "system/framework/pin_auth.abc"
+  dst_file = "$target_out_dir/pin_auth.abc"
+  out_puts = [ "$target_out_dir/pin_auth.abc" ]
+  dependencies = [ ":pin_auth_taihe" ]
+}
+
+ohos_prebuilt_etc("pin_auth_abc_etc") {
+  source = "$target_out_dir/pin_auth.abc"
+  module_install_dir = "framework"
+  deps = [ ":pin_auth_abc" ]
+  part_name = "$part_name"
+  subsystem_name = "$subsystem_name"
+}
+
+group("pin_auth_ani") {
+  deps = [
+    ":pin_auth_abc_etc",
+    ":pinauth_ani",
+  ]
+}
