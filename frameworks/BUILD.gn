@@ -17,8 +17,10 @@ import("../pin_auth.gni")
 config("pinauth_config") {
   include_dirs = [
     "client/inc",
+    "common/inc",
     "../interfaces/inner_api",
     "scrypt/inc",
+    "ipc/common_defines",
   ]
 }
 
@@ -142,6 +144,56 @@ ohos_source_set("pinauth_ipc") {
     "ipc:ipc_single",
     "user_auth_framework:userauth_client",
   ]
+
+  subsystem_name = "useriam"
+  part_name = "pin_auth"
+}
+
+ohos_shared_library("pinauth") {
+  sanitize = {
+    integer_overflow = true
+    ubsan = true
+    boundary_sanitize = true
+    cfi = true
+    cfi_cross_dso = true
+    debug = false
+  }
+  branch_protector_ret = "pac_ret"
+  remove_configs = [ "//build/config/compiler:no_exceptions" ]
+
+  include_dirs = [
+    "js/napi/inc",
+    "common/inc",
+    "client/inc",
+    "../interfaces/inner_api",
+    "../common/inc",
+    "ipc/inc",
+    "ipc/common_defines",
+  ]
+
+  sources = [
+    "js/napi/src/pin_auth_napi_entry.cpp",
+  ]
+
+  deps = [
+    ":pinauth_framework_source_set",
+  ]
+
+  external_deps = [
+    "c_utils:utils",
+    "hilog:libhilog",
+    "ipc:ipc_single",
+    "napi:ace_napi",
+    "node:node_header_notice",
+    "user_auth_framework:userauth_client",
+  ]
+
+  configs = [
+    "../common:iam_log_config",
+    "../common:iam_utils_config",
+  ]
+
+  relative_install_dir = "module/useriam"
 
   subsystem_name = "useriam"
   part_name = "pin_auth"

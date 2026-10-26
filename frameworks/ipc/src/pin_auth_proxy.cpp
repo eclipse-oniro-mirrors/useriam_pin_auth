@@ -32,7 +32,7 @@ bool PinAuthProxy::RegisterInputer(const sptr<InputerGetData> &inputer)
         IAM_LOGE("inputer is nullptr");
         return false;
     }
-    
+
     MessageParcel data;
     MessageParcel reply;
 
