@@ -17,8 +17,8 @@
 #define PINAUTH_SECRET_H
 
 #include <cstdint>
-#include <openssl/evp.h>
 #include <vector>
+#include "crypt_eal_kdf.h"
 #include "nocopyable.h"
 
 namespace OHOS {
@@ -39,7 +39,7 @@ public:
     std::vector<uint8_t> GetScrypt(const std::vector<uint8_t> &data, uint32_t algoVersion);
 
 private:
-    bool DoScrypt(const std::vector<uint8_t> &data, uint32_t algoVersion, EVP_PKEY_CTX *pctx);
+    bool DoScrypt(const std::vector<uint8_t> &data, uint32_t algoVersion, CRYPT_EAL_KdfCtx *ctx);
     std::vector<uint8_t> algoParameter_ = {};
 };
 } // namespace PinAuth

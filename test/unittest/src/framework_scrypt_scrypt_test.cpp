@@ -17,8 +17,6 @@
 #include "scrypt.h"
 #include "mock_inputer_set_data.h"
 
-#include <openssl/sha.h>
-
 namespace OHOS {
 namespace UserIam {
 namespace PinAuth {

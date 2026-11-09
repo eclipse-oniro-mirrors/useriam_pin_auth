@@ -41,7 +41,7 @@
             "drivers_interface_pin_auth",
             "c_utils",
             "enterprise_device_management",
-            "openssl",
+            "openhitls",
             "data_share",
             "init",
             "hdf_core",

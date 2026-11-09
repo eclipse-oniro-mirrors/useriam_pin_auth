@@ -15,8 +15,6 @@
 
 #include "services_pin_auth_manager_test.h"
 
-#include <openssl/sha.h>
-
 #include "iam_ptr.h"
 #include "pin_auth_manager.h"
 #include "mock_iall_in_one_executor.h"

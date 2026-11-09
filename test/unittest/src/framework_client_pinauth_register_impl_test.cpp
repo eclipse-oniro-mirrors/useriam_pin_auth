@@ -33,8 +33,6 @@
 #include "nativetoken_kit.h"
 #include "token_setproc.h"
 
-#include <openssl/sha.h>
-
 #define LOG_TAG "PIN_AUTH_SDK"
 
 namespace OHOS {
