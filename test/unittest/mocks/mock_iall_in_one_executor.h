@@ -46,6 +46,9 @@ public:
         const sptr<IExecutorCallback> &callbackObj));
     MOCK_METHOD4(Abandon, int32_t(uint64_t scheduleId, uint64_t templateId, const std::vector<uint8_t>& extraInfo,
         const sptr<IExecutorCallback>& callbackObj));
+    MOCK_METHOD5(SetDataExt, int32_t(uint64_t scheduleId, uint64_t authSubType,
+        const std::vector<PinData>& pinDatas, uint32_t pinLength, int32_t resultCode));
+    MOCK_METHOD2(DeleteExt, int32_t(uint64_t templateId, const std::vector<uint8_t>& extraInfo));
 };
 } // namespace PinAuth
 } // namespace UserIam

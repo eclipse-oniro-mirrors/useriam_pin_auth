@@ -73,6 +73,28 @@ int32_t PinAuthRegisterImpl::UnregisterAuthFailureCountListener(
     return SUCCESS;
 }
 
+int32_t PinAuthRegisterImpl::SetPinHistoryCheckRange(int32_t userId, int32_t historyRange)
+{
+    IAM_LOGI("start");
+    (void)userId;
+    (void)historyRange;
+    return PinAuthResult::OHOS_CAPABILITY_NOT_SUPPORTED;
+}
+
+int32_t PinAuthRegisterImpl::GetPinHistoryCheckRange(int32_t userId, int32_t &historyRange)
+{
+    IAM_LOGI("start");
+    (void)userId;
+    (void)historyRange;
+    return PinAuthResult::OHOS_CAPABILITY_NOT_SUPPORTED;
+}
+
+void PinAuthRegisterImpl::ClearPinHistoryCheckRange(int32_t userId)
+{
+    IAM_LOGI("start");
+    (void)userId;
+}
+
 sptr<PinAuthInterface> PinAuthRegisterImpl::GetProxy()
 {
     IAM_LOGI("start");

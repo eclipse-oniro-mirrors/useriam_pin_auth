@@ -23,6 +23,7 @@
 #include "nocopyable.h"
 
 #include "pinauth_callback.h"
+#include "pinauth_defines.h"
 #include "pinauth_register.h"
 #include "pin_auth_interface.h"
 
@@ -36,6 +37,9 @@ public:
     void UnRegisterInputer() override;
     int32_t RegisterAuthFailureCountListener(const std::shared_ptr<AuthFailureCountListener> &listener) override;
     int32_t UnregisterAuthFailureCountListener(const std::shared_ptr<AuthFailureCountListener> &listener) override;
+    int32_t SetPinHistoryCheckRange(int32_t userId, int32_t historyRange) override;
+    int32_t GetPinHistoryCheckRange(int32_t userId, int32_t &historyRange) override;
+    void ClearPinHistoryCheckRange(int32_t userId) override;
 
 private:
     PinAuthRegisterImpl() = default;

@@ -16,8 +16,11 @@
 #include "napi/native_api.h"
 #include "napi/native_common.h"
 
+#include <string>
+
 #include "iam_check.h"
 #include "iam_logger.h"
+#include "pinauth_defines.h"
 
 #undef LOG_TAG
 #define LOG_TAG "PIN_AUTH_NAPI"
@@ -56,6 +59,30 @@ static napi_value GetPinComplexityPolicy(napi_env env, napi_callback_info info)
     return nullptr;
 }
 
+static napi_value SetPinHistoryCheckRange(napi_env env, napi_callback_info info)
+{
+    IAM_LOGI("start");
+    napi_throw_error(env, std::to_string(static_cast<int32_t>(PinAuthResult::OHOS_CAPABILITY_NOT_SUPPORTED)).c_str(),
+        "Capability not supported.");
+    return nullptr;
+}
+
+static napi_value GetPinHistoryCheckRange(napi_env env, napi_callback_info info)
+{
+    IAM_LOGI("start");
+    napi_throw_error(env, std::to_string(static_cast<int32_t>(PinAuthResult::OHOS_CAPABILITY_NOT_SUPPORTED)).c_str(),
+        "Capability not supported.");
+    return nullptr;
+}
+
+static napi_value ClearPinHistoryCheckRange(napi_env env, napi_callback_info info)
+{
+    IAM_LOGI("start");
+    napi_throw_error(env, std::to_string(static_cast<int32_t>(PinAuthResult::OHOS_CAPABILITY_NOT_SUPPORTED)).c_str(),
+        "Capability not supported.");
+    return nullptr;
+}
+
 static napi_value PinAuthNapiInit(napi_env env, napi_value exports)
 {
     IAM_LOGI("start");
@@ -67,6 +94,9 @@ static napi_value PinAuthNapiInit(napi_env env, napi_value exports)
         DECLARE_NAPI_FUNCTION("getPinDeletionDisabledState", GetPinDeletionDisabledState),
         DECLARE_NAPI_FUNCTION("setPinComplexityPolicy", SetPinComplexityPolicy),
         DECLARE_NAPI_FUNCTION("getPinComplexityPolicy", GetPinComplexityPolicy),
+        DECLARE_NAPI_FUNCTION("setPinHistoryCheckRange", SetPinHistoryCheckRange),
+        DECLARE_NAPI_FUNCTION("getPinHistoryCheckRange", GetPinHistoryCheckRange),
+        DECLARE_NAPI_FUNCTION("clearPinHistoryCheckRange", ClearPinHistoryCheckRange),
     };
     status = napi_define_properties(env, exports,
         sizeof(exportFuncs) / sizeof(napi_property_descriptor), exportFuncs);

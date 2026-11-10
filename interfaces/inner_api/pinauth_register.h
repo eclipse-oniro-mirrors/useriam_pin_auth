@@ -78,6 +78,35 @@ public:
      */
     virtual int32_t UnregisterAuthFailureCountListener(
         const std::shared_ptr<AuthFailureCountListener> &listener) = 0;
+
+    /**
+     * @brief Set the range of historical pins to check when pin is changed.
+     *
+     * @param userId User id. If the value is 0, the policy takes effect for all users; otherwise, the policy takes
+     *        effect for the specified user.
+     * @param historyRange The number of recent historical pins to check.
+     *        The value ranges from 1 to 5.
+     * @return pinAuthResult.
+     */
+    virtual int32_t SetPinHistoryCheckRange(int32_t userId, int32_t historyRange) = 0;
+
+    /*
+     * @brief Get the range of historical pins to check when pin is changed.
+     *
+     * @param userId User id.
+     * @param historyRange Output for the number of historical pins to check.
+     * @return pinAuthResult.
+     */
+    virtual int32_t GetPinHistoryCheckRange(int32_t userId, int32_t &historyRange) = 0;
+
+    /*
+     * @brief Clears the history pin check range policy. After the policy is cleared,
+     *        the user can reuse any historical pin when changing the PIN.
+     *
+     * @param userId User id. If the value is 0, the policy takes effect for all users; otherwise, the policy takes
+     *        effect for the specified user.
+     */
+    virtual void ClearPinHistoryCheckRange(int32_t userId) = 0;
 };
 } // namespace PinAuth
 } // namespace UserIam
