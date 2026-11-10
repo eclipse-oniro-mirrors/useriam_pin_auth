@@ -142,6 +142,14 @@ int32_t PinAuthExecutorCallbackHdi::OnGetData(const std::vector<uint8_t> &algoPa
     return HDF_FAILURE;
 }
 
+int32_t PinAuthExecutorCallbackHdi::OnGetDataExt(const std::vector<PinAlgoParameter> &algoParameters,
+    uint64_t authSubType, const std::vector<uint8_t> &challenge, const std::string &complexityReg)
+{
+    IAM_LOGI("OnGetDataExt is not supported, authSubType:%{public}llu, algoParameters size:%{public}zu",
+        (unsigned long long)authSubType, algoParameters.size());
+    return HDF_ERR_NOT_SUPPORT;
+}
+
 int32_t PinAuthExecutorCallbackHdi::OnTip(int32_t tip, const std::vector<uint8_t> &extraInfo)
 {
     IF_FALSE_LOGE_AND_RETURN_VAL(frameworkCallback_ != nullptr, HDF_FAILURE);

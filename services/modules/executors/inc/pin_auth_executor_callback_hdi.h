@@ -44,6 +44,8 @@ public:
     int32_t OnResult(int32_t code, const std::vector<uint8_t> &extraInfo) override;
     int32_t OnGetData(const std::vector<uint8_t>& algoParameter, uint64_t authSubType, uint32_t algoVersion,
          const std::vector<uint8_t> &challenge, const std::string &complexityReg) override;
+    int32_t OnGetDataExt(const std::vector<PinAlgoParameter> &algoParameters, uint64_t authSubType,
+        const std::vector<uint8_t> &challenge, const std::string &complexityReg) override;
     int32_t OnTip(int32_t tip, const std::vector<uint8_t> &extraInfo) override;
     int32_t OnMessage(int32_t destRole, const std::vector<uint8_t> &msg) override;
 

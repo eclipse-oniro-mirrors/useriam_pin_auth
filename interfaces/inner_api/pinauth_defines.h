@@ -30,6 +30,7 @@ namespace PinAuth {
 enum PinAuthResult : int32_t {
     SUCCESS = 0,
     GENERAL_ERROR = 1,
+    OHOS_CAPABILITY_NOT_SUPPORTED = 801,
 };
 } // namespace PinAuth
 } // namespace UserIam

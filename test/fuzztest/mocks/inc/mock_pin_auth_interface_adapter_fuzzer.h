@@ -23,7 +23,7 @@ namespace OHOS {
 namespace UserIam {
 namespace PinAuth {
 using namespace OHOS;
-using namespace OHOS::HDI::PinAuth::V3_0;
+using namespace OHOS::HDI::PinAuth::V4_0;
 class MockPinAuthInterfaceAdapterFuzzer : public PinAuthInterfaceAdapter {
 public:
     virtual ~MockPinAuthInterfaceAdapterFuzzer() = default;
