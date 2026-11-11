@@ -16,7 +16,9 @@
 #include "inputer_data_impl.h"
 #include "inputer_data_impl_test.h"
 
-#include <openssl/sha.h>
+#include "crypt_algid.h"
+#include "crypt_eal_md.h"
+#include "crypt_errno.h"
 
 #include "iam_ptr.h"
 #include "mock_inputer_set_data.h"
@@ -45,6 +47,7 @@ void InputerDataImplTest::TearDown()
 }
 
 namespace {
+constexpr uint32_t SHA256_DIGEST_LENGTH = 32;
 sptr<MockInputerSetData> GetMockInputerSetData(int32_t testAuthSubType,
     std::vector<uint8_t> testSetData, int32_t testErrorCode)
 {
@@ -232,7 +235,8 @@ HWTEST_F(InputerDataImplTest, InputerDataImplEnrollTest004, TestSize.Level0)
     std::vector<uint8_t> testSetData = scrypt.GetScrypt(testData, param.algoVersion);
 
     uint8_t sha256Result[SHA256_DIGEST_LENGTH] = {};
-    EXPECT_EQ(SHA256(testData.data(), testData.size(), sha256Result), sha256Result);
+    uint32_t outLen = SHA256_DIGEST_LENGTH;
+    EXPECT_EQ(CRYPT_EAL_Md(CRYPT_MD_SHA256, testData.data(), testData.size(), sha256Result, &outLen), CRYPT_SUCCESS);
     testSetData.insert(testSetData.end(), sha256Result, sha256Result + SHA256_DIGEST_LENGTH);
 
     auto mockInputerSetData = GetMockInputerSetData(testAuthSubType, testSetData, testErrorCode);

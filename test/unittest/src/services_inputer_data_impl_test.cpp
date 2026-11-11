@@ -15,8 +15,6 @@
 
 #include "services_inputer_data_impl_test.h"
 
-#include <openssl/sha.h>
-
 #include "iam_ptr.h"
 #include "i_inputer_data_impl.h"
 #include "mock_iall_in_one_executor.h"

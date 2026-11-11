@@ -16,10 +16,13 @@
 #include "inputer_data_impl.h"
 
 #include <cstddef>
+#include <limits>
 #include <regex>
 #include <vector>
 
-#include <openssl/sha.h>
+#include "crypt_algid.h"
+#include "crypt_eal_md.h"
+#include "crypt_errno.h"
 
 #include "securec.h"
 
@@ -168,14 +171,18 @@ void InputerDataImpl::OnSetData(int32_t authSubType, std::vector<uint8_t> data)
 
 bool InputerDataImpl::GetSha256(const std::vector<uint8_t> &data, std::vector<uint8_t> &out)
 {
-    uint8_t sha256Result[SHA256_DIGEST_LENGTH] = {};
-    if (SHA256(data.data(), data.size(), sha256Result) != sha256Result) {
-        IAM_LOGE("get sha256 fail");
-        (void)memset_s(sha256Result, SHA256_DIGEST_LENGTH, 0, SHA256_DIGEST_LENGTH);
+    uint32_t sha256Len = CRYPT_EAL_MdGetDigestSize(CRYPT_MD_SHA256);
+    size_t oldSize = out.size();
+    if (sha256Len > std::numeric_limits<size_t>::max() - oldSize) {
+        IAM_LOGE("out size overflow, oldSize:%{public}zu, sha256Len:%{public}u", oldSize, sha256Len);
         return false;
     }
-    out.insert(out.end(), sha256Result, sha256Result + SHA256_DIGEST_LENGTH);
-    (void)memset_s(sha256Result, SHA256_DIGEST_LENGTH, 0, SHA256_DIGEST_LENGTH);
+    out.resize(oldSize + sha256Len, 0);
+    if (CRYPT_EAL_Md(CRYPT_MD_SHA256, data.data(), data.size(), out.data() + oldSize, &sha256Len) != CRYPT_SUCCESS) {
+        IAM_LOGE("get sha256 fail");
+        out.resize(oldSize);
+        return false;
+    }
     return true;
 }
 
