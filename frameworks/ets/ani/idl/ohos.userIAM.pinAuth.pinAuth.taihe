@@ -35,3 +35,9 @@ function getPinDeletionDisabledState(userId: i32): Optional<bool>;
 function setPinComplexityPolicy(userId: i32, policy: PinComplexityPolicy): void;
 
 function getPinComplexityPolicy(userId: i32): Optional<PinComplexityPolicy>;
+
+function setPinHistoryCheckRange(userId: i32, historyRange: i32): void;
+
+function getPinHistoryCheckRange(userId: i32): Optional<i32>;
+
+function clearPinHistoryCheckRange(userId: i32): void;

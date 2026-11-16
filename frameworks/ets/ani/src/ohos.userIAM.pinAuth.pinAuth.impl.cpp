@@ -54,9 +54,27 @@ optional<pinAuth::PinComplexityPolicy> GetPinComplexityPolicy(int32_t userId)
     return {};
 }
 
+void SetPinHistoryCheckRange(int32_t userId, int32_t historyRange)
+{
+    return;
+}
+
+optional<int32_t> GetPinHistoryCheckRange(int32_t userId)
+{
+    return {};
+}
+
+void ClearPinHistoryCheckRange(int32_t userId)
+{
+    return;
+}
+
 TH_EXPORT_CPP_API_setPinValidityPeriod(SetPinValidityPeriod);
 TH_EXPORT_CPP_API_getPinValidityPeriod(GetPinValidityPeriod);
 TH_EXPORT_CPP_API_setPinDeletionDisabledState(SetPinDeletionDisabledState);
 TH_EXPORT_CPP_API_getPinDeletionDisabledState(GetPinDeletionDisabledState);
 TH_EXPORT_CPP_API_setPinComplexityPolicy(SetPinComplexityPolicy);
 TH_EXPORT_CPP_API_getPinComplexityPolicy(GetPinComplexityPolicy);
+TH_EXPORT_CPP_API_setPinHistoryCheckRange(SetPinHistoryCheckRange);
+TH_EXPORT_CPP_API_getPinHistoryCheckRange(GetPinHistoryCheckRange);
+TH_EXPORT_CPP_API_clearPinHistoryCheckRange(ClearPinHistoryCheckRange);
